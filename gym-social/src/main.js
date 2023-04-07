@@ -9,9 +9,11 @@ const User = require('./models/user');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const AppError = require('./utils/AppError');
+const catchAsync = require('./utils/CatchAsync')
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const router = express.Router();
+
 
 
 mongoose.connect(process.env.MONGO_DB, {
@@ -68,23 +70,44 @@ app.get('/register', (req, res) => {
         { messsage: "Hi" })
 })
 
-app.post('/register', async (req, res) => {
+app.post('/register', catchAsync(async (req, res) => {
     const { email, username, password } = req.body;
     const user = new User({ email, username })
     const registeredUser = await User.register(user, password);
+    console.log("Successfully registered",)
     res.redirect('/home')
     // req.login(registeredUser, err => {
     //     if (err) return next(err);
     //     console.log('success')
     //     res.redirect('/home')
     // })
+}))
+
+app.get('/login', (req, res) => {
+    res.json({
+        message: "Login"
+    })
 })
 
+app.post('/login', passport.authenticate('local'), (req, res) => {
+
+})
+
+// app.get('/login', (req, res))
+
+//if none of the routes prior to this matches
 
 app.all('*', (req, res, next) => {
     next(new AppError('Page Not Found', 404))
 });
 
+app.use((err, req, res, next) => {
+    console.log(err.name);
+    next(err);
+})
+
+
+//note : eventually create an error template page?
 app.use((err, req, res, next) => {
     const { status = 500 } = err;
     if (!err.message) err.message = 'Something went wrong';
