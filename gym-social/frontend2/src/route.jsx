@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Register from "./components/Register";
-import Homepage from "./components/Homepage";
+import Register from "../../frontend/components/Register";
+import Homepage from "../../frontend/components/Homepage";
 
 
 export default function Route() {
