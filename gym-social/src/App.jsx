@@ -3,15 +3,15 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import axios from 'axios';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Register from "./Register";
-import Homepage from "./Homepage";
+import Register from "./components/Register";
+import Homepage from "./components/Homepage";
 import './App.css'
 
 function App() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:3000/')
+    axios.get('http://localhost:3000/home')
       .then(response => setMessage(response.data.message))
       .catch(error => console.log(error))
   }, []);
