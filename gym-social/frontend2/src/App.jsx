@@ -5,6 +5,7 @@ import axios from "axios";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "../components/Register";
 import Homepage from "../components/Homepage";
+import Login from "../components/Login"
 import "./App.css";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       <Routes>
         <Route path="/home" element={<Homepage message={message} />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
