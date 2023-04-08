@@ -12,7 +12,9 @@ const AppError = require("./utils/AppError");
 const catchAsync = require("./utils/CatchAsync");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const Workout = require("./models/workout");
 const router = express.Router();
+
 
 mongoose.connect(process.env.MONGO_DB, {
   useNewUrlParser: true,
@@ -52,6 +54,7 @@ passport.deserializeUser(User.deserializeUser());
 
 //middleware
 app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
   next();
 });
 
@@ -71,6 +74,7 @@ app.post(
     const { email, username, password } = req.body;
     const user = new User({ email, username });
     const registeredUser = await User.register(user, password);
+
     console.log("Successfully registered");
     res.redirect("/home");
     // req.login(registeredUser, err => {
@@ -96,11 +100,10 @@ app.post(
   passport.authenticate("local", {
     failureRedirect: "/login",
     failureFlash: true,
-  }),
-
-  function (req, res) {
+  }), (req, res) => {
     res.status(201).json({
       message: "Logged in",
+      currentUser
     });
     //   res.redirect("/home").json({
     //     message: "Logged in"
@@ -108,6 +111,22 @@ app.post(
   }
 );
 // app.get('/login', (req, res))
+
+// app.get('/users/:id', catchAsync (async (req, res) => {
+
+// }))
+
+app.post('/workout', catchAsync(async (req, res) => {
+  const workout = new Workout(req.body);
+  await workout.save();
+
+  // if (workout) {
+  //   response.status(200).json({
+
+  //   })
+  // }
+  res.redirect('/home')
+}))
 
 //if none of the routes prior to this matches
 
