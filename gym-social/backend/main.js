@@ -15,6 +15,8 @@ const session = require("express-session");
 const Workout = require("./models/workout");
 const router = express.Router();
 
+const authRouter = require("./controllers/auth");
+const workoutRouter = require("./controllers/workout");
 
 mongoose.connect(process.env.MONGO_DB, {
   useNewUrlParser: true,
@@ -48,6 +50,7 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
+
 passport.use(new LocalStrategy(User.authenticate())); //comes from passportlocalmongoose
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -64,69 +67,9 @@ app.get("/home", (req, res) => {
   });
 });
 
-app.get("/register", (req, res) => {
-  res.json({ messsage: "Hi" });
-});
+app.use(authRouter);
 
-app.post(
-  "/register",
-  catchAsync(async (req, res) => {
-    const { email, username, password } = req.body;
-    const user = new User({ email, username });
-    const registeredUser = await User.register(user, password);
-
-    console.log("Successfully registered");
-    res.redirect("/home");
-    // req.login(registeredUser, err => {
-    //     if (err) return next(err);
-    //     console.log('success')
-    //     res.redirect('/home')
-    // })
-  })
-);
-
-app.get("/login", (req, res) => {
-  res.json({
-    message: "Login",
-  });
-});
-
-// app.post('/login', passport.authenticate('local'), (req, res) => {
-
-// })
-
-app.post(
-  "/login",
-  passport.authenticate("local", {
-    failureRedirect: "/login",
-    failureFlash: true,
-  }), (req, res) => {
-    res.status(201).json({
-      message: "Logged in",
-      currentUser
-    });
-    //   res.redirect("/home").json({
-    //     message: "Logged in"
-    // });
-  }
-);
-// app.get('/login', (req, res))
-
-// app.get('/users/:id', catchAsync (async (req, res) => {
-
-// }))
-
-app.post('/workout', catchAsync(async (req, res) => {
-  const workout = new Workout(req.body);
-  await workout.save();
-
-  // if (workout) {
-  //   response.status(200).json({
-
-  //   })
-  // }
-  res.redirect('/home')
-}))
+app.use(workoutRouter);
 
 //if none of the routes prior to this matches
 
