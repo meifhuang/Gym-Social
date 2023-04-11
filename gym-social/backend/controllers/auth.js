@@ -1,7 +1,8 @@
 const express = require("express");
 const catchAsync = require("../utils/CatchAsync");
-const passport = require("passport")
+const passport = require("passport");
 
+const User = require("../models/user");
 router = express.Router();
 
 router.get("/register", (req, res) => {
@@ -11,12 +12,24 @@ router.get("/register", (req, res) => {
 router.post(
   "/register",
   catchAsync(async (req, res) => {
-    const { email, username, password } = req.body;
-    const user = new User({ email, username });
-    const registeredUser = await User.register(user, password);
+    const { fname, lname, email, username, password, cpassword } = req.body;
+    if (password === cpassword) {
+      const user = new User({
+        fname,
+        lname,
+        email,
+        username,
+      });
+      const registeredUser = await User.register(user, password);
 
-    console.log("Successfully registered");
-    res.redirect("/home");
+      console.log("Successfully registered");
+      res.redirect("/home");
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "Passwords are not identical.",
+      });
+    }
   })
 );
 
