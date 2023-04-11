@@ -1,7 +1,6 @@
 const express = require("express");
 const catchAsync = require("../utils/CatchAsync");
 const passport = require("passport");
-
 const User = require("../models/user");
 router = express.Router();
 
@@ -21,9 +20,12 @@ router.post(
         username,
       });
       const registeredUser = await User.register(user, password);
-
       console.log("Successfully registered");
-      res.redirect("/home");
+      req.login(registeredUser, err => {
+        if (err) return next(err);
+        console.log('Logged in')
+
+      })
     } else {
       res.status(400).json({
         success: false,
@@ -46,9 +48,9 @@ router.post(
     failureFlash: true,
   }),
   (req, res) => {
+    console.log('logging in')
     res.status(201).json({
       message: "Logged in",
-      currentUser,
     });
     //   res.redirect("/home").json({
     //     message: "Logged in"

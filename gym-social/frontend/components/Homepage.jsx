@@ -14,6 +14,7 @@ export default function Homepage(props) {
     function registerRedirect() {
         navigate("/register");
     }
+
     return (
         <div className="App">
             <h1> Welcome </h1>
