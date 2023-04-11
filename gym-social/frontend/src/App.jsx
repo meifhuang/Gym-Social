@@ -5,7 +5,8 @@ import axios from "axios";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "../components/Register";
 import Homepage from "../components/Homepage";
-import Login from "../components/Login"
+import Login from "../components/Login";
+import Profile from "../components/Profile";
 import "./App.css";
 
 function App() {
@@ -13,8 +14,10 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/home")
-      .then((response) => setMessage(response.data.message))
+      .get("http://localhost:4000/")
+      .then((response) => {
+        setMessage(response.data.message)
+      })
       .catch((error) => console.log(error));
   }, []);
 
@@ -24,6 +27,7 @@ function App() {
         <Route path="/" element={<Homepage message={message} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );

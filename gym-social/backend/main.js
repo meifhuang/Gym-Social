@@ -61,14 +61,14 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/home", (req, res) => {
+app.get("/", (req, res) => {
   res.json({
     message: "Gym Social",
+
   });
 });
 
 app.use(authRouter);
-
 app.use(workoutRouter);
 
 //if none of the routes prior to this matches

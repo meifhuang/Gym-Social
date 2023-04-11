@@ -3,7 +3,6 @@ import { useState } from "react";
 import axios from "axios";
 
 export default function Register() {
-  // const { message } = props
   const navigate = useNavigate();
 
   const initialValues = {
@@ -65,6 +64,7 @@ export default function Register() {
           name="fname"
           value={values.fname}
           onChange={handleInputChange}
+
         />
 
         <label htmlFor="lname">Last Name:</label>
@@ -78,7 +78,7 @@ export default function Register() {
 
         <label htmlFor="email">Email Address:</label>
         <input
-          type="text"
+          type="email"
           id="email"
           name="email"
           value={values.email}
@@ -96,7 +96,7 @@ export default function Register() {
 
         <label htmlFor="password">Password:</label>
         <input
-          type="text"
+          type="password"
           id="password"
           name="password"
           value={values.password}
@@ -104,7 +104,7 @@ export default function Register() {
         />
         <label htmlFor="cpassword">Confirm Password:</label>
         <input
-          type="text"
+          type="password"
           id="cpassword"
           name="cpassword"
           value={values.cpassword}
