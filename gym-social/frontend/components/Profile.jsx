@@ -13,17 +13,52 @@ export default function Profile(props) {
     const { username, setUsername } = useContext(UserContext);
     const [workoutList, setworkoutList] = useState([]);
     const [selectedExercise, setSelectedExercise] = useState('');
+    const [exerciseDetails, setExerciseDetails] = useState({})
+
 
     const addExercise = (e) => {
         e.preventDefault()
-        setworkoutList([...workoutList, selectedExercise])
+        setworkoutList([...workoutList, exerciseDetails])
         setSelectedExercise('');
+        setExerciseDetails('');
     }
 
     const handleChange = (e) => {
         console.log("selected")
         setSelectedExercise(e.target.value)
+        setExerciseDetails({ name: e.target.value, weight: 0, sets: 0, reps: 0, id: e.target.value })
     }
+
+    const changeWeight = (e) => {
+        const changeW = workoutList.map((work) => {
+            if (work.id === e.target.id) {
+                return { ...work, weight: e.target.value }
+            }
+            return workoutList
+        })
+        setworkoutList(changeW)
+    }
+
+    const changeSet = (e) => {
+        const changeS = workoutList.map((work) => {
+            if (work.id === e.target.id) {
+                return { ...work, sets: e.target.value }
+            }
+            return workoutList
+        })
+        setworkoutList(changeS)
+    }
+
+    const changeReps = (e) => {
+        const changeR = workoutList.map((work) => {
+            if (work.id === e.target.id) {
+                return { ...work, reps: e.target.value }
+            }
+            return workoutList
+        })
+        setworkoutList(changeR)
+    }
+
 
     const logout = async () => {
 
@@ -35,10 +70,9 @@ export default function Profile(props) {
             });
             if (response) {
                 setUsername(null)
-                return navigate("/")
+                navigate("/")
             }
             else {
-                navigate('/')
                 throw Error('no response')
             }
         }
@@ -46,7 +80,6 @@ export default function Profile(props) {
             console.log(e)
         }
     }
-
 
 
     return (
@@ -66,10 +99,14 @@ export default function Profile(props) {
             </form>
             <div>
                 {workoutList.map((work) => (
-                    <li> {work} </li>))
-                }
+                    <li> {work.name} - weight: <input type="number" id={work.name} value={work.weight} onChange={changeWeight} />
+                        sets: <input type="number" id={work.name} value={work.sets} onChange={changeSet} />
+                        reps: <input type="number" id={work.name} value={work.reps} onChange={changeReps} />
+                    </li>
+                ))}
+                <button disabled={workoutList.length <= 0}>  Add workout + </button>
             </div>
 
-        </div>
+        </div >
     )
 }
