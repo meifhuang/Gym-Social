@@ -9,6 +9,7 @@ import Register from "../components/Register";
 import Homepage from "../components/Homepage";
 import Login from "../components/Login";
 import Profile from "../components/Profile";
+import Navbar from "../components/Navbar";
 import "./App.css";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Homepage message={message} />} />
         <Route path="/register" element={<Register />} />

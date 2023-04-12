@@ -67,10 +67,7 @@ passport.deserializeUser(User.deserializeUser());
 // });
 
 app.get("/", (req, res) => {
-  res.json({
-    message: "Gym Social",
 
-  });
 });
 
 app.use(authRouter);
