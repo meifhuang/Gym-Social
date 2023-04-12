@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
+import { UserContext } from '../src/UserContext'
 
 
 export default function Login(props) {
-    const { message, currentUser } = props
+    const { message } = props
+    const { username, setUsername } = useContext(UserContext);
     const navigate = useNavigate();
 
     const initialValues = {
@@ -20,7 +22,6 @@ export default function Login(props) {
             ...values,
             [name]: value,
         });
-        console.log(values);
     };
 
     const loginSubmit = async (e) => {
@@ -28,23 +29,31 @@ export default function Login(props) {
         // console.log("registered");
         e.preventDefault();
         try {
-            const response = await axios({
-                method: "post",
-                url: `http://localhost:4000/login`,
-                data: {
-                    username: values.username,
-                    password: values.password,
-                },
+            const response = await axios.post('http://localhost:4000/login', {
+                username: values.username,
+                password: values.password,
             });
-            if (response) {
-                return navigate("/profile");
-            } else {
-                throw Error("No response");
+            if (response.status === 201) {
+                setUsername(response.data.username)
+                navigate("/profile")
             }
-        } catch (e) {
-            console.log(e);
+            else {
+                console.log('Login failed');
+            }
         }
-    };
+        catch (err) {
+            console.error(err);
+        }
+    }
+    // }
+    //     if (response) {
+    //         console.log(response.data)
+    //         setUsername(response.data.username)
+    //         return navigate("/profile");
+    //     } else {
+    //         throw Error("No response");
+    //     }
+    // };
 
 
     return (

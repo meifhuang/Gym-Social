@@ -48,9 +48,9 @@ router.post(
     failureFlash: true,
   }),
   (req, res) => {
-    console.log('logging in')
     res.status(201).json({
       message: "Logged in",
+      username: req.user.username
     });
     //   res.redirect("/home").json({
     //     message: "Logged in"

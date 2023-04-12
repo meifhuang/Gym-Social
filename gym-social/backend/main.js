@@ -51,15 +51,20 @@ app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(new LocalStrategy(User.authenticate())); //comes from passportlocalmongoose
+
+// passport.use(new LocalStrategy(User.authenticate()));
+passport.use(User.createStrategy())
+//how to serialize user - store user in a session
 passport.serializeUser(User.serializeUser());
+//unstore 
 passport.deserializeUser(User.deserializeUser());
 
 //middleware
-app.use((req, res, next) => {
-  res.locals.currentUser = req.user;
-  next();
-});
+// app.use((req, res, next) => {
+//   res.locals.currentUser = res.locals.currentUser || req.user
+//   console.log("currentUser", req.currentUser)
+//   next();
+// });
 
 app.get("/", (req, res) => {
   res.json({

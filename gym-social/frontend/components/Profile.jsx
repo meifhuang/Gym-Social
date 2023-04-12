@@ -1,19 +1,29 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
+import { UserContext } from '../src/UserContext'
 
 
+export default function Profile(props) {
 
-export default function Profile() {
     const navigate = useNavigate();
+
+    const { username, setUsername } = useContext(UserContext);
+
     const logout = async () => {
+
         try {
             const response = await axios({
-                url: "http://localhost:4000/logout",
                 method: "GET",
+                url: "http://localhost:4000/logout",
+
             });
             if (response) {
-                navigate("/")
+                setUsername(null)
+                return navigate("/")
+            }
+            else {
+                throw Error('no response')
             }
         }
         catch (e) {
@@ -22,7 +32,7 @@ export default function Profile() {
     }
     return (
         <div className="App">
-            <h1> Welcome!</h1>
+            <h1> Welcome {username} ! </h1>
             <button onClick={logout}> Logout </button>
         </div>
     )
