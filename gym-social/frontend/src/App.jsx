@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { UserContext } from './UserContext';
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import axios from "axios";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "../components/Register";
 import Homepage from "../components/Homepage";

@@ -44,7 +44,8 @@ export default function Register() {
       });
 
       if (response) {
-        return navigate("/login");
+        console.log(response)
+        navigate("/login");
       } else {
         throw Error("No response");
       }
