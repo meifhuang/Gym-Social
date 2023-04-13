@@ -40,8 +40,10 @@ app.use(express.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 
-const sessConfig = {
-  name: "session",
+
+const sessionConfig = {
+  name: 'session', 
+
   secret: process.env.SECRET_KEY,
   resave: false,
   saveUninitialized: true,
@@ -58,7 +60,10 @@ app.use(session(sessConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(new LocalStrategy(User.authenticate()));
+
+passport.use(new LocalStrategy(User.authenticate()))
+
+
 //how to serialize user - store user in a session
 passport.serializeUser(User.serializeUser());
 //unstore
