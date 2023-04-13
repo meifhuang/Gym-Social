@@ -17,7 +17,7 @@ const isLoggedIn = function (req, res, next) {
 
 router.get('/profile', isLoggedIn, async (req, res) => {
   console.log("accessing profile route")
-  const workout_list = await Workout.find({});
+  // const workout_list = await Workout.find({});
   res.json({
     workout_list
   });

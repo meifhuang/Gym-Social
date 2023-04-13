@@ -24,27 +24,38 @@ export default function Login(props) {
         });
     };
 
+
     const loginSubmit = async (e) => {
         // alert("asdasd");
         // console.log("registered");
         e.preventDefault();
-        try {
-            const response = await axios.post('http://localhost:4000/login', {
-                username: values.username,
-                password: values.password,
-            });
-            if (response.status === 201 || response.status === 200) {
-                setUsername(response.data.username)
-                navigate("/profile")
-            }
-            else {
-                console.log('Login failed');
-            }
-        }
-        catch (err) {
-            console.error(err);
-        }
+        axios.post('http://localhost:4000/login', {username: values.username, password:values.password})
+        .then((response) => {
+            console.log(response) 
+        })
+        .catch((error) => {
+            console.error(error);
+        })
+
+        // try {
+        //     const response = await axios.post('http://localhost:4000/login', {
+        //         username: values.username,
+        //         password: values.password,
+        //     });
+        //     if (response) {
+        //         setUsername(response.data.username)
+        //         navigate("/profile")
+        //     }
+        //     else {
+        //         throw Error('no response')
+        //         console.log('Login failed');
+        //     }
+        // }
+        // catch (e) {
+        //     console.log(e.message)
+        // }
     }
+    
     // }
     //     if (response) {
     //         console.log(response.data)

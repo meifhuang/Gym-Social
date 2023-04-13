@@ -60,13 +60,13 @@ router.post(
     // successRedirect: "/profile",
     failureFlash: true,
     failureRedirect: "/login",
-   
   }),
   (req, res) => {
     console.log('logged in')
     res.status(200).json({
+      success: true, 
       message: "Logged in",
-      username: req.user.username
+      username: req.user.username,
     })
   }
 );
