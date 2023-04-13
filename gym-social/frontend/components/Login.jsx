@@ -33,7 +33,7 @@ export default function Login(props) {
                 username: values.username,
                 password: values.password,
             });
-            if (response.status === 201) {
+            if (response.status === 201 || response.status === 200) {
                 setUsername(response.data.username)
                 navigate("/profile")
             }
