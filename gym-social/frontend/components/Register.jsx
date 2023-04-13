@@ -30,7 +30,7 @@ export default function Register() {
     try {
       const response = await axios({
         method: "post",
-        url: `http://localhost:4000/register`,
+        url: 'http://localhost:4000/register',
         data: {
           fname: values.fname,
           lname: values.lname,
@@ -43,12 +43,12 @@ export default function Register() {
 
       if (response) {
         console.log(response)
-        navigate("/login");
+        // navigate("/login");
       } else {
         throw Error("No response");
       }
     } catch (e) {
-      console.log(e);
+      console.log(e.message);
     }
   };
   return (

@@ -10,8 +10,7 @@ router.get("/register", (req, res) => {
 
 router.post(
   "/register",
-  async (req, res, next) => {
-    try {
+  catchAsync(async (req, res) => {
     const { fname, lname, email, username, password, cpassword } = req.body;
     if (password === cpassword) {
       const user = new User({
@@ -42,11 +41,7 @@ router.post(
         message: "Passwords are not identical.",
       });
     }
-  }
-  catch (e) {
-    console.log(e.message)
-    }
-  })
+  }))
 
 router.get("/login", (req, res) => {
   res.json({
