@@ -1,38 +1,39 @@
 const express = require("express");
 const catchAsync = require("../utils/CatchAsync");
 const passport = require("passport");
-const Workout = require('../models/workout');
-const Exercise = require('../models/exercise');
+const Workout = require("../models/workout");
+const Exercise = require("../models/exercise");
 
 router = express.Router();
 
-
-const isLoggedIn = function (req, res, next) { 
+const isLoggedIn = function (req, res, next) {
   if (!req.isAuthenticated()) {
-      // req.flash('error', "Sign in to complete action")
-      return next(new Error('user is not authenticated'))
+    // req.flash('error', "Sign in to complete action")
+    return next(new Error("user is not authenticated"));
   }
   next();
-}
+};
 
-router.get('/profile', isLoggedIn, async (req, res) => {
-  console.log("accessing profile route")
+router.get("/profile", async (req, res) => {
+  console.log("accessing profile route");
   // const workout_list = await Workout.find({});
   res.json({
-    workout_list
+    workout_list,
   });
-})
+});
 
 router.post(
   "/createworkout",
   catchAsync(async (req, res) => {
+    console.log("workedout");
+    console.log(req.user);
     // const workout = new Workout(req.body);
-    const {name, weight, sets, reps} = req.body 
-    const exercise = new Exercise({name, weight, sets, reps});
-    exercise.creator = req.user._id;
-    await exercise.save()
-    console.log("Added exercise!")
-  }
-  ));
+    const { name, weight, sets, reps } = req.body;
+    const exercise = new Exercise({ name, weight, sets, reps });
+    // exercise.creator = req.user._id;
+    await exercise.save();
+    console.log("Added exercise!");
+  })
+);
 
 module.exports = router;

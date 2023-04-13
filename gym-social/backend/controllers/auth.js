@@ -53,10 +53,11 @@ router.post(
   "/login",
   passport.authenticate("local", {
     // successRedirect: "/profile",
-    failureFlash: true,
+    // failureFlash: true,
     failureRedirect: "/login",
   }),
   (req, res) => {
+    console.log(req.user)
     console.log('logged in')
     res.status(200).json({
       success: true, 
