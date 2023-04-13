@@ -38,6 +38,7 @@ app.use(cors());
 app.use(mongoSanitize());
 
 const sessionConfig = {
+  name: 'session', 
   secret: process.env.SECRET_KEY,
   resave: false,
   saveUninitialized: true,
@@ -54,6 +55,7 @@ app.use(passport.session());
 
 
 passport.use(new LocalStrategy(User.authenticate()))
+
 //how to serialize user - store user in a session
 passport.serializeUser(User.serializeUser());
 //unstore 
