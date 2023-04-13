@@ -26,8 +26,6 @@ export default function Register() {
   };
 
   const registerSubmit = async (e) => {
-    // alert("asdasd");
-    // console.log("registered");
     e.preventDefault();
     try {
       const response = await axios({

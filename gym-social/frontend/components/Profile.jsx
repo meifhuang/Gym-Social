@@ -6,58 +6,107 @@ import { UserContext } from '../src/UserContext'
 
 export default function Profile(props) {
 
+    const {workout_list} = props;
+
     const exercises = ["bench press", "conventional deadlifts", "shoulder presses", "barbell squats"]
+
+    const stats = {
+        name: '',
+        weight: 0,
+        reps: 0,
+        sets: 0,
+      };
+
 
     const navigate = useNavigate();
 
     const { username, setUsername } = useContext(UserContext);
-    const [workoutList, setworkoutList] = useState([]);
-    const [selectedExercise, setSelectedExercise] = useState('');
-    const [exerciseDetails, setExerciseDetails] = useState({})
-
-
-    const addExercise = (e) => {
+    // const [workoutList, setworkoutList] = useState([]);
+    const [exercise, setExercise] = useState(stats)
+    
+    const addExercise = async (e) => {
         e.preventDefault()
-        setworkoutList([...workoutList, exerciseDetails])
-        setSelectedExercise('');
-        setExerciseDetails('');
+        try {
+            const response = await axios({
+                method: "post", 
+                url: 'http://localhost:4000/createworkout',
+                data: exercise
+            })
+            if (response) {
+                console.log(response)
+            }
+            else {
+                throw Error('no response')
+            }
+        }
+        catch (e) {
+            console.log(e)
+        }
     }
+
+    const addWorkout = async () => {
+        try {
+            const response = await axios({
+                method: "post", 
+                url: 'http://localhost:4000/createworkout',
+                data: {
+                    name: exercise.name,
+                    weight: exercise.weight,
+                    sets: exercise.sets,
+                    reps: exercise.reps 
+                }
+
+            })
+  
+        if (response) {
+          console.log(response)
+        } else {
+          throw Error("No response");
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
 
     const handleChange = (e) => {
-        console.log("selected")
-        setSelectedExercise(e.target.value)
-        setExerciseDetails({ name: e.target.value, weight: 0, sets: 0, reps: 0, id: e.target.value })
-    }
+        const { name, value } = e.target;
+    setExercise({
+      ...exercise,
+      [name]: value,
+    });
+}
 
-    const changeWeight = (e) => {
-        const changeW = workoutList.map((work) => {
-            if (work.id === e.target.id) {
-                return { ...work, weight: e.target.value }
-            }
-            return workoutList
-        })
-        setworkoutList(changeW)
-    }
+        // setExerciseDetails({ name: e.target.value, weight: 0, sets: 0, reps: 0, id: e.target.value }
 
-    const changeSet = (e) => {
-        const changeS = workoutList.map((work) => {
-            if (work.id === e.target.id) {
-                return { ...work, sets: e.target.value }
-            }
-            return workoutList
-        })
-        setworkoutList(changeS)
-    }
+    // const changeWeight = (e) => {
+    //     const changeW = workoutList.map((work) => {
+    //         if (work.id === e.target.id) {
+    //             return { ...work, weight: e.target.value }
+    //         }
+    //         return workoutList
+    //     })
+    //     setworkoutList(changeW)
+    // }
 
-    const changeReps = (e) => {
-        const changeR = workoutList.map((work) => {
-            if (work.id === e.target.id) {
-                return { ...work, reps: e.target.value }
-            }
-            return workoutList
-        })
-        setworkoutList(changeR)
-    }
+    // const changeSet = (e) => {
+    //     const changeS = workoutList.map((work) => {
+    //         if (work.id === e.target.id) {
+    //             return { ...work, sets: e.target.value }
+    //         }
+    //         return workoutList
+    //     })
+    //     setworkoutList(changeS)
+    // }
+
+    // const changeReps = (e) => {
+    //     const changeR = workoutList.map((work) => {
+    //         if (work.id === e.target.id) {
+    //             return { ...work, reps: e.target.value }
+    //         }
+    //         return workoutList
+    //     })
+    //     setworkoutList(changeR)
+    // }
 
 
     const logout = async () => {
@@ -88,25 +137,27 @@ export default function Profile(props) {
             <button onClick={logout}> Logout </button>
             <h1> Workouts </h1>
             <form onSubmit={addExercise}>
-                <label htmlFor="workouts"> Select exercise </label>
-                <select value={selectedExercise} onChange={handleChange} id="workouts">
+                <label htmlFor="name"> Select exercise </label>
+                <select value={exercise.name} name="name" onChange={handleChange}>
                     <option value=""> -- Choose an exercise -- </option>
                     {exercises.map((exercise) => (
-                        <option key={exercise} value={exercise} > {exercise} </option>
+                        <option key={exercise} value={exercise}> {exercise} </option>
                     ))}
                 </select>
-                <button disabled={!selectedExercise}> Add exercise + </button>
+                <label htmlFor="weight"> Weight </label>
+                <input type="number" value={exercise.weight} name="weight" onChange={handleChange} />
+                <label htmlFor="reps"> Reps </label>
+                <input type="number" value={exercise.reps} name="reps" onChange={handleChange}/>
+                <label htmlFor="sets"> Sets </label>
+                <input type="number" value={exercise.sets} name="sets" onChange={handleChange}/>
+                <button disabled={!exercise}> Add exercise + </button>
             </form>
             <div>
-                {workoutList.map((work) => (
-                    <li> {work.name} - weight: <input type="number" id={work.name} value={work.weight} onChange={changeWeight} />
-                        sets: <input type="number" id={work.name} value={work.sets} onChange={changeSet} />
-                        reps: <input type="number" id={work.name} value={work.reps} onChange={changeReps} />
-                    </li>
-                ))}
-                <button disabled={workoutList.length <= 0}>  Add workout + </button>
+                {workout_list}
+                {/* <button disabled={workout_list.length <= 0} onClick={addWorkout}>  Add workout + </button> */}
             </div>
 
         </div >
     )
+            
 }

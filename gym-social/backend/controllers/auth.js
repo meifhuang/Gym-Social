@@ -10,7 +10,8 @@ router.get("/register", (req, res) => {
 
 router.post(
   "/register",
-  catchAsync(async (req, res) => {
+  async (req, res, next) => {
+    try {
     const { fname, lname, email, username, password, cpassword } = req.body;
     if (password === cpassword) {
       const user = new User({
@@ -23,17 +24,29 @@ router.post(
       console.log("Successfully registered");
       req.login(registeredUser, err => {
         if (err) return next(err);
-        console.log('Logged in')
-
+        res.status(201).json({
+          success: true, 
+          message: "registered and logged in", 
+          username: req.user.username,
+        })
       })
-    } else {
+    }
+      // })
+      // passport.authenticate("local")(req, res, () => {
+      //   res.status(201).json({
+      //     message: "registered and logged in", 
+      //     username: req.user.username
+     else {
       res.status(400).json({
         success: false,
         message: "Passwords are not identical.",
       });
     }
+  }
+  catch (e) {
+    console.log(e.message)
+    }
   })
-);
 
 router.get("/login", (req, res) => {
   res.json({
@@ -44,17 +57,17 @@ router.get("/login", (req, res) => {
 router.post(
   "/login",
   passport.authenticate("local", {
-    failureRedirect: "/login",
+    // successRedirect: "/profile",
     failureFlash: true,
+    failureRedirect: "/login",
+   
   }),
   (req, res) => {
-    res.status(201).json({
+    console.log('logged in')
+    res.status(200).json({
       message: "Logged in",
       username: req.user.username
-    });
-    //   res.redirect("/home").json({
-    //     message: "Logged in"
-    // });
+    })
   }
 );
 

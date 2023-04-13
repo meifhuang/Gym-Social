@@ -13,13 +13,14 @@ import Navbar from "../components/Navbar";
 import "./App.css";
 
 function App() {
-  const [message, setMessage] = useState("");
+  // const [message, setMessage] = useState("");
+  const [exercises, setExercises] = useState([])
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/")
+      .get("http://localhost:4000/profile")
       .then((response) => {
-        setMessage(response.data.message)
+        setExercises(response.data.workout_list)
       })
       .catch((error) => console.log(error));
   }, []);
@@ -28,10 +29,10 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Homepage message={message} />} />
+        <Route path="/" element={<Homepage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<Profile exercises={exercises}/>} />
       </Routes>
     </BrowserRouter>
   );

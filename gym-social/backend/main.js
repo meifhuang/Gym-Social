@@ -7,7 +7,8 @@ const mongoose = require("mongoose");
 const mongoSanitize = require("express-mongo-sanitize");
 const User = require("./models/user");
 const passport = require("passport");
-const LocalStrategy = require("passport-local");
+const LocalStrategy = require("passport-local").Strategy;
+const passportLocalMongoose = require('passport-local-mongoose')
 const AppError = require("./utils/AppError");
 const catchAsync = require("./utils/CatchAsync");
 const cookieParser = require("cookie-parser");
@@ -31,7 +32,7 @@ db.once("open", () => {
 });
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 app.use(mongoSanitize());
@@ -43,28 +44,31 @@ const sessionConfig = {
   cookie: {
     httpOnly: true,
     expires: Date.now() * 1000 * 60 * 60 * 24 * 7,
-    maxAge: (1000 * 60) ^ (60 * 60 * 24 * 7),
+    maxAge: 1000 * 60 * 60 * 24 * 7,
   },
 };
 
-app.use(session(sessionConfig));
+
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(session(sessionConfig));
 
 
-// passport.use(new LocalStrategy(User.authenticate()));
-passport.use(User.createStrategy())
+passport.use(new LocalStrategy(User.authenticate()))
 //how to serialize user - store user in a session
 passport.serializeUser(User.serializeUser());
 //unstore 
 passport.deserializeUser(User.deserializeUser());
+passport.debug = true;
 
-//middleware
-// app.use((req, res, next) => {
-//   res.locals.currentUser = res.locals.currentUser || req.user
-//   console.log("currentUser", req.currentUser)
-//   next();
-// });
+// middleware
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  console.log(req.user);
+    next();
+});
+
+
 
 app.get("/", (req, res) => {
   res.json({
@@ -74,6 +78,7 @@ app.get("/", (req, res) => {
 });
 
 app.use(authRouter);
+
 app.use(workoutRouter);
 
 //if none of the routes prior to this matches
@@ -83,7 +88,12 @@ app.all("*", (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  next(err);
+  if (err) {
+    req.flash('error', err.message);
+    res.redirect('/login')
+  }
+  console.log(err.stack)
+  res.status(500).send('somethings wrong')
 });
 
 //note : eventually create an error template page?
