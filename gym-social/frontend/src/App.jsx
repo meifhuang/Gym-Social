@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/login")
+      .get("http://localhost:4000/")
       .then((response) => {
         setMessage(response.data.message)
       })

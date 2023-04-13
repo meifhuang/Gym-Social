@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const mongoSanitize = require("express-mongo-sanitize");
 const User = require("./models/user");
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
+const LocalStrategy = require("passport-local")
 const passportLocalMongoose = require('passport-local-mongoose')
 const AppError = require("./utils/AppError");
 const catchAsync = require("./utils/CatchAsync");
@@ -32,7 +32,7 @@ db.once("open", () => {
 });
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 app.use(mongoSanitize());
@@ -48,10 +48,9 @@ const sessionConfig = {
   },
 };
 
-
+app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(session(sessionConfig));
 
 
 passport.use(new LocalStrategy(User.authenticate()))
@@ -59,13 +58,13 @@ passport.use(new LocalStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser());
 //unstore 
 passport.deserializeUser(User.deserializeUser());
-passport.debug = true;
+
 
 // middleware
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   console.log(req.user);
-    next();
+  next();
 });
 
 
@@ -85,15 +84,6 @@ app.use(workoutRouter);
 
 app.all("*", (req, res, next) => {
   next(new AppError("Page Not Found", 404));
-});
-
-app.use((err, req, res, next) => {
-  if (err) {
-    req.flash('error', err.message);
-    res.redirect('/login')
-  }
-  console.log(err.stack)
-  res.status(500).send('somethings wrong')
 });
 
 //note : eventually create an error template page?
