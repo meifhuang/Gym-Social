@@ -33,11 +33,16 @@ export default function Profile(props) {
       const response = await axios({
         method: "post",
         url: "http://localhost:4000/createworkout",
+
         data: {
           name: exercise.name,
           weight: exercise.weight,
           sets: exercise.sets,
           reps: exercise.reps,
+        },
+
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
@@ -48,6 +53,7 @@ export default function Profile(props) {
       }
     } catch (e) {
       console.log(e.message);
+      console.log(e);
     }
   };
 
@@ -106,6 +112,7 @@ export default function Profile(props) {
         url: "http://localhost:4000/logout",
       });
       if (response) {
+        localStorage.removeItem("token");
         setUsername(null);
         navigate("/");
       } else {

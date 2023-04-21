@@ -25,7 +25,6 @@ router.get("/profile", async (req, res) => {
 router.post(
   "/createworkout",
   catchAsync(async (req, res) => {
-    console.log("workedout");
     console.log(req.user);
     // const workout = new Workout(req.body);
     const { name, weight, sets, reps } = req.body;

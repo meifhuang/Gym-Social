@@ -5,7 +5,7 @@ import { UserContext } from "../src/UserContext";
 
 export default function Login(props) {
   const { message } = props;
-  const { username, setUsername } = useContext(UserContext);
+  const { username, setUsername, token, setToken} = useContext(UserContext);
   const navigate = useNavigate();
 
   const initialValues = {
@@ -37,12 +37,17 @@ export default function Login(props) {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:4000/login", {
-        username: values.username,
-        password: values.password,
-      });
+      const response = await axios.post(
+        "http://localhost:4000/login",
+        {
+          username: values.username,
+          password: values.password,
+        },
+      );
       if (response) {
-        // console.log(response);
+        console.log(response);
+        // setToken(response.data.token)
+        localStorage.setItem("token", response.data.token)
         setUsername(response.data.username);
         return navigate("/profile");
       } else {
@@ -51,6 +56,7 @@ export default function Login(props) {
       }
     } catch (e) {
       console.log(e.message);
+      console.log(e);
     }
   };
 

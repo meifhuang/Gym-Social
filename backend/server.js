@@ -1,0 +1,170 @@
+const express = require("express");
+require("dotenv").config();
+const path = require("path");
+const app = express();
+const cors = require("cors");
+const mongoose = require("mongoose");
+const User = require("./models/user");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const AppError = require("./utils/AppError");
+const catchAsync = require("./utils/CatchAsync");
+// const cookieParser = require("cookie-parser");
+// const bodyParser = require("body-parser");
+// const session = require("express-session");
+const Workout = require("./models/workout");
+const router = express.Router();
+// const setupLocalStrategy = require("./auth/local");
+const createAuthRouter = require("./controllers/auth");
+
+const jwtStrategy = require("./auth/index");
+// const authRouter = require("./controllers/auth");
+const workoutRouter = require("./controllers/workout");
+
+function createServer() {
+  jwtStrategy(passport);
+
+  mongoose.connect(process.env.MONGO_DB, {
+    // useNewUrlParser: true,
+    // useUnifiedTopology: true,
+  });
+
+  // mongoose.set("strictQuery", false);
+  const db = mongoose.connection;
+  // db.on("error", console.error.bind(console, "connection err:"));
+  // db.once("open", () => {
+  //   console.log("database connected");
+  // });
+  app.use(cors());
+  // app.use(mongoSanitize());
+  // app.use(express.static(path.join(__dirname, "public")));
+
+  app.use(express.json());
+
+  //Add sessions here
+  // app.use(
+  //   session({
+  //     secret: process.env.SECRET_KEY,
+  //     resave: false,
+  //     saveUninitialized: false,
+  //     // cookie: {
+  //     //   secure: true,
+  //     // },
+  //   })
+  // );
+  // app.use(cookieParser());
+
+  // setupLocalStrategy(passport);
+
+  //Add passport session middleware
+  // app.use(passport.authenticate("session"));
+
+  // app.use(passport.authenticate("session"));
+  // const authRouter = createAuthRouter(passport);
+  app.use(createAuthRouter);
+  app.use(passport.authenticate("jwt", { session: false }), workoutRouter);
+
+  // app.use(bodyParser.urlencoded({ extended: true }));
+  // app.use(express.urlencoded({ extended: true }));
+
+  // const sessConfig = {
+  //   name: "session",
+  //   secret: process.env.SECRET_KEY,
+  //   resave: false,
+  //   saveUninitialized: true,
+  //   // cookie: {
+  //   //   httpOnly: true,
+  //   //   // secure: true,
+  //   //   expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+  //   //   maxAge: 1000 * 60 * 60 * 24 * 7,
+  //   // },
+  // };
+
+  // app.use(session(sessConfig));
+  // app.use(cookieParser());
+  // // app.use(flash());
+  // app.use(passport.initialize());
+  // app.use(passport.session());
+
+  // passport.use(new LocalStrategy(User.authenticate()));
+  // //how to serialize user - store user in a session
+  // passport.serializeUser(User.serializeUser());
+  // //unstore
+  // passport.deserializeUser(User.deserializeUser());
+
+  // app.use(passport.authenticate("session"));
+
+  function checkLoggedIn(request, response, next) {
+    // console.log(request.cookies);
+    // console.log(passport)
+    console.log(request.user);
+    console.log(request.session);
+
+    if (!request.user) {
+      response.status(401).json({
+        success: false,
+        message: "You are not authorized",
+      });
+    } else {
+      next();
+    }
+    //   setTimeout(()=> {
+    //     next()
+    //   }, 2000)
+  }
+
+  // middleware
+  // app.use((req, res, next) => {
+  //   // console.log(req);
+  //   res.locals.currentUser = req.user;
+  //   console.log(req.user);
+  //   next();
+  // });
+
+  // app.get("/", (req, res) => {
+  //   res.json({
+  //     message: "Gym Social",
+  //   });
+  // });
+
+  app.get("/protected", checkLoggedIn, function (request, response) {
+    try {
+      response.status(200).json({
+        success: true,
+        message: "You should be good",
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  });
+
+  // app.use(
+  //   passport.authenticate("local", {
+  //     // successRedirect: "/profile",
+  //     // failureFlash: true,
+  //     failureRedirect: "/login",
+  //   })
+  //   // checkLoggedIn,
+  //   // workoutRouter
+  // );
+
+  //if none of the routes prior to this matches
+
+  // app.all("*", (req, res, next) => {
+  //   next(new AppError("Page Not Found", 404));
+  // });
+
+  //note : eventually create an error template page?
+  // app.use((err, req, res, next) => {
+  //   const { status = 500 } = err;
+  //   console.log(err);
+  //   if (!err.message) err.message = "Something went wrong";
+  //   res.status(status).send({ err });
+  // });
+
+
+
+  return app;
+}
+
+module.exports = createServer;

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { UserContext } from './UserContext';
+import { UserContext } from "./UserContext";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import axios from "axios";
-
+// axios.defaults.withCredentials = true;
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "../components/Register";
 import Homepage from "../components/Homepage";
@@ -19,7 +19,7 @@ function App() {
     axios
       .get("http://localhost:4000/")
       .then((response) => {
-        setMessage(response.data.message)
+        setMessage(response.data.message);
       })
       .catch((error) => console.log(error.message));
   }, []);
