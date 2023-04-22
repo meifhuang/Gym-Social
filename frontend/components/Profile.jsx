@@ -1,22 +1,26 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import { UserContext } from "../src/UserContext";
+import { AuthContext } from "../src/AuthContext";
 
-export default function Profile(props) {
-  const {workout} = props
+export default function Profile() {
 
-  // const [workout, setworkoutList] = useState([]);
+  const {token, userId} = useContext(AuthContext); 
 
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:4000/profile")
-  //     .then((response) => {
-  //       setworkoutList(response.data.workout_list);
-  //     })
-  //     .catch((error) => console.log(error.message));
-  // }, []);
+  console.log(userId);
 
+  const [workout, setworkoutList] = useState([]);
+
+
+  const getWorkout = async (userId) => {
+    try {
+      const res = await axios.get(`http://localhost:4000/profile/${userId}`)
+      setworkoutList(res.data.workout_list);
+    }
+    catch (e) {
+        console.log(e)
+      }
+  }
 
   const exercises = [
     "bench press",
@@ -34,7 +38,7 @@ export default function Profile(props) {
 
   const navigate = useNavigate();
 
-  const { username, setUsername } = useContext(UserContext);
+  // const { username, setUsername } = useContext(UserContext);
   // const [workoutList, setworkoutList] = useState([]);
   const [exercise, setExercise] = useState(stats);
 
@@ -125,7 +129,7 @@ export default function Profile(props) {
       });
       if (response) {
         localStorage.removeItem("token");
-        setUsername(null);
+        // setUsername(null);
         navigate("/");
       } else {
         throw Error("no response");
@@ -137,7 +141,7 @@ export default function Profile(props) {
 
   return (
     <div className="App">
-      <h1> Welcome {username} ! </h1>
+      <h1> Welcome ! </h1>
       <button onClick={logout}> Logout </button>
       <h1> Workouts </h1>
       <form onSubmit={addExercise}>
@@ -174,7 +178,9 @@ export default function Profile(props) {
         />
         <button disabled={!exercise}> Add exercise + </button>
         <button onClick={checkLogin}> Check Login</button>
+        
       </form>
+      <button onClick={getWorkout} > get workout </button>
       <div>
         {workout}
         {/* <button disabled={workout_list.length <= 0} onClick={addWorkout}>  Add workout + </button> */}

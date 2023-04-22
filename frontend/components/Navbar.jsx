@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import axios from "axios";
-import { UserContext } from '../src/UserContext'
+import { AuthContext } from '../src/AuthContext'
 
 
 export default function Navbar(props) {

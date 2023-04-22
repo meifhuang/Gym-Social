@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import axios from "axios";
-import { UserContext } from "../src/UserContext";
+import { AuthContext } from "../src/AuthContext";
 
 export default function Login(props) {
   const { message } = props;
-  const { username, setUsername, token, setToken} = useContext(UserContext);
+  const { username, setUsername, token, setToken} = useContext(AuthContext);
   const navigate = useNavigate();
 
   const initialValues = {
@@ -48,7 +48,7 @@ export default function Login(props) {
         console.log(response);
         // setToken(response.data.token)
         localStorage.setItem("token", response.data.token)
-        setUsername(response.data.username);
+        // setUsername(response.data.username);
         return navigate("/profile");
       } else {
         throw Error("no response");

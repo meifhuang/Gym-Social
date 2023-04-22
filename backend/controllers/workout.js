@@ -18,7 +18,7 @@ const isLoggedIn = function (req, res, next) {
   }
 };
 
-router.get("/profile" , async (req, res) => {
+router.get("/profile/:id" , async (req, res) => {
   console.log("accessing profile route");
   const user = await User.findbyId(req.user.id).populate({path: 'exercises', populate: {path: 'exercise'}});
   const workout_list = user.exercises;

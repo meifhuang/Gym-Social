@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { UserContext } from "./UserContext";
+import { AuthContextProvider } from "./AuthContext";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import axios from "axios";
@@ -14,7 +14,7 @@ import "./App.css";
 
 function App() {
   const [message, setMessage] = useState("");
-  const [workout, setworkoutList] = useState([]);
+ 
 
   useEffect(() => {
     axios
@@ -25,15 +25,7 @@ function App() {
       .catch((error) => console.log(error.message));
   }, []);
 
-   useEffect(() => {
-    axios
-      .get("http://localhost:4000/profile")
-      .then((response) => {
-        setworkoutList(response.data.workout_list);
-
-      })
-      .catch((error) => console.log(error.message));
-  }, []);
+  
 
 
   return (
@@ -43,7 +35,7 @@ function App() {
         <Route path="/" element={<Homepage message={message} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile workout={workout}/>} />
+        <Route path="/profile" element={<Profile/>} />
       </Routes>
     </BrowserRouter>
   );
