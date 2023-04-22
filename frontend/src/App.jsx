@@ -14,15 +14,27 @@ import "./App.css";
 
 function App() {
   const [message, setMessage] = useState("");
+  const [workout, setworkoutList] = useState([]);
 
   useEffect(() => {
     axios
       .get("http://localhost:4000/")
       .then((response) => {
-        setMessage(response.data.message);
+        setMessage(response.data.workout);
       })
       .catch((error) => console.log(error.message));
   }, []);
+
+   useEffect(() => {
+    axios
+      .get("http://localhost:4000/profile")
+      .then((response) => {
+        setworkoutList(response.data.workout_list);
+
+      })
+      .catch((error) => console.log(error.message));
+  }, []);
+
 
   return (
     <BrowserRouter>
@@ -31,7 +43,7 @@ function App() {
         <Route path="/" element={<Homepage message={message} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<Profile workout={workout}/>} />
       </Routes>
     </BrowserRouter>
   );

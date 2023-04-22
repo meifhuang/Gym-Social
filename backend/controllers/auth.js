@@ -5,6 +5,7 @@ const User = require("../models/user");
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 
+
 // function createAuthRouter(passport) {
 router = express.Router();
 
@@ -53,7 +54,7 @@ router.get("/login", (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  console.log(req.user, "LOGIN REQ.USER");
+  // console.log(req.user, "LOGIN REQ.USER");
   // res.status(200).json({
   //   success: true,
   //   message: "User logged in",
@@ -62,8 +63,8 @@ router.post("/login", async (req, res) => {
     const foundUser = await User.find({
       username: req.body.username,
     });
-    console.log(foundUser.length > 0);
-
+    // console.log(foundUser.length > 0);
+   
     if (foundUser.length > 0) {
       try {
         const verifyPassword = await argon2.verify(
@@ -71,7 +72,7 @@ router.post("/login", async (req, res) => {
           req.body.password
         );
 
-        console.log(verifyPassword, foundUser);
+        // console.log(verifyPassword, foundUser);
         if (verifyPassword) {
           const user_id = foundUser[0]._id.toString();
           console.log(user_id);

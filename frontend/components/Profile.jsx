@@ -1,10 +1,22 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { UserContext } from "../src/UserContext";
 
 export default function Profile(props) {
-  const { workout_list } = props;
+  const {workout} = props
+
+  // const [workout, setworkoutList] = useState([]);
+
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:4000/profile")
+  //     .then((response) => {
+  //       setworkoutList(response.data.workout_list);
+  //     })
+  //     .catch((error) => console.log(error.message));
+  // }, []);
+
 
   const exercises = [
     "bench press",
@@ -29,7 +41,7 @@ export default function Profile(props) {
   const addExercise = async (e) => {
     e.preventDefault();
     try {
-      console.log("asdded exercise");
+      console.log("addeddd exercise");
       const response = await axios({
         method: "post",
         url: "http://localhost:4000/createworkout",
@@ -164,7 +176,7 @@ export default function Profile(props) {
         <button onClick={checkLogin}> Check Login</button>
       </form>
       <div>
-        {workout_list}
+        {workout}
         {/* <button disabled={workout_list.length <= 0} onClick={addWorkout}>  Add workout + </button> */}
       </div>
     </div>
