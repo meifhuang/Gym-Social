@@ -138,15 +138,6 @@ function createServer() {
     }
   });
 
-  // app.use(
-  //   passport.authenticate("local", {
-  //     // successRedirect: "/profile",
-  //     // failureFlash: true,
-  //     failureRedirect: "/login",
-  //   })
-  //   // checkLoggedIn,
-  //   // workoutRouter
-  // );
 
   //if none of the routes prior to this matches
 
