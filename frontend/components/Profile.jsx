@@ -1,34 +1,43 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect} from "react";
 import axios from "axios";
 import { AuthContext } from "../src/AuthContext";
 
 export default function Profile() {
   const { token, userId } = useContext(AuthContext);
 
-  console.log(userId);
-
   const [workout, setworkoutList] = useState([]);
+  const [username, setUsername] = useState("");
 
-  const getWorkout = async (userId) => {
-    try {
-      const res = await axios({
-        method: "get",
-        url: `http://localhost:4000/profile/${localStorage.getItem("id")}`,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const getWorkout = async () => {
+    try { 
+    const res = await axios({
+      method: "get",
+      url: "http://localhost:4000/profile",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    setUsername(res.data.username);
+    setworkoutList(res.data.workout_list);
+    
+  }
+  catch(e) {
+    console.log(e.message)
+  }
+  }
+
+  useEffect(() => {
+   getWorkout();
+  },[])
+
 
   const exercises = [
     "bench press",
     "conventional deadlifts",
     "shoulder presses",
     "barbell squats",
+    "barbell rows"
   ];
 
   const stats = {
@@ -51,24 +60,16 @@ export default function Profile() {
       const response = await axios({
         method: "post",
         url: "http://localhost:4000/createworkout",
-
         data: {
           name: exercise.name,
           weight: exercise.weight,
           sets: exercise.sets,
           reps: exercise.reps,
         },
-
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-
-      if (response) {
-        console.log(response);
-      } else {
-        throw Error("no response");
-      }
     } catch (e) {
       console.log(e.message);
       console.log(e);
@@ -131,6 +132,7 @@ export default function Profile() {
       });
       if (response) {
         localStorage.removeItem("token");
+        localStorage.removeItem("id")
         // setUsername(null);
         navigate("/");
       } else {
@@ -143,12 +145,12 @@ export default function Profile() {
 
   return (
     <div className="App">
-      <h1> Welcome ! </h1>
+      <h1> Welcome {username}! </h1>
       <button onClick={logout}> Logout </button>
       <h1> Workouts </h1>
       <form onSubmit={addExercise}>
         <label htmlFor="name"> Select exercise </label>
-        <select value={exercise.name} name="name" onChange={handleChange}>
+        <select value={exercise.name} name="name" onChange={handleChange} required>
           <option value=""> -- Choose an exercise -- </option>
           {exercises.map((exercise) => (
             <option key={exercise} value={exercise}>
@@ -183,7 +185,9 @@ export default function Profile() {
       </form>
       <button onClick={getWorkout}> get workout </button>
       <div>
-        {workout}
+        {workout.map((work)=> (
+          <h5>{work.name} - {work.weight} lbs - {work.sets} sets - {work.reps} reps </h5>
+        ))}
         {/* <button disabled={workout_list.length <= 0} onClick={addWorkout}>  Add workout + </button> */}
       </div>
     </div>
