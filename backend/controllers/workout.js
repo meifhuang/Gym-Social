@@ -48,39 +48,86 @@ router.post(
 
     res.status(200).json({
       success: "true",
-      exercises: user.exercises
+      exercises: user.exercises,
     });
   })
 );
 
 router.delete("/exercise/:exerciseId", async (req, res) => {
-  console.log("entering delete")
+  console.log("entering delete");
   const userId = await User.findById(req.user.id);
-  const {exerciseId} = req.params;
+  const { exerciseId } = req.params;
   try {
-  await User.findByIdAndUpdate(userId, {$pull: {exercises: exerciseId}})
-  const deleteExercise = await Exercise.findByIdAndDelete(exerciseId);
+    await User.findByIdAndUpdate(userId, { $pull: { exercises: exerciseId } });
+    const deleteExercise = await Exercise.findByIdAndDelete(exerciseId);
 
-  if (deleteExercise) {
-    res.status(200).json({
-      success: true,
-      exerciseId: exerciseId
-    })
-  }
-  else {
+    if (deleteExercise) {
+      res.status(200).json({
+        success: true,
+        exerciseId: exerciseId,
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "Unable to delete",
+      });
+    }
+  } catch (e) {
+    console.log(e);
     res.status(400).json({
-      success: false, 
-      message: "Unable to delete"
-    })
+      success: false,
+      message: "Something went wrong",
+    });
   }
-}
-catch (e) {
-  console.log(e)
-  res.status(400).json({
-    success: false,
-    message: "Something went wrong"
-  })
-}
 });
+
+router.put("/exercise/:exerciseId", async (req, res) => {
+  console.log(req.body, "UPDATE ROUTE");
+  const userId = await User.findById(req.user.id);
+  const { exerciseId } = req.params;
+  try {
+    // const user = await User.findByIdAndUpdate(userId, { $pull: { exercises: exerciseId } });
+    const updateExercise = await Exercise.findOneAndUpdate(
+      { _id: { $in: exerciseId } },
+      {
+        name: req.body.name,
+        reps: parseInt(req.body.reps),
+        sets: parseInt(req.body.sets),
+        weight: parseInt(req.body.weight),
+      }
+    );
+
+    const finalUpdateExercise = await Exercise.findOne({
+      _id: { $in: exerciseId },
+    });
+    console.log(finalUpdateExercise, "UPDATED EXERCISE");
+    if (updateExercise) {
+      res.status(200).json({
+        success: true,
+        finalUpdateExercise
+        // user
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "Unable to update",
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+});
+
+// router.get("/getexercises", async (request, response) => {
+//   try {
+//     const allExercises = await
+//   } catch (e) {
+
+//   }
+// })
 
 module.exports = router;
