@@ -170,6 +170,7 @@ export default function Profile() {
 
   const handleExerciseForm = () => {
     setShowExerciseForm(true)
+    
   }
 
   const createWorkout = async () => {
