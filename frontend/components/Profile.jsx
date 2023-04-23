@@ -2,12 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../src/AuthContext";
+// import workout from "../../backend/models/workout";
 
 export default function Profile() {
   const { token, userId } = useContext(AuthContext);
 
   const [workoutList, setworkoutList] = useState([]);
   const [username, setUsername] = useState("");
+  const [changeId, setChangeId] = useState("");
 
   const getWorkout = async () => {
     try {
@@ -73,10 +75,9 @@ export default function Profile() {
         },
       });
 
-
       if (res) {
         // const data = await res.data;
-        console.log(workoutList)
+        console.log(workoutList);
         setworkoutList([
           ...workoutList,
           {
@@ -84,7 +85,6 @@ export default function Profile() {
             weight: exercise.weight,
             sets: exercise.sets,
             reps: exercise.reps,
-
           },
         ]);
       } else {
@@ -97,28 +97,72 @@ export default function Profile() {
   };
 
   const deleteExercise = async (exerciseId) => {
-      console.log('in delete route');
-      try {
-        const res = await(axios({
-          method: "delete",
-          url: `http://localhost:4000/exercise/${exerciseId}`,
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }))
-  
+    console.log("in delete route");
+    try {
+      const res = await axios({
+        method: "delete",
+        url: `http://localhost:4000/exercise/${exerciseId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
       if (res) {
-        console.log(res.data.exerciseId)
-        setworkoutList(prev => prev.filter(exercise => {
-          return exercise._id !== res.data.exerciseId
-        }))
+        console.log(res.data.exerciseId);
+        setworkoutList((prev) =>
+          prev.filter((exercise) => {
+            return exercise._id !== res.data.exerciseId;
+          })
+        );
       }
+    } catch (e) {
+      console.log(e.message);
     }
-      catch (e) {
-        console.log(e.message);
+  };
+
+  const editExercise = async (exerciseId) => {
+    console.log("in exercise route");
+    // console.log(exerciseId);
+    console.log(workoutList)
+    try {
+      const res = await axios({
+        method: "put",
+        url: `http://localhost:4000/exercise/${exerciseId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        data: {
+          // _id: exerciseId,
+          name: exercise.name,
+          weight: exercise.weight,
+          sets: exercise.sets,
+          reps: exercise.reps,
+        },
+      });
+
+      if (res) {
+        const exercise_data = await res.data.finalUpdateExercise
+
+        const updateList = workoutList.map((exercise) => {
+          if (exercise._id === exerciseId) {
+            return {
+              _id: exerciseId,
+              name: exercise_data.name,
+              weight: exercise_data.weight,
+              sets: exercise_data.sets,
+              reps: exercise_data.reps,
+            };
+          } else {
+            return exercise;
+          }
+        });
+
+        setworkoutList(updateList);
       }
+    } catch (e) {
+      console.log(e.message);
     }
-  
+  };
 
   const checkLogin = async (e) => {
     e.preventDefault();
@@ -233,15 +277,49 @@ export default function Profile() {
       </form>
       <button onClick={getWorkout}> get workout </button>
       <div>
-        {workoutList.map((work) => (
-          <>
-          <h5>
-            {work.name} - {work.weight} lbs - {work.sets} sets - {work.reps} - reps
-            <button onClick={()=> deleteExercise(work._id)}> delete </button> 
-          </h5>
-           </>
-        ))}
-        
+        {workoutList.map((work) => {
+          if (changeId === work._id) {
+            return (
+              <>
+                <div>EDIT FORM</div>
+                <h5>
+                  {work.name} - {work.weight} lbs - {work.sets} sets -{" "}
+                  {work.reps} - reps {work._id}
+                  <button onClick={() => deleteExercise(work._id)}>
+                    {" "}
+                    delete{" "}
+                  </button>
+                  {/* <button onClick={() => setChangeId(work._id)}> edit </button> */}
+                  <button onClick={() => editExercise(work._id)}>
+                    {" "}
+                    complete{" "}
+                  </button>
+                </h5>
+              </>
+            );
+          } else {
+            return (
+              <h5>
+                {work.name} - {work.weight} lbs - {work.sets} sets - {work.reps}{" "}
+                - reps {work._id}
+                <button onClick={() => deleteExercise(work._id)}>
+                  {" "}
+                  delete{" "}
+                </button>
+                <button
+                  onClick={() => {
+                    
+                    setChangeId(work._id);
+                    console.log(changeId)
+                  }}
+                >
+                  {" "}
+                  edit{" "}
+                </button>
+              </h5>
+            );
+          }
+        })}
       </div>
     </div>
   );
