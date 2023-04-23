@@ -53,4 +53,34 @@ router.post(
   })
 );
 
+router.delete("/exercise/:exerciseId", async (req, res) => {
+  console.log("entering delete")
+  const userId = await User.findById(req.user.id);
+  const {exerciseId} = req.params;
+  try {
+  await User.findByIdAndUpdate(userId, {$pull: {exercises: exerciseId}})
+  const deleteExercise = await Exercise.findByIdAndDelete(exerciseId);
+
+  if (deleteExercise) {
+    res.status(200).json({
+      success: true,
+      exerciseId: exerciseId
+    })
+  }
+  else {
+    res.status(400).json({
+      success: false, 
+      message: "Unable to delete"
+    })
+  }
+}
+catch (e) {
+  console.log(e)
+  res.status(400).json({
+    success: false,
+    message: "Something went wrong"
+  })
+}
+});
+
 module.exports = router;
