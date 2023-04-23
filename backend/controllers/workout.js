@@ -20,38 +20,67 @@ const isLoggedIn = function (req, res, next) {
 
 router.get("/profile", async (req, res) => {
   console.log("accessing profile route");
-  const user = await User.findById(req.user.id).populate("exercises");
-  const workout_list = user.exercises;
+  const user = await User.findById(req.user.id).populate("workouts");
+  // const workout_list = user.exercises;
+  const workout = user.workouts; 
   const username = user.username;
 
   res.status(200).json({
     success: true,
-    workout_list: workout_list,
+    // workout_list: workout_list,
+    workout: workout,
     message: "HELLO",
     username: username,
   });
 });
 
+
+//when i add an exercise - must find the workout its attached to
+// ok : click create exercise and it adds to workout for now .. need to fix Front end so that it'll display that
+//particular workout..
+//ok cant think aynmore but - ^ how to create exercises + link it to workout schema without adding it to users yet?
+
 router.post(
-  "/createworkout",
-  catchAsync(async (req, res) => {
-    const user = await User.findById(req.user.id);
-    console.log("user logged in is", user);
+  "/workout/:id/createexercise",
+  async (req, res) => {
+    const user = await User.findById(req.user.id).populate('workouts');
     const { name, weight, sets, reps } = req.body;
     const exercise = new Exercise({ name, weight, sets, reps });
-    user.exercises.push(exercise);
-    // workout.creator = req.user._id;
-    // workout.exercises.push(exercise);
+    // user.workouts.push(exercise);
+
     await exercise.save();
-    await user.save();
+    // await user.save();
     console.log("Added exercise!");
 
     res.status(200).json({
       success: "true",
-      exercises: user.exercises,
+      // exercises: user.exercises,
+      workout: user.workouts
     });
-  })
-);
+  });
+
+  router.post(
+    "/createworkout",
+    async (req, res) => {
+      const user = await User.findById(req.user.id).populate('workouts');
+      const { name, workoutList } = req.body;
+      console.log(workoutList)
+      const workout = new Workout({ name });
+      for (let each of workoutList) {
+        const exercise = new Exercise(each)
+        workout.exercises.push(exercise)
+      }
+      user.workouts.push(workout);
+      await user.save();
+      await workout.save();
+      console.log("Added workout!");
+      res.status(200).json({
+        success: "true",
+        workouts: user.workouts,
+      });
+});
+
+
 
 router.delete("/exercise/:exerciseId", async (req, res) => {
   console.log("entering delete");

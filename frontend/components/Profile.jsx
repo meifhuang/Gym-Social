@@ -9,6 +9,7 @@ export default function Profile() {
 
   const [workoutList, setworkoutList] = useState([]);
   const [username, setUsername] = useState("");
+  const [showExerciseForm, setShowExerciseForm] = useState(false); 
   const [changeId, setChangeId] = useState("");
 
   const getWorkout = async () => {
@@ -23,7 +24,8 @@ export default function Profile() {
 
       if (res) {
         setUsername(res.data.username);
-        setworkoutList(res.data.workout_list);
+        setworkoutList(res.data.workout);
+        // setworkoutList(res.data.workout_list);
       } else {
         console.log("NO RESPONSE");
       }
@@ -63,7 +65,7 @@ export default function Profile() {
       console.log("addeddd exercise");
       const res = await axios({
         method: "post",
-        url: "http://localhost:4000/createworkout",
+        url: "http://localhost:4000/createexercise",
         data: {
           name: exercise.name,
           weight: exercise.weight,
@@ -164,45 +166,34 @@ export default function Profile() {
     }
   };
 
-  const checkLogin = async (e) => {
-    e.preventDefault();
+  const [workoutname, setWorkoutName] = useState("")
+
+  const handleExerciseForm = () => {
+    setShowExerciseForm(true)
+  }
+
+  const createWorkout = async () => {
     try {
       const response = await axios({
-        method: "get",
-        url: "http://localhost:4000/protected",
+        method: "post",
+        url: "http://localhost:4000/createworkout",
+        data: {
+          name: 'workout3111', 
+          workoutList: workoutList
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
       if (response) {
-        // console.log(response);
+        console.log(response);
       } else {
-        throw Error("no response");
+        throw Error("No response");
       }
     } catch (e) {
       console.log(e);
     }
   };
-
-  // const addWorkout = async () => {
-  //   try {
-  //     const response = await axios({
-  //       method: "post",
-  //       url: "http://localhost:4000/createworkout",
-  //       data: {
-  //         name: exercise.name,
-  //         weight: exercise.weight,
-  //         sets: exercise.sets,
-  //         reps: exercise.reps,
-  //       },
-  //     });
-
-  //     if (response) {
-  //       console.log(response);
-  //     } else {
-  //       throw Error("No response");
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -236,7 +227,9 @@ export default function Profile() {
       <h1> Welcome {username}! </h1>
       <button onClick={logout}> Logout </button>
       <h1> Workouts </h1>
-      <form onSubmit={(e) => addExercise(e)}>
+      { showExerciseForm ? 
+      <>
+        <form onSubmit={(e) => addExercise(e)}>
         <label htmlFor="name"> Select exercise </label>
         <select
           value={exercise.name}
@@ -273,8 +266,13 @@ export default function Profile() {
           onChange={handleChange}
         />
         <button disabled={!exercise}> Add exercise + </button>
-        <button onClick={checkLogin}> Check Login</button>
       </form>
+      <label htmlFor="workoutname"> Workout Name </label>
+       {/* <input type='text' value={workoutname} name="workoutname" onChange={(e) => value = e.target.value}/>  */}
+       <button onClick={createWorkout}> Finish workout </button>
+       </>
+      :  <button onClick={handleExerciseForm}> Create a workout + </button>
+      }
       <button onClick={getWorkout}> get workout </button>
       <div>
         {workoutList.map((work) => {
