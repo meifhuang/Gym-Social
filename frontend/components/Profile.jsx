@@ -1,43 +1,45 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useContext, useEffect} from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../src/AuthContext";
 
 export default function Profile() {
   const { token, userId } = useContext(AuthContext);
 
-  const [workout, setworkoutList] = useState([]);
+  const [workoutList, setworkoutList] = useState([]);
   const [username, setUsername] = useState("");
 
   const getWorkout = async () => {
-    try { 
-    const res = await axios({
-      method: "get",
-      url: "http://localhost:4000/profile",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    setUsername(res.data.username);
-    setworkoutList(res.data.workout_list);
-    
-  }
-  catch(e) {
-    console.log(e.message)
-  }
-  }
+    try {
+      const res = await axios({
+        method: "get",
+        url: "http://localhost:4000/profile",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (res) {
+        setUsername(res.data.username);
+        setworkoutList(res.data.workout_list);
+      } else {
+        console.log("NO RESPONSE");
+      }
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
 
   useEffect(() => {
-   getWorkout();
-  },[])
-
+    getWorkout();
+  }, []);
 
   const exercises = [
     "bench press",
     "conventional deadlifts",
     "shoulder presses",
     "barbell squats",
-    "barbell rows"
+    "barbell rows",
   ];
 
   const stats = {
@@ -57,7 +59,7 @@ export default function Profile() {
     e.preventDefault();
     try {
       console.log("addeddd exercise");
-      const response = await axios({
+      const res = await axios({
         method: "post",
         url: "http://localhost:4000/createworkout",
         data: {
@@ -70,6 +72,23 @@ export default function Profile() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+
+
+      if (res) {
+        // const data = await res.data;
+        console.log(workoutList)
+        setworkoutList([
+          ...workoutList,
+          {
+            name: exercise.name,
+            weight: exercise.weight,
+            sets: exercise.sets,
+            reps: exercise.reps,
+          },
+        ]);
+      } else {
+        console.log("NO RES");
+      }
     } catch (e) {
       console.log(e.message);
       console.log(e);
@@ -93,28 +112,28 @@ export default function Profile() {
     }
   };
 
-  const addWorkout = async () => {
-    try {
-      const response = await axios({
-        method: "post",
-        url: "http://localhost:4000/createworkout",
-        data: {
-          name: exercise.name,
-          weight: exercise.weight,
-          sets: exercise.sets,
-          reps: exercise.reps,
-        },
-      });
+  // const addWorkout = async () => {
+  //   try {
+  //     const response = await axios({
+  //       method: "post",
+  //       url: "http://localhost:4000/createworkout",
+  //       data: {
+  //         name: exercise.name,
+  //         weight: exercise.weight,
+  //         sets: exercise.sets,
+  //         reps: exercise.reps,
+  //       },
+  //     });
 
-      if (response) {
-        console.log(response);
-      } else {
-        throw Error("No response");
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  //     if (response) {
+  //       console.log(response);
+  //     } else {
+  //       throw Error("No response");
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -132,7 +151,7 @@ export default function Profile() {
       });
       if (response) {
         localStorage.removeItem("token");
-        localStorage.removeItem("id")
+        localStorage.removeItem("id");
         // setUsername(null);
         navigate("/");
       } else {
@@ -148,9 +167,14 @@ export default function Profile() {
       <h1> Welcome {username}! </h1>
       <button onClick={logout}> Logout </button>
       <h1> Workouts </h1>
-      <form onSubmit={addExercise}>
+      <form onSubmit={(e) => addExercise(e)}>
         <label htmlFor="name"> Select exercise </label>
-        <select value={exercise.name} name="name" onChange={handleChange} required>
+        <select
+          value={exercise.name}
+          name="name"
+          onChange={handleChange}
+          required
+        >
           <option value=""> -- Choose an exercise -- </option>
           {exercises.map((exercise) => (
             <option key={exercise} value={exercise}>
@@ -185,10 +209,13 @@ export default function Profile() {
       </form>
       <button onClick={getWorkout}> get workout </button>
       <div>
-        {workout.map((work)=> (
-          <h5>{work.name} - {work.weight} lbs - {work.sets} sets - {work.reps} reps </h5>
+        {workoutList.map((work) => (
+          <h5>
+            {work.name} - {work.weight} lbs - {work.sets} sets - {work.reps}{" "}
+            reps{" "}
+          </h5>
         ))}
-        {/* <button disabled={workout_list.length <= 0} onClick={addWorkout}>  Add workout + </button> */}
+        {/* <button disabled={workout_list.length <= 0} onClick={addWorkout}>  Add workoutList + </button> */}
       </div>
     </div>
   );

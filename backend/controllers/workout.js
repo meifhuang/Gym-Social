@@ -18,24 +18,23 @@ const isLoggedIn = function (req, res, next) {
   }
 };
 
-router.get("/profile" , async (req, res) => {
+router.get("/profile", async (req, res) => {
   console.log("accessing profile route");
-  const user = await User.findById(req.user.id).populate('exercises');
+  const user = await User.findById(req.user.id).populate("exercises");
   const workout_list = user.exercises;
   const username = user.username;
 
   res.status(200).json({
-    success: true, 
+    success: true,
     workout_list: workout_list,
-    message: 'HELLO',
-    username: username
+    message: "HELLO",
+    username: username,
   });
 });
 
 router.post(
   "/createworkout",
   catchAsync(async (req, res) => {
-
     const user = await User.findById(req.user.id);
     console.log("user logged in is", user);
     const { name, weight, sets, reps } = req.body;
@@ -46,6 +45,11 @@ router.post(
     await exercise.save();
     await user.save();
     console.log("Added exercise!");
+
+    res.status(200).json({
+      success: "true",
+      exercises: user.exercises
+    });
   })
 );
 
