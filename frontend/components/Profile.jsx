@@ -84,6 +84,7 @@ export default function Profile() {
             weight: exercise.weight,
             sets: exercise.sets,
             reps: exercise.reps,
+
           },
         ]);
       } else {
@@ -94,6 +95,30 @@ export default function Profile() {
       console.log(e);
     }
   };
+
+  const deleteExercise = async (exerciseId) => {
+      console.log('in delete route');
+      try {
+        const res = await(axios({
+          method: "delete",
+          url: `http://localhost:4000/exercise/${exerciseId}`,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }))
+  
+      if (res) {
+        console.log(res.data.exerciseId)
+        setworkoutList(prev => prev.filter(exercise => {
+          return exercise._id !== res.data.exerciseId
+        }))
+      }
+    }
+      catch (e) {
+        console.log(e.message);
+      }
+    }
+  
 
   const checkLogin = async (e) => {
     e.preventDefault();
@@ -178,8 +203,7 @@ export default function Profile() {
           <option value=""> -- Choose an exercise -- </option>
           {exercises.map((exercise) => (
             <option key={exercise} value={exercise}>
-              {" "}
-              {exercise}{" "}
+              {exercise}
             </option>
           ))}
         </select>
@@ -210,12 +234,14 @@ export default function Profile() {
       <button onClick={getWorkout}> get workout </button>
       <div>
         {workoutList.map((work) => (
+          <>
           <h5>
-            {work.name} - {work.weight} lbs - {work.sets} sets - {work.reps}{" "}
-            reps{" "}
+            {work.name} - {work.weight} lbs - {work.sets} sets - {work.reps} - reps
+            <button onClick={()=> deleteExercise(work._id)}> delete </button> 
           </h5>
+           </>
         ))}
-        {/* <button disabled={workout_list.length <= 0} onClick={addWorkout}>  Add workoutList + </button> */}
+        
       </div>
     </div>
   );
