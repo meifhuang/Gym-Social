@@ -4,23 +4,25 @@ import axios from "axios";
 import { AuthContext } from "../src/AuthContext";
 
 export default function Profile() {
-
-  const {token, userId} = useContext(AuthContext); 
+  const { token, userId } = useContext(AuthContext);
 
   console.log(userId);
 
   const [workout, setworkoutList] = useState([]);
 
-
   const getWorkout = async (userId) => {
     try {
-      const res = await axios.get(`http://localhost:4000/profile/${userId}`)
-      setworkoutList(res.data.workout_list);
+      const res = await axios({
+        method: "get",
+        url: `http://localhost:4000/profile/${localStorage.getItem("id")}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+    } catch (e) {
+      console.log(e);
     }
-    catch (e) {
-        console.log(e)
-      }
-  }
+  };
 
   const exercises = [
     "bench press",
@@ -178,9 +180,8 @@ export default function Profile() {
         />
         <button disabled={!exercise}> Add exercise + </button>
         <button onClick={checkLogin}> Check Login</button>
-        
       </form>
-      <button onClick={getWorkout} > get workout </button>
+      <button onClick={getWorkout}> get workout </button>
       <div>
         {workout}
         {/* <button disabled={workout_list.length <= 0} onClick={addWorkout}>  Add workout + </button> */}

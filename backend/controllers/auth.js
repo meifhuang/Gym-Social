@@ -60,24 +60,24 @@ router.post("/login", async (req, res) => {
   //   message: "User logged in",
   // });
   try {
-    const foundUser = await User.find({
+    const foundUser = await User.findOne({
       username: req.body.username,
     });
     // console.log(foundUser.length > 0);
-   
-    if (foundUser.length > 0) {
+   console.log(foundUser)
+    if (foundUser) {
       try {
         const verifyPassword = await argon2.verify(
-          foundUser[0].password,
+          foundUser.password,
           req.body.password
         );
 
         // console.log(verifyPassword, foundUser);
         if (verifyPassword) {
-          const user_id = foundUser[0]._id.toString();
+          const user_id = foundUser._id.toString();
           console.log(user_id);
           const token = jwt.sign(
-            { username: foundUser[0].username, id: user_id },
+            { username: foundUser.username, id: user_id },
             process.env.JSONKEY
             // { expiresIn: "1h" }
           );
@@ -87,6 +87,7 @@ router.post("/login", async (req, res) => {
             success: true,
             message: "User logged in",
             token: token,
+            userId: foundUser._id
           });
         } else {
           res.status(401).json({

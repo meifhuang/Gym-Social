@@ -47,7 +47,9 @@ export default function Login(props) {
       if (response) {
         console.log(response);
         // setToken(response.data.token)
-        localStorage.setItem("token", response.data.token)
+        const data = response.data
+        localStorage.setItem("token", data.token)
+        localStorage.setItem("id", data.userId )
         // setUsername(response.data.username);
         return navigate("/profile");
       } else {

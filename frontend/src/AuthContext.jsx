@@ -9,7 +9,7 @@ export const AuthContextProvider = (props) => {
         setToken(localStorage.getItem("token"));
         setUsername(localStorage.getItem("userId"));
         setUserId(localStorage.getItem("userId"));
-    })
+    }, [])
 
     const [username, setUsername] = useState();
     const [userId, setUserId] = useState(""); 
