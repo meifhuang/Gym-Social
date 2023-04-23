@@ -22,7 +22,7 @@ export default function Register() {
       ...values,
       [name]: value,
     });
-    console.log(values);
+    
   };
 
   const registerSubmit = async (e) => {

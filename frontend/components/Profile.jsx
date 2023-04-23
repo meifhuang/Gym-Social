@@ -64,8 +64,8 @@ export default function Profile() {
     try {
       console.log("addeddd exercise");
       const res = await axios({
-        method: "post",
-        url: "http://localhost:4000/createexercise",
+        method: "put",
+        url: `http://localhost:4000/workout/${workoutId}/createexercise`,
         data: {
           name: exercise.name,
           weight: exercise.weight,
@@ -79,7 +79,7 @@ export default function Profile() {
 
       if (res) {
         // const data = await res.data;
-        console.log(workoutList);
+        console.log(workoutId);
         setworkoutList([
           ...workoutList,
           {
@@ -108,7 +108,6 @@ export default function Profile() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-
       if (res) {
         console.log(res.data.exerciseId);
         setworkoutList((prev) =>
@@ -166,11 +165,34 @@ export default function Profile() {
     }
   };
 
-  const [workoutname, setWorkoutName] = useState("")
 
-  const handleExerciseForm = () => {
+  const [workoutName, setWorkoutName] = useState("")
+  const [workoutId, setworkoutId] = useState(0);
+
+  const handleExerciseForm = async (e) => {
+    e.preventDefault(); 
+    try {
+      const response = await axios({
+        method: "post",
+        url: "http://localhost:4000/createworkout",
+        data: {
+          name: workoutName, 
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response) {
+        console.log(response.data)
+        setworkoutId(response.data.workoutId)
+      } else {
+        throw Error("No response");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
     setShowExerciseForm(true)
-    
   }
 
   const createWorkout = async () => {
@@ -179,8 +201,8 @@ export default function Profile() {
         method: "post",
         url: "http://localhost:4000/createworkout",
         data: {
-          name: 'workout3111', 
-          workoutList: workoutList
+          name: workoutName, 
+          workoutList: workoutList,
         },
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -203,6 +225,14 @@ export default function Profile() {
       [name]: value,
     });
   };
+
+  const handleNameChange = (e) => {
+    const {name, value} = e.target;
+    setWorkoutName({
+      name: value
+    })
+    console.log(workoutName);
+  }
 
   const logout = async () => {
     try {
@@ -268,11 +298,19 @@ export default function Profile() {
         />
         <button disabled={!exercise}> Add exercise + </button>
       </form>
-      <label htmlFor="workoutname"> Workout Name </label>
-       {/* <input type='text' value={workoutname} name="workoutname" onChange={(e) => value = e.target.value}/>  */}
+   
        <button onClick={createWorkout}> Finish workout </button>
        </>
-      :  <button onClick={handleExerciseForm}> Create a workout + </button>
+      :  
+      <>      
+      <form onSubmit={(e) => handleExerciseForm(e)}>
+        <label htmlFor="workoutname"> Workout Name </label>
+        <input type='text' value={workoutName.name} name="name" onChange={handleNameChange}/>
+        <button> Create a workout + </button>      
+      </form>
+    
+      </>
+
       }
       <button onClick={getWorkout}> get workout </button>
       <div>

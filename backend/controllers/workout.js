@@ -4,6 +4,8 @@ const passport = require("passport");
 const Workout = require("../models/workout");
 const Exercise = require("../models/exercise");
 const User = require("../models/user");
+const user = require("../models/user");
+const mongoose = require("mongoose");
 
 router = express.Router();
 
@@ -40,46 +42,24 @@ router.get("/profile", async (req, res) => {
 //particular workout..
 //ok cant think aynmore but - ^ how to create exercises + link it to workout schema without adding it to users yet?
 
-router.post(
-  "/workout/:id/createexercise",
-  async (req, res) => {
-    const user = await User.findById(req.user.id).populate('workouts');
-    const { name, weight, sets, reps } = req.body;
-    const exercise = new Exercise({ name, weight, sets, reps });
-    // user.workouts.push(exercise);
+// router.post(
+//   "/workout/:id/createexercise",
+//   async (req, res) => {
+//     const user = await User.findById(req.user.id).populate('workouts');
+//     const { name, weight, sets, reps } = req.body;
+//     const exercise = new Exercise({ name, weight, sets, reps });
+//     // user.workouts.push(exercise);
 
-    await exercise.save();
-    // await user.save();
-    console.log("Added exercise!");
+//     await exercise.save();
+//     // await user.save();
+//     console.log("Added exercise!");
 
-    res.status(200).json({
-      success: "true",
-      // exercises: user.exercises,
-      workout: user.workouts
-    });
-  });
-
-  router.post(
-    "/createworkout",
-    async (req, res) => {
-      const user = await User.findById(req.user.id).populate('workouts');
-      const { name, workoutList } = req.body;
-      console.log(workoutList)
-      const workout = new Workout({ name });
-      for (let each of workoutList) {
-        const exercise = new Exercise(each)
-        workout.exercises.push(exercise)
-      }
-      user.workouts.push(workout);
-      await user.save();
-      await workout.save();
-      console.log("Added workout!");
-      res.status(200).json({
-        success: "true",
-        workouts: user.workouts,
-      });
-});
-
+//     res.status(200).json({
+//       success: "true",
+//       // exercises: user.exercises,
+//       workout: user.workouts
+//     });
+//   });
 
 
 router.delete("/exercise/:exerciseId", async (req, res) => {
@@ -109,6 +89,55 @@ router.delete("/exercise/:exerciseId", async (req, res) => {
     });
   }
 });
+
+router.post(
+  "/createworkout",
+  async (req, res) => {
+    const user = await User.findById(req.user.id).populate('workouts');
+    console.log(req.body);
+    const { name } = req.body;
+    const workout = new Workout(name);
+    const workoutId = workout._id; 
+    // for (let each of workoutList) {
+    //   const exercise = new Exercise(each)
+    //   workout.exercises.push(exercise)
+    // }
+    // user.workouts.push(workout);
+    await user.save();
+    await workout.save();
+    console.log("Added workout!");
+    res.status(200).json({
+      success: "true",
+      workouts: user.workouts,
+      workoutId: workoutId
+    });
+});
+
+router.put("/workout/:id/createexercise", async (req, res) => {
+  console.log("UPDATE - add exercise to particular workout");
+  const { name, weight, sets, reps } = req.body;
+  try {
+  const workout = await Workout.findById(req.params.id).populate("exercises");
+  if (workout) {
+    const exercise = new Exercise({ name, weight, sets, reps });
+    await exercise.save(); 
+    workout.exercises.push(exercise)
+    res.status(200).json({
+      success: "true",
+    })
+  }
+  // user.workouts.push(workout); 
+  else {
+    console.log("unable to add to workout")
+    res.status(400).json({
+      success: "false",
+      message: "Something went wrong"
+    })
+  }}
+  catch (e) {
+    console.log(e.message);
+  }
+})
 
 router.put("/exercise/:exerciseId", async (req, res) => {
   console.log(req.body, "UPDATE ROUTE");
