@@ -140,22 +140,3 @@ module.exports = router;
 
 
 
-// router.post(
-//   "/createworkout",
-//   async (req, res) => {
-//     const {name, workoutId} = req.body
-//     console.log(workoutId )
-//     const user = await User.findById(req.user.id).populate('workouts');
-//     const workout = await Workout.findById(workoutId);
-//     console.log(workout);
-//     // const workoutId = workout._id; 
-//     // user.workouts.push(workout);
-//     // await user.save();
-//     // await workout.save();
-//     // console.log("Added workout!");
-//     // res.status(200).json({
-//     //   success: "true",
-//     //   workouts: user.workouts,
-//     //   workoutId: workoutId
-//     // });
-// });

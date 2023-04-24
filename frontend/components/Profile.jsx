@@ -260,6 +260,8 @@ export default function Profile() {
           prev.filter((workout) => {
             return workout._id !== response.data.workoutId
           })})
+          //to rerender page after deleting - but sholdn't need to do this 
+        getWorkout();
       }
     }
     catch (e) {

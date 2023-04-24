@@ -31,7 +31,7 @@ router.get("/profile", async (req, res) => {
   res.status(200).json({
     success: true,
     // workout_list: workout_list,
-    workouts: workouts,
+    workouts: workouts, 
     message: "HELLO",
     username: username,
   });
@@ -75,7 +75,7 @@ router.delete("/workout/:workoutId" , async (req, res) => {
           console.log("deleted", each._id)
         }
       const deleteWorkout = await Workout.findByIdAndDelete(workoutId);
-      console.log(deleteWorkout);
+      console.log(deleteWorkout._id);
       const deletefromUser = await User.findByIdAndUpdate(userId, {$pull: {workouts: workoutId}});
       console.log(deletefromUser);
         res.status(200).json({
@@ -178,8 +178,9 @@ router.post(
     "/createuserworkout",
     async (req, res) => {
       const {name, workoutId} = req.body
-      const user = await User.findById(req.user.id).populate('workouts');
+      const user = await User.findById(req.user.id).populate({path: 'workouts', populate: { path: "exercises" }});
       const workout = await Workout.findById(workoutId).populate('exercises');
+      const workouts = user.workouts; 
       console.log("this is the pre", user);
       console.log("this is the workout", workout);
       user.workouts.push(workout);
@@ -189,7 +190,7 @@ router.post(
       console.log("Added workout!");
       res.status(200).json({
         success: "true",
-        workouts: user.workouts,
+        workouts: workouts,
       });
   });
 
