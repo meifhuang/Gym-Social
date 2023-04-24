@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ExerciseSchema = new Schema({
-    name: String,
-    reps: Number,
-    sets: Number,
-    weight: Number,
+    name: {type: String, required: true},
+    reps: {type: Number, required: true},
+    sets: {type: Number, required: true},
+    weight: {type: Number, required: true}
 })
 
 module.exports = mongoose.model('Exercise', ExerciseSchema);

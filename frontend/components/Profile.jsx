@@ -30,6 +30,7 @@ export default function Profile() {
   const [workoutName, setWorkoutName] = useState("")
   const [workoutId, setworkoutId] = useState(0);
   const [workouts, setWorkouts] = useState([]);
+  const [currentWorkout, setCurrentWorkout] = useState([]); 
   
 
   // const getWorkout = async () => {
@@ -109,15 +110,25 @@ export default function Profile() {
       if (res) {
         // const data = await res.data;
         console.log(workoutId);
-        setworkoutList([
-          ...workoutList,
+        setCurrentWorkout([
+          ...currentWorkout, 
           {
-            name: exercise.name,
-            weight: exercise.weight,
-            sets: exercise.sets,
-            reps: exercise.reps,
-          },
-        ]);
+                name: exercise.name,
+                weight: exercise.weight,
+                sets: exercise.sets,
+                reps: exercise.reps,
+              }
+            ])
+        
+        // setworkoutList([
+        //   ...workoutList,
+        //   {
+        //     name: exercise.name,
+        //     weight: exercise.weight,
+        //     sets: exercise.sets,
+        //     reps: exercise.reps,
+        //   },
+        // ]);
       } else {
         console.log("NO RES");
       }
@@ -127,33 +138,12 @@ export default function Profile() {
     }
   };
 
-  const deleteExercise = async (exerciseId) => {
-    console.log("in delete route");
-    try {
-      const res = await axios({
-        method: "delete",
-        url: `http://localhost:4000/exercise/${exerciseId}`,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      if (res) {
-        console.log(res.data.exerciseId);
-        setworkoutList((prev) =>
-          prev.filter((exercise) => {
-            return exercise._id !== res.data.exerciseId;
-          })
-        );
-      }
-    } catch (e) {
-      console.log(e.message);
-    }
-  };
+ 
 
   const editExercise = async (exerciseId) => {
     console.log("in exercise route");
     // console.log(exerciseId);
-    console.log(workoutList)
+    // console.log(workoutList)
     try {
       const res = await axios({
         method: "put",
@@ -212,6 +202,7 @@ export default function Profile() {
       if (response) {
         console.log(response.data)
         setworkoutId(response.data.workoutId)
+        setCurrentWorkout(currentWorkout);
       } else {
         throw Error("No response");
       }
@@ -221,6 +212,9 @@ export default function Profile() {
 
     setShowExerciseForm(true)
   }
+
+
+  
 
   const createWorkout = async () => {
     try {
@@ -237,7 +231,11 @@ export default function Profile() {
         },
       });
       if (response) {
-        console.log(response);
+        console.log("add workout to user");
+        setWorkouts(response.data.workouts)
+        setworkoutId(response.data.workouts._id);
+        setCurrentWorkout([]);
+
       } else {
         throw Error("No response");
       }
@@ -245,6 +243,51 @@ export default function Profile() {
       console.log(e);
     }
     setShowExerciseForm(false);
+  };
+
+
+  const deleteWorkout = async (workoutId) => {
+    try {
+      const response = await axios({
+        method: "delete",
+        url: `http://localhost:4000/workout/${workoutId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      if (response) {
+        setWorkouts((prev) => {
+          prev.filter((workout) => {
+            return workout._id !== response.data.workoutId
+          })})
+      }
+    }
+    catch (e) {
+      console.log(e.message);
+    }
+  }
+
+  const deleteExercise = async (exerciseId) => {
+    console.log("in delete route");
+    try {
+      const res = await axios({
+        method: "delete",
+        url: `http://localhost:4000/exercise/${exerciseId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (res) {
+        console.log(res.data.exerciseId);
+        setworkoutList((prev) =>
+          prev.filter((exercise) => {
+            return exercise._id !== res.data.exerciseId;
+          })
+        );
+      }
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   const handleChange = (e) => {
@@ -287,6 +330,7 @@ export default function Profile() {
       <h1> Welcome {username}! </h1>
       <button onClick={logout}> Logout </button>
       <h1> Workouts </h1>
+     
       { showExerciseForm ? 
       <>
         <form onSubmit={(e) => addExercise(e)}>
@@ -327,7 +371,14 @@ export default function Profile() {
         />
         <button disabled={!exercise}> Add exercise + </button>
       </form>
-   
+    
+      {currentWorkout.length > 0 && currentWorkout.map((exercise) => {
+        return (
+          <div>
+            <p> {exercise.name} : {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} reps </p>
+          </div>
+        )
+      })}
        <button onClick={createWorkout}> End workout </button>
        </>
       :  
@@ -339,19 +390,23 @@ export default function Profile() {
       </form>
 
       <div> 
-        {workouts.map((workout) => {
+        {workouts && workouts.map((workout) => {
           return (
             <> 
            <h5> {workout.name} </h5>
            {workout.exercises.map((exercise) => {
             return (
+              <>
              <p> 
               {exercise.name} - {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} - reps
               </p>
+               </> 
             )
            })}
+            <button onClick={() => deleteWorkout(workout._id)}> delete workout </button>
           </>
           )})}
+         
        </div>
       </>
       }

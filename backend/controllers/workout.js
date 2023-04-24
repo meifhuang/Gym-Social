@@ -62,6 +62,63 @@ router.get("/profile", async (req, res) => {
 //     });
 //   });
 
+router.delete("/workout/:workoutId" , async (req, res) => {
+  console.log("entering delete");
+  const userId = await User.findById(req.user.id);
+  const {workoutId} = req.params;
+
+  try {
+      const selectedWorkout = await Workout.findById(workoutId).populate("exercises"); 
+      if (selectedWorkout) {
+        for (let each of selectedWorkout.exercises) {
+          await Exercise.findByIdAndDelete(each._id);
+          console.log("deleted", each._id)
+        }
+      const deleteWorkout = await Workout.findByIdAndDelete(workoutId);
+      console.log(deleteWorkout);
+      const deletefromUser = await User.findByIdAndUpdate(userId, {$pull: {workouts: workoutId}});
+      console.log(deletefromUser);
+        res.status(200).json({
+                success: true,
+                workoutId: workoutId
+          })
+      }
+      else {
+        res.status(400).json({
+                success: false,
+                message: "Unable to delete",
+          });
+      } 
+  }
+     catch (e) {
+        console.log(e.message);
+      }
+    })
+
+    //   if (deleteWorkout) {
+    //     for (let each of deleteWorkout.exercises) {
+    //       await Exercise.findByIdAndDelete(each._id);
+    //       console.log("deleted", each._id)
+    //     }
+    //     res.status(200).json({
+    //       success: true,
+    //       workoutId: workoutId
+    //     })
+    //   }
+    //   else {
+    //     res.status(400).json({
+    //       success: false,
+    //       message: "Unable to delete",
+    //     });
+    //   }
+    // }
+    //   catch (e) {
+    //     console.log(e);
+    //     res.status(400).json({
+    //       success: false,
+    //       message: "Something went wrong",
+    //     })
+  
 
 router.delete("/exercise/:exerciseId", async (req, res) => {
   console.log("entering delete");
@@ -141,6 +198,7 @@ router.put("/workout/:id/createexercise", async (req, res) => {
   const { name, weight, sets, reps } = req.body;
   try {
   const workout = await Workout.findById(req.params.id).populate("exercises");
+  console.log(workout.exercises);
   if (workout) {
     const exercise = new Exercise({ name, weight, sets, reps });
     await exercise.save(); 
@@ -156,7 +214,8 @@ router.put("/workout/:id/createexercise", async (req, res) => {
     console.log("unable to add to workout")
     res.status(400).json({
       success: "false",
-      message: "Something went wrong"
+      message: "Something went wrong",
+      workout: workout.exercises
     })
   }}
   catch (e) {
