@@ -93,8 +93,10 @@ router.delete("/exercise/:exerciseId", async (req, res) => {
 router.post(
   "/createworkout",
   async (req, res) => {
-    const user = await User.findById(req.user.id).populate('workouts');
+    console.log("create wrkout")
     console.log(req.body);
+
+    const user = await User.findById(req.user.id).populate('workouts');
     const { name } = req.body;
     const workout = new Workout(name);
     const workoutId = workout._id; 
@@ -113,6 +115,26 @@ router.post(
     });
 });
 
+
+router.post(
+    "/createuserworkout",
+    async (req, res) => {
+      const {name, workoutId} = req.body
+      const user = await User.findById(req.user.id).populate('workouts');
+      const workout = await Workout.findById(workoutId).populate('exercises');
+      console.log("this is the pre", user);
+      console.log("this is the workout", workout);
+      user.workouts.push(workout);
+      await user.save();
+      // await workout.save();
+      console.log("this is the user", user)
+      console.log("Added workout!");
+      res.status(200).json({
+        success: "true",
+        workouts: user.workouts,
+      });
+  });
+
 router.put("/workout/:id/createexercise", async (req, res) => {
   console.log("UPDATE - add exercise to particular workout");
   const { name, weight, sets, reps } = req.body;
@@ -121,7 +143,9 @@ router.put("/workout/:id/createexercise", async (req, res) => {
   if (workout) {
     const exercise = new Exercise({ name, weight, sets, reps });
     await exercise.save(); 
-    workout.exercises.push(exercise)
+    workout.exercises.push(exercise);
+    await workout.save();
+    console.log(workout);
     res.status(200).json({
       success: "true",
     })

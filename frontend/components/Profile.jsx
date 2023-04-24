@@ -199,10 +199,11 @@ export default function Profile() {
     try {
       const response = await axios({
         method: "post",
-        url: "http://localhost:4000/createworkout",
+        url: "http://localhost:4000/createuserworkout",
         data: {
           name: workoutName, 
           workoutList: workoutList,
+          workoutId: workoutId
         },
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -299,7 +300,7 @@ export default function Profile() {
         <button disabled={!exercise}> Add exercise + </button>
       </form>
    
-       <button onClick={createWorkout}> Finish workout </button>
+       <button onClick={createWorkout}> End workout </button>
        </>
       :  
       <>      
