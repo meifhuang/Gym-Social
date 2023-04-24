@@ -6,38 +6,6 @@ import { AuthContext } from "../src/AuthContext";
 
 export default function Profile() {
   const { token, userId } = useContext(AuthContext);
-
-  const [workoutList, setworkoutList] = useState([]);
-  const [username, setUsername] = useState("");
-  const [showExerciseForm, setShowExerciseForm] = useState(false); 
-  const [changeId, setChangeId] = useState("");
-
-  const getWorkout = async () => {
-    try {
-      const res = await axios({
-        method: "get",
-        url: "http://localhost:4000/profile",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      if (res) {
-        setUsername(res.data.username);
-        setworkoutList(res.data.workout);
-        // setworkoutList(res.data.workout_list);
-      } else {
-        console.log("NO RESPONSE");
-      }
-    } catch (e) {
-      console.log(e.message);
-    }
-  };
-
-  useEffect(() => {
-    getWorkout();
-  }, []);
-
   const exercises = [
     "bench press",
     "conventional deadlifts",
@@ -53,11 +21,72 @@ export default function Profile() {
     sets: 0,
   };
 
+ 
+  const [workoutList, setworkoutList] = useState([]);
+  const [username, setUsername] = useState("");
+  const [showExerciseForm, setShowExerciseForm] = useState(false); 
+  const [changeId, setChangeId] = useState("");
+  const [exercise, setExercise] = useState(stats);
+  const [workoutName, setWorkoutName] = useState("")
+  const [workoutId, setworkoutId] = useState(0);
+  const [workouts, setWorkouts] = useState([]);
+  
+
+  // const getWorkout = async () => {
+  //   try {
+  //     const res = await axios({
+  //       method: "get",
+  //       url: "http://localhost:4000/profile",
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
+
+  //     if (res) {
+  //       setUsername(res.data.username);
+  //       setworkoutList(res.data.workout);
+  //       // setworkoutList(res.data.workout_list);
+  //     } else {
+  //       console.log("NO RESPONSE");
+  //     }
+  //   } catch (e) {
+  //     console.log(e.message);
+  //   }
+  // };
+
+  const getWorkout =  async () => {
+      try {
+        const res = await axios({
+          method: "get",
+          url: "http://localhost:4000/profile",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        if (res) {
+          console.log('data', res.data.workouts);
+          setUsername(res.data.username);
+          setWorkouts(res.data.workouts);
+        }
+        else {
+          console.log("no responses")
+        }
+      }
+
+      catch (e) {
+        console.log(e.message);
+      }
+    }
+
+  useEffect(() => {
+    getWorkout();
+  },[]);
+
+
   const navigate = useNavigate();
 
   // const { username, setUsername } = useContext(UserContext);
-  // const [workoutList, setworkoutList] = useState([]);
-  const [exercise, setExercise] = useState(stats);
+ 
 
   const addExercise = async (e) => {
     e.preventDefault();
@@ -166,8 +195,6 @@ export default function Profile() {
   };
 
 
-  const [workoutName, setWorkoutName] = useState("")
-  const [workoutId, setworkoutId] = useState(0);
 
   const handleExerciseForm = async (e) => {
     e.preventDefault(); 
@@ -217,6 +244,7 @@ export default function Profile() {
     } catch (e) {
       console.log(e);
     }
+    setShowExerciseForm(false);
   };
 
   const handleChange = (e) => {
@@ -306,15 +334,29 @@ export default function Profile() {
       <>      
       <form onSubmit={(e) => handleExerciseForm(e)}>
         <label htmlFor="workoutname"> Workout Name </label>
-        <input type='text' value={workoutName.name} name="name" onChange={handleNameChange}/>
+        <input type='text' value={workoutName.name} name="name" onChange={handleNameChange} required/>
         <button> Create a workout + </button>      
       </form>
-    
-      </>
 
+      <div> 
+        {workouts.map((workout) => {
+          return (
+            <> 
+           <h5> {workout.name} </h5>
+           {workout.exercises.map((exercise) => {
+            return (
+             <p> 
+              {exercise.name} - {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} - reps
+              </p>
+            )
+           })}
+          </>
+          )})}
+       </div>
+      </>
       }
       <button onClick={getWorkout}> get workout </button>
-      <div>
+      {/* <div>
         {workoutList.map((work) => {
           if (changeId === work._id) {
             return (
@@ -327,7 +369,7 @@ export default function Profile() {
                     {" "}
                     delete{" "}
                   </button>
-                  {/* <button onClick={() => setChangeId(work._id)}> edit </button> */}
+             
                   <button onClick={() => editExercise(work._id)}>
                     {" "}
                     complete{" "}
@@ -359,6 +401,7 @@ export default function Profile() {
           }
         })}
       </div>
-    </div>
+      */}
+    </div> 
   );
 }

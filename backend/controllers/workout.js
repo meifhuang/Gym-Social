@@ -22,15 +22,16 @@ const isLoggedIn = function (req, res, next) {
 
 router.get("/profile", async (req, res) => {
   console.log("accessing profile route");
-  const user = await User.findById(req.user.id).populate("workouts");
+  const user = await User.findById(req.user.id).populate({path: 'workouts', populate: { path: "exercises" }});
   // const workout_list = user.exercises;
-  const workout = user.workouts; 
+  const workouts = user.workouts; 
+  console.log(user);
+  // console.log(workouts[0].exercises[0].name);
   const username = user.username;
-
   res.status(200).json({
     success: true,
     // workout_list: workout_list,
-    workout: workout,
+    workouts: workouts,
     message: "HELLO",
     username: username,
   });
