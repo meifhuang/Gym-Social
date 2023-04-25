@@ -33,6 +33,10 @@ export default function Profile() {
   const [workouts, setWorkouts] = useState([]);
   const [currentWorkout, setCurrentWorkout] = useState([]); 
   const [editMode, setEditMode] = useState(false);
+  const [editExerciseMode, setEditExerciseMode] = useState(false);
+  const [exerciseId, setexerciseId] = useState([]);
+
+  
 
 
   const getWorkout =  async () => {
@@ -121,6 +125,7 @@ export default function Profile() {
     }
     setEditMode(true);
     setShowExerciseForm(true);
+    setexerciseId(0);
   }
 
 
@@ -163,11 +168,11 @@ export default function Profile() {
       });
 
       if (res) {
-       
+        console.log("adding", res.data.exercise)
         setCurrentWorkout([
           ...currentWorkout, 
           {      
-                _id: res.data.exercise.id,
+                _id: res.data.exercise._id,
                 name: exercise.name,
                 weight: exercise.weight,
                 sets: exercise.sets,
@@ -218,19 +223,21 @@ export default function Profile() {
     } catch (e) {
       console.log(e);
     }
-
     setShowExerciseForm(true)
+    setEditMode(false)
+    setEditExerciseMode(false)
   }
 
 
   const editExercise = async (exerciseId) => {
+ 
     console.log("in exercise route");
     // console.log(exerciseId);
     // console.log(workoutList)
     try {
       const res = await axios({
         method: "put",
-        url: `http://localhost:4000/exercise/${exerciseId}`,
+        url: `http://localhost:4000/workout/${workoutId}/exercise/${exerciseId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -244,9 +251,11 @@ export default function Profile() {
       });
 
       if (res) {
-        const exercise_data = await res.data.finalUpdateExercise
-
-        const updateList = workoutList.map((exercise) => {
+        const exercise_data = res.data.finalUpdateExercise
+        const workout = await res.data.updatedWorkouts;
+        console.log(currentWorkout);
+        // setCurrentWorkout(workout);
+        const updateList = currentWorkout.map((exercise) => {
           if (exercise._id === exerciseId) {
             return {
               _id: exerciseId,
@@ -259,8 +268,12 @@ export default function Profile() {
             return exercise;
           }
         });
-
-        setworkoutList(updateList);
+        setCurrentWorkout(updateList);
+        console.log('return after editing', updateList)
+        setExercise(updateList);
+        setEditExerciseMode(false);
+        setexerciseId(0);
+        console.log("whats the current", currentWorkout);
       }
     } catch (e) {
       console.log(e.message);
@@ -297,12 +310,37 @@ export default function Profile() {
     });
   };
 
+
   const handleNameChange = (e) => {
     const {name, value} = e.target;
     setWorkoutName({
       name: value
     })
   }
+
+  const clickEditExercise = async (exerciseId) => {
+    console.log("retrieve exercise info");
+    try {
+      const response = await axios({
+        method: "get",
+        url: `http://localhost:4000/exercise/${exerciseId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response) {
+        console.log("in clickEdit Exercise", response.data.exercise)
+        setExercise(response.data.exercise);
+      } else {
+        throw Error("No response");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    setEditExerciseMode(true);
+    setexerciseId(exerciseId);
+  }
+
 
   const logout = async () => {
     try {
@@ -329,9 +367,9 @@ export default function Profile() {
       <button onClick={logout}> Logout </button>
       <h1> Workouts </h1>
      
-      { showExerciseForm ? 
+    { showExerciseForm ? 
       <>
-       <h2> {workoutName.name} </h2> 
+      <h2> {workoutName.name} </h2> 
         <form onSubmit={(e) => addExercise(e)}>
         <label htmlFor="name"> Select exercise </label>
         <select
@@ -340,7 +378,7 @@ export default function Profile() {
           onChange={handleChange}
           required
         >
-          <option value=""> -- Choose an exercise -- </option>
+          <option value="not chosen"> -- Choose an exercise -- </option>
           {exercises.map((exercise) => (
             <option key={exercise} value={exercise}>
               {exercise}
@@ -353,6 +391,7 @@ export default function Profile() {
           value={exercise.weight}
           name="weight"
           onChange={handleChange}
+          required
         />
             <label htmlFor="sets"> Sets </label>
         <input
@@ -360,6 +399,7 @@ export default function Profile() {
           value={exercise.sets}
           name="sets"
           onChange={handleChange}
+          required
         />
         <label htmlFor="reps"> Reps </label>
         <input
@@ -367,32 +407,35 @@ export default function Profile() {
           value={exercise.reps}
           name="reps"
           onChange={handleChange}
+          required
         />
-    
+
+        {editExerciseMode ?  <></> :
         <button disabled={!exercise}> Add exercise + </button>
-      </form>
-    
+          }
+        </form> 
+
       {currentWorkout && currentWorkout.map((exercise) => {
         return (
           <div>
             <p> {exercise.name} : {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} reps 
-            { !editMode ? <></>
-            : <>
-            <button onClick={() => editExercise(exercise._id)}> edit </button>
+            { editExerciseMode && exercise._id === exerciseId ? 
+             <button onClick={() => editExercise(exercise._id)}> confirm edit </button> :
+             <button onClick={() => clickEditExercise(exercise._id)}> edit </button>
+            }
             <button onClick={() => deleteExercise(workoutId,exercise._id)}> delete </button> 
-            </>
-          }
             </p>
           </div>
-        )
-      })}
+        )})}
+        
        {editMode ? 
        <button onClick={editWorkout}> Finish editing</button>
        :
        <button onClick={createWorkout}> End workout </button>
         }
        </>
-      :  
+      :
+
       <>      
       <form onSubmit={(e) => handleExerciseForm(e)}>
         <label htmlFor="workoutname"> Workout Name </label>
@@ -407,13 +450,11 @@ export default function Profile() {
            <h3> {workout.name} </h3>
            {workout.exercises.map((exercise) => {
             return (
-              <>
+            <>          
              <p> 
               {exercise.name} - {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} - reps
-             
               </p>
-              
-               </> 
+            </>
             )
            })}
           
@@ -425,7 +466,7 @@ export default function Profile() {
        </div>
       </>
       }
-      <button onClick={getWorkout}> get workout </button>
+      {/* <button onClick={getWorkout}> get workout </button> */}
       {/* <div>
         {workoutList.map((work) => {
           if (changeId === work._id) {
@@ -471,7 +512,8 @@ export default function Profile() {
           }
         })}
       </div>
-      */}
+      */
+    }
     </div> 
   );
 }

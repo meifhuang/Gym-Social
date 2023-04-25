@@ -23,6 +23,7 @@ const isLoggedIn = function (req, res, next) {
 router.get("/profile", async (req, res) => {
   console.log("accessing profile route");
   const user = await User.findById(req.user.id).populate({path: 'workouts', populate: { path: "exercises" }});
+  // const user = await User.findById(req.user.id).populate({path: 'workouts', populate: { path: "exercises" }});
   // const workout_list = user.exercises;
   const workouts = user.workouts; 
   console.log(user);
@@ -37,6 +38,9 @@ router.get("/profile", async (req, res) => {
   });
 });
 
+
+//NOTE ISSUE : if in the middle of adding exercises .. it doensn't add and link to users unless 
+//the End workout button is pressed ... but it addes the exercises and workout to database..
 
 router.get("/workout/:workoutId", async (req, res) => {
   console.log("entering edit workout");
@@ -99,7 +103,6 @@ router.delete("/workout/:workoutId" , async (req, res) => {
     })
 
 
-//this doesn't delete it in users though yet 
 router.delete("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
   console.log("entering delete exercise");
   const { workoutId, exerciseId } = req.params;
@@ -125,35 +128,6 @@ router.delete("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
     });
   }
 });
-
-
-// router.delete("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
-//   console.log("entering delete");
-//   const userId = await User.findById(req.user.id);
-//   const { exerciseId } = req.params;
-//   try {
-//     await User.findByIdAndUpdate(userId, { $pull: { exercises: exerciseId } });
-//     const deleteExercise = await Exercise.findByIdAndDelete(exerciseId);
-
-//     if (deleteExercise) {
-//       res.status(200).json({
-//         success: true,
-//         exerciseId: exerciseId,
-//       });
-//     } else {
-//       res.status(400).json({
-//         success: false,
-//         message: "Unable to delete",
-//       });
-//     }
-//   } catch (e) {
-//     console.log(e);
-//     res.status(400).json({
-//       success: false,
-//       message: "Something went wrong",
-//     });
-//   }
-// });
 
 //this happens after clicking create workout and setting a name
 
@@ -233,13 +207,68 @@ router.put("/workout/:id/createexercise", async (req, res) => {
   }
 })
 
-router.put("/exercise/:exerciseId", async (req, res) => {
+
+
+router.get("/exercise/:exerciseId", async (req, res) => {
   const userId = await User.findById(req.user.id);
   const { exerciseId } = req.params;
   try {
+    const exercise = await Exercise.findById(exerciseId);
+    if (exercise) {
+      res.status(200).json({
+        success: true,
+        exercise: exercise
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "Unable to get exercise",
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+});
+
+
+router.delete("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
+  console.log("entering delete exercise");
+  const { workoutId, exerciseId } = req.params;
+  try {
+    await Workout.findByIdAndUpdate(workoutId, { $pull: { exercises: exerciseId } });
+    const deleteExercise = await Exercise.findByIdAndDelete(exerciseId);
+    if (deleteExercise) {
+      res.status(200).json({
+        success: true,
+        exerciseId: exerciseId,
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "Unable to delete",
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+});
+
+router.put("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
+  console.log("etnering edit exercise")
+  const { exerciseId, workoutId } = req.params;
+  try {
     // const user = await User.findByIdAndUpdate(userId, { $pull: { exercises: exerciseId } });
+    // const user  = await User.findByIdAndUpdate(req.user.id, {$pull: }
     const updateExercise = await Exercise.findOneAndUpdate(
-      { _id: { $in: exerciseId } },
+      { _id:  { $in:exerciseId } },
       {
         name: req.body.name,
         reps: parseInt(req.body.reps),
@@ -247,16 +276,19 @@ router.put("/exercise/:exerciseId", async (req, res) => {
         weight: parseInt(req.body.weight),
       }
     );
-
+    console.log(updateExercise);
+  
     const finalUpdateExercise = await Exercise.findOne({
       _id: { $in: exerciseId },
     });
-    console.log(finalUpdateExercise, "UPDATED EXERCISE");
+    const updatedWorkouts = await Workout.find({}).populate("exercises");
+    console.log(updatedWorkouts);
+    // console.log(finalUpdateExercise, "UPDATED EXERCISE");
     if (updateExercise) {
       res.status(200).json({
         success: true,
-        finalUpdateExercise
-        // user
+        finalUpdateExercise,
+        updatedWorkouts
       });
     } else {
       res.status(400).json({
@@ -272,13 +304,5 @@ router.put("/exercise/:exerciseId", async (req, res) => {
     });
   }
 });
-
-// router.get("/getexercises", async (request, response) => {
-//   try {
-//     const allExercises = await
-//   } catch (e) {
-
-//   }
-// })
 
 module.exports = router;
