@@ -38,30 +38,6 @@ router.get("/profile", async (req, res) => {
 });
 
 
-//when i add an exercise - must find the workout its attached to
-// ok : click create exercise and it adds to workout for now .. need to fix Front end so that it'll display that
-//particular workout..
-//ok cant think aynmore but - ^ how to create exercises + link it to workout schema without adding it to users yet?
-
-// router.post(
-//   "/workout/:id/createexercise",
-//   async (req, res) => {
-//     const user = await User.findById(req.user.id).populate('workouts');
-//     const { name, weight, sets, reps } = req.body;
-//     const exercise = new Exercise({ name, weight, sets, reps });
-//     // user.workouts.push(exercise);
-
-//     await exercise.save();
-//     // await user.save();
-//     console.log("Added exercise!");
-
-//     res.status(200).json({
-//       success: "true",
-//       // exercises: user.exercises,
-//       workout: user.workouts
-//     });
-//   });
-
 router.get("/workout/:workoutId", async (req, res) => {
   console.log("entering edit workout");
   const {workoutId} = req.params;
@@ -102,7 +78,7 @@ router.delete("/workout/:workoutId" , async (req, res) => {
           console.log("deleted", each._id)
         }
       const deleteWorkout = await Workout.findByIdAndDelete(workoutId);
-      console.log(deleteWorkout); 
+      console.log('delete workout', deleteWorkout); 
       const deletefromUser = await User.findByIdAndUpdate(userId, {$pull: {workouts: workoutId}});
       console.log(deletefromUser);
         res.status(200).json({
@@ -130,7 +106,6 @@ router.delete("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
   try {
     await Workout.findByIdAndUpdate(workoutId, { $pull: { exercises: exerciseId } });
     const deleteExercise = await Exercise.findByIdAndDelete(exerciseId);
-
     if (deleteExercise) {
       res.status(200).json({
         success: true,
@@ -150,7 +125,6 @@ router.delete("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
     });
   }
 });
-
 
 
 // router.delete("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
@@ -181,6 +155,8 @@ router.delete("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
 //   }
 // });
 
+//this happens after clicking create workout and setting a name
+
 router.post(
   "/createworkout",
   async (req, res) => {
@@ -191,11 +167,6 @@ router.post(
     const { name } = req.body;
     const workout = new Workout(name);
     const workoutId = workout._id; 
-    // for (let each of workoutList) {
-    //   const exercise = new Exercise(each)
-    //   workout.exercises.push(exercise)
-    // }
-    // user.workouts.push(workout);
     await user.save();
     await workout.save();
     console.log("Added workout!");
@@ -206,6 +177,7 @@ router.post(
     });
 });
 
+//this happens after finishing creating the rest of the workout and add exercises
 
 router.post(
     "/createuserworkout",
@@ -215,8 +187,8 @@ router.post(
       const workout = await Workout.findById(workoutId).populate('exercises');
       const workouts = user.workouts; 
       console.log("this is the pre", user);
-      console.log("this is the workout", workout);
-      user.workouts.push(workout);
+      console.log("this is the workout to be added", workout);
+      workouts.push(workout);
       await user.save();
       // await workout.save();
       console.log("this is the user", user)
@@ -226,6 +198,8 @@ router.post(
         workouts: workouts,
       });
   });
+
+//create an exercise (automatically also adds its to the workout schema 
 
 router.put("/workout/:id/createexercise", async (req, res) => {
   console.log("UPDATE - add exercise to particular workout");
@@ -242,6 +216,7 @@ router.put("/workout/:id/createexercise", async (req, res) => {
     res.status(200).json({
       success: "true",
       workout: workout.exercises,
+      exercise: exercise
     })
   }
   // user.workouts.push(workout); 
@@ -259,7 +234,6 @@ router.put("/workout/:id/createexercise", async (req, res) => {
 })
 
 router.put("/exercise/:exerciseId", async (req, res) => {
-  console.log(req.body, "UPDATE ROUTE");
   const userId = await User.findById(req.user.id);
   const { exerciseId } = req.params;
   try {

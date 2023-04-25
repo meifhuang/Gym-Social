@@ -28,7 +28,7 @@ export default function Profile() {
   const [showExerciseForm, setShowExerciseForm] = useState(false); 
   const [changeId, setChangeId] = useState("");
   const [exercise, setExercise] = useState(stats);
-  const [workoutName, setWorkoutName] = useState("")
+  const [workoutName, setWorkoutName] = useState({name: ""})
   const [workoutId, setworkoutId] = useState(0);
   const [workouts, setWorkouts] = useState([]);
   const [currentWorkout, setCurrentWorkout] = useState([]); 
@@ -93,7 +93,11 @@ export default function Profile() {
   };
 
   const editWorkout = async (workoutId) => {
-    console.log("time to edit!");
+    setShowExerciseForm(false);
+    setEditMode(false);
+    setCurrentWorkout([]);
+    //alternative to calling this?
+    getWorkout();
   }
 
   const clickEditWorkout = async (workoutId) => {
@@ -130,14 +134,11 @@ export default function Profile() {
         },
       })
       if (response) {
-        setWorkouts((prev) => {
-          prev.filter((workout) => {
-            return workout._id !== response.data.workoutId
-          })})
-          //to rerender page after deleting - but sholdn't need to do this 
-        getWorkout();
-      }
-    }
+        setWorkouts(prev => { 
+          return prev.filter(workout =>
+             workout._id !== response.data.workoutId
+          )})
+      }}
     catch (e) {
       console.log(e.message);
     }
@@ -162,17 +163,18 @@ export default function Profile() {
       });
 
       if (res) {
-        // const data = await res.data;
-        console.log(workoutId);
+       
         setCurrentWorkout([
           ...currentWorkout, 
-          {
+          {      
+                _id: res.data.exercise.id,
                 name: exercise.name,
                 weight: exercise.weight,
                 sets: exercise.sets,
                 reps: exercise.reps,
               }
             ])
+            console.log('whats the workout', currentWorkout);
         
         // setworkoutList([
         //   ...workoutList,
@@ -276,14 +278,11 @@ export default function Profile() {
         },
       });
       if (res) {
-        console.log(res.data.exerciseId); 
-        //prob shoudlnt be done lke this
-        getWorkout();
-        // setWorkouts((prev) =>
-        //   prev.filter((exercise) => {
-        //     return exercise._id !== res.data.exerciseId;
-        //   })
-        // );
+        setCurrentWorkout(prev => { 
+          return prev.filter(exercise => 
+             exercise._id !== res.data.exerciseId
+          )})
+        console.log(currentWorkout);
       }
     } catch (e) {
       console.log(e.message);
@@ -376,7 +375,14 @@ export default function Profile() {
       {currentWorkout && currentWorkout.map((exercise) => {
         return (
           <div>
-            <p> {exercise.name} : {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} reps </p>
+            <p> {exercise.name} : {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} reps 
+            { !editMode ? <></>
+            : <>
+            <button onClick={() => editExercise(exercise._id)}> edit </button>
+            <button onClick={() => deleteExercise(workoutId,exercise._id)}> delete </button> 
+            </>
+          }
+            </p>
           </div>
         )
       })}
@@ -404,8 +410,7 @@ export default function Profile() {
               <>
              <p> 
               {exercise.name} - {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} - reps
-              <button onClick={() => editExercise(exercise._id)}> edit </button>
-              <button onClick={() => deleteExercise(workout._id,exercise._id)}> delete </button> 
+             
               </p>
               
                </> 
