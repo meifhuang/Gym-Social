@@ -62,6 +62,33 @@ router.get("/profile", async (req, res) => {
 //     });
 //   });
 
+router.get("/workout/:workoutId", async (req, res) => {
+  console.log("entering edit workout");
+  const {workoutId} = req.params;
+  try { 
+    const workout = await Workout.findById(workoutId).populate("exercises");
+    // const workout = await User.findOne({'workouts._id': workoutId}).populate("exercises");
+    if (workout) {
+    console.log("getting workout", workout);
+    res.status(200).json({
+      success: true, 
+      workouts: workout.exercises,
+      workoutId: workoutId
+    })
+  }
+  else {
+    res.status(400).json({
+      success: false,
+      message: "Unable to get workout",
+  })
+}
+  }
+  catch (e) {
+    console.log(e.message);
+  }
+})
+
+
 router.delete("/workout/:workoutId" , async (req, res) => {
   console.log("entering delete");
   const userId = await User.findById(req.user.id);
@@ -75,7 +102,7 @@ router.delete("/workout/:workoutId" , async (req, res) => {
           console.log("deleted", each._id)
         }
       const deleteWorkout = await Workout.findByIdAndDelete(workoutId);
-      console.log(deleteWorkout._id);
+      console.log(deleteWorkout); 
       const deletefromUser = await User.findByIdAndUpdate(userId, {$pull: {workouts: workoutId}});
       console.log(deletefromUser);
         res.status(200).json({
@@ -95,37 +122,13 @@ router.delete("/workout/:workoutId" , async (req, res) => {
       }
     })
 
-    //   if (deleteWorkout) {
-    //     for (let each of deleteWorkout.exercises) {
-    //       await Exercise.findByIdAndDelete(each._id);
-    //       console.log("deleted", each._id)
-    //     }
-    //     res.status(200).json({
-    //       success: true,
-    //       workoutId: workoutId
-    //     })
-    //   }
-    //   else {
-    //     res.status(400).json({
-    //       success: false,
-    //       message: "Unable to delete",
-    //     });
-    //   }
-    // }
-    //   catch (e) {
-    //     console.log(e);
-    //     res.status(400).json({
-    //       success: false,
-    //       message: "Something went wrong",
-    //     })
-  
 
-router.delete("/exercise/:exerciseId", async (req, res) => {
-  console.log("entering delete");
-  const userId = await User.findById(req.user.id);
-  const { exerciseId } = req.params;
+//this doesn't delete it in users though yet 
+router.delete("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
+  console.log("entering delete exercise");
+  const { workoutId, exerciseId } = req.params;
   try {
-    await User.findByIdAndUpdate(userId, { $pull: { exercises: exerciseId } });
+    await Workout.findByIdAndUpdate(workoutId, { $pull: { exercises: exerciseId } });
     const deleteExercise = await Exercise.findByIdAndDelete(exerciseId);
 
     if (deleteExercise) {
@@ -147,6 +150,36 @@ router.delete("/exercise/:exerciseId", async (req, res) => {
     });
   }
 });
+
+
+
+// router.delete("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
+//   console.log("entering delete");
+//   const userId = await User.findById(req.user.id);
+//   const { exerciseId } = req.params;
+//   try {
+//     await User.findByIdAndUpdate(userId, { $pull: { exercises: exerciseId } });
+//     const deleteExercise = await Exercise.findByIdAndDelete(exerciseId);
+
+//     if (deleteExercise) {
+//       res.status(200).json({
+//         success: true,
+//         exerciseId: exerciseId,
+//       });
+//     } else {
+//       res.status(400).json({
+//         success: false,
+//         message: "Unable to delete",
+//       });
+//     }
+//   } catch (e) {
+//     console.log(e);
+//     res.status(400).json({
+//       success: false,
+//       message: "Something went wrong",
+//     });
+//   }
+// });
 
 router.post(
   "/createworkout",
@@ -208,6 +241,7 @@ router.put("/workout/:id/createexercise", async (req, res) => {
     console.log(workout);
     res.status(200).json({
       success: "true",
+      workout: workout.exercises,
     })
   }
   // user.workouts.push(workout); 
@@ -216,7 +250,7 @@ router.put("/workout/:id/createexercise", async (req, res) => {
     res.status(400).json({
       success: "false",
       message: "Something went wrong",
-      workout: workout.exercises
+     
     })
   }}
   catch (e) {

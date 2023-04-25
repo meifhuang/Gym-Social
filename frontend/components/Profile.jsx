@@ -6,6 +6,8 @@ import { AuthContext } from "../src/AuthContext";
 
 export default function Profile() {
   const { token, userId } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const exercises = [
     "bench press",
     "conventional deadlifts",
@@ -20,7 +22,6 @@ export default function Profile() {
     reps: 0,
     sets: 0,
   };
-
  
   const [workoutList, setworkoutList] = useState([]);
   const [username, setUsername] = useState("");
@@ -31,29 +32,8 @@ export default function Profile() {
   const [workoutId, setworkoutId] = useState(0);
   const [workouts, setWorkouts] = useState([]);
   const [currentWorkout, setCurrentWorkout] = useState([]); 
-  
+  const [editMode, setEditMode] = useState(false);
 
-  // const getWorkout = async () => {
-  //   try {
-  //     const res = await axios({
-  //       method: "get",
-  //       url: "http://localhost:4000/profile",
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       },
-  //     });
-
-  //     if (res) {
-  //       setUsername(res.data.username);
-  //       setworkoutList(res.data.workout);
-  //       // setworkoutList(res.data.workout_list);
-  //     } else {
-  //       console.log("NO RESPONSE");
-  //     }
-  //   } catch (e) {
-  //     console.log(e.message);
-  //   }
-  // };
 
   const getWorkout =  async () => {
       try {
@@ -83,11 +63,85 @@ export default function Profile() {
     getWorkout();
   },[]);
 
+  const createWorkout = async () => {
+    try {
+      const response = await axios({
+        method: "post",
+        url: "http://localhost:4000/createuserworkout",
+        data: {
+          name: workoutName, 
+          workoutList: currentWorkout,
+          workoutId: workoutId
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response) {
+        console.log("add workout to user");
+        setWorkouts(response.data.workouts)
+        setworkoutId(response.data.workouts._id);
+        setCurrentWorkout([]);
 
-  const navigate = useNavigate();
+      } else {
+        throw Error("No response");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    setShowExerciseForm(false);
+  };
 
-  // const { username, setUsername } = useContext(UserContext);
- 
+  const editWorkout = async (workoutId) => {
+    console.log("time to edit!");
+  }
+
+  const clickEditWorkout = async (workoutId) => {
+    try {
+      const response = await axios({
+        method: "get",
+        url: `http://localhost:4000/workout/${workoutId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response) {
+        console.log("edit",response.data.workouts);
+        setworkoutId(response.data.workoutId)
+        setCurrentWorkout(response.data.workouts);
+      } else {
+        throw Error("No response");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    setEditMode(true);
+    setShowExerciseForm(true);
+  }
+
+
+  const deleteWorkout = async (workoutId) => {
+    try {
+      const response = await axios({
+        method: "delete",
+        url: `http://localhost:4000/workout/${workoutId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      if (response) {
+        setWorkouts((prev) => {
+          prev.filter((workout) => {
+            return workout._id !== response.data.workoutId
+          })})
+          //to rerender page after deleting - but sholdn't need to do this 
+        getWorkout();
+      }
+    }
+    catch (e) {
+      console.log(e.message);
+    }
+  }
 
   const addExercise = async (e) => {
     e.preventDefault();
@@ -138,7 +192,34 @@ export default function Profile() {
     }
   };
 
- 
+
+  const handleExerciseForm = async (e) => {
+    e.preventDefault(); 
+    try {
+      const response = await axios({
+        method: "post",
+        url: "http://localhost:4000/createworkout",
+        data: {
+          name: workoutName, 
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response) {
+        console.log(response.data)
+        setworkoutId(response.data.workoutId)
+        setCurrentWorkout(currentWorkout);
+      } else {
+        throw Error("No response");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
+    setShowExerciseForm(true)
+  }
+
 
   const editExercise = async (exerciseId) => {
     console.log("in exercise route");
@@ -184,108 +265,25 @@ export default function Profile() {
     }
   };
 
-
-
-  const handleExerciseForm = async (e) => {
-    e.preventDefault(); 
-    try {
-      const response = await axios({
-        method: "post",
-        url: "http://localhost:4000/createworkout",
-        data: {
-          name: workoutName, 
-        },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      if (response) {
-        console.log(response.data)
-        setworkoutId(response.data.workoutId)
-        setCurrentWorkout(currentWorkout);
-      } else {
-        throw Error("No response");
-      }
-    } catch (e) {
-      console.log(e);
-    }
-
-    setShowExerciseForm(true)
-  }
-
-
-  
-
-  const createWorkout = async () => {
-    try {
-      const response = await axios({
-        method: "post",
-        url: "http://localhost:4000/createuserworkout",
-        data: {
-          name: workoutName, 
-          workoutList: workoutList,
-          workoutId: workoutId
-        },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      if (response) {
-        console.log("add workout to user");
-        setWorkouts(response.data.workouts)
-        setworkoutId(response.data.workouts._id);
-        setCurrentWorkout([]);
-
-      } else {
-        throw Error("No response");
-      }
-    } catch (e) {
-      console.log(e);
-    }
-    setShowExerciseForm(false);
-  };
-
-
-  const deleteWorkout = async (workoutId) => {
-    try {
-      const response = await axios({
-        method: "delete",
-        url: `http://localhost:4000/workout/${workoutId}`,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      if (response) {
-        setWorkouts((prev) => {
-          prev.filter((workout) => {
-            return workout._id !== response.data.workoutId
-          })})
-          //to rerender page after deleting - but sholdn't need to do this 
-        getWorkout();
-      }
-    }
-    catch (e) {
-      console.log(e.message);
-    }
-  }
-
-  const deleteExercise = async (exerciseId) => {
+  const deleteExercise = async (workoutId, exerciseId) => {
     console.log("in delete route");
     try {
       const res = await axios({
         method: "delete",
-        url: `http://localhost:4000/exercise/${exerciseId}`,
+        url: `http://localhost:4000/workout/${workoutId}/exercise/${exerciseId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       if (res) {
-        console.log(res.data.exerciseId);
-        setworkoutList((prev) =>
-          prev.filter((exercise) => {
-            return exercise._id !== res.data.exerciseId;
-          })
-        );
+        console.log(res.data.exerciseId); 
+        //prob shoudlnt be done lke this
+        getWorkout();
+        // setWorkouts((prev) =>
+        //   prev.filter((exercise) => {
+        //     return exercise._id !== res.data.exerciseId;
+        //   })
+        // );
       }
     } catch (e) {
       console.log(e.message);
@@ -305,7 +303,6 @@ export default function Profile() {
     setWorkoutName({
       name: value
     })
-    console.log(workoutName);
   }
 
   const logout = async () => {
@@ -335,6 +332,7 @@ export default function Profile() {
      
       { showExerciseForm ? 
       <>
+       <h2> {workoutName.name} </h2> 
         <form onSubmit={(e) => addExercise(e)}>
         <label htmlFor="name"> Select exercise </label>
         <select
@@ -357,6 +355,13 @@ export default function Profile() {
           name="weight"
           onChange={handleChange}
         />
+            <label htmlFor="sets"> Sets </label>
+        <input
+          type="number"
+          value={exercise.sets}
+          name="sets"
+          onChange={handleChange}
+        />
         <label htmlFor="reps"> Reps </label>
         <input
           type="number"
@@ -364,24 +369,22 @@ export default function Profile() {
           name="reps"
           onChange={handleChange}
         />
-        <label htmlFor="sets"> Sets </label>
-        <input
-          type="number"
-          value={exercise.sets}
-          name="sets"
-          onChange={handleChange}
-        />
+    
         <button disabled={!exercise}> Add exercise + </button>
       </form>
     
-      {currentWorkout.length > 0 && currentWorkout.map((exercise) => {
+      {currentWorkout && currentWorkout.map((exercise) => {
         return (
           <div>
             <p> {exercise.name} : {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} reps </p>
           </div>
         )
       })}
+       {editMode ? 
+       <button onClick={editWorkout}> Finish editing</button>
+       :
        <button onClick={createWorkout}> End workout </button>
+        }
        </>
       :  
       <>      
@@ -394,19 +397,24 @@ export default function Profile() {
       <div> 
         {workouts && workouts.map((workout) => {
           return (
-            <> 
-           <h5> {workout.name} </h5>
+            <div className="workouts"> 
+           <h3> {workout.name} </h3>
            {workout.exercises.map((exercise) => {
             return (
               <>
              <p> 
               {exercise.name} - {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} - reps
+              <button onClick={() => editExercise(exercise._id)}> edit </button>
+              <button onClick={() => deleteExercise(workout._id,exercise._id)}> delete </button> 
               </p>
+              
                </> 
             )
            })}
+          
+            <button onClick={() => clickEditWorkout(workout._id)}> edit workout </button>
             <button onClick={() => deleteWorkout(workout._id)}> delete workout </button>
-          </>
+          </div>
           )})}
          
        </div>
