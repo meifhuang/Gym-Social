@@ -15,7 +15,14 @@ import ExploreUsers from "../components/ExploreUsers";
 
 import "./App.css";
 
+//Styled Components
+import GlobalStyles from "../styledComponents/GlobalStyles";
+import { ThemeProvider } from "styled-components";
+
 function App() {
+
+  const [message, setMessage] = useState("");
+
 
   // const [message, setMessage] = useState("");
  
@@ -28,12 +35,21 @@ function App() {
   //     .catch((error) => console.log(error.message));
   // }, []);
 
-  
+  const theme = {
+    // font: {
 
+    // },
+    colors: {
+      lightgrey : "#e9e4e4;"
+    },
+    mobile: "768px",
+  };
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
@@ -41,7 +57,9 @@ function App() {
         <Route path="/newsfeed" element={<NewsFeed/>} />
         <Route path="/explore" element={<ExploreUsers/>} />
       </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ThemeProvider>
+
   );
 }
 

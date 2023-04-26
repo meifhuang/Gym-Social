@@ -4,8 +4,12 @@ import axios from "axios";
 import { AuthContext } from "../src/AuthContext";
 // import workout from "../../backend/models/workout";
 
+<<<<<<< HEAD
 
 //something to get to eventually is - if no one is logged in then need to redirect to login page or something
+=======
+import styled from "styled-components";
+>>>>>>> da9bce9 (Styled components)
 
 export default function Profile() {
   const {id} = useParams(); 
@@ -30,22 +34,23 @@ export default function Profile() {
     reps: 0,
     sets: 0,
   };
- 
+
   const [workoutList, setworkoutList] = useState([]);
   const [username, setUsername] = useState("");
-  const [showExerciseForm, setShowExerciseForm] = useState(false); 
+  const [showExerciseForm, setShowExerciseForm] = useState(false);
   const [changeId, setChangeId] = useState("");
   const [exercise, setExercise] = useState(stats);
-  const [workoutName, setWorkoutName] = useState({name: ""})
+  const [workoutName, setWorkoutName] = useState({ name: "" });
   const [workoutId, setworkoutId] = useState(0);
   const [workouts, setWorkouts] = useState([]);
-  const [currentWorkout, setCurrentWorkout] = useState([]); 
+  const [currentWorkout, setCurrentWorkout] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [editExerciseMode, setEditExerciseMode] = useState(false);
   const [exerciseId, setexerciseId] = useState([]);
   const [loggedInId, setLoggedInId] = useState(localStorage.getItem('id')); 
   const [following, setFollowing] = useState([]);
 
+<<<<<<< HEAD
   function registerRedirect() {
     navigate("/register");
 }
@@ -73,12 +78,32 @@ export default function Profile() {
 
       catch (e) {
         console.log(e.message);
+=======
+  const getWorkout = async () => {
+    try {
+      const res = await axios({
+        method: "get",
+        url: "http://localhost:4000/profile",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (res) {
+        console.log("data", res.data.workouts);
+        setUsername(res.data.username);
+        setWorkouts(res.data.workouts);
+      } else {
+        console.log("no responses");
+>>>>>>> da9bce9 (Styled components)
       }
+    } catch (e) {
+      console.log(e.message);
     }
+  };
 
   useEffect(() => {
     getWorkout();
-  },[]);
+  }, []);
 
   const createWorkout = async () => {
     try {
@@ -86,9 +111,9 @@ export default function Profile() {
         method: "post",
         url: "http://localhost:4000/createuserworkout",
         data: {
-          name: workoutName, 
+          name: workoutName,
           workoutList: currentWorkout,
-          workoutId: workoutId
+          workoutId: workoutId,
         },
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -96,10 +121,9 @@ export default function Profile() {
       });
       if (response) {
         console.log("add workout to user");
-        setWorkouts(response.data.workouts)
+        setWorkouts(response.data.workouts);
         setworkoutId(response.data.workouts._id);
         setCurrentWorkout([]);
-
       } else {
         throw Error("No response");
       }
@@ -115,7 +139,7 @@ export default function Profile() {
     setCurrentWorkout([]);
     //alternative to calling this?
     getWorkout();
-  }
+  };
 
   const clickEditWorkout = async (workoutId) => {
     try {
@@ -127,8 +151,8 @@ export default function Profile() {
         },
       });
       if (response) {
-        console.log("edit",response.data.workouts);
-        setworkoutId(response.data.workoutId)
+        console.log("edit", response.data.workouts);
+        setworkoutId(response.data.workoutId);
         setCurrentWorkout(response.data.workouts);
       } else {
         throw Error("No response");
@@ -139,8 +163,7 @@ export default function Profile() {
     setEditMode(true);
     setShowExerciseForm(true);
     setexerciseId(0);
-  }
-
+  };
 
   const deleteWorkout = async (workoutId) => {
     try {
@@ -150,17 +173,18 @@ export default function Profile() {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      })
+      });
       if (response) {
-        setWorkouts(prev => { 
-          return prev.filter(workout =>
-             workout._id !== response.data.workoutId
-          )})
-      }}
-    catch (e) {
+        setWorkouts((prev) => {
+          return prev.filter(
+            (workout) => workout._id !== response.data.workoutId
+          );
+        });
+      }
+    } catch (e) {
       console.log(e.message);
     }
-  }
+  };
 
   const addExercise = async (e) => {
     e.preventDefault();
@@ -181,19 +205,19 @@ export default function Profile() {
       });
 
       if (res) {
-        console.log("adding", res.data.exercise)
+        console.log("adding", res.data.exercise);
         setCurrentWorkout([
-          ...currentWorkout, 
-          {      
-                _id: res.data.exercise._id,
-                name: exercise.name,
-                weight: exercise.weight,
-                sets: exercise.sets,
-                reps: exercise.reps,
-              }
-            ])
-            console.log('whats the workout', currentWorkout);
-        
+          ...currentWorkout,
+          {
+            _id: res.data.exercise._id,
+            name: exercise.name,
+            weight: exercise.weight,
+            sets: exercise.sets,
+            reps: exercise.reps,
+          },
+        ]);
+        console.log("whats the workout", currentWorkout);
+
         // setworkoutList([
         //   ...workoutList,
         //   {
@@ -212,23 +236,22 @@ export default function Profile() {
     }
   };
 
-
   const handleExerciseForm = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     try {
       const response = await axios({
         method: "post",
         url: "http://localhost:4000/createworkout",
         data: {
-          name: workoutName, 
+          name: workoutName,
         },
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       if (response) {
-        console.log(response.data)
-        setworkoutId(response.data.workoutId)
+        console.log(response.data);
+        setworkoutId(response.data.workoutId);
         setCurrentWorkout(currentWorkout);
       } else {
         throw Error("No response");
@@ -236,14 +259,12 @@ export default function Profile() {
     } catch (e) {
       console.log(e);
     }
-    setShowExerciseForm(true)
-    setEditMode(false)
-    setEditExerciseMode(false)
-  }
-
+    setShowExerciseForm(true);
+    setEditMode(false);
+    setEditExerciseMode(false);
+  };
 
   const editExercise = async (exerciseId) => {
- 
     console.log("in exercise route");
     // console.log(exerciseId);
     // console.log(workoutList)
@@ -264,7 +285,7 @@ export default function Profile() {
       });
 
       if (res) {
-        const exercise_data = res.data.finalUpdateExercise
+        const exercise_data = res.data.finalUpdateExercise;
         const workout = await res.data.updatedWorkouts;
         console.log(currentWorkout);
         // setCurrentWorkout(workout);
@@ -282,7 +303,7 @@ export default function Profile() {
           }
         });
         setCurrentWorkout(updateList);
-        console.log('return after editing', updateList)
+        console.log("return after editing", updateList);
         setExercise(updateList);
         setEditExerciseMode(false);
         setexerciseId(0);
@@ -304,10 +325,11 @@ export default function Profile() {
         },
       });
       if (res) {
-        setCurrentWorkout(prev => { 
-          return prev.filter(exercise => 
-             exercise._id !== res.data.exerciseId
-          )})
+        setCurrentWorkout((prev) => {
+          return prev.filter(
+            (exercise) => exercise._id !== res.data.exerciseId
+          );
+        });
         console.log(currentWorkout);
       }
     } catch (e) {
@@ -323,13 +345,12 @@ export default function Profile() {
     });
   };
 
-
   const handleNameChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     setWorkoutName({
-      name: value
-    })
-  }
+      name: value,
+    });
+  };
 
   function gotoNewsFeed() {
     navigate("/newsfeed");
@@ -346,7 +367,7 @@ export default function Profile() {
         },
       });
       if (response) {
-        console.log("in clickEdit Exercise", response.data.exercise)
+        console.log("in clickEdit Exercise", response.data.exercise);
         setExercise(response.data.exercise);
       } else {
         throw Error("No response");
@@ -384,7 +405,6 @@ export default function Profile() {
       }
   }
 
-
   const logout = async () => {
     try {
       const response = await axios({
@@ -404,57 +424,194 @@ export default function Profile() {
     }
   };
 
+  const TagInfo = styled.div`
+    display: flex;
+    margin: 2rem;
+    
+    img {
+      width: 200px;
+    }
+  `;
+
+  const UserContact = styled.div`
+    display: flex;
+    flex-direction: column;
+    border: 1px solid red;
+    justify-content: center;
+    align-items: center;
+  `;
+
+  const ProfileComp = styled.main`
+  /* background-color: lightblue; */
+  margin: 0rem 10rem;
+    border: 1px solid red;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(200px, 1fr));
+    grid-template-rows: repeat(4, 1fr);
+    height: 100%;
+    grid-template-areas:
+      "tag tag tag tag tag tag tag tag"
+      "about about about workouts workouts workouts workouts workouts"
+      "friends friends friends workouts workouts workouts workouts workouts"
+      "friends friends friends workouts workouts workouts workouts workouts";
+
+    & .tag {
+      grid-area: tag;
+      background-color: blue;
+    }
+
+    & .workouts {
+      grid-area: workouts;
+      background-color: grey;
+    }
+
+    & .about {
+      grid-area: about;
+      /* background-color: brown; */
+    }
+
+    & .friends {
+      grid-area: friends;
+      /* background-color: yellow; */
+    }
+  `;
+
+  const WorkoutContainer = styled.div`
+    display: grid;
+    grid-template-columns: repeat(1, minmax(300px, 500px));
+    padding: 2rem;
+    gap: 1rem;
+    justify-content: center;
+    grid-template-rows: auto(minmax(200px, 300px));
+    /* grid-auto-rows: 100px; */
+  `;
+
+  const WorkoutDiv = styled.div`
+    border: 1px solid red;
+    /* height: 100px;
+    width: 250px; */
+  `;
+
   return (
-      <div className="App">
-                    { loggedInId === id ? 
-                    <>
-                    <h1> Welcome {username}! </h1>
-                    <button onClick={redirectNewsFeed}> News Feed </button>
-                    <button onClick={logout}> Logout </button>
-                    <h1> Workouts </h1>
+
+      // <div className="App">
+      //               { loggedInId === id ? 
+      //               <>
+      //               <h1> Welcome {username}! </h1>
+      //               <button onClick={redirectNewsFeed}> News Feed </button>
+      //               <button onClick={logout}> Logout </button>
+      //               <h1> Workouts </h1>
                   
-                    { showExerciseForm ? 
-                    <>
-                    <h2> {workoutName.name} </h2> 
-                      <form onSubmit={(e) => addExercise(e)}>
-                      <label htmlFor="name"> Select exercise </label>
-                      <select
-                        value={exercise.name}
-                        name="name"
-                        onChange={handleChange}
-                        required
-                      >
-                        <option value="not chosen"> -- Choose an exercise -- </option>
-                        {exercises.map((exercise) => (
-                          <option key={exercise} value={exercise}>
-                            {exercise}
-                          </option>
-                        ))}
-                      </select>
-                      <label htmlFor="weight"> Weight </label>
-                      <input
-                        type="number"
-                        value={exercise.weight}
-                        name="weight"
-                        onChange={handleChange}
-                        required
-                      />
-                          <label htmlFor="sets"> Sets </label>
-                      <input
-                        type="number"
-                        value={exercise.sets}
-                        name="sets"
-                        onChange={handleChange}
-                        required
-                      />
-                      <label htmlFor="reps"> Reps </label>
-                      <input
-                        type="number"
-                        value={exercise.reps}
-                        name="reps"
-                        onChange={handleChange}
-                        required
-                      />
+      //               { showExerciseForm ? 
+      //               <>
+      //               <h2> {workoutName.name} </h2> 
+      //                 <form onSubmit={(e) => addExercise(e)}>
+      //                 <label htmlFor="name"> Select exercise </label>
+      //                 <select
+      //                   value={exercise.name}
+      //                   name="name"
+      //                   onChange={handleChange}
+      //                   required
+      //                 >
+      //                   <option value="not chosen"> -- Choose an exercise -- </option>
+      //                   {exercises.map((exercise) => (
+      //                     <option key={exercise} value={exercise}>
+      //                       {exercise}
+      //                     </option>
+      //                   ))}
+      //                 </select>
+      //                 <label htmlFor="weight"> Weight </label>
+      //                 <input
+      //                   type="number"
+      //                   value={exercise.weight}
+      //                   name="weight"
+      //                   onChange={handleChange}
+      //                   required
+      //                 />
+      //                     <label htmlFor="sets"> Sets </label>
+      //                 <input
+      //                   type="number"
+      //                   value={exercise.sets}
+      //                   name="sets"
+      //                   onChange={handleChange}
+      //                   required
+      //                 />
+      //                 <label htmlFor="reps"> Reps </label>
+      //                 <input
+      //                   type="number"
+      //                   value={exercise.reps}
+      //                   name="reps"
+      //                   onChange={handleChange}
+      //                   required
+      //                 />
+    <div className="App">
+      <ProfileComp>
+        <TagInfo className="tag">
+          <img src="../src/images/avatar.png"></img>
+          <UserContact>
+            <div>Jacky</div>
+            <div>@jacky</div>
+          </UserContact>
+        </TagInfo>
+        <WorkoutContainer className="workouts">
+          <WorkoutDiv>WORKOUT INFORMATION</WorkoutDiv>
+          <WorkoutDiv>WORKOUT INFORMATION</WorkoutDiv>
+          <WorkoutDiv>WORKOUT INFORMATION</WorkoutDiv>
+        </WorkoutContainer>
+        <div className="about">
+          <div className="about-header">About Me</div>
+          <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nostrum soluta quos voluptas repudiandae eaque cum tempora repellat laborum officia minima placeat, odit molestiae nihil adipisci perspiciatis exercitationem voluptatibus? Vitae, iure.</div>
+        </div>
+        <div className="friends">FRIENDS</div>
+      </ProfileComp>
+
+      {/* <h1> Welcome {username}! </h1>
+      <button onClick={logout}> Logout </button>
+      <h1> Workouts </h1>
+      */}
+      {/* { showExerciseForm ? 
+      <>
+      <h2> {workoutName.name} </h2> 
+        <form onSubmit={(e) => addExercise(e)}>
+        <label htmlFor="name"> Select exercise </label>
+        <select
+          value={exercise.name}
+          name="name"
+          onChange={handleChange}
+          required
+        >
+          <option value="not chosen"> -- Choose an exercise -- </option>
+          {exercises.map((exercise) => (
+            <option key={exercise} value={exercise}>
+              {exercise}
+            </option>
+          ))}
+        </select>
+        <label htmlFor="weight"> Weight </label>
+        <input
+          type="number"
+          value={exercise.weight}
+          name="weight"
+          onChange={handleChange}
+          required
+        />
+            <label htmlFor="sets"> Sets </label>
+        <input
+          type="number"
+          value={exercise.sets}
+          name="sets"
+          onChange={handleChange}
+          required
+        />
+        <label htmlFor="reps"> Reps </label>
+        <input
+          type="number"
+          value={exercise.reps}
+          name="reps"
+          onChange={handleChange}
+          required
+        />
+>>>>>>> da9bce9 (Styled components)
 
                       {editExerciseMode ?  <></> :
                       <button disabled={!exercise}> Add exercise + </button>
@@ -489,6 +646,7 @@ export default function Profile() {
                       <button> Create a workout + </button>      
                     </form>
 
+<<<<<<< HEAD
                     <div> 
                       {workouts && workouts.map((workout) => {
                         return (
@@ -537,6 +695,80 @@ export default function Profile() {
                     
                     <button onClick={gotoNewsFeed}> Return to feed </button>
                   </>
+=======
+      <div> 
+        {workouts && workouts.map((workout) => {
+          return (
+            <div className="workouts"> 
+           <h3> {workout.name} </h3>
+           {workout.exercises.map((exercise) => {
+            return (
+            <>          
+             <p> 
+              {exercise.name} - {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} - reps
+              </p>
+            </>
+            )
+           })}
+          
+            <button onClick={() => clickEditWorkout(workout._id)}> edit workout </button>
+            <button onClick={() => deleteWorkout(workout._id)}> delete workout </button>
+          </div>
+          )})}
+         
+       </div>
+      </>
+      } */}
+      {/* <button onClick={getWorkout}> get workout </button> */}
+      {/* <div>
+        {workoutList.map((work) => {
+          if (changeId === work._id) {
+            return (
+              <>
+                <div>EDIT FORM</div>
+                <h5>
+                  {work.name} - {work.weight} lbs - {work.sets} sets -{" "}
+                  {work.reps} - reps {work._id}
+                  <button onClick={() => deleteExercise(work._id)}>
+                    {" "}
+                    delete{" "}
+                  </button>
+             
+                  <button onClick={() => editExercise(work._id)}>
+                    {" "}
+                    complete{" "}
+                  </button>
+                </h5>
+              </>
+            );
+          } else {
+            return (
+              <h5>
+                {work.name} - {work.weight} lbs - {work.sets} sets - {work.reps}{" "}
+                - reps {work._id}
+                <button onClick={() => deleteExercise(work._id)}>
+                  {" "}
+                  delete{" "}
+                </button>
+                <button
+                  onClick={() => {
+                    
+                    setChangeId(work._id);
+                    console.log(changeId)
+                  }}
+                >
+                  {" "}
+                  edit{" "}
+                </button>
+              </h5>
+            );
+          }
+        })}
+      </div>
+      */}
+    </div>
+  );
+>>>>>>> da9bce9 (Styled components)
 }
     </div>
 )}
