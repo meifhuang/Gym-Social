@@ -16,6 +16,7 @@ const Workout = require("./models/workout");
 const router = express.Router();
 // const setupLocalStrategy = require("./auth/local");
 const createAuthRouter = require("./controllers/auth");
+const userRouter = require("./controllers/user");
 
 const jwtStrategy = require("./auth/index");
 // const authRouter = require("./controllers/auth");
@@ -41,58 +42,11 @@ function createServer() {
 
   app.use(express.json());
 
-  //Add sessions here
-  // app.use(
-  //   session({
-  //     secret: process.env.SECRET_KEY,
-  //     resave: false,
-  //     saveUninitialized: false,
-  //     // cookie: {
-  //     //   secure: true,
-  //     // },
-  //   })
-  // );
-  // app.use(cookieParser());
-
-  // setupLocalStrategy(passport);
-
-  //Add passport session middleware
-  // app.use(passport.authenticate("session"));
-
-  // app.use(passport.authenticate("session"));
-  // const authRouter = createAuthRouter(passport);
+ 
   app.use(createAuthRouter);
   app.use(passport.authenticate("jwt", { session: false }), workoutRouter);
-
-  // app.use(bodyParser.urlencoded({ extended: true }));
-  // app.use(express.urlencoded({ extended: true }));
-
-  // const sessConfig = {
-  //   name: "session",
-  //   secret: process.env.SECRET_KEY,
-  //   resave: false,
-  //   saveUninitialized: true,
-  //   // cookie: {
-  //   //   httpOnly: true,
-  //   //   // secure: true,
-  //   //   expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-  //   //   maxAge: 1000 * 60 * 60 * 24 * 7,
-  //   // },
-  // };
-
-  // app.use(session(sessConfig));
-  // app.use(cookieParser());
-  // // app.use(flash());
-  // app.use(passport.initialize());
-  // app.use(passport.session());
-
-  // passport.use(new LocalStrategy(User.authenticate()));
-  // //how to serialize user - store user in a session
-  // passport.serializeUser(User.serializeUser());
-  // //unstore
-  // passport.deserializeUser(User.deserializeUser());
-
-  // app.use(passport.authenticate("session"));
+  app.use(passport.authenticate("jwt", { session: false }),userRouter); 
+  
 
   function checkLoggedIn(request, response, next) {
     // console.log(request.cookies);
@@ -152,7 +106,6 @@ function createServer() {
   //   if (!err.message) err.message = "Something went wrong";
   //   res.status(status).send({ err });
   // });
-
 
 
   return app;

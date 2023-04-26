@@ -8,6 +8,10 @@ export default function Profile() {
   const { token, userId } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  function redirectNewsFeed() {
+    navigate("/newsfeed");
+}
+
   const exercises = [
     "bench press",
     "conventional deadlifts",
@@ -35,15 +39,17 @@ export default function Profile() {
   const [editMode, setEditMode] = useState(false);
   const [editExerciseMode, setEditExerciseMode] = useState(false);
   const [exerciseId, setexerciseId] = useState([]);
+  const [loggedInId, setLoggedInId] = useState(localStorage.getItem('id')); 
 
-  
-
+  function registerRedirect() {
+    navigate("/register");
+}
 
   const getWorkout =  async () => {
       try {
         const res = await axios({
           method: "get",
-          url: "http://localhost:4000/profile",
+          url: `http://localhost:4000/profile/${loggedInId}`,
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -364,6 +370,7 @@ export default function Profile() {
   return (
     <div className="App">
       <h1> Welcome {username}! </h1>
+      <button onClick={redirectNewsFeed}> News Feed </button>
       <button onClick={logout}> Logout </button>
       <h1> Workouts </h1>
      
@@ -466,54 +473,6 @@ export default function Profile() {
        </div>
       </>
       }
-      {/* <button onClick={getWorkout}> get workout </button> */}
-      {/* <div>
-        {workoutList.map((work) => {
-          if (changeId === work._id) {
-            return (
-              <>
-                <div>EDIT FORM</div>
-                <h5>
-                  {work.name} - {work.weight} lbs - {work.sets} sets -{" "}
-                  {work.reps} - reps {work._id}
-                  <button onClick={() => deleteExercise(work._id)}>
-                    {" "}
-                    delete{" "}
-                  </button>
-             
-                  <button onClick={() => editExercise(work._id)}>
-                    {" "}
-                    complete{" "}
-                  </button>
-                </h5>
-              </>
-            );
-          } else {
-            return (
-              <h5>
-                {work.name} - {work.weight} lbs - {work.sets} sets - {work.reps}{" "}
-                - reps {work._id}
-                <button onClick={() => deleteExercise(work._id)}>
-                  {" "}
-                  delete{" "}
-                </button>
-                <button
-                  onClick={() => {
-                    
-                    setChangeId(work._id);
-                    console.log(changeId)
-                  }}
-                >
-                  {" "}
-                  edit{" "}
-                </button>
-              </h5>
-            );
-          }
-        })}
-      </div>
-      */
-    }
     </div> 
   );
 }

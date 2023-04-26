@@ -4,7 +4,6 @@ const passport = require("passport");
 const Workout = require("../models/workout");
 const Exercise = require("../models/exercise");
 const User = require("../models/user");
-const user = require("../models/user");
 const mongoose = require("mongoose");
 
 router = express.Router();
@@ -20,21 +19,19 @@ const isLoggedIn = function (req, res, next) {
   }
 };
 
-router.get("/profile", async (req, res) => {
+router.get("/profile/:id", async (req, res) => {
   console.log("accessing profile route");
-  const user = await User.findById(req.user.id).populate({path: 'workouts', populate: { path: "exercises" }});
-  // const user = await User.findById(req.user.id).populate({path: 'workouts', populate: { path: "exercises" }});
-  // const workout_list = user.exercises;
+  const loggedInId = req.user.id;
+  const paramId = req.params.id; 
+  const user = await User.findById(paramId).populate({path: 'workouts', populate: { path: "exercises" }});
   const workouts = user.workouts; 
   console.log(user);
-  // console.log(workouts[0].exercises[0].name);
   const username = user.username;
   res.status(200).json({
     success: true,
-    // workout_list: workout_list,
     workouts: workouts, 
-    message: "HELLO",
     username: username,
+    loggedInId: loggedInId
   });
 });
 

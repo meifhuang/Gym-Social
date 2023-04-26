@@ -10,32 +10,34 @@ import Homepage from "../components/Homepage";
 import Login from "../components/Login";
 import Profile from "../components/Profile";
 import Navbar from "../components/Navbar";
+import NewsFeed from "../components/NewsFeed";
+
 import "./App.css";
 
 function App() {
-  const [message, setMessage] = useState("");
- 
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:4000/")
-      .then((response) => {
-        setMessage(response.data.workout);
-      })
-      .catch((error) => console.log(error.message));
-  }, []);
+  // const [message, setMessage] = useState("");
+ 
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:4000/")
+  //     .then((response) => {
+  //       setMessage(response.data.workout);
+  //     })
+  //     .catch((error) => console.log(error.message));
+  // }, []);
 
   
-
 
   return (
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Homepage message={message} />} />
+        <Route path="/" element={<Homepage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile/>} />
+        <Route path="/newsfeed" element={<NewsFeed/>} />
       </Routes>
     </BrowserRouter>
   );

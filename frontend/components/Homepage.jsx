@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 export default function Homepage(props) {
     const { message } = props
-    const navigate = useNavigate();
 
+    const navigate = useNavigate();
+  
 
     function loginRedirect() {
         navigate("/login");
@@ -15,6 +16,7 @@ export default function Homepage(props) {
         navigate("/register");
     }
 
+ 
     return (
         <div className="App">
             <h1> Welcome </h1>

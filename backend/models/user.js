@@ -24,7 +24,9 @@ const UserSchema = new Schema({
   workouts: [{
   type: Schema.Types.ObjectId,
   ref: 'Workout'
-}]
+}], 
+  following: [{type: Schema.Types.ObjectId, ref: 'User'}], 
+  followers: [{type: Schema.Types.ObjectId, ref: 'User'}]
 });
 
 
