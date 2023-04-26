@@ -13,6 +13,8 @@ export default function Newsfeed() {
     const [loggedInUser, setLoggedInUser] = useState(localStorage.getItem('id'));
     const [username, setUsername] = useState("");
     const [workouts, setWorkouts] = useState([]);
+    const [following, setFollowing] = useState([]);
+    const [notFollowing, setnotFollowing] = useState([]);
   
     const getUsers =  async () => {
     try {
@@ -25,8 +27,14 @@ export default function Newsfeed() {
       });
       if (res) {
         console.log('reached getusers', res.data.users);
-        console.log(res.data.users.following);
-        setUsers(res.data.users);
+        console.log('following', res.data.following);
+        // setUsers(res.data.users);
+        setFollowing(res.data.following)
+        const getId = res.data.following.map((y) => {return (y._id)});
+        console.log(getId);
+        const notFollow = res.data.users.filter(x => !res.data.following.find(y => y._id === x._id))
+        console.log(notFollow);
+        setnotFollowing(notFollow);
       }
       else {
         console.log("no responses")
@@ -47,30 +55,31 @@ const viewProfile = async (userId) => {
     navigate(`/profile/${userId}`);
 }
 
-  
+
     return (
         <div>
             <h1> News feed</h1>
             <button onClick={() => viewProfile(loggedInUser)}> Go to my profile </button>
-          
-            {users && users.map((user) => {
-                return ( 
-                <> 
-                {users.following ? user.following.map((followers) => {
+            { following.length > 0 ? following.map((follower) => {
                   return (
-                    <h2> {followers.name} </h2>
+                    <h2> {follower.fname} {follower.lname} {follower.workouts[0].name} </h2>
                   )
-                }) :
-                <h2> Nothing on newsfeed. </h2>
+                  })
+                 :
+                <h2> Nothing on newsfeed. Go follow and explore! </h2>
+          
                 }
-                <h4> Explore other user profiles </h4>
-                <div className="users">
-                <h3> {user.fname} {user.lname} <button onClick={() =>viewProfile(user._id)}> View profile </button> </h3>
-                </div>
-                </>
-                )
-            })}
-            
+            <div >
+              <h3> Explore other users' profile </h3> 
+            { notFollowing && notFollowing.map((not) => { 
+              return (
+                <div className="users"> 
+                <h3> {not.fname} {not.lname} <button onClick={() =>viewProfile(not._id)}> View profile </button> </h3>
+                </div> 
+              )
+            })
+          }
+          </div>
         </div>
     )
 }

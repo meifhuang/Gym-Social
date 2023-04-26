@@ -12,15 +12,25 @@ router.get("/newsfeed", async (req, res) => {
     console.log("accessing users ");
     const id = req.user.id; 
     try {
-    const users = await User.find({_id: { $not: {$eq: id} }}).populate('following');
-    // const user = await User.findById(req.user.id).populate({path: 'workouts', populate: { path: "exercises" }});
-    // const workouts = user.workouts; 
-    console.log(users);
+    //find all users that are not yourself ... 
+    const users = await User.find({_id: { $not: {$eq: id} }}).populate('following'); 
+    //get a list of followers
+    const yourself = await User.findById(req.user.id).populate('following');
+    console.log(yourself.following);
+    if (yourself) {
     res.status(200).json({
       success: true,
-      users: users
+      users: users, 
+      following: yourself.following
     });
-    }
+  }
+  else {
+    res.status(400).json({
+      success: false,
+      message: 'couldnt get followers'
+    });
+  }
+}
     catch (e) {
       console.log(e.message);
     }

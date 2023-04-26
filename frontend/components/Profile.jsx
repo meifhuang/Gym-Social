@@ -5,6 +5,8 @@ import { AuthContext } from "../src/AuthContext";
 // import workout from "../../backend/models/workout";
 
 
+//something to get to eventually is - if no one is logged in then need to redirect to login page or something
+
 export default function Profile() {
   const {id} = useParams(); 
   const { token, userId } = useContext(AuthContext);
