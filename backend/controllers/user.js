@@ -9,7 +9,6 @@ router = express.Router();
 
 
 router.get("/newsfeed", async (req, res) => {
-
     console.log("accessing users ");
     const id = req.user.id; 
     const users = await User.find({_id: { $not: {$eq: id} }});
@@ -21,6 +20,7 @@ router.get("/newsfeed", async (req, res) => {
       users: users
     });
   });
+
 
 
   module.exports = router;

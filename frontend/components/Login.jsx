@@ -24,16 +24,7 @@ export default function Login(props) {
   };
 
   const loginSubmit = async (e) => {
-    // alert("asdasd");
-    // console.log("registered");
-    // e.preventDefault();
-    // axios.post('http://localhost:4000/login', {username: values.username, password:values.password})
-    // .then((response) => {
-    //     console.log(response)
-    // })
-    // .catch((error) => {
-    //     console.error(error);
-    // })
+  
     e.preventDefault();
 
     try {
@@ -51,7 +42,7 @@ export default function Login(props) {
         localStorage.setItem("token", data.token)
         localStorage.setItem("id", data.userId )
         // setUsername(response.data.username);
-        return navigate("/profile");
+        return navigate("/newsfeed");
       } else {
         throw Error("no response");
         console.log("Login failed");

@@ -1,10 +1,12 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams} from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../src/AuthContext";
 // import workout from "../../backend/models/workout";
 
+
 export default function Profile() {
+  const {id} = useParams(); 
   const { token, userId } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -45,11 +47,11 @@ export default function Profile() {
     navigate("/register");
 }
 
-  const getWorkout =  async () => {
+  const getWorkout = async () => {
       try {
         const res = await axios({
           method: "get",
-          url: `http://localhost:4000/profile/${loggedInId}`,
+          url: `http://localhost:4000/profile/${id}`,
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
