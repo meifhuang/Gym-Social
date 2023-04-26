@@ -42,6 +42,7 @@ export default function Profile() {
   const [editExerciseMode, setEditExerciseMode] = useState(false);
   const [exerciseId, setexerciseId] = useState([]);
   const [loggedInId, setLoggedInId] = useState(localStorage.getItem('id')); 
+  const [following, setFollowing] = useState([]);
 
   function registerRedirect() {
     navigate("/register");
@@ -60,6 +61,8 @@ export default function Profile() {
           console.log('data', res.data.workouts);
           setUsername(res.data.username);
           setWorkouts(res.data.workouts);
+          console.log('data- following', res.data.loggedInUserFollowing);
+          setFollowing(res.data.loggedInUserFollowing);
         }
         else {
           console.log("no responses")
@@ -353,6 +356,32 @@ export default function Profile() {
     setexerciseId(exerciseId);
   }
 
+  const follow = async (id) => {
+      try {
+        const res = await axios({
+          method: "POST",
+          url: "http://localhost:4000/profile/follow",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          data: {
+            id: id,
+          }
+        });
+        if (res) {
+          console.log("FOLLOWED");
+          console.log(res.data.following);
+          setFollowing(res.data.following);
+        }
+        else {
+          throw Error("no respones");
+        }
+      }
+      catch (e) {
+        console.log(e.message)
+      }
+  }
+
 
   const logout = async () => {
     try {
@@ -485,6 +514,8 @@ export default function Profile() {
                   :
                   <>
                   <h1> {username} </h1>
+                  { (following.some(user => user._id === id)) ? 
+                  <> 
                   {workouts.length <= 0 ? <h3> Currently has no workouts </h3> : workouts.map((workout) => {
                         return (
                           <div className="workouts"> 
@@ -496,10 +527,14 @@ export default function Profile() {
                             </p>
                           )})}
                           </div> 
-                        )})
-                      }
+                        )})}
+                        </> 
+                    :
+                    <button onClick={() => follow(id)}> Follow </button>
+                  }
+                    
                     <button onClick={gotoNewsFeed}> Return to feed </button>
                   </>
-  }
+}
     </div>
 )}

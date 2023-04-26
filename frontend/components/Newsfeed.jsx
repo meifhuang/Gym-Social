@@ -13,8 +13,7 @@ export default function Newsfeed() {
     const [loggedInUser, setLoggedInUser] = useState(localStorage.getItem('id'));
     const [username, setUsername] = useState("");
     const [workouts, setWorkouts] = useState([]);
-    const [profileView, setProfileView] = useState(false);
-
+  
     const getUsers =  async () => {
     try {
       const res = await axios({
@@ -26,6 +25,7 @@ export default function Newsfeed() {
       });
       if (res) {
         console.log('reached getusers', res.data.users);
+        console.log(res.data.users.following);
         setUsers(res.data.users);
       }
       else {
@@ -50,38 +50,27 @@ const viewProfile = async (userId) => {
   
     return (
         <div>
-            {
-             profileView ? <div> 
-             <h1> {username} </h1>
-             {workouts && workouts.map((workout) => {
-          return (
-            <div className="workouts"> 
-           <h3> {workout.name} </h3>
-           {workout.exercises.map((exercise) => {
-            return (
-            <>          
-             <p> 
-              {exercise.name} - {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} - reps
-              </p>
-            </>
-            )
-           })}
-          </div>
-          )})}
-            </div> :
-             <>
             <h1> News feed</h1>
-            <h4> Explore other user profiles </h4>
             <button onClick={() => viewProfile(loggedInUser)}> Go to my profile </button>
-            <div className="users">
+          
             {users && users.map((user) => {
                 return ( 
+                <> 
+                {users.following ? user.following.map((followers) => {
+                  return (
+                    <h2> {followers.name} </h2>
+                  )
+                }) :
+                <h2> Nothing on newsfeed. </h2>
+                }
+                <h4> Explore other user profiles </h4>
+                <div className="users">
                 <h3> {user.fname} {user.lname} <button onClick={() =>viewProfile(user._id)}> View profile </button> </h3>
+                </div>
+                </>
                 )
             })}
-            </div>
-            </>
-            } 
+            
         </div>
     )
 }
