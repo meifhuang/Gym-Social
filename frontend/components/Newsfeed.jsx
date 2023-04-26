@@ -76,7 +76,7 @@ const viewProfile = async (userId) => {
             <div className="users">
             {users && users.map((user) => {
                 return ( 
-                <h3> {user.fname} {user.lname} <button onClick={() =>viewProfile(user._id)}> View profile </button> <button> Follow </button></h3>
+                <h3> {user.fname} {user.lname} <button onClick={() =>viewProfile(user._id)}> View profile </button> </h3>
                 )
             })}
             </div>

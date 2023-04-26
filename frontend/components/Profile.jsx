@@ -326,6 +326,10 @@ export default function Profile() {
     })
   }
 
+  function gotoNewsFeed() {
+    navigate("/newsfeed");
+}
+
   const clickEditExercise = async (exerciseId) => {
     console.log("retrieve exercise info");
     try {
@@ -370,111 +374,132 @@ export default function Profile() {
   };
 
   return (
-    <div className="App">
-      <h1> Welcome {username}! </h1>
-      <button onClick={redirectNewsFeed}> News Feed </button>
-      <button onClick={logout}> Logout </button>
-      <h1> Workouts </h1>
-     
-    { showExerciseForm ? 
-      <>
-      <h2> {workoutName.name} </h2> 
-        <form onSubmit={(e) => addExercise(e)}>
-        <label htmlFor="name"> Select exercise </label>
-        <select
-          value={exercise.name}
-          name="name"
-          onChange={handleChange}
-          required
-        >
-          <option value="not chosen"> -- Choose an exercise -- </option>
-          {exercises.map((exercise) => (
-            <option key={exercise} value={exercise}>
-              {exercise}
-            </option>
-          ))}
-        </select>
-        <label htmlFor="weight"> Weight </label>
-        <input
-          type="number"
-          value={exercise.weight}
-          name="weight"
-          onChange={handleChange}
-          required
-        />
-            <label htmlFor="sets"> Sets </label>
-        <input
-          type="number"
-          value={exercise.sets}
-          name="sets"
-          onChange={handleChange}
-          required
-        />
-        <label htmlFor="reps"> Reps </label>
-        <input
-          type="number"
-          value={exercise.reps}
-          name="reps"
-          onChange={handleChange}
-          required
-        />
+      <div className="App">
+                    { loggedInId === id ? 
+                    <>
+                    <h1> Welcome {username}! </h1>
+                    <button onClick={redirectNewsFeed}> News Feed </button>
+                    <button onClick={logout}> Logout </button>
+                    <h1> Workouts </h1>
+                  
+                    { showExerciseForm ? 
+                    <>
+                    <h2> {workoutName.name} </h2> 
+                      <form onSubmit={(e) => addExercise(e)}>
+                      <label htmlFor="name"> Select exercise </label>
+                      <select
+                        value={exercise.name}
+                        name="name"
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="not chosen"> -- Choose an exercise -- </option>
+                        {exercises.map((exercise) => (
+                          <option key={exercise} value={exercise}>
+                            {exercise}
+                          </option>
+                        ))}
+                      </select>
+                      <label htmlFor="weight"> Weight </label>
+                      <input
+                        type="number"
+                        value={exercise.weight}
+                        name="weight"
+                        onChange={handleChange}
+                        required
+                      />
+                          <label htmlFor="sets"> Sets </label>
+                      <input
+                        type="number"
+                        value={exercise.sets}
+                        name="sets"
+                        onChange={handleChange}
+                        required
+                      />
+                      <label htmlFor="reps"> Reps </label>
+                      <input
+                        type="number"
+                        value={exercise.reps}
+                        name="reps"
+                        onChange={handleChange}
+                        required
+                      />
 
-        {editExerciseMode ?  <></> :
-        <button disabled={!exercise}> Add exercise + </button>
-          }
-        </form> 
+                      {editExerciseMode ?  <></> :
+                      <button disabled={!exercise}> Add exercise + </button>
+                        }
+                      </form> 
 
-      {currentWorkout && currentWorkout.map((exercise) => {
-        return (
-          <div>
-            <p> {exercise.name} : {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} reps 
-            { editExerciseMode && exercise._id === exerciseId ? 
-             <button onClick={() => editExercise(exercise._id)}> confirm edit </button> :
-             <button onClick={() => clickEditExercise(exercise._id)}> edit </button>
-            }
-            <button onClick={() => deleteExercise(workoutId,exercise._id)}> delete </button> 
-            </p>
-          </div>
-        )})}
-        
-       {editMode ? 
-       <button onClick={editWorkout}> Finish editing</button>
-       :
-       <button onClick={createWorkout}> End workout </button>
-        }
-       </>
-      :
+                    {currentWorkout && currentWorkout.map((exercise) => {
+                      return (
+                        <div>
+                          <p> {exercise.name} : {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} reps 
+                          { editExerciseMode && exercise._id === exerciseId ? 
+                          <button onClick={() => editExercise(exercise._id)}> confirm edit </button> :
+                          <button onClick={() => clickEditExercise(exercise._id)}> edit </button>
+                          }
+                          <button onClick={() => deleteExercise(workoutId,exercise._id)}> delete </button> 
+                          </p>
+                        </div>
+                      )})}
+                      
+                    {editMode ? 
+                    <button onClick={editWorkout}> Finish editing</button>
+                    :
+                    <button onClick={createWorkout}> End workout </button>
+                      }
+                    </>
+                    :
 
-      <>      
-      <form onSubmit={(e) => handleExerciseForm(e)}>
-        <label htmlFor="workoutname"> Workout Name </label>
-        <input type='text' value={workoutName.name} name="name" onChange={handleNameChange} required/>
-        <button> Create a workout + </button>      
-      </form>
+                    <>      
+                    <form onSubmit={(e) => handleExerciseForm(e)}>
+                      <label htmlFor="workoutname"> Workout Name </label>
+                      <input type='text' value={workoutName.name} name="name" onChange={handleNameChange} required/>
+                      <button> Create a workout + </button>      
+                    </form>
 
-      <div> 
-        {workouts && workouts.map((workout) => {
-          return (
-            <div className="workouts"> 
-           <h3> {workout.name} </h3>
-           {workout.exercises.map((exercise) => {
-            return (
-            <>          
-             <p> 
-              {exercise.name} - {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} - reps
-              </p>
-            </>
-            )
-           })}
-          
-            <button onClick={() => clickEditWorkout(workout._id)}> edit workout </button>
-            <button onClick={() => deleteWorkout(workout._id)}> delete workout </button>
-          </div>
-          )})}
-         
-       </div>
-      </>
-      }
-    </div> 
-  );
-}
+                    <div> 
+                      {workouts && workouts.map((workout) => {
+                        return (
+                          <div className="workouts"> 
+                        <h3> {workout.name} </h3>
+                        {workout.exercises.map((exercise) => {
+                          return (
+                          <>          
+                          <p> 
+                            {exercise.name} - {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} - reps
+                            </p>
+                          </>
+                          )
+                        })}
+                        
+                          <button onClick={() => clickEditWorkout(workout._id)}> edit workout </button>
+                          <button onClick={() => deleteWorkout(workout._id)}> delete workout </button>
+                        </div>
+                        )})}
+                      
+                    </div>
+                    </>
+                    }
+                    </>
+                  :
+                  <>
+                  <h1> {username} </h1>
+                  {workouts.length <= 0 ? <h3> Currently has no workouts </h3> : workouts.map((workout) => {
+                        return (
+                          <div className="workouts"> 
+                        <h3> {workout.name} </h3>
+                        {workout.exercises.map((exercise) => {
+                          return ( 
+                          <p> 
+                            {exercise.name} - {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} - reps
+                            </p>
+                          )})}
+                          </div> 
+                        )})
+                      }
+                    <button onClick={gotoNewsFeed}> Return to feed </button>
+                  </>
+  }
+    </div>
+)}
