@@ -167,7 +167,7 @@ export const Modal = styled.div`
     top: 10px;
     right: 10px;
     padding: 5px 7px;
-    border: 1px solid red;
+    /* border: 1px solid red; */
   }
 `;
 
@@ -180,5 +180,5 @@ export const ModalOverlay = styled.div`
   bottom: 0;
   position: fixed;
   background: rgba(49, 49, 49, 0.8);
-  background: red;
+  /* background: red; */
 `;

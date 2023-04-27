@@ -6,6 +6,7 @@ import { AuthContext } from "../AuthContext";
 
 //component
 import ModalComp from "../components/Modal";
+import WorkoutModal from "../components/AddWorkoutForm";
 
 import styled from "styled-components";
 import {
@@ -122,7 +123,7 @@ export default function Profile() {
   }, []);
 
   const createWorkout = async () => {
-    // setWorkoutModal(false);
+    setWorkoutModal(false);
     try {
       const response = await axios({
         method: "post",
@@ -369,6 +370,7 @@ export default function Profile() {
     setWorkoutName({
       name: value,
     });
+    console.log(workoutName);
   };
 
   function gotoNewsFeed() {
@@ -471,7 +473,20 @@ export default function Profile() {
             <h2> {username} </h2>
             <div> @{username}</div>
           </UserContact>
-          <button onClick={toggleWorkoutModal}>Create a workout</button>
+
+          <form onSubmit={(e) => handleExerciseForm(e)}>
+            <label htmlFor="workoutname"> Workout Name </label>
+            <input
+              type="text"
+              value={workoutName.name}
+              name="name"
+              onChange={handleNameChange}
+              required
+            />
+            <button disabled={!workoutName.name} onClick={toggleWorkoutModal}>
+              Create a workout
+            </button>
+          </form>
 
           {/* {workoutModal && (
             <Modal>
@@ -569,6 +584,20 @@ export default function Profile() {
               </div>
             </Modal>
           )} */}
+          <WorkoutModal
+            workoutModal={workoutModal}
+            toggleWorkoutModal={toggleWorkoutModal}
+            workoutName={workoutName}
+            exercise={exercise}
+            handleChange={handleChange}
+            exercises={exercises}
+            editExerciseMode={editExerciseMode}
+            currentWorkout={currentWorkout}
+            editWorkout={editWorkout}
+            createWorkout={createWorkout}
+            editMode={editMode}
+            addExercise={addExercise}
+          />
         </TagInfo>
         <WorkoutContainer className="workouts">
           {workouts &&
@@ -730,7 +759,10 @@ export default function Profile() {
                   onChange={handleNameChange}
                   required
                 />
-                <button> Create a workout + </button>
+                <button disabled={workoutName.name === ""}>
+                  {" "}
+                  Create a workout +{" "}
+                </button>
               </form>
 
               <div>
