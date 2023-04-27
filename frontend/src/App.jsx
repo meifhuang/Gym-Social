@@ -11,6 +11,7 @@ import Login from "../components/Login";
 import Profile from "../components/Profile";
 import Navbar from "../components/Navbar";
 import NewsFeed from "../components/NewsFeed";
+import ExploreUsers from "../components/ExploreUsers";
 
 import "./App.css";
 
@@ -38,6 +39,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/profile/:id" element={<Profile/>} />
         <Route path="/newsfeed" element={<NewsFeed/>} />
+        <Route path="/explore" element={<ExploreUsers/>} />
       </Routes>
     </BrowserRouter>
   );

@@ -13,10 +13,9 @@ router.get("/newsfeed", async (req, res) => {
     const id = req.user.id; 
     try {
     //find all users that are not yourself ... 
-    const users = await User.find({_id: { $not: {$eq: id} }}).populate('following'); 
+    const users = await User.find({_id: { $not: {$eq: id} }}).populate({path: 'following'}); 
     //get a list of followers
     const yourself = await User.findById(req.user.id).populate('following');
-    console.log(yourself.following);
     if (yourself) {
     res.status(200).json({
       success: true,
@@ -64,5 +63,38 @@ router.get("/newsfeed", async (req, res) => {
       console.log(e.message);
     }
   });
+
+
+  router.get("/explore", async (req, res) => {
+    console.log("explore");
+    const id = req.user.id; 
+    try {
+    //find all users that are not yourself ... 
+    const users = await User.find({_id: { $not: {$eq: id} }}).populate({path: 'following'}); 
+    //get list of followers
+    const yourself = await User.findById(req.user.id).populate('following');
+    if (yourself && users) {
+    res.status(200).json({
+      success: true,
+      users: users,
+      following: yourself.following
+    });
+  }
+  else {
+    res.status(400).json({
+      success: false,
+      message: 'couldnt get followers'
+    });
+  }
+}
+    catch (e) {
+      console.log(e.message);
+    }
+  });
+
+
+
+  // const notFollow = res.data.users.filter(x => !res.data.following.find(y => y._id === x._id))
+
 
   module.exports = router;

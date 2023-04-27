@@ -30,8 +30,6 @@ export default function Newsfeed() {
         console.log('following', res.data.following);
         // setUsers(res.data.users);
         setFollowing(res.data.following)
-        const getId = res.data.following.map((y) => {return (y._id)});
-        console.log(getId);
         const notFollow = res.data.users.filter(x => !res.data.following.find(y => y._id === x._id))
         console.log(notFollow);
         setnotFollowing(notFollow);
@@ -50,11 +48,13 @@ export default function Newsfeed() {
   },[]);
 
 
-
 const viewProfile = async (userId) => {
     navigate(`/profile/${userId}`);
 }
 
+const exploreUsers = async () => {
+  navigate('/explore')
+}
 
     return (
         <div>
@@ -62,23 +62,17 @@ const viewProfile = async (userId) => {
             <button onClick={() => viewProfile(loggedInUser)}> Go to my profile </button>
             { following.length > 0 ? following.map((follower) => {
                   return (
-                    <h2> {follower.fname} {follower.lname} {follower.workouts[0].name} </h2>
-                  )
+                    <div className="users">
+                    <h2> {follower.fname} {follower.lname} {follower.workouts[0].name} <button onClick={() => viewProfile(follower._id)}> View profile </button> </h2>
+                  </div> 
+                    )
                   })
                  :
                 <h2> Nothing on newsfeed. Go follow and explore! </h2>
           
                 }
             <div >
-              <h3> Explore other users' profile </h3> 
-            { notFollowing && notFollowing.map((not) => { 
-              return (
-                <div className="users"> 
-                <h3> {not.fname} {not.lname} <button onClick={() =>viewProfile(not._id)}> View profile </button> </h3>
-                </div> 
-              )
-            })
-          }
+              <button onClick={exploreUsers}> Explore other users </button> 
           </div>
         </div>
     )
