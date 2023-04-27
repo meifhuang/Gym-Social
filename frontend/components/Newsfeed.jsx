@@ -55,7 +55,7 @@ const exploreUsers = async () => {
 
     return (
         <div>
-            <h1> News feed</h1>
+            <h1> HOME </h1>
             <button onClick={() => viewProfile(loggedInUser)}> Go to my profile </button>
             { following.length > 0 ? following.map((follower) => {
                   return (

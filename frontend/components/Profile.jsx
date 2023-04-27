@@ -545,7 +545,14 @@ export default function Profile() {
             exercitationem voluptatibus? Vitae, iure.
           </div>
         </div>
-        <div className="friends">FRIENDS</div>
+        <div className="friends">FRIENDS
+        {following.map((user) => {
+                return (
+                  <h5> {user.fname}</h5>
+                )
+                })}
+        </div>
+
       </ProfileComp>
 
       {loggedInId === id ? (
@@ -553,6 +560,7 @@ export default function Profile() {
           <h1> Welcome {username}! </h1>
           <button onClick={redirectNewsFeed}> News Feed </button>
           <button onClick={logout}> Logout </button>
+    
           <h1> Workouts </h1>
 
           {showExerciseForm ? (
@@ -604,6 +612,7 @@ export default function Profile() {
                   <button disabled={!exercise}> Add exercise + </button>
                 )}
               </form>
+             
 
               {currentWorkout &&
                 currentWorkout.map((exercise) => {

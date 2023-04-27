@@ -8,12 +8,12 @@ import styled from "styled-components";
 
 const StyledNav = styled.nav`
   display: flex;
+  background-color: #778899;
   justify-content: space-between;
   padding: 2rem 4rem;
   position: relative;
   /* border: 1px solid red; */
   align-items: center;
-
 
   @media (min-width: ${(props) => props.theme.mobile}) {
     /* background-color: red; */
@@ -23,6 +23,7 @@ const StyledNav = styled.nav`
 const StyledProfileTabs = styled.div`
   display: flex;
   gap: 1.5rem;
+  color: white;
   /* border: 1px solid red; */
   align-items: center;
   justify-content: center;
@@ -98,6 +99,7 @@ const LogoFont = styled.div`
 
 const LogoFontCapitalized=styled(LogoFont)`
   text-transform: uppercase;
+  color: #f6f7f9;
 `
 
 const MenuTrigger = styled.div`
@@ -123,7 +125,7 @@ export default function Navbar(props) {
       <LogoFontCapitalized>Gym Social</LogoFontCapitalized>
       <StyledProfileTabs>
         <div>Home</div>
-        <div>Friends</div>
+        <div>Explore</div>
         <MenuTrigger
           className="menu-trigger"
           onClick={() => setIsActive(!isActive)}

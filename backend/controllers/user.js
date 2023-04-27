@@ -7,6 +7,25 @@ const mongoose = require("mongoose");
 
 router = express.Router();
 
+router.get("/profile/:id", async (req, res) => {
+  console.log("accessing profile route");
+  const loggedInId = req.user.id;
+  const paramId = req.params.id; 
+  const user = await User.findById(paramId).populate({path: 'workouts', populate: { path: "exercises" }});
+  const loggedInUser = await User.findById(loggedInId).populate("following");
+  const workouts = user.workouts; 
+  console.log('printing following', loggedInUser.following);
+  const username = user.username;
+  res.status(200).json({
+    success: true,
+    workouts: workouts, 
+    username: username,
+    loggedInId: loggedInId,
+    loggedInUserFollowing: loggedInUser.following
+  });
+});
+
+
 
 router.get("/newsfeed", async (req, res) => {
     console.log("accessing users ");
