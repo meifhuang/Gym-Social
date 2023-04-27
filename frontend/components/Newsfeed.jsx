@@ -30,9 +30,6 @@ export default function Newsfeed() {
         console.log('following', res.data.following);
         // setUsers(res.data.users);
         setFollowing(res.data.following)
-        const notFollow = res.data.users.filter(x => !res.data.following.find(y => y._id === x._id))
-        console.log(notFollow);
-        setnotFollowing(notFollow);
       }
       else {
         console.log("no responses")
@@ -63,7 +60,7 @@ const exploreUsers = async () => {
             { following.length > 0 ? following.map((follower) => {
                   return (
                     <div className="users">
-                    <h2> {follower.fname} {follower.lname} {follower.workouts[0].name} <button onClick={() => viewProfile(follower._id)}> View profile </button> </h2>
+                    <h2> {follower.fname} {follower.lname} {follower.workouts} <button onClick={() => viewProfile(follower._id)}> View profile </button> </h2>
                   </div> 
                     )
                   })

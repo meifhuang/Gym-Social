@@ -64,6 +64,24 @@ router.get("/newsfeed", async (req, res) => {
     }
   });
 
+  router.delete("/profile/:id/unfollow", async (req, res) => {
+    try {
+      const user = await User.findByIdAndUpdate(req.user.id, {$pull: {following: req.params.id}})
+      console.log('review deleted');
+      const userUpdated = await User.findById(req.user.id).populate('following');
+      console.log(userUpdated); 
+      if (userUpdated) {
+        res.status(200).json({
+          success: "true",
+          userfollowing: userUpdated.following
+        })
+      }
+    }
+    catch (e) {
+      console.log(e.message)
+    }
+  })
+
 
   router.get("/explore", async (req, res) => {
     console.log("explore");

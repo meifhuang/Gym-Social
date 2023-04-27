@@ -460,6 +460,29 @@ export default function Profile() {
     }
   };
 
+  const unfollow = async (id) => {
+    console.log("in unfollow route");
+    try {
+      const res = await axios({
+        method: "delete",
+        url: `http://localhost:4000/profile/${id}/unfollow`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (res) {
+        console.log("unfollow", res.data.userfollowing);
+        setFollowing(res.data.userfollowing);
+      }
+      else {
+        throw Error("no response");
+      }
+    }
+    catch (e) {
+      console.log(e.message); 
+    }
+  }
+
   const logout = async () => {
     try {
       const response = await axios({
@@ -485,8 +508,8 @@ export default function Profile() {
         <TagInfo className="tag">
           <img src="../src/images/avatar.png"></img>
           <UserContact>
-            <div>Jacky</div>
-            <div>@jacky</div>
+            <h2> {username} </h2>
+            <div> @{username}</div>
           </UserContact>
         </TagInfo>
         <WorkoutContainer className="workouts">
@@ -692,6 +715,7 @@ export default function Profile() {
                   );
                 })
               )}
+              <button onClick={() => unfollow(id)}> unfollow </button>
             </>
           ) : (
             <button onClick={() => follow(id)}> Follow </button>
