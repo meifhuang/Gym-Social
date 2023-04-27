@@ -133,7 +133,7 @@
 }
 
 .about {
-  margin: 2rem 6rem;
+  /* margin: 2rem 6rem; */
   /* text-align: center; */
   padding: 2rem;
   display: flex;
@@ -146,9 +146,13 @@
 
 /* .about */
 .friends {
-  margin: 2rem 6rem;
+  /* margin: 2rem 6rem; */
   padding: 2rem;
   border: 2px solid rgb(163, 158, 158);
   border-radius: .25rem;
+}
 
+.workouts {
+  /* border: 2px solid rgb(163, 158, 158); */
+  border-radius: .25rem;
 }

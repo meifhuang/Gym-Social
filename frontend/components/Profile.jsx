@@ -4,12 +4,7 @@ import axios from "axios";
 import { AuthContext } from "../src/AuthContext";
 // import workout from "../../backend/models/workout";
 
-<<<<<<< HEAD
-
-//something to get to eventually is - if no one is logged in then need to redirect to login page or something
-=======
 import styled from "styled-components";
->>>>>>> da9bce9 (Styled components)
 
 export default function Profile() {
   const {id} = useParams(); 
@@ -50,7 +45,6 @@ export default function Profile() {
   const [loggedInId, setLoggedInId] = useState(localStorage.getItem('id')); 
   const [following, setFollowing] = useState([]);
 
-<<<<<<< HEAD
   function registerRedirect() {
     navigate("/register");
 }
@@ -78,28 +72,6 @@ export default function Profile() {
 
       catch (e) {
         console.log(e.message);
-=======
-  const getWorkout = async () => {
-    try {
-      const res = await axios({
-        method: "get",
-        url: "http://localhost:4000/profile",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      if (res) {
-        console.log("data", res.data.workouts);
-        setUsername(res.data.username);
-        setWorkouts(res.data.workouts);
-      } else {
-        console.log("no responses");
->>>>>>> da9bce9 (Styled components)
-      }
-    } catch (e) {
-      console.log(e.message);
-    }
-  };
 
   useEffect(() => {
     getWorkout();
@@ -426,8 +398,9 @@ export default function Profile() {
 
   const TagInfo = styled.div`
     display: flex;
-    margin: 2rem;
-    
+    /* margin: 2rem; */
+    border: 2px solid rgb(163, 158, 158);
+    border-radius: 0.25rem;
     img {
       width: 200px;
     }
@@ -436,116 +409,83 @@ export default function Profile() {
   const UserContact = styled.div`
     display: flex;
     flex-direction: column;
-    border: 1px solid red;
+    /* border: 1px solid red; */
     justify-content: center;
     align-items: center;
   `;
 
   const ProfileComp = styled.main`
-  /* background-color: lightblue; */
-  margin: 0rem 10rem;
-    border: 1px solid red;
+    /* background-color: lightblue; */
+    padding: 2rem;
+    margin: 2rem calc(1rem + 10vw);
+    gap: 2rem;
+    /* border: 1px solid red; */
     display: grid;
-    grid-template-columns: repeat(8, minmax(200px, 1fr));
-    grid-template-rows: repeat(4, 1fr);
-    height: 100%;
-    grid-template-areas:
+    grid-template-columns: repeat(8, 1fr);
+    /* grid-template-rows: repeat(auto-fit, 300px); */
+
+    /* grid-auto-flow: row dense; */
+    /* grid-template-areas:
       "tag tag tag tag tag tag tag tag"
       "about about about workouts workouts workouts workouts workouts"
       "friends friends friends workouts workouts workouts workouts workouts"
-      "friends friends friends workouts workouts workouts workouts workouts";
+      "friends friends friends workouts workouts workouts workouts workouts"
+      "friends friends friends workouts workouts workouts workouts workouts"
+      "friends friends friends workouts workouts workouts workouts workouts"; */
 
     & .tag {
       grid-area: tag;
       background-color: blue;
+      grid-column: 1/9;
+      grid-row: 1/2;
     }
 
     & .workouts {
       grid-area: workouts;
       background-color: grey;
+      grid-column: 4/9;
+      grid-row: 2/4
     }
 
     & .about {
       grid-area: about;
-      /* background-color: brown; */
+      background-color: brown;
+      grid-column: 1/4;
+      grid-row: 2/3;
     }
 
     & .friends {
       grid-area: friends;
-      /* background-color: yellow; */
+      background-color: yellow;
+      grid-column: 1/4;
+      grid-row: 3/4;
     }
   `;
 
   const WorkoutContainer = styled.div`
     display: grid;
-    grid-template-columns: repeat(1, minmax(300px, 500px));
-    padding: 2rem;
+    /* flex-direction: column; */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* padding: 0rem 2rem; */
     gap: 1rem;
     justify-content: center;
-    grid-template-rows: auto(minmax(200px, 300px));
-    /* grid-auto-rows: 100px; */
+    /* align-items: center; */
+    /* grid-template-rows: auto; */
+    grid-auto-rows: minmax(300px, 1fr);
+    /* grid-auto-flow: row; */
+    
   `;
 
   const WorkoutDiv = styled.div`
-    border: 1px solid red;
+    border: 2px solid rgb(163, 158, 158);
+    border-radius: 0.25rem;
     /* height: 100px;
     width: 250px; */
   `;
 
   return (
-
-      // <div className="App">
-      //               { loggedInId === id ? 
-      //               <>
-      //               <h1> Welcome {username}! </h1>
-      //               <button onClick={redirectNewsFeed}> News Feed </button>
-      //               <button onClick={logout}> Logout </button>
-      //               <h1> Workouts </h1>
-                  
-      //               { showExerciseForm ? 
-      //               <>
-      //               <h2> {workoutName.name} </h2> 
-      //                 <form onSubmit={(e) => addExercise(e)}>
-      //                 <label htmlFor="name"> Select exercise </label>
-      //                 <select
-      //                   value={exercise.name}
-      //                   name="name"
-      //                   onChange={handleChange}
-      //                   required
-      //                 >
-      //                   <option value="not chosen"> -- Choose an exercise -- </option>
-      //                   {exercises.map((exercise) => (
-      //                     <option key={exercise} value={exercise}>
-      //                       {exercise}
-      //                     </option>
-      //                   ))}
-      //                 </select>
-      //                 <label htmlFor="weight"> Weight </label>
-      //                 <input
-      //                   type="number"
-      //                   value={exercise.weight}
-      //                   name="weight"
-      //                   onChange={handleChange}
-      //                   required
-      //                 />
-      //                     <label htmlFor="sets"> Sets </label>
-      //                 <input
-      //                   type="number"
-      //                   value={exercise.sets}
-      //                   name="sets"
-      //                   onChange={handleChange}
-      //                   required
-      //                 />
-      //                 <label htmlFor="reps"> Reps </label>
-      //                 <input
-      //                   type="number"
-      //                   value={exercise.reps}
-      //                   name="reps"
-      //                   onChange={handleChange}
-      //                   required
-      //                 />
     <div className="App">
-      <ProfileComp>
+      {/* <ProfileComp>
         <TagInfo className="tag">
           <img src="../src/images/avatar.png"></img>
           <UserContact>
@@ -557,61 +497,70 @@ export default function Profile() {
           <WorkoutDiv>WORKOUT INFORMATION</WorkoutDiv>
           <WorkoutDiv>WORKOUT INFORMATION</WorkoutDiv>
           <WorkoutDiv>WORKOUT INFORMATION</WorkoutDiv>
+ 
+          
         </WorkoutContainer>
         <div className="about">
           <div className="about-header">About Me</div>
-          <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nostrum soluta quos voluptas repudiandae eaque cum tempora repellat laborum officia minima placeat, odit molestiae nihil adipisci perspiciatis exercitationem voluptatibus? Vitae, iure.</div>
+          <div>
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nostrum
+            soluta quos voluptas repudiandae eaque cum tempora repellat laborum
+            officia minima placeat, odit molestiae nihil adipisci perspiciatis
+            exercitationem voluptatibus? Vitae, iure.
+          </div>
         </div>
         <div className="friends">FRIENDS</div>
-      </ProfileComp>
+      </ProfileComp> */}
 
-      {/* <h1> Welcome {username}! </h1>
-      <button onClick={logout}> Logout </button>
-      <h1> Workouts </h1>
-      */}
-      {/* { showExerciseForm ? 
-      <>
-      <h2> {workoutName.name} </h2> 
-        <form onSubmit={(e) => addExercise(e)}>
-        <label htmlFor="name"> Select exercise </label>
-        <select
-          value={exercise.name}
-          name="name"
-          onChange={handleChange}
-          required
-        >
-          <option value="not chosen"> -- Choose an exercise -- </option>
-          {exercises.map((exercise) => (
-            <option key={exercise} value={exercise}>
-              {exercise}
-            </option>
-          ))}
-        </select>
-        <label htmlFor="weight"> Weight </label>
-        <input
-          type="number"
-          value={exercise.weight}
-          name="weight"
-          onChange={handleChange}
-          required
-        />
-            <label htmlFor="sets"> Sets </label>
-        <input
-          type="number"
-          value={exercise.sets}
-          name="sets"
-          onChange={handleChange}
-          required
-        />
-        <label htmlFor="reps"> Reps </label>
-        <input
-          type="number"
-          value={exercise.reps}
-          name="reps"
-          onChange={handleChange}
-          required
-        />
->>>>>>> da9bce9 (Styled components)
+{ loggedInId === id ? 
+                    <>
+                    <h1> Welcome {username}! </h1>
+                    <button onClick={redirectNewsFeed}> News Feed </button>
+                    <button onClick={logout}> Logout </button>
+                    <h1> Workouts </h1>
+                  
+                    { showExerciseForm ? 
+                    <>
+                    <h2> {workoutName.name} </h2> 
+                      <form onSubmit={(e) => addExercise(e)}>
+                      <label htmlFor="name"> Select exercise </label>
+                      <select
+                        value={exercise.name}
+                        name="name"
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="not chosen"> -- Choose an exercise -- </option>
+                        {exercises.map((exercise) => (
+                          <option key={exercise} value={exercise}>
+                            {exercise}
+                          </option>
+                        ))}
+                      </select>
+                      <label htmlFor="weight"> Weight </label>
+                      <input
+                        type="number"
+                        value={exercise.weight}
+                        name="weight"
+                        onChange={handleChange}
+                        required
+                      />
+                          <label htmlFor="sets"> Sets </label>
+                      <input
+                        type="number"
+                        value={exercise.sets}
+                        name="sets"
+                        onChange={handleChange}
+                        required
+                      />
+                      <label htmlFor="reps"> Reps </label>
+                      <input
+                        type="number"
+                        value={exercise.reps}
+                        name="reps"
+                        onChange={handleChange}
+                        required
+                      />
 
                       {editExerciseMode ?  <></> :
                       <button disabled={!exercise}> Add exercise + </button>
@@ -646,7 +595,6 @@ export default function Profile() {
                       <button> Create a workout + </button>      
                     </form>
 
-<<<<<<< HEAD
                     <div> 
                       {workouts && workouts.map((workout) => {
                         return (
@@ -695,80 +643,6 @@ export default function Profile() {
                     
                     <button onClick={gotoNewsFeed}> Return to feed </button>
                   </>
-=======
-      <div> 
-        {workouts && workouts.map((workout) => {
-          return (
-            <div className="workouts"> 
-           <h3> {workout.name} </h3>
-           {workout.exercises.map((exercise) => {
-            return (
-            <>          
-             <p> 
-              {exercise.name} - {exercise.weight} lbs - {exercise.sets} sets - {exercise.reps} - reps
-              </p>
-            </>
-            )
-           })}
-          
-            <button onClick={() => clickEditWorkout(workout._id)}> edit workout </button>
-            <button onClick={() => deleteWorkout(workout._id)}> delete workout </button>
-          </div>
-          )})}
-         
-       </div>
-      </>
-      } */}
-      {/* <button onClick={getWorkout}> get workout </button> */}
-      {/* <div>
-        {workoutList.map((work) => {
-          if (changeId === work._id) {
-            return (
-              <>
-                <div>EDIT FORM</div>
-                <h5>
-                  {work.name} - {work.weight} lbs - {work.sets} sets -{" "}
-                  {work.reps} - reps {work._id}
-                  <button onClick={() => deleteExercise(work._id)}>
-                    {" "}
-                    delete{" "}
-                  </button>
-             
-                  <button onClick={() => editExercise(work._id)}>
-                    {" "}
-                    complete{" "}
-                  </button>
-                </h5>
-              </>
-            );
-          } else {
-            return (
-              <h5>
-                {work.name} - {work.weight} lbs - {work.sets} sets - {work.reps}{" "}
-                - reps {work._id}
-                <button onClick={() => deleteExercise(work._id)}>
-                  {" "}
-                  delete{" "}
-                </button>
-                <button
-                  onClick={() => {
-                    
-                    setChangeId(work._id);
-                    console.log(changeId)
-                  }}
-                >
-                  {" "}
-                  edit{" "}
-                </button>
-              </h5>
-            );
-          }
-        })}
-      </div>
-      */}
-    </div>
-  );
->>>>>>> da9bce9 (Styled components)
 }
     </div>
 )}

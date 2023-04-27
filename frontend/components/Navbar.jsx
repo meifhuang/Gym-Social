@@ -9,10 +9,11 @@ import styled from "styled-components";
 const StyledNav = styled.nav`
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
+  padding: 2rem 4rem;
   position: relative;
   /* border: 1px solid red; */
   align-items: center;
+
 
   @media (min-width: ${(props) => props.theme.mobile}) {
     /* background-color: red; */
