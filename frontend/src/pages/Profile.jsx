@@ -1,96 +1,26 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import { AuthContext } from "../src/AuthContext";
+import { AuthContext } from "../AuthContext";
 // import workout from "../../backend/models/workout";
 
+//component
+import ModalComp from "../components/Modal";
+
 import styled from "styled-components";
-const TagInfo = styled.div`
-  display: flex;
-  /* margin: 2rem; */
-  border: 2px solid rgb(163, 158, 158);
-  border-radius: 0.25rem;
-  img {
-    width: 200px;
-  }
-`;
-
-const UserContact = styled.div`
-  display: flex;
-  flex-direction: column;
-  /* border: 1px solid red; */
-  justify-content: center;
-  align-items: center;
-`;
-
-const ProfileComp = styled.main`
-  /* background-color: lightblue; */
-  padding: 2rem;
-  margin: 2rem calc(1rem + 10vw);
-  gap: 2rem;
-  /* border: 1px solid red; */
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  /* grid-template-rows: repeat(auto-fit, 300px); */
-
-  /* grid-auto-flow: row dense; */
-  /* grid-template-areas:
-  "tag tag tag tag tag tag tag tag"
-  "about about about workouts workouts workouts workouts workouts"
-  "friends friends friends workouts workouts workouts workouts workouts"
-  "friends friends friends workouts workouts workouts workouts workouts"
-  "friends friends friends workouts workouts workouts workouts workouts"
-  "friends friends friends workouts workouts workouts workouts workouts"; */
-
-  & .tag {
-    grid-area: tag;
-    background-color: blue;
-    grid-column: 1/9;
-    grid-row: 1/2;
-  }
-
-  & .workouts {
-    grid-area: workouts;
-    background-color: grey;
-    grid-column: 4/9;
-    grid-row: 2/4;
-  }
-
-  & .about {
-    grid-area: about;
-    background-color: brown;
-    grid-column: 1/4;
-    grid-row: 2/3;
-  }
-
-  & .friends {
-    grid-area: friends;
-    background-color: yellow;
-    grid-column: 1/4;
-    grid-row: 3/4;
-  }
-`;
-
-const WorkoutContainer = styled.div`
-  display: grid;
-  /* flex-direction: column; */
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  /* padding: 0rem 2rem; */
-  gap: 1rem;
-  justify-content: center;
-  /* align-items: center; */
-  /* grid-template-rows: auto; */
-  grid-auto-rows: minmax(300px, 1fr);
-  /* grid-auto-flow: row; */
-`;
-
-const WorkoutDiv = styled.div`
-  border: 2px solid rgb(163, 158, 158);
-  border-radius: 0.25rem;
-  /* height: 100px;
-width: 250px; */
-`;
-// console.log(workout)
+import {
+  TagInfo,
+  UserContact,
+  ProfileComp,
+  WorkoutContainer,
+  WorkoutDiv,
+  WorkoutDivHeader,
+  WorkoutButtonContainer,
+  WorkoutInfoContainer,
+  WorkoutInfo,
+  Modal,
+  ModalOverlay,
+} from "../styledComponents/Profile";
 
 export default function Profile() {
   const { id } = useParams();
@@ -118,7 +48,7 @@ export default function Profile() {
 
   const [workoutList, setworkoutList] = useState([]);
   const [username, setUsername] = useState("");
-  const [showExerciseForm, setShowExerciseForm] = useState(false);
+  const [showExerciseForm, setShowExerciseForm] = useState(true);
   const [changeId, setChangeId] = useState("");
   const [exercise, setExercise] = useState(stats);
   const [workoutName, setWorkoutName] = useState({ name: "" });
@@ -131,6 +61,35 @@ export default function Profile() {
   const [loggedInId, setLoggedInId] = useState(localStorage.getItem("id"));
   const [following, setFollowing] = useState([]);
 
+  // const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [workoutModal, setWorkoutModal] = useState(false);
+
+  // if (modal) {
+  //   document.body.classList.add("active-modal");
+  // } else {
+  //   document.body.classList.remove("active-modal");
+  // }
+
+  // if (workoutModal) {
+  //   document
+  //     .querySelector(".workout-modal")
+  //     .classList.add("workout-active-modal");
+  // } else {
+  //   document
+  //     .querySelector(".workout-modal")
+  //     .classList.remove("workout-active-modal");
+  // }
+
+  console.log(document.querySelector(".workout-modal"));
+
+  const toggleModal = () => {
+    setModal(!modal);
+  };
+
+  const toggleWorkoutModal = () => {
+    setWorkoutModal(!workoutModal);
+  };
   function registerRedirect() {
     navigate("/register");
   }
@@ -163,6 +122,7 @@ export default function Profile() {
   }, []);
 
   const createWorkout = async () => {
+    // setWorkoutModal(false);
     try {
       const response = await axios({
         method: "post",
@@ -199,6 +159,7 @@ export default function Profile() {
   };
 
   const clickEditWorkout = async (workoutId) => {
+    setModal(true);
     try {
       const response = await axios({
         method: "get",
@@ -295,6 +256,7 @@ export default function Profile() {
 
   const handleExerciseForm = async (e) => {
     e.preventDefault();
+    setWorkoutModal(true);
     try {
       const response = await axios({
         method: "post",
@@ -473,15 +435,13 @@ export default function Profile() {
       if (res) {
         console.log("unfollow", res.data.userfollowing);
         setFollowing(res.data.userfollowing);
-      }
-      else {
+      } else {
         throw Error("no response");
       }
+    } catch (e) {
+      console.log(e.message);
     }
-    catch (e) {
-      console.log(e.message); 
-    }
-  }
+  };
 
   const logout = async () => {
     try {
@@ -511,30 +471,138 @@ export default function Profile() {
             <h2> {username} </h2>
             <div> @{username}</div>
           </UserContact>
-        </TagInfo>
-        <WorkoutContainer className="workouts">
-          {workouts.length <= 0 ? (
-            <h3> Currently has no workouts </h3>
-          ) : (
-            workouts.map((workout) => {
-              return (
-                <WorkoutDiv>
-                  <h3> {workout.name} </h3>
-                  {workout.exercises.map((exercise) => {
+          <button onClick={toggleWorkoutModal}>Create a workout</button>
+
+          {/* {workoutModal && (
+            <Modal>
+              <ModalOverlay onClick={toggleWorkoutModal}></ModalOverlay>
+              <div className="modal-content">
+                <h2> {workoutName.name} </h2>
+                <form onSubmit={(e) => addExercise(e)}>
+                  <label htmlFor="name"> Select exercise </label>
+                  <select
+                    value={exercise.name}
+                    name="name"
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="not chosen">
+                      {" "}
+                      -- Choose an exercise --{" "}
+                    </option>
+                    {exercises.map((exercise) => (
+                      <option key={exercise} value={exercise}>
+                        {exercise}
+                      </option>
+                    ))}
+                  </select>
+                  <label htmlFor="weight"> Weight </label>
+                  <input
+                    type="number"
+                    value={exercise.weight}
+                    name="weight"
+                    onChange={handleChange}
+                    required
+                  />
+                  <label htmlFor="sets"> Sets </label>
+                  <input
+                    type="number"
+                    value={exercise.sets}
+                    name="sets"
+                    onChange={handleChange}
+                    required
+                  />
+                  <label htmlFor="reps"> Reps </label>
+                  <input
+                    type="number"
+                    value={exercise.reps}
+                    name="reps"
+                    onChange={handleChange}
+                    required
+                  />
+
+                  {editExerciseMode ? (
+                    <></>
+                  ) : (
+                    <button disabled={!exercise}> Add exercise + </button>
+                  )}
+                </form>
+
+                {currentWorkout &&
+                  currentWorkout.map((exercise) => {
                     return (
-                      <p>
-                        {exercise.name} - {exercise.weight} lbs -{" "}
-                        {exercise.sets} sets - {exercise.reps} - reps
-                      </p>
+                      <div>
+                        <p>
+                          {" "}
+                          {exercise.name} : {exercise.weight} lbs -{" "}
+                          {exercise.sets} sets - {exercise.reps} reps
+                          {editExerciseMode && exercise._id === exerciseId ? (
+                            <button onClick={() => editExercise(exercise._id)}>
+                              {" "}
+                              confirm edit{" "}
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => clickEditExercise(exercise._id)}
+                            >
+                              {" "}
+                              edit{" "}
+                            </button>
+                          )}
+                          <button
+                            onClick={() =>
+                              deleteExercise(workoutId, exercise._id)
+                            }
+                          >
+                            {" "}
+                            delete{" "}
+                          </button>
+                        </p>
+                      </div>
                     );
                   })}
+                {editMode ? (
+                  <button onClick={editWorkout}> Finish editing</button>
+                ) : (
+                  <button onClick={createWorkout}> End workout </button>
+                )}
+              </div>
+            </Modal>
+          )} */}
+        </TagInfo>
+        <WorkoutContainer className="workouts">
+          {workouts &&
+            workouts.map((workout) => {
+              return (
+                <WorkoutDiv className="">
+                  <WorkoutDivHeader>
+                    <h3> {workout.name} </h3>
+                    <WorkoutButtonContainer>
+                      <button onClick={() => clickEditWorkout(workout._id)}>
+                        {" "}
+                        edit workout{" "}
+                      </button>
+                      <button onClick={() => deleteWorkout(workout._id)}>
+                        {" "}
+                        delete workout{" "}
+                      </button>
+                    </WorkoutButtonContainer>
+                  </WorkoutDivHeader>
+                  <WorkoutInfoContainer>
+                    {workout.exercises.map((exercise) => {
+                      return (
+                        <WorkoutInfo>
+                          <p>
+                            {exercise.name} - {exercise.weight} lbs -{" "}
+                            {exercise.sets} sets - {exercise.reps} - reps
+                          </p>
+                        </WorkoutInfo>
+                      );
+                    })}
+                  </WorkoutInfoContainer>
                 </WorkoutDiv>
               );
-            })
-          )}
-          {/* <WorkoutDiv>WORKOUT INFORMATION</WorkoutDiv>
-          <WorkoutDiv>WORKOUT INFORMATION</WorkoutDiv>
-          <WorkoutDiv>WORKOUT INFORMATION</WorkoutDiv> */}
+            })}
         </WorkoutContainer>
         <div className="about">
           <div className="about-header">About Me</div>
@@ -545,14 +613,12 @@ export default function Profile() {
             exercitationem voluptatibus? Vitae, iure.
           </div>
         </div>
-        <div className="friends">FRIENDS
-        {following.map((user) => {
-                return (
-                  <h5> {user.fname}</h5>
-                )
-                })}
+        <div className="friends">
+          FRIENDS
+          {following.map((user) => {
+            return <h5> {user.fname}</h5>;
+          })}
         </div>
-
       </ProfileComp>
 
       {loggedInId === id ? (
@@ -560,9 +626,9 @@ export default function Profile() {
           <h1> Welcome {username}! </h1>
           <button onClick={redirectNewsFeed}> News Feed </button>
           <button onClick={logout}> Logout </button>
-    
-          <h1> Workouts </h1>
 
+          <h1> Workouts </h1>
+          {console.log(showExerciseForm, "EXERCISEFORMSTATUS", modal, "MODAL")}
           {showExerciseForm ? (
             <>
               <h2> {workoutName.name} </h2>
@@ -612,7 +678,6 @@ export default function Profile() {
                   <button disabled={!exercise}> Add exercise + </button>
                 )}
               </form>
-             
 
               {currentWorkout &&
                 currentWorkout.map((exercise) => {
@@ -732,6 +797,120 @@ export default function Profile() {
 
           <button onClick={gotoNewsFeed}> Return to feed </button>
         </>
+      )}
+      {/* <button onClick={toggleModal} className="btn-modal">
+        Open
+      </button> */}
+      {modal && (
+        // <ModalComp
+        //   toggleModal={toggleModal}
+        //   addExercise={addExercise}
+        //   exercise={exercise}
+        //   handleChange={handleChange}
+        //   exercises={exercise}
+        //   editExerciseMode={editExerciseMode}
+        //   currentWorkout={currentWorkout}
+        //   editExercise={editExercise}
+        //   clickEditExercise={clickEditExercise}
+        //   deleteExercise={deleteExercise}
+        //   editWorkout={editWorkout}
+        //   createWorkout={createWorkout}
+        //   editMode={editMode}
+        // />
+        <Modal className="">
+          <ModalOverlay onClick={toggleModal} className=""></ModalOverlay>
+          <div className="modal-content">
+            <>
+              <h2> {workoutName.name} </h2>
+              <form onSubmit={(e) => addExercise(e)}>
+                <label htmlFor="name"> Select exercise </label>
+                <select
+                  value={exercise.name}
+                  name="name"
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="not chosen"> -- Choose an exercise -- </option>
+                  {exercises.map((exercise) => (
+                    <option key={exercise} value={exercise}>
+                      {exercise}
+                    </option>
+                  ))}
+                </select>
+                <label htmlFor="weight"> Weight </label>
+                <input
+                  type="number"
+                  value={exercise.weight}
+                  name="weight"
+                  onChange={handleChange}
+                  required
+                />
+                <label htmlFor="sets"> Sets </label>
+                <input
+                  type="number"
+                  value={exercise.sets}
+                  name="sets"
+                  onChange={handleChange}
+                  required
+                />
+                <label htmlFor="reps"> Reps </label>
+                <input
+                  type="number"
+                  value={exercise.reps}
+                  name="reps"
+                  onChange={handleChange}
+                  required
+                />
+
+                {editExerciseMode ? (
+                  <></>
+                ) : (
+                  <button disabled={!exercise}> Add exercise + </button>
+                )}
+              </form>
+
+              {currentWorkout &&
+                currentWorkout.map((exercise) => {
+                  return (
+                    <div>
+                      <p>
+                        {" "}
+                        {exercise.name} : {exercise.weight} lbs -{" "}
+                        {exercise.sets} sets - {exercise.reps} reps
+                        {editExerciseMode && exercise._id === exerciseId ? (
+                          <button onClick={() => editExercise(exercise._id)}>
+                            {" "}
+                            confirm edit{" "}
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => clickEditExercise(exercise._id)}
+                          >
+                            {" "}
+                            edit{" "}
+                          </button>
+                        )}
+                        <button
+                          onClick={() =>
+                            deleteExercise(workoutId, exercise._id)
+                          }
+                        >
+                          {" "}
+                          delete{" "}
+                        </button>
+                      </p>
+                    </div>
+                  );
+                })}
+
+              {editMode ? (
+                <button onClick={editWorkout}> Finish editing</button>
+              ) : (
+                <button onClick={createWorkout}> End workout </button>
+              )}
+            </>
+          </div>
+        </Modal>
       )}
     </div>
   );

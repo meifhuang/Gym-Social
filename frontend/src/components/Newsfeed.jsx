@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import { AuthContext } from "../src/AuthContext";
+import { AuthContext } from "../AuthContext";
 
 
 export default function Newsfeed() {
