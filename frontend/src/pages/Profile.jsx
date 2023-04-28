@@ -471,107 +471,141 @@ export default function Profile() {
 
   return (
     <div className="App">
-      <ProfileComp>
-        <TagInfo className="tag">
-          <img src="../src/images/avatar.png"></img>
-          <UserContact>
-            <h2> {username} </h2>
-            <div> @{username}</div>
-            <h4>FOLLOWERS: </h4>
-          </UserContact>
 
-          <form onSubmit={(e) => handleExerciseForm(e)}>
-            <label htmlFor="workoutname"> Workout Name </label>
-            <input
-              type="text"
-              value={workoutName.name}
-              name="name"
-              onChange={handleNameChange}
-              required
+      {loggedInId === id ? (
+        <ProfileComp>
+          <TagInfo className="tag">
+            <img src="../src/images/avatar.png"></img>
+            <UserContact>
+              <h2> {username} </h2>
+              <div> @{username}</div>
+            </UserContact>
+
+            <form onSubmit={(e) => handleExerciseForm(e)}>
+              <label htmlFor="workoutname"> Workout Name </label>
+              <input
+                type="text"
+                value={workoutName.name}
+                name="name"
+                onChange={handleNameChange}
+                required
+              />
+              <button disabled={!workoutName.name} onClick={toggleWorkoutModal}>
+                Create a workout
+              </button>
+            </form>
+            {workoutModal && (
+              <WorkoutModal
+                toggleWorkoutModal={toggleWorkoutModal}
+                workoutName={workoutName}
+                exercise={exercise}
+                handleChange={handleChange}
+                exercises={exercises}
+                editExerciseMode={editExerciseMode}
+                currentWorkout={currentWorkout}
+                editWorkout={editWorkout}
+                createWorkout={createWorkout}
+                editMode={editMode}
+                addExercise={addExercise}
+              />
+            )}
+          </TagInfo>
+          {modal && (
+            <EditWorkoutForm
+              toggleModal={toggleModal}
+              workoutName={workoutName}
+              currentWorkout={currentWorkout}
+              exerciseId={exerciseId}
+              exercises={exercises}
+              editedExercise={editedExercise}
+              handleEditExercise={handleEditExercise}
+              editExerciseMode={editExerciseMode}
+              deleteExercise={deleteExercise}
+              clickEditExercise={clickEditExercise}
+              editExercise={editExercise}
             />
-            <button disabled={!workoutName.name} onClick={toggleWorkoutModal}>
-              Create a workout
-            </button>
-          </form>
-          {workoutModal && <WorkoutModal
-      
-            toggleWorkoutModal={toggleWorkoutModal}
-            workoutName={workoutName}
-            exercise={exercise}
-            handleChange={handleChange}
-            exercises={exercises}
-            editExerciseMode={editExerciseMode}
-            currentWorkout={currentWorkout}
-            editWorkout={editWorkout}
-            createWorkout={createWorkout}
-            editMode={editMode}
-            addExercise={addExercise}
-          />} 
-        </TagInfo>
-        {modal && <EditWorkoutForm
-          toggleModal={toggleModal}
-          workoutName={workoutName}
-          currentWorkout={currentWorkout}
-          exerciseId={exerciseId}
-          exercises={exercises}
-          editedExercise={editedExercise}
-          handleEditExercise={handleEditExercise}
-          editExerciseMode={editExerciseMode}
-          deleteExercise={deleteExercise}
-          clickEditExercise={clickEditExercise}
-          editExercise={editExercise}
-        />}
-        <WorkoutContainer className="workouts">
-          {workouts &&
-            workouts.map((workout) => {
-              return (
-                <WorkoutDiv className="">
-                  <WorkoutDivHeader>
-                    <h3> {workout.name} </h3>
-                    <WorkoutButtonContainer>
-                      <button onClick={() => clickEditWorkout(workout._id)}>
-                        {" "}
-                        edit workout{" "}
-                      </button>
-                      <button onClick={() => deleteWorkout(workout._id)}>
-                        {" "}
-                        delete workout{" "}
-                      </button>
-                    </WorkoutButtonContainer>
-                  </WorkoutDivHeader>
-                  <WorkoutInfoContainer>
-                    {workout.exercises.map((exercise) => {
-                      return (
-                        <WorkoutInfo>
+          )}
+          <WorkoutContainer className="workouts">
+            {workouts &&
+              workouts.map((workout) => {
+                return (
+                  <WorkoutDiv className="">
+                    <WorkoutDivHeader>
+                      <h3> {workout.name} </h3>
+                      <WorkoutButtonContainer>
+                        <button onClick={() => clickEditWorkout(workout._id)}>
+                          {" "}
+                          edit workout{" "}
+                        </button>
+                        <button onClick={() => deleteWorkout(workout._id)}>
+                          {" "}
+                          delete workout{" "}
+                        </button>
+                      </WorkoutButtonContainer>
+                    </WorkoutDivHeader>
+                    <WorkoutInfoContainer>
+                      {workout.exercises.map((exercise) => {
+                        return (
+                          <WorkoutInfo>
+                            <p>
+                              {exercise.name} - {exercise.weight} lbs -{" "}
+                              {exercise.sets} sets - {exercise.reps} - reps
+                            </p>
+                          </WorkoutInfo>
+                        );
+                      })}
+                    </WorkoutInfoContainer>
+                  </WorkoutDiv>
+                );
+              })}
+          </WorkoutContainer>
+          <div className="about">
+            <div className="about-header">About Me</div>
+            <div>
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nostrum
+              soluta quos voluptas repudiandae eaque cum tempora repellat
+              laborum officia minima placeat, odit molestiae nihil adipisci
+              perspiciatis exercitationem voluptatibus? Vitae, iure.
+            </div>
+          </div>
+          <div className="friends">
+            FRIENDS
+            {following.map((user) => {
+              return <h5> {user.fname}</h5>;
+            })}
+          </div>
+        </ProfileComp>
+      ) : (
+        <>
+          <h1> {username} </h1>
+          {following.some((user) => user._id === id) ? (
+            <>
+              {workouts.length <= 0 ? (
+                <h3> Currently has no workouts </h3>
+              ) : (
+                workouts.map((workout) => {
+                  return (
+                    <div className="workouts">
+                      <h3> {workout.name} </h3>
+                      {workout.exercises.map((exercise) => {
+                        return (
                           <p>
                             {exercise.name} - {exercise.weight} lbs -{" "}
                             {exercise.sets} sets - {exercise.reps} - reps
                           </p>
-                        </WorkoutInfo>
-                      );
-                    })}
-                  </WorkoutInfoContainer>
-                </WorkoutDiv>
-              );
-            })}
-        </WorkoutContainer>
-        <div className="about">
-          <div className="about-header">About Me</div>
-          <div>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nostrum
-            soluta quos voluptas repudiandae eaque cum tempora repellat laborum
-            officia minima placeat, odit molestiae nihil adipisci perspiciatis
-            exercitationem voluptatibus? Vitae, iure.
-          </div>
-        </div>
-        <div className="friends">
-          FOLLOWING
-          {following.map((user) => {
-            return <h5> {user.fname}</h5>;
-          })}
-        </div>
-      </ProfileComp>
-
+                        );
+                      })}
+                    </div>
+                  );
+                })
+              )}
+            </>
+          ) : (
+            <button onClick={() => follow(id)}> Follow </button>
+          )}
+          <button onClick={gotoNewsFeed}> Return to feed </button>
+        </>
+      )}
     </div>
   );
 }
