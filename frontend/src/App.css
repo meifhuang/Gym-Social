@@ -156,3 +156,7 @@
   /* border: 2px solid rgb(163, 158, 158); */
   border-radius: .25rem;
 }
+
+/* body.active-modal {
+  overflow-y: hidden;
+} */

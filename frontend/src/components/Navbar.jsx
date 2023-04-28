@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import axios from "axios";
-import { AuthContext } from "../src/AuthContext";
+import { AuthContext } from "../AuthContext";
 import { Spin as Hamburger } from "hamburger-react";
 
 import styled from "styled-components";

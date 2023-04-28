@@ -5,27 +5,25 @@ import viteLogo from "/vite.svg";
 import axios from "axios";
 // axios.defaults.withCredentials = true;
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Register from "../components/Register";
-import Homepage from "../components/Homepage";
-import Login from "../components/Login";
-import Profile from "../components/Profile";
-import Navbar from "../components/Navbar";
-import NewsFeed from "../components/NewsFeed";
-import ExploreUsers from "../components/ExploreUsers";
+import Register from "./pages/Register";
+import Homepage from "./pages/Homepage";
+import Login from "./components/Login";
+import Profile from "./pages/Profile";
+import Navbar from "./components/Navbar";
+import NewsFeed from "./components/NewsFeed";
+import ExploreUsers from "./pages/ExploreUsers";
 
 import "./App.css";
 
 //Styled Components
-import GlobalStyles from "../styledComponents/GlobalStyles";
+import GlobalStyles from "./styledComponents/GlobalStyles";
 import { ThemeProvider } from "styled-components";
 
 function App() {
-
   const [message, setMessage] = useState("");
 
-
   // const [message, setMessage] = useState("");
- 
+
   // useEffect(() => {
   //   axios
   //     .get("http://localhost:4000/")
@@ -40,7 +38,7 @@ function App() {
 
     // },
     colors: {
-      lightgrey : "#e9e4e4;"
+      lightgrey: "#e9e4e4;",
     },
     mobile: "768px",
   };
@@ -50,16 +48,15 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/profile/:id" element={<Profile/>} />
-        <Route path="/newsfeed" element={<NewsFeed/>} />
-        <Route path="/explore" element={<ExploreUsers/>} />
-      </Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/newsfeed" element={<NewsFeed />} />
+          <Route path="/explore" element={<ExploreUsers />} />
+        </Routes>
       </BrowserRouter>
     </ThemeProvider>
-
   );
 }
 
