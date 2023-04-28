@@ -599,6 +599,7 @@ export default function Profile() {
                   );
                 })
               )}
+              <button onClick={() => unfollow(id)}> unfollow </button>
             </>
           ) : (
             <button onClick={() => follow(id)}> Follow </button>
