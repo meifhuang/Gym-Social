@@ -495,6 +495,7 @@ export default function Profile() {
           <UserContact>
             <h2> {username} </h2>
             <div> @{username}</div>
+            <h4>FOLLOWERS: </h4>
           </UserContact>
 
           <form onSubmit={(e) => handleExerciseForm(e)}>
@@ -569,7 +570,7 @@ export default function Profile() {
           </div>
         </div>
         <div className="friends">
-          FRIENDS
+          FOLLOWING
           {following.map((user) => {
             return <h5> {user.fname}</h5>;
           })}

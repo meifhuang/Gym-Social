@@ -14,6 +14,7 @@ router.get("/profile/:id", async (req, res) => {
   const user = await User.findById(paramId).populate({path: 'workouts', populate: { path: "exercises" }});
   const loggedInUser = await User.findById(loggedInId).populate("following");
   const workouts = user.workouts; 
+  
   console.log('printing following', loggedInUser.following);
   const username = user.username;
   res.status(200).json({
@@ -60,15 +61,17 @@ router.get("/newsfeed", async (req, res) => {
     async (req, res) => {
       try {
       const user = await User.findById(req.user.id).populate('following');
-      const followUser = await User.findById(req.body.id); 
+      const userToFollow = await User.findById(req.body.id).populate('followers'); 
       console.log(req.body.id); 
       console.log(user);
-      const alreadyFollowing = await User.find({_id: req.user.id, following: { _id : followUser._id}});
-      console.log('already following', alreadyFollowing);
-      if (alreadyFollowing.length === 0) {
-        user.following.push(followUser);
+      const isalreadyFollowing = await User.find({_id: req.user.id, following: { _id : followUser._id}});
+      console.log('already following', isalreadyFollowing);
+      if (isalreadyFollowing.length === 0) {
+        user.following.push(userToFollow);
+        userToFollow.followers.push(user); 
         await user.save();
-        console.log("followed", followUser);
+        await userToFollow.save(); 
+        console.log("followed", userToFollow);
       }
       else {
         console.log('coudlnt follow probably cause already following');
@@ -86,10 +89,11 @@ router.get("/newsfeed", async (req, res) => {
   router.delete("/profile/:id/unfollow", async (req, res) => {
     try {
       const user = await User.findByIdAndUpdate(req.user.id, {$pull: {following: req.params.id}})
-      console.log('review deleted');
       const userUpdated = await User.findById(req.user.id).populate('following');
+      const userToUnfollow = await User.findByIdAndUpdate(req.params.id, {$pull: req.user.id});
+      const userToUnfollowUpdated = await User.findById(req.user.id).populate('followers'); 
       console.log(userUpdated); 
-      if (userUpdated) {
+      if (userUpdated && userToUnfollowUpdated) {
         res.status(200).json({
           success: "true",
           userfollowing: userUpdated.following
