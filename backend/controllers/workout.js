@@ -246,6 +246,7 @@ router.delete("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
 router.put("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
   console.log("etnering edit exercise")
   const { exerciseId, workoutId } = req.params;
+  console.log(req.body)
   try {
     // const user = await User.findByIdAndUpdate(userId, { $pull: { exercises: exerciseId } });
     // const user  = await User.findByIdAndUpdate(req.user.id, {$pull: }
@@ -258,7 +259,7 @@ router.put("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
         weight: parseInt(req.body.weight),
       }
     );
-    console.log(updateExercise);
+    // console.log(updateExercise);
   
     const finalUpdateExercise = await Exercise.findOne({
       _id: { $in: exerciseId },
