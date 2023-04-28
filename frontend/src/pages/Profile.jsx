@@ -409,7 +409,7 @@ export default function Profile() {
     try {
       const res = await axios({
         method: "POST",
-        url: "http://localhost:4000/profile/follow",
+        url: `http://localhost:4000/profile/${id}/follow`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -471,7 +471,6 @@ export default function Profile() {
 
   return (
     <div className="App">
-
       {loggedInId === id ? (
         <ProfileComp>
           <TagInfo className="tag">
