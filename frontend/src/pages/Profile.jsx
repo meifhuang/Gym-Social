@@ -582,7 +582,6 @@ export default function Profile() {
             editExercise={editExercise}
           />
         )}
-        { (following.some(user => user._id === id)) ? 
         <WorkoutContainer className="workouts">
           {workouts &&
             workouts.map((workout) => {
@@ -625,9 +624,6 @@ export default function Profile() {
               );
             })}
         </WorkoutContainer>
-        : 
-        <h3> Follow to see </h3>
-    }
         {/* <div className="about">
           <div className="about-header">About Me</div>
           <div>
