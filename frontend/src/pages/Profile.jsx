@@ -51,7 +51,6 @@ export default function Profile() {
     sets: 0,
   };
 
-  const [workoutList, setworkoutList] = useState([]);
   const [username, setUsername] = useState("");
   const [showExerciseForm, setShowExerciseForm] = useState(true);
   const [changeId, setChangeId] = useState("");
@@ -81,6 +80,7 @@ export default function Profile() {
 
   const toggleModal = () => {
     setModal(!modal);
+    setCurrentWorkout([]);
   };
 
   const toggleWorkoutModal = () => {
@@ -139,6 +139,7 @@ export default function Profile() {
         setWorkouts(response.data.workouts);
         setworkoutId(response.data.workouts._id);
         setCurrentWorkout([]);
+        setnumWorkouts(prev => prev + 1);
       } else {
         throw Error("No response");
       }
@@ -196,6 +197,7 @@ export default function Profile() {
             (workout) => workout._id !== response.data.workoutId
           );
         });
+        setnumWorkouts(prev => prev - 1); 
       }
     } catch (e) {
       console.log(e.message);
@@ -517,7 +519,7 @@ export default function Profile() {
           </UserInformation>
           {/* is user logged in the person your page is on ? if not, show follow/unfollow depending on if the person is in the user's follow list */}
 
-          <div>
+          <div className="create-workout">
             {loggedInId === id ? (
               <form onSubmit={(e) => handleExerciseForm(e)}>
                 <label htmlFor="workoutname"> Workout Name </label>
@@ -532,7 +534,7 @@ export default function Profile() {
                   disabled={!workoutName.name}
                   onClick={toggleWorkoutModal}
                 >
-                  Create a workout
+                  + Create a workout
                 </button>{" "}
               </form>
             ) : (
@@ -583,7 +585,7 @@ export default function Profile() {
               return (
                 <WorkoutDiv className="">
                   <WorkoutDivHeader>
-                    <h3> {workout.name} </h3>
+                    <h1> {workout.name} </h1>
                     <WorkoutButtonContainer>
                       {loggedInId === id ? (
                         <button onClick={() => clickEditWorkout(workout._id)}>
@@ -608,7 +610,7 @@ export default function Profile() {
                       return (
                         <WorkoutInfo>
                           <p>
-                            {exercise.name} - {exercise.weight} lbs -{" "}
+                          <b> {exercise.name}: </b>   {exercise.weight} lbs -{" "}
                             {exercise.sets} sets - {exercise.reps} - reps
                           </p>
                         </WorkoutInfo>

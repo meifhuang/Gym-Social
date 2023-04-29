@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, ModalOverlay } from "../styledComponents/Profile";
+import { Modal, ModalOverlay, FinishEditButton, EditDeleteButton, SelectExerciseBar } from "../styledComponents/Profile";
 const EditWorkoutForm = ({
   toggleModal,
   workoutName,
@@ -26,8 +26,8 @@ const EditWorkoutForm = ({
                 console.log(exercise);
                 return (
                   <form onSubmit={(e) => editExercise(e, exercise._id)}>
-                    <label htmlFor="name"> Select exercise </label>
-                    <select
+                    <label htmlFor="name"> Change exercise </label>
+                    <SelectExerciseBar
                       value={editedExercise.name}
                       name="name"
                       onChange={handleEditExercise}
@@ -44,8 +44,10 @@ const EditWorkoutForm = ({
                         <option key={exercise} value={exercise}>
                           {exercise}
                         </option>
+                       
                       ))}
-                    </select>
+                    </SelectExerciseBar>
+                    <div>
                     <label htmlFor="weight"> Weight </label>
                     <input
                       type="number"
@@ -71,13 +73,15 @@ const EditWorkoutForm = ({
                       onChange={handleEditExercise}
                       required
                     />
-                    <button
+                  
+                    <FinishEditButton
                       type="submit"
                       onClick={() => editExercise(exercise._id)}
                     >
                       {" "}
                       confirm edit{" "}
-                    </button>
+                    </FinishEditButton>
+                    </div>
                     </form>
                 );
               } else {
@@ -85,31 +89,30 @@ const EditWorkoutForm = ({
                   <div>
                     <p>
                       {" "}
-                      {exercise.name} : {exercise.weight} lbs - {exercise.sets}{" "}
+                      {exercise.name}: {exercise.weight} lbs - {exercise.sets}{" "}
                       sets - {exercise.reps} reps
                       {editExerciseMode && exercise._id === exerciseId ? (
                         <button onClick={() => editExercise(exercise._id)}>
-                          {" "}
-                          confirm edit{" "}
+                          confirm edit
                         </button>
                       ) : (
-                        <button onClick={() => clickEditExercise(exercise._id)}>
+                        <EditDeleteButton onClick={() => clickEditExercise(exercise._id)}>
                           {" "}
                           edit{" "}
-                        </button>
+                        </EditDeleteButton>
                       )}
-                      <button
+                      <EditDeleteButton
                         onClick={() => deleteExercise(workoutId, exercise._id)}
                       >
                         {" "}
                         delete{" "}
-                      </button>
+                      </EditDeleteButton>
                     </p>
                   </div>
                 );
               }
             })}
-          <button onClick={toggleModal}> Finish editing</button>
+          <FinishEditButton onClick={toggleModal}> Finish editing</FinishEditButton>
           {/* {editMode ? (
                       <button onClick={editWorkout}> Finish editing</button>
                     ) : (

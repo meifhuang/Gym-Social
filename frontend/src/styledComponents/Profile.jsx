@@ -16,14 +16,24 @@ export const CenteredFlexRow = styled.div`
 export const TagInfo = styled.div`
   display: flex;
   /* margin: 2rem; */
-  /* border: 2px solid rgb(163, 158, 158); */
+  border: 2px solid rgb(163, 158, 158);
   border-radius: 0.25rem;
   padding: 5rem;
   gap: 3rem;
-
   img {
     width: 200px;
   }
+  button, input {
+    width: 12em;
+    height: 2.5em;
+    margin-top: 1em;
+  }
+  .create-workout {
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+  }
+
 `;
 
 export const UserInformation = styled(CenteredFlexColumn)`
@@ -159,6 +169,10 @@ export const WorkoutDivHeader = styled.div`
 export const WorkoutButtonContainer = styled.div`
   display: flex;
   gap: 0.5rem;
+  button {
+    width: 7.3em;
+    height: 2.5em
+  }
   /* justify-content: space-between; */
 `;
 
@@ -169,6 +183,7 @@ export const WorkoutInfoContainer = styled.div`
   gap: 0.5rem;
   text-align: center;
   letter-spacing: 0.5px;
+ 
 `;
 
 export const WorkoutInfo = styled.div`
@@ -216,28 +231,44 @@ export const Modal = styled.div`
     height: 2.1em;
     margin: .5em;
   }
-  select {
-    height: 2.3em;
-    width: 25em;
-  }
-  .addExercise-button {
-    height: 2.2em;
-    width: 10em;
-    margin-left: 1em;
-  }
-  .endWorkout-button {
-    height: 2.5em;
-    width: 10em;
-    margin-top: 1em
-  }
-  .deleteExercise-button, 
-  .editExercise-button {
-    width: 3.5em; 
-    height: 1.8em; 
-    margin: 1em .5em; 
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+  } 
+  form > * {
+    margin-bottom: .5em;
   }
   
-`;
+`
+export const SelectExerciseBar = styled.select`
+  height: 2.3em;
+  width: 28em;
+}`
+
+export const EditDeleteButton = styled.button`
+width: 3.5em; 
+height: 1.8em; 
+margin: 1em .5em; 
+`
+
+export const AddExerciseButton = styled.button`
+width: 8em;
+height: 2em;
+`
+
+export const AddWorkoutButton = styled.button`
+width: 8em;
+height: 2.2em;
+margin-top: 1em;
+`
+
+export const FinishEditButton = styled.button`
+width: 8em;
+height: 2.4em;
+margin-top: 1em;
+`
 
 export const ModalOverlay = styled.div`
   width: 100vw;

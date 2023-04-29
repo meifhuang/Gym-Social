@@ -1,6 +1,6 @@
 import React, { UseState } from "react";
 
-import { Modal, ModalOverlay } from "../styledComponents/Profile";
+import { Modal, ModalOverlay, EditDeleteButton, SelectExerciseBar, AddExerciseButton, AddWorkoutButton} from "../styledComponents/Profile";
 
 function WorkoutModal({
   toggleWorkoutModal,
@@ -29,7 +29,7 @@ function WorkoutModal({
           <h2> {workoutName.name} </h2>
           <form onSubmit={(e) => addExercise(e)}>
             <label htmlFor="name" className="select-exercise"> Select exercise </label>
-            <select
+            <SelectExerciseBar
               value={exercise.name}
               name="name"
               onChange={handleChange}
@@ -41,7 +41,7 @@ function WorkoutModal({
                   {exercise}
                 </option>
               ))}
-            </select>
+            </SelectExerciseBar>
             <div className="stats">
             <label htmlFor="weight"> Weight </label>
             <input
@@ -70,7 +70,7 @@ function WorkoutModal({
              {editExerciseMode ? (
               <></>
             ) : (
-              <button className="addExercise-button" disabled={!exercise}> Add exercise + </button>
+              <AddExerciseButton disabled={!exercise}> Add exercise + </AddExerciseButton>
             )}
             </div>
 
@@ -86,22 +86,22 @@ function WorkoutModal({
                     {exercise.name} : {exercise.weight} lbs - {exercise.sets}{" "}
                     sets - {exercise.reps} reps
                     {editExerciseMode && exercise._id === exerciseId ? (
-                      <button onClick={(e) => editExercise(e,exercise._id)}>
+                      <EditDeleteButton onClick={(e) => editExercise(e,exercise._id)}>
                         {" "}
                         confirm edit{" "}
-                      </button>
+                      </EditDeleteButton>
                     ) : (
-                      <button className="editExercise-button" onClick={() => clickEditExercise(exercise._id)}>
+                      <EditDeleteButton onClick={() => clickEditExercise(exercise._id)}>
                         {" "}
                         edit{" "}
-                      </button>
+                      </EditDeleteButton>
                     )}
-                    <button className="deleteExercise-button"
+                    <EditDeleteButton 
                       onClick={() => deleteExercise(workoutId, exercise._id)}
                     >
                       {" "}
                       delete{" "}
-                    </button>
+                    </EditDeleteButton>
                   </p>
                 </div>
               );
@@ -109,7 +109,7 @@ function WorkoutModal({
           {editMode ? (
             <button onClick={editWorkout}> Finish editing</button>
           ) : (
-            <button className="endWorkout-button" onClick={createWorkout}> End workout </button>
+            <AddWorkoutButton className="endWorkout-button" onClick={createWorkout}> Add workout </AddWorkoutButton>
           )}
         </div>
       </Modal>
