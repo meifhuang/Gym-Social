@@ -281,8 +281,8 @@ export default function Profile() {
     setEditExerciseMode(false);
   };
 
-  const editExercise = async (e, exerciseId) => {
-    e.preventDefault();
+  const editExercise = async (exerciseId) => {
+   
     console.log("in exercise route");
     try {
       const res = await axios({
@@ -318,7 +318,7 @@ export default function Profile() {
           }
         });
         setCurrentWorkout(updateList);
-        console.log("return after editing", updateList);
+        console.log("return updated after editing", updateList);
         setExercise(updateList);
         setEditExerciseMode(false);
         setexerciseId(0);
@@ -552,6 +552,11 @@ export default function Profile() {
             createWorkout={createWorkout}
             editMode={editMode}
             addExercise={addExercise}
+            deleteExercise={deleteExercise}
+            workoutId={workoutId}
+            clickEditExercise={clickEditExercise}
+            exerciseId={exerciseId}
+            editExercise={editExercise}
           />
         )}
 

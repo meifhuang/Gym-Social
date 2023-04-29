@@ -191,14 +191,52 @@ export const Modal = styled.div`
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    line-height: 1.4;
+    line-height: 2.4;
     background: #f1f1f1;
     padding: 14px 28px;
-    border-radius: 3px;
+    border-radius: 5px;
     max-width: 600px;
-    min-width: 300px;
+    min-width: 500px;
     border: 1px solid red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
+  .stats {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+  }
+  .select-exercise {
+    font-size: 1.2em;
+    font-weight: 800;
+  }
+  input {
+    width: 3.1em;
+    height: 2.1em;
+    margin: .5em;
+  }
+  select {
+    height: 2.3em;
+    width: 25em;
+  }
+  .addExercise-button {
+    height: 2.2em;
+    width: 10em;
+    margin-left: 1em;
+  }
+  .endWorkout-button {
+    height: 2.5em;
+    width: 10em;
+    margin-top: 1em
+  }
+  .deleteExercise-button, 
+  .editExercise-button {
+    width: 3.5em; 
+    height: 1.8em; 
+    margin: 1em .5em; 
+  }
+  
 `;
 
 export const ModalOverlay = styled.div`

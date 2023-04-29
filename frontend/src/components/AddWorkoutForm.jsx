@@ -14,6 +14,11 @@ function WorkoutModal({
   createWorkout,
   editMode,
   addExercise,
+  deleteExercise,
+  workoutId,
+  clickEditExercise,
+  exerciseId,
+  editExercise
 }) {
   return (
     <>
@@ -22,13 +27,14 @@ function WorkoutModal({
         <div className="modal-content">
           <h2> {workoutName.name} </h2>
           <form onSubmit={(e) => addExercise(e)}>
-            <label htmlFor="name"> Select exercise </label>
+            <label htmlFor="name" className="select-exercise"> Select exercise </label>
             <select
               value={exercise.name}
               name="name"
               onChange={handleChange}
               required
             >
+        
               <option value="not chosen"> -- Choose an exercise -- </option>
               {exercises.map((exercise) => (
                 <option key={exercise} value={exercise}>
@@ -36,6 +42,7 @@ function WorkoutModal({
                 </option>
               ))}
             </select>
+            <div className="stats">
             <label htmlFor="weight"> Weight </label>
             <input
               type="number"
@@ -60,12 +67,14 @@ function WorkoutModal({
               onChange={handleChange}
               required
             />
-
-            {editExerciseMode ? (
+             {editExerciseMode ? (
               <></>
             ) : (
-              <button disabled={!exercise}> Add exercise + </button>
+              <button className="addExercise-button" disabled={!exercise}> Add exercise + </button>
             )}
+            </div>
+
+           
           </form>
 
           {currentWorkout &&
@@ -82,12 +91,12 @@ function WorkoutModal({
                         confirm edit{" "}
                       </button>
                     ) : (
-                      <button onClick={() => clickEditExercise(exercise._id)}>
+                      <button className="editExercise-button" onClick={() => clickEditExercise(exercise._id)}>
                         {" "}
                         edit{" "}
                       </button>
                     )}
-                    <button
+                    <button className="deleteExercise-button"
                       onClick={() => deleteExercise(workoutId, exercise._id)}
                     >
                       {" "}
@@ -100,7 +109,7 @@ function WorkoutModal({
           {editMode ? (
             <button onClick={editWorkout}> Finish editing</button>
           ) : (
-            <button onClick={createWorkout}> End workout </button>
+            <button className="endWorkout-button" onClick={createWorkout}> End workout </button>
           )}
         </div>
       </Modal>

@@ -257,8 +257,9 @@ router.put("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
     const finalUpdateExercise = await Exercise.findOne({
       _id: { $in: exerciseId },
     });
-    const updatedWorkouts = await Workout.find({}).populate("exercises");
-
+    const updatedWorkouts = await Workout.findById(workoutId).populate("exercises");
+    console.log(updatedWorkouts)
+  
     if (updateExercise) {
       res.status(200).json({
         success: true,
