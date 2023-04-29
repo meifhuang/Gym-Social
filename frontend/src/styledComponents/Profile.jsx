@@ -1,25 +1,60 @@
 import styled from "styled-components";
 
+export const CenteredFlexColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const CenteredFlexRow = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const TagInfo = styled.div`
   display: flex;
   /* margin: 2rem; */
-  border: 2px solid rgb(163, 158, 158);
+  /* border: 2px solid rgb(163, 158, 158); */
   border-radius: 0.25rem;
+  padding: 5rem;
+  gap: 3rem;
+
   img {
     width: 200px;
   }
 `;
 
+export const UserInformation = styled(CenteredFlexColumn)`
+  align-items: start;
+  gap: 1rem;
+  padding: 2rem;
+`;
+
+export const ImageContainer = styled(CenteredFlexColumn)`
+  gap: 1rem;
+`;
+
 export const UserContact = styled.div`
   display: flex;
-  flex-direction: column;
-  /* border: 1px solid red; */
-  justify-content: center;
   align-items: center;
+  gap: 1rem;
 `;
+
+export const UserStats = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+export const About = styled(CenteredFlexColumn)`
+ line-height: 1.25rem;
+`
 
 export const ProfileComp = styled.main`
   /* background-color: lightblue; */
+  letter-spacing: 1px;
   padding: 2rem;
   margin: 2rem calc(1rem + 10vw);
   gap: 2rem;
@@ -39,7 +74,7 @@ export const ProfileComp = styled.main`
 
   & .tag {
     grid-area: tag;
-    background-color: blue;
+    /* background-color: blue; */
     grid-column: 1/9;
     grid-row: 1/2;
   }
@@ -47,24 +82,48 @@ export const ProfileComp = styled.main`
   & .workouts {
     grid-area: workouts;
     /* background-color: grey; */
-    grid-column: 4/9;
+    grid-column: 1/9;
     grid-row: 2/4;
   }
 
-  & .about {
+  /* & .about {
     grid-area: about;
     background-color: brown;
     grid-column: 1/4;
     grid-row: 2/3;
-  }
+  } */
 
-  & .friends {
+  /* & .friends {
     grid-area: friends;
     background-color: yellow;
     grid-column: 1/4;
     grid-row: 3/4;
+  } */
+`;
+
+export const FollowButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  letter-spacing: 1px;
+  width: 100px;
+  padding: 0.75rem 1rem;
+  border-radius: 0.25rem;
+  border: none;
+  background: #e0e5e7;
+  /* background: ${({ followed }) =>
+    followed === "true" ? "#e0e5e7" : "#9BA4B5"}; */
+  transition: 0.15s ease-in-out;
+
+  &:hover {
+    /* background: ${({ followed }) =>
+      followed === "true" ? "#9BA4B5" : "#e0e5e7"}; */
+    background: #9ba4b5;
   }
 `;
+
+// export const UnfollowButton = styled(FollowButton)`
+// `
 
 export const WorkoutContainer = styled.div`
   display: grid;
@@ -126,16 +185,8 @@ export const Modal = styled.div`
   position: fixed;
   border: 1px solid red;
 
-
-
-  & .btn-modal {
-    padding: 10px 20px;
-    display: block;
-    margin: 100px auto 0;
-    font-size: 18px;
-    border: 1px solid red;
-  }
-  & .modal-content {
+  & .modal-content,
+  &.workout-modal {
     position: absolute;
     top: 40%;
     left: 50%;
@@ -147,27 +198,6 @@ export const Modal = styled.div`
     max-width: 600px;
     min-width: 300px;
     border: 1px solid red;
-  }
-
-  &.workout-modal{
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    line-height: 1.4;
-    background: #f1f1f1;
-    padding: 14px 28px;
-    border-radius: 3px;
-    max-width: 600px;
-    min-width: 300px;
-  }
-
-  & .close-modal {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 5px 7px;
-    /* border: 1px solid red; */
   }
 `;
 
