@@ -480,15 +480,18 @@ export default function Profile() {
   return (
     <div className="App">
       {/* {loggedInId === id ? ( */}
+      <button onClick={gotoNewsFeed}> Return to feed </button>
       <ProfileComp>
+
         <TagInfo className="tag">
+       
           <ImageContainer>
             <img src="../src/images/avatar.png"></img>
             <h2> {username} </h2>
           </ImageContainer>
           <UserInformation>
             <UserContact>
-              <div> @{username}</div>
+              <h3> @{username}</h3>
               <div>
                 {loggedInId === id ? (
                   ""
@@ -579,6 +582,7 @@ export default function Profile() {
             editExercise={editExercise}
           />
         )}
+        { (following.some(user => user._id === id)) ? 
         <WorkoutContainer className="workouts">
           {workouts &&
             workouts.map((workout) => {
@@ -621,6 +625,9 @@ export default function Profile() {
               );
             })}
         </WorkoutContainer>
+        : 
+        <h3> Follow to see </h3>
+    }
         {/* <div className="about">
           <div className="about-header">About Me</div>
           <div>
@@ -637,7 +644,7 @@ export default function Profile() {
           })}
         </div> */}
       </ProfileComp>
-      <button onClick={gotoNewsFeed}> Return to feed </button>
+      
     </div>
   );
 }
