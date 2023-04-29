@@ -5,7 +5,7 @@ import { AuthContext } from "../AuthContext";
 // import workout from "../../backend/models/workout";
 
 //component
-import ModalComp from "../components/Modal";
+// import ModalComp from "../components/Modal";
 import WorkoutModal from "../components/AddWorkoutForm";
 import EditWorkoutForm from "../components/EditWorkoutForm";
 
@@ -281,7 +281,8 @@ export default function Profile() {
     setEditExerciseMode(false);
   };
 
-  const editExercise = async (exerciseId) => {
+  const editExercise = async (e,exerciseId) => {
+    e.preventDefault();
    
     console.log("in exercise route");
     try {
@@ -385,6 +386,7 @@ export default function Profile() {
   }
 
   const clickEditExercise = async (exerciseId) => {
+    setModal(true);
     try {
       const response = await axios({
         method: "get",

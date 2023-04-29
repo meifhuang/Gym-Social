@@ -73,12 +73,12 @@ const EditWorkoutForm = ({
                     />
                     <button
                       type="submit"
-                      // onClick={() => editExercise(exercise._id)}
+                      onClick={() => editExercise(exercise._id)}
                     >
                       {" "}
                       confirm edit{" "}
                     </button>
-                  </form>
+                    </form>
                 );
               } else {
                 return (

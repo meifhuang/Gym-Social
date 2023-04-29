@@ -18,7 +18,8 @@ function WorkoutModal({
   workoutId,
   clickEditExercise,
   exerciseId,
-  editExercise
+  editExercise,
+  editedExercise
 }) {
   return (
     <>
@@ -34,7 +35,6 @@ function WorkoutModal({
               onChange={handleChange}
               required
             >
-        
               <option value="not chosen"> -- Choose an exercise -- </option>
               {exercises.map((exercise) => (
                 <option key={exercise} value={exercise}>
@@ -86,7 +86,7 @@ function WorkoutModal({
                     {exercise.name} : {exercise.weight} lbs - {exercise.sets}{" "}
                     sets - {exercise.reps} reps
                     {editExerciseMode && exercise._id === exerciseId ? (
-                      <button onClick={() => editExercise(exercise._id)}>
+                      <button onClick={(e) => editExercise(e,exercise._id)}>
                         {" "}
                         confirm edit{" "}
                       </button>
