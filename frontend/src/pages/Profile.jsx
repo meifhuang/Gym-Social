@@ -65,6 +65,10 @@ export default function Profile() {
   const [exerciseId, setexerciseId] = useState([]);
   const [loggedInId, setLoggedInId] = useState(localStorage.getItem("id"));
   const [following, setFollowing] = useState([]);
+  const [numFollowing, setnumFollowing] = useState(0);
+  const [numFollowers, setnumFollowers] = useState(0);
+  const [numWorkouts, setnumWorkouts] = useState(0);
+
 
   const [modal, setModal] = useState(false);
   const [workoutModal, setWorkoutModal] = useState(false);
@@ -96,11 +100,13 @@ export default function Profile() {
         },
       });
       if (res) {
-        // console.log("data", res.data.workouts);
         setUsername(res.data.username);
         setWorkouts(res.data.workouts);
-        // console.log("data- following", res.data.loggedInUserFollowing);
         setFollowing(res.data.loggedInUserFollowing);
+        setnumFollowing(res.data.numFollowing); 
+        setnumFollowers(res.data.numFollowers);
+        setnumWorkouts(res.data.numWorkouts);
+
       } else {
         console.log("no responses");
       }
@@ -417,6 +423,7 @@ export default function Profile() {
         console.log("FOLLOWED");
         console.log(res.data.following);
         setFollowing(res.data.following);
+        setnumFollowers(prev => prev + 1);
       } else {
         throw Error("no respones");
       }
@@ -438,6 +445,7 @@ export default function Profile() {
       if (res) {
         console.log("unfollow", res.data.userfollowing);
         setFollowing(res.data.userfollowing);
+        setnumFollowers(prev => prev - 1); 
       } else {
         throw Error("no response");
       }
@@ -488,9 +496,9 @@ export default function Profile() {
               </div>
             </UserContact>
             <UserStats>
-              <div>Posts</div>
-              <div>Followers</div>
-              <div>Following</div>
+              <div>Posts {numWorkouts} </div>
+              <div>Followers {numFollowers}</div>
+              <div>Following {numFollowing}</div>
             </UserStats>
             <About>
               {/* <div className="about-header">About Me</div> */}
@@ -501,12 +509,7 @@ export default function Profile() {
                 adipisci perspiciatis exercitationem voluptatibus? Vitae, iure.
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                 Nostrum soluta quos voluptas repudiandae eaque cum tempora
-                repellat laborum officia minima placeat, odit molestiae nihil
-                adipisci perspiciatis exercitationem voluptatibus? Vitae, iure.
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Nostrum soluta quos voluptas repudiandae eaque cum tempora
-                repellat laborum officia minima placeat, odit molestiae nihil
-                adipisci perspiciatis exercitationem voluptatibus? Vitae, iure.
+                
               </div>
             </About>
           </UserInformation>

@@ -61,7 +61,7 @@ router.delete("/workout/:workoutId" , async (req, res) => {
       if (selectedWorkout) {
         for (let each of selectedWorkout.exercises) {
           await Exercise.findByIdAndDelete(each._id);
-          console.log("deleted", each._id)
+         
         }
       const deleteWorkout = await Workout.findByIdAndDelete(workoutId);
       console.log('delete workout', deleteWorkout); 
@@ -117,8 +117,7 @@ router.post(
   "/createworkout",
   async (req, res) => {
     console.log("create wrkout")
-    console.log(req.body);
-
+  
     const user = await User.findById(req.user.id).populate('workouts');
     const { name } = req.body;
     const workout = new Workout(name);
@@ -142,12 +141,10 @@ router.post(
       const user = await User.findById(req.user.id).populate({path: 'workouts', populate: { path: "exercises" }});
       const workout = await Workout.findById(workoutId).populate('exercises');
       const workouts = user.workouts; 
-      console.log("this is the pre", user);
-      console.log("this is the workout to be added", workout);
+  
       workouts.push(workout);
       await user.save();
       // await workout.save();
-      console.log("this is the user", user)
       console.log("Added workout!");
       res.status(200).json({
         success: "true",
@@ -168,14 +165,12 @@ router.put("/workout/:id/createexercise", async (req, res) => {
     await exercise.save(); 
     workout.exercises.push(exercise);
     await workout.save();
-    console.log(workout);
     res.status(200).json({
       success: "true",
       workout: workout.exercises,
       exercise: exercise
     })
   }
-  // user.workouts.push(workout); 
   else {
     console.log("unable to add to workout")
     res.status(400).json({
@@ -246,10 +241,9 @@ router.delete("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
 router.put("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
   console.log("etnering edit exercise")
   const { exerciseId, workoutId } = req.params;
-  console.log(req.body)
+
   try {
-    // const user = await User.findByIdAndUpdate(userId, { $pull: { exercises: exerciseId } });
-    // const user  = await User.findByIdAndUpdate(req.user.id, {$pull: }
+ 
     const updateExercise = await Exercise.findOneAndUpdate(
       { _id:  { $in:exerciseId } },
       {
@@ -259,14 +253,12 @@ router.put("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
         weight: parseInt(req.body.weight),
       }
     );
-    // console.log(updateExercise);
-  
+
     const finalUpdateExercise = await Exercise.findOne({
       _id: { $in: exerciseId },
     });
     const updatedWorkouts = await Workout.find({}).populate("exercises");
-    console.log(updatedWorkouts);
-    // console.log(finalUpdateExercise, "UPDATED EXERCISE");
+
     if (updateExercise) {
       res.status(200).json({
         success: true,

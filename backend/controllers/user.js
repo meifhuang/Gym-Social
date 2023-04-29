@@ -15,17 +15,22 @@ router.get("/profile/:id", async (req, res) => {
     path: "workouts",
     populate: { path: "exercises" },
   });
-  const loggedInUser = await User.findById(loggedInId).populate("following");
+  const loggedInUser = await User.findById(loggedInId).populate(["following", "followers"]);
   const workouts = user.workouts;
-
-  console.log("printing following", loggedInUser.following);
+  const numWorkouts = user.workouts.length;
   const username = user.username;
+  const numFollowing = user.following.length;
+  const numFollowers = user.followers.length; 
+  console.log(numWorkouts);
   res.status(200).json({
     success: true,
     workouts: workouts,
     username: username,
     loggedInId: loggedInId,
     loggedInUserFollowing: loggedInUser.following,
+    numFollowing: numFollowing, 
+    numFollowers: numFollowers,
+    numWorkouts: numWorkouts
   });
 });
 
@@ -62,8 +67,7 @@ router.post("/profile/:id/follow", async (req, res) => {
     const userToFollow = await User.findById(req.params.id).populate(
       "followers"
     );
-    console.log(req.body.id);
-    console.log(user);
+  
     const isalreadyFollowing = await User.find({
       _id: req.user.id,
       following: { _id: userToFollow._id },
@@ -75,7 +79,7 @@ router.post("/profile/:id/follow", async (req, res) => {
       userToFollow.followers.push(user);
       await user.save();
       await userToFollow.save();
-      console.log("followed", userToFollow);
+    
     } else {
       console.log("coudlnt follow probably cause already following");
     }
@@ -100,7 +104,7 @@ router.delete("/profile/:id/unfollow", async (req, res) => {
     const userToUnfollowUpdated = await User.findById(req.user.id).populate(
       "followers"
     );
-    console.log(userUpdated);
+  
     if (userUpdated && userToUnfollowUpdated) {
       res.status(200).json({
         success: "true",
@@ -138,7 +142,5 @@ router.get("/explore", async (req, res) => {
     console.log(e.message);
   }
 });
-
-// const notFollow = res.data.users.filter(x => !res.data.following.find(y => y._id === x._id))
 
 module.exports = router;
