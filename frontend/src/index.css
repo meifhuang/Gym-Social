@@ -77,4 +77,5 @@ button:focus-visible {
 
 html, body, #root, .App {
   height: 100%;
+  width: 100%;
 }

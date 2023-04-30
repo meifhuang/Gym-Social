@@ -31,6 +31,14 @@ const StyledProfileTabs = styled.div`
   text-transform: uppercase;
   /* letter-spacing: 1px; */
   font-weight: 600;
+
+
+  @media all and (max-width: ${(props) => props.theme.breakpoint.mobile}) {
+    & .nav-tab {
+      display: none;
+      border: 1px solid red;
+    }
+  }
 `;
 
 const DropdownItem = styled.ul`
@@ -124,8 +132,8 @@ export default function Navbar(props) {
     <StyledNav>
       <LogoFontCapitalized>Gym Social</LogoFontCapitalized>
       <StyledProfileTabs>
-        <div>Home</div>
-        <div>Explore</div>
+        <div className="nav-tab">Home</div>
+        <div className="nav-tab">Explore</div>
         <MenuTrigger
           className="menu-trigger"
           onClick={() => setIsActive(!isActive)}
@@ -140,19 +148,7 @@ export default function Navbar(props) {
         </ProfileDropdown>
       </StyledProfileTabs>
 
-      {/* <div className="nav-tabs">
-        <div className="nav-expand ">
-          <div>Home</div>
-          <div>About </div>
-          <div> Register</div>
-        </div>
-        <Hamburger toggled={isOpen} toggle={setOpen}></Hamburger>
-        <div className={isOpen ? "dropdown" : "dropdown hidden"}>
-          <div className="">Home</div>
-          <div className="">About </div>
-          <div className=""> Register</div>
-        </div>
-      </div> */}
+
     </StyledNav>
   );
 }

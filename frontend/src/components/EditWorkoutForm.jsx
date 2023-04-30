@@ -1,7 +1,14 @@
 import React from "react";
-import { Modal, ModalOverlay, FinishEditButton, EditDeleteButton, SelectExerciseBar } from "../styledComponents/Profile";
+import {
+  Modal,
+  ModalOverlay,
+  FinishEditButton,
+  EditDeleteButton,
+  SelectExerciseBar,
+} from "../styledComponents/Profile";
+
 const EditWorkoutForm = ({
-  toggleModal,
+  toggleEditWorkoutModal,
   workoutName,
   currentWorkout,
   exerciseId,
@@ -10,16 +17,21 @@ const EditWorkoutForm = ({
   handleEditExercise,
   deleteExercise,
   editExerciseMode,
-    clickEditExercise,
-  editExercise
+  clickEditExercise,
+  editExercise,
+  currentWorkoutName
 }) => {
+  
+console.log(currentWorkout)
   return (
     <Modal className="">
-      <ModalOverlay onClick={toggleModal} className=""></ModalOverlay>
+      <ModalOverlay
+        onClick={toggleEditWorkoutModal}
+        className=""
+      ></ModalOverlay>
       <div className="modal-content">
         <>
-          <h2> {workoutName.name} </h2>
-
+          <h2> {currentWorkoutName} </h2>
           {currentWorkout &&
             currentWorkout.map((exercise) => {
               if (exerciseId === exercise._id) {
@@ -44,49 +56,52 @@ const EditWorkoutForm = ({
                         <option key={exercise} value={exercise}>
                           {exercise}
                         </option>
-                       
                       ))}
                     </SelectExerciseBar>
                     <div>
-                    <label htmlFor="weight"> Weight </label>
-                    <input
-                      type="number"
-                      value={editedExercise.weight}
-                      name="weight"
-                      onChange={handleEditExercise}
-                      // placeholder={exercise.weight}
-                      required
-                    />
-                    <label htmlFor="sets"> Sets </label>
-                    <input
-                      type="number"
-                      value={editedExercise.sets}
-                      name="sets"
-                      onChange={handleEditExercise}
-                      required
-                    />
-                    <label htmlFor="reps"> Reps </label>
-                    <input
-                      type="number"
-                      value={editedExercise.reps}
-                      name="reps"
-                      onChange={handleEditExercise}
-                      required
-                    />
-                  
-                    <FinishEditButton
-                      type="submit"
-                      onClick={() => editExercise(exercise._id)}
-                    >
-                      {" "}
-                      confirm edit{" "}
-                    </FinishEditButton>
+                      <label htmlFor="weight"> Weight </label>
+                      <input
+                        type="number"
+                        min="0"
+                        value={editedExercise.weight}
+                        name="weight"
+                        onChange={handleEditExercise}
+                        // placeholder={exercise.weight}
+                        required
+                      />
+                      <label htmlFor="sets"> Sets </label>
+                      <input
+                        type="number"
+                        min="0"
+                        value={editedExercise.sets}
+                        name="sets"
+                        onChange={handleEditExercise}
+                        required
+                      />
+                      <label htmlFor="reps"> Reps </label>
+                      <input
+                        type="number"
+                        min="0"
+                        value={editedExercise.reps}
+                        name="reps"
+                        onChange={handleEditExercise}
+                        required
+                      />
+
+                      <FinishEditButton
+                        type="submit"
+                        onClick={() => editExercise(exercise._id)}
+                      >
+                        {" "}
+                        confirm edit{" "}
+                      </FinishEditButton>
                     </div>
-                    </form>
+                  </form>
                 );
               } else {
                 return (
                   <div>
+                    
                     <p>
                       {" "}
                       {exercise.name}: {exercise.weight} lbs - {exercise.sets}{" "}
@@ -96,7 +111,9 @@ const EditWorkoutForm = ({
                           confirm edit
                         </button>
                       ) : (
-                        <EditDeleteButton onClick={() => clickEditExercise(exercise._id)}>
+                        <EditDeleteButton
+                          onClick={() => clickEditExercise(exercise._id)}
+                        >
                           {" "}
                           edit{" "}
                         </EditDeleteButton>
@@ -112,7 +129,10 @@ const EditWorkoutForm = ({
                 );
               }
             })}
-          <FinishEditButton onClick={toggleModal}> Finish editing</FinishEditButton>
+          <FinishEditButton onClick={toggleEditWorkoutModal}>
+            {" "}
+            Finish editing
+          </FinishEditButton>
           {/* {editMode ? (
                       <button onClick={editWorkout}> Finish editing</button>
                     ) : (

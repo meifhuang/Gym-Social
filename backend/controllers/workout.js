@@ -34,8 +34,9 @@ router.get("/workout/:workoutId", async (req, res) => {
     console.log("getting workout", workout);
     res.status(200).json({
       success: true, 
-      workouts: workout.exercises,
-      workoutId: workoutId
+      workout: workout,
+      // workouts: workout.exercises,
+      // workoutId: workoutId
     })
   }
   else {

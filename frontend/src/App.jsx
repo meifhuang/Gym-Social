@@ -15,11 +15,15 @@ import ExploreUsers from "./pages/ExploreUsers";
 
 import "./App.css";
 
+
 //Styled Components
 import GlobalStyles from "./styledComponents/GlobalStyles";
 import { ThemeProvider } from "styled-components";
 
+
+
 function App() {
+
   const [message, setMessage] = useState("");
 
   // const [message, setMessage] = useState("");
@@ -40,7 +44,13 @@ function App() {
     colors: {
       lightgrey: "#e9e4e4;",
     },
-    mobile: "768px",
+    breakpoint: {
+      xxxs: "0px",
+      xxs : "500px",
+      mobile: "768px", 
+      md: "1000px"
+    }
+    
   };
   return (
     <ThemeProvider theme={theme}>
