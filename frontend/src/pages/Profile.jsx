@@ -6,7 +6,7 @@ import { AuthContext } from "../AuthContext";
 
 //component
 // import ModalComp from "../components/Modal";
-import WorkoutModal from "../components/AddWorkoutForm";
+import AddWorkoutForm from "../components/AddWorkoutForm";
 import EditWorkoutForm from "../components/EditWorkoutForm";
 
 import styled from "styled-components";
@@ -24,7 +24,7 @@ import {
   About,
   ImageContainer,
   UserInformation,
-  FollowButton
+  FollowButton,
 } from "../styledComponents/Profile";
 
 export default function Profile() {
@@ -61,16 +61,18 @@ export default function Profile() {
   const [currentWorkout, setCurrentWorkout] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [editExerciseMode, setEditExerciseMode] = useState(false);
-  const [exerciseId, setexerciseId] = useState([]);
+  const [exerciseId, setExerciseId] = useState([]);
   const [loggedInId, setLoggedInId] = useState(localStorage.getItem("id"));
   const [following, setFollowing] = useState([]);
   const [numFollowing, setnumFollowing] = useState(0);
   const [numFollowers, setnumFollowers] = useState(0);
   const [numWorkouts, setnumWorkouts] = useState(0);
 
+  const [editWorkoutModal, setEditWorkoutModal] = useState(false);
+  const [addWorkoutModal, setAddWorkoutModal] = useState(false);
+  const [currentWorkoutName, setCurrentWorkoutName] = useState("");
 
-  const [modal, setModal] = useState(false);
-  const [workoutModal, setWorkoutModal] = useState(false);
+  const [exerciseDB, setExerciseDB] = useState("");
 
   // if (modal) {
   //   document.body.classList.add("active-modal");
@@ -78,14 +80,37 @@ export default function Profile() {
   //   document.body.classList.remove("active-modal");
   // }
 
-  const toggleModal = () => {
-    setModal(!modal);
+  const toggleEditWorkoutModal = () => {
+    setEditWorkoutModal(!editWorkoutModal);
     setCurrentWorkout([]);
   };
 
-  const toggleWorkoutModal = () => {
-    setWorkoutModal(!workoutModal);
+  const toggleAddWorkoutModal = () => {
+    setAddWorkoutModal(!addWorkoutModal);
+    setExerciseId("");
   };
+  const exercise_key = import.meta.env.VITE_ExerciseKey;
+
+  async function getExerciseList() {
+    const options = {
+      method: "GET",
+      url: "https://exercisedb.p.rapidapi.com/exercises",
+      headers: {
+        "Content-Type": "application/octet-stream",
+        "X-RapidAPI-Key": exercise_key,
+        "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
+      },
+    };
+
+    try {
+      const response = await axios.request(options);
+      console.log(response.data);
+      setExerciseDB(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   function registerRedirect() {
     navigate("/register");
   }
@@ -103,10 +128,9 @@ export default function Profile() {
         setUsername(res.data.username);
         setWorkouts(res.data.workouts);
         setFollowing(res.data.loggedInUserFollowing);
-        setnumFollowing(res.data.numFollowing); 
+        setnumFollowing(res.data.numFollowing);
         setnumFollowers(res.data.numFollowers);
         setnumWorkouts(res.data.numWorkouts);
-
       } else {
         console.log("no responses");
       }
@@ -120,7 +144,7 @@ export default function Profile() {
   }, []);
 
   const createWorkout = async () => {
-    setWorkoutModal(false);
+    setAddWorkoutModal(false);
     try {
       const response = await axios({
         method: "post",
@@ -139,7 +163,7 @@ export default function Profile() {
         setWorkouts(response.data.workouts);
         setworkoutId(response.data.workouts._id);
         setCurrentWorkout([]);
-        setnumWorkouts(prev => prev + 1);
+        setnumWorkouts((prev) => prev + 1);
       } else {
         throw Error("No response");
       }
@@ -158,7 +182,8 @@ export default function Profile() {
   };
 
   const clickEditWorkout = async (workoutId) => {
-    setModal(true);
+    // setWorkoutName()
+    setEditWorkoutModal(true);
     try {
       const response = await axios({
         method: "get",
@@ -168,9 +193,11 @@ export default function Profile() {
         },
       });
       if (response) {
-        console.log("edit", response.data.workouts);
-        setworkoutId(response.data.workoutId);
-        setCurrentWorkout(response.data.workouts);
+        console.log("edit", response.data);
+        const workoutData = response.data.workout;
+        setworkoutId(workoutData._id);
+        setCurrentWorkout(workoutData.exercises);
+        setCurrentWorkoutName(workoutData.name);
       } else {
         throw Error("No response");
       }
@@ -179,7 +206,7 @@ export default function Profile() {
     }
     setEditMode(true);
     setShowExerciseForm(true);
-    setexerciseId(0);
+    setExerciseId(0);
   };
 
   const deleteWorkout = async (workoutId) => {
@@ -197,7 +224,7 @@ export default function Profile() {
             (workout) => workout._id !== response.data.workoutId
           );
         });
-        setnumWorkouts(prev => prev - 1); 
+        setnumWorkouts((prev) => prev - 1);
       }
     } catch (e) {
       console.log(e.message);
@@ -206,6 +233,7 @@ export default function Profile() {
 
   const addExercise = async (e) => {
     e.preventDefault();
+    console.log(exercise);
     try {
       console.log("addeddd exercise");
       const res = await axios({
@@ -224,6 +252,10 @@ export default function Profile() {
 
       if (res) {
         console.log("adding", res.data.exercise);
+        const exerciseGif = exerciseDB.find(
+          (exercise) => res.data.exercise.name === exercise.name
+        ).gifUrl;
+        console.log(exerciseGif);
         setCurrentWorkout([
           ...currentWorkout,
           {
@@ -232,6 +264,7 @@ export default function Profile() {
             weight: exercise.weight,
             sets: exercise.sets,
             reps: exercise.reps,
+            gif: exerciseGif,
           },
         ]);
         console.log("whats the workout", currentWorkout);
@@ -256,7 +289,7 @@ export default function Profile() {
 
   const handleExerciseForm = async (e) => {
     e.preventDefault();
-    setWorkoutModal(true);
+    setAddWorkoutModal(true);
     try {
       const response = await axios({
         method: "post",
@@ -283,9 +316,9 @@ export default function Profile() {
     setEditExerciseMode(false);
   };
 
-  const editExercise = async (e,exerciseId) => {
+  const editExercise = async (e, exerciseId) => {
     e.preventDefault();
-   
+
     console.log("in exercise route");
     try {
       const res = await axios({
@@ -299,13 +332,21 @@ export default function Profile() {
           weight: editedExercise.weight,
           sets: editedExercise.sets,
           reps: editedExercise.reps,
+          // gif:
         },
       });
 
       if (res) {
+        console.log(res);
+
         const exercise_data = res.data.finalUpdateExercise;
-        const workout = await res.data.updatedWorkouts;
-        console.log(currentWorkout);
+        console.log(exercise_data)
+        // const workout = await res.data.updatedWorkouts;
+        const exerciseGif = exerciseDB.find(
+          (exercise) => exercise_data.name === exercise.name
+        ).gifUrl;
+        console.log(exerciseGif);
+
         // setCurrentWorkout(workout);
         const updateList = currentWorkout.map((exercise) => {
           if (exercise._id === exerciseId) {
@@ -315,6 +356,7 @@ export default function Profile() {
               weight: exercise_data.weight,
               sets: exercise_data.sets,
               reps: exercise_data.reps,
+              gif: exerciseGif
             };
           } else {
             return exercise;
@@ -324,7 +366,7 @@ export default function Profile() {
         console.log("return updated after editing", updateList);
         setExercise(updateList);
         setEditExerciseMode(false);
-        setexerciseId(0);
+        setExerciseId(0);
         console.log("whats the current", currentWorkout);
       }
     } catch (e) {
@@ -388,7 +430,8 @@ export default function Profile() {
   }
 
   const clickEditExercise = async (exerciseId) => {
-    setModal(true);
+    // setEditWorkoutModal(false);
+    // setAddWorkoutModal(false)
     try {
       const response = await axios({
         method: "get",
@@ -408,7 +451,7 @@ export default function Profile() {
       console.log(e);
     }
     setEditExerciseMode(true);
-    setexerciseId(exerciseId);
+    setExerciseId(exerciseId);
   };
 
   const follow = async (id) => {
@@ -427,7 +470,7 @@ export default function Profile() {
         console.log("FOLLOWED");
         console.log(res.data.following);
         setFollowing(res.data.following);
-        setnumFollowers(prev => prev + 1);
+        setnumFollowers((prev) => prev + 1);
       } else {
         throw Error("no respones");
       }
@@ -449,7 +492,7 @@ export default function Profile() {
       if (res) {
         console.log("unfollow", res.data.userfollowing);
         setFollowing(res.data.userfollowing);
-        setnumFollowers(prev => prev - 1); 
+        setnumFollowers((prev) => prev - 1);
       } else {
         throw Error("no response");
       }
@@ -496,9 +539,15 @@ export default function Profile() {
                 {loggedInId === id ? (
                   ""
                 ) : following.some((user) => user._id === id) ? (
-                  <FollowButton followed="false" onClick={() => unfollow(id)}> Unfollow </FollowButton>
+                  <FollowButton followed="false" onClick={() => unfollow(id)}>
+                    {" "}
+                    Unfollow{" "}
+                  </FollowButton>
                 ) : (
-                  <FollowButton followed="true" onClick={() => follow(id)}> Follow </FollowButton>
+                  <FollowButton followed="true" onClick={() => follow(id)}>
+                    {" "}
+                    Follow{" "}
+                  </FollowButton>
                 )}
               </div>
             </UserContact>
@@ -516,7 +565,6 @@ export default function Profile() {
                 adipisci perspiciatis exercitationem voluptatibus? Vitae, iure.
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                 Nostrum soluta quos voluptas repudiandae eaque cum tempora
-                
               </div>
             </About>
           </UserInformation>
@@ -535,7 +583,7 @@ export default function Profile() {
                 />
                 <button
                   disabled={!workoutName.name}
-                  onClick={toggleWorkoutModal}
+                  onClick={toggleAddWorkoutModal}
                 >
                   + Create a workout
                 </button>{" "}
@@ -546,9 +594,10 @@ export default function Profile() {
           </div>
         </TagInfo>
 
-        {workoutModal && (
-          <WorkoutModal
-            toggleWorkoutModal={toggleWorkoutModal}
+        {addWorkoutModal && (
+          <AddWorkoutForm
+            exerciseDB={exerciseDB}
+            toggleAddWorkoutModal={toggleAddWorkoutModal}
             workoutName={workoutName}
             exercise={exercise}
             handleChange={handleChange}
@@ -563,13 +612,15 @@ export default function Profile() {
             workoutId={workoutId}
             clickEditExercise={clickEditExercise}
             exerciseId={exerciseId}
+            editedExercise={editedExercise}
+            handleEditExercise={handleEditExercise}
             editExercise={editExercise}
           />
         )}
 
-        {modal && (
+        {editWorkoutModal && (
           <EditWorkoutForm
-            toggleModal={toggleModal}
+            toggleEditWorkoutModal={toggleEditWorkoutModal}
             workoutName={workoutName}
             currentWorkout={currentWorkout}
             exerciseId={exerciseId}
@@ -580,6 +631,7 @@ export default function Profile() {
             deleteExercise={deleteExercise}
             clickEditExercise={clickEditExercise}
             editExercise={editExercise}
+            currentWorkoutName={currentWorkoutName}
           />
         )}
         <WorkoutContainer className="workouts">
@@ -613,7 +665,7 @@ export default function Profile() {
                       return (
                         <WorkoutInfo>
                           <p>
-                          <b> {exercise.name}: </b>   {exercise.weight} lbs -{" "}
+                            <b> {exercise.name}: </b> {exercise.weight} lbs -{" "}
                             {exercise.sets} sets - {exercise.reps} - reps
                           </p>
                         </WorkoutInfo>
@@ -640,7 +692,10 @@ export default function Profile() {
           })}
         </div> */}
       </ProfileComp>
-      
+
+      <button onClick={gotoNewsFeed}> Return to feed </button>
+      <button onClick={getExerciseList}>GET EXERCISES</button>
+
     </div>
   );
 }
