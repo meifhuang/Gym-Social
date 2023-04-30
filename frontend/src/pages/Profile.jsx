@@ -523,15 +523,18 @@ export default function Profile() {
   return (
     <div className="App">
       {/* {loggedInId === id ? ( */}
+      <button onClick={gotoNewsFeed}> Return to feed </button>
       <ProfileComp>
+
         <TagInfo className="tag">
+       
           <ImageContainer>
             <img src="../src/images/avatar.png"></img>
             <h2> {username} </h2>
           </ImageContainer>
           <UserInformation>
             <UserContact>
-              <div> @{username}</div>
+              <h3> @{username}</h3>
               <div>
                 {loggedInId === id ? (
                   ""
@@ -689,8 +692,10 @@ export default function Profile() {
           })}
         </div> */}
       </ProfileComp>
+
       <button onClick={gotoNewsFeed}> Return to feed </button>
       <button onClick={getExerciseList}>GET EXERCISES</button>
+
     </div>
   );
 }
