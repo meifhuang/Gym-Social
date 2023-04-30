@@ -1,5 +1,6 @@
-import React, { UseState } from "react";
+import React, { useState } from "react";
 
+import ArrowSwitchChev from "../assets/chevron-down.svg";
 import {
   Modal,
   ModalOverlay,
@@ -9,6 +10,9 @@ import {
   AddWorkoutButton,
   EditForm,
   FinishEditButton,
+  ArrowSwitch,
+  ExerciseImage,
+  // ArrowContainer,
 } from "../styledComponents/Profile";
 
 function AddWorkoutForm({
@@ -32,6 +36,9 @@ function AddWorkoutForm({
   editedExercise,
   handleEditExercise,
 }) {
+  const [toggleArrow, setToggleArrow] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState("");
+
   return (
     <>
       <Modal>
@@ -180,12 +187,6 @@ function AddWorkoutForm({
                       {" "}
                       {exercise.name}: {exercise.weight} lbs - {exercise.sets}{" "}
                       sets - {exercise.reps} reps
-                      {/* {
-                        editExerciseMode && exercise._id === exerciseId ? (
-                        <button onClick={(e) => editExercise(e , exercise._id)}>
-                          confirm edit
-                        </button>
-                       ) : ( */}
                       <EditDeleteButton
                         onClick={() => clickEditExercise(exercise._id)}
                       >
@@ -199,11 +200,48 @@ function AddWorkoutForm({
                         {" "}
                         delete{" "}
                       </EditDeleteButton>
+                      {/* <ArrowContainer> */}
+                      {/* <div> */}
+                        <ArrowSwitch>
+                          <svg
+                            className={
+                              activeDropdown === exercise._id
+                                ? "arrow-up"
+                                : "arrow-down"
+                            }
+                            onClick={() => {
+                              if (activeDropdown === exercise._id) {
+                                setActiveDropdown("");
+                              } else {
+                                setActiveDropdown(exercise._id);
+                              }
+                            }}
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="feather feather-chevron-down"
+                          >
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                          </svg>
+                        </ArrowSwitch>
+                      {/* </div> */}
+                      {/* </ArrowContainer> */}
                     </p>
-                    <div>
+                    <ExerciseImage
+                      status={exercise._id === activeDropdown ? "show" : "hide"}
+                      // className={
+                      //   exercise._id === activeDropdown ? "show" : "hide"
+                      // }
+                    >
                       {" "}
                       <img src={exercise.gif} alt="loading..." />
-                    </div>
+                    </ExerciseImage>
                   </div>
                 );
               }

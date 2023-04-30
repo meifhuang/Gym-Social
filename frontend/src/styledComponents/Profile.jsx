@@ -88,7 +88,6 @@ export const UserContact = styled.div`
   justify-content: center;
 
   gap: 1rem;
- 
 `;
 
 export const UserStats = styled.div`
@@ -133,7 +132,6 @@ export const WorkoutContainer = styled.div`
   /* padding: 0rem 2rem; */
   gap: 1rem;
   grid-auto-rows: minmax(340px, 1fr);
-
 
   @media all and (max-width: ${(props) => props.theme.breakpoint.xxs}) {
     grid-template-columns: repeat(auto-fill, 1fr);
@@ -214,7 +212,6 @@ export const Modal = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    
   }
   .select-exercise {
     font-size: 1.2em;
@@ -234,17 +231,24 @@ export const Modal = styled.div`
   }
   form > * {
     margin-bottom: 0.5em;
-    
   }
 
   .inputted-exercises {
-    /* border: 1px solid red; */
+    width: 100%;
+    /* height: 10%; */
+    /* border: 1px solid blue; */
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
   }
 
+  & p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* text-align: center; */
+  }
   & img {
     /* border: 1px solid blue; */
     width: 200px;
@@ -316,4 +320,49 @@ export const EditForm = styled.form`
     -webkit-appearance: none;
     margin: 0;
   }
+`;
+
+export const ArrowSwitch = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+
+  border-top: 10px solid #7a7777; */
+  /* transition: 0.25s ease-in; */
+  .arrow-down {
+    transform: rotate(0deg);
+  }
+
+  .arrow-up {
+    transform: rotate(-180deg);
+  }
+
+  & svg {
+    transition: 0.3s linear;
+  }
+`;
+
+export const ExerciseImage = styled.div`
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  height: ${(props) => (props.status === "hide" ? "0" : "200px")};
+  transition: all 0.25s ease-in;
+  /* animation: growDown 200ms linear; */
+  transform-origin: top center;
+
+  @keyframes growDown {
+    0% {
+      transform: scaleY(0);
+    }
+
+    100% {
+      transform: scaleY(1);
+    }
+  }
+
 `;
