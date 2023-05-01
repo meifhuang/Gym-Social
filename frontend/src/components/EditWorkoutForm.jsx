@@ -5,6 +5,8 @@ import {
   FinishEditButton,
   EditDeleteButton,
   SelectExerciseBar,
+  ExerciseImage,
+  ArrowSwitch,
 } from "../styledComponents/Profile";
 
 const EditWorkoutForm = ({
@@ -19,10 +21,12 @@ const EditWorkoutForm = ({
   editExerciseMode,
   clickEditExercise,
   editExercise,
-  currentWorkoutName
+  currentWorkoutName,
+  exerciseDB,
+  activeDropdown,
+  setActiveDropdown,
 }) => {
-  
-console.log(currentWorkout)
+  console.log(currentWorkout);
   return (
     <Modal className="">
       <ModalOverlay
@@ -35,7 +39,7 @@ console.log(currentWorkout)
           {currentWorkout &&
             currentWorkout.map((exercise) => {
               if (exerciseId === exercise._id) {
-                console.log(exercise);
+                // console.log(exercise);
                 return (
                   <form onSubmit={(e) => editExercise(e, exercise._id)}>
                     <label htmlFor="name"> Change exercise </label>
@@ -52,9 +56,9 @@ console.log(currentWorkout)
                       <option value="" disabled selected hidden>
                         {exercise.name}
                       </option>
-                      {exercises.map((exercise) => (
-                        <option key={exercise} value={exercise}>
-                          {exercise}
+                      {exerciseDB.map((exercise) => (
+                        <option key={exercise.id} value={exercise.name}>
+                          {exercise.name}
                         </option>
                       ))}
                     </SelectExerciseBar>
@@ -90,7 +94,7 @@ console.log(currentWorkout)
 
                       <FinishEditButton
                         type="submit"
-                        onClick={() => editExercise(exercise._id)}
+                        onClick={(e) => editExercise(e, exercise._id)}
                       >
                         {" "}
                         confirm edit{" "}
@@ -101,11 +105,46 @@ console.log(currentWorkout)
               } else {
                 return (
                   <div>
-                    
-                    <p>
+                    <div>
                       {" "}
                       {exercise.name}: {exercise.weight} lbs - {exercise.sets}{" "}
                       sets - {exercise.reps} reps
+                      {/* <ArrowSwitch>
+                          <svg
+                            className={
+                              activeDropdown === exercise._id
+                                ? "arrow-up"
+                                : "arrow-down"
+                            }
+                            onClick={() => {
+                              if (activeDropdown === exercise._id) {
+                                setActiveDropdown("");
+                              } else {
+                                setActiveDropdown(exercise._id);
+                              }
+                            }}
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            class="feather feather-chevron-down"
+                          >
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                          </svg>
+                        </ArrowSwitch>
+                      <ExerciseImage
+                        status={
+                          exercise._id === activeDropdown ? "show" : "hide"
+                        }
+                      >
+                        {" "}
+                        <img src={exercise.gif} alt="loading..." />
+                      </ExerciseImage> */}
                       {editExerciseMode && exercise._id === exerciseId ? (
                         <button onClick={() => editExercise(exercise._id)}>
                           confirm edit
@@ -124,7 +163,7 @@ console.log(currentWorkout)
                         {" "}
                         delete{" "}
                       </EditDeleteButton>
-                    </p>
+                    </div>
                   </div>
                 );
               }

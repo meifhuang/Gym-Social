@@ -20,11 +20,14 @@ import {
   WorkoutButtonContainer,
   WorkoutInfoContainer,
   WorkoutInfo,
+  ExerciseInfo,
   UserStats,
   About,
   ImageContainer,
   UserInformation,
   FollowButton,
+  ArrowSwitch,
+  ExerciseImage,
 } from "../styledComponents/Profile";
 
 export default function Profile() {
@@ -73,13 +76,65 @@ export default function Profile() {
   const [currentWorkoutName, setCurrentWorkoutName] = useState("");
 
   const [exerciseDB, setExerciseDB] = useState("");
-
+  const [activeDropdown, setActiveDropdown] = useState("");
   // if (modal) {
   //   document.body.classList.add("active-modal");
   // } else {
   //   document.body.classList.remove("active-modal");
   // }
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setExercise({
+      ...exercise,
+      [name]: value,
+    });
+  };
+
+  const [editedExercise, setEditedExercise] = useState({
+    exercise,
+  });
+
+  const handleEditExercise = (e) => {
+    const { name, value } = e.target;
+    setEditedExercise({
+      ...editedExercise,
+      [name]: value,
+    });
+  };
+
+  const handleNameChange = (e) => {
+    const { name, value } = e.target;
+    setWorkoutName({
+      name: value,
+    });
+    console.log(workoutName);
+  };
+
+  const exercise_key = import.meta.env.VITE_ExerciseKey;
+  useEffect(() => {
+    async function getExerciseList() {
+      const options = {
+        method: "GET",
+        url: "https://exercisedb.p.rapidapi.com/exercises",
+        headers: {
+          "Content-Type": "application/octet-stream",
+          "X-RapidAPI-Key": exercise_key,
+          "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
+        },
+      };
+
+      try {
+        const response = await axios.request(options);
+        console.log(response.data);
+        setExerciseDB(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getExerciseList();
+  }, []);
   const toggleEditWorkoutModal = () => {
     setEditWorkoutModal(!editWorkoutModal);
     setCurrentWorkout([]);
@@ -89,27 +144,6 @@ export default function Profile() {
     setAddWorkoutModal(!addWorkoutModal);
     setExerciseId("");
   };
-  const exercise_key = import.meta.env.VITE_ExerciseKey;
-
-  async function getExerciseList() {
-    const options = {
-      method: "GET",
-      url: "https://exercisedb.p.rapidapi.com/exercises",
-      headers: {
-        "Content-Type": "application/octet-stream",
-        "X-RapidAPI-Key": exercise_key,
-        "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
-      },
-    };
-
-    try {
-      const response = await axios.request(options);
-      console.log(response.data);
-      setExerciseDB(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   function registerRedirect() {
     navigate("/register");
@@ -145,6 +179,7 @@ export default function Profile() {
 
   const createWorkout = async () => {
     setAddWorkoutModal(false);
+    console.log(currentWorkout);
     try {
       const response = await axios({
         method: "post",
@@ -233,7 +268,11 @@ export default function Profile() {
 
   const addExercise = async (e) => {
     e.preventDefault();
-    console.log(exercise);
+
+    const exerciseGif = exerciseDB.find(
+      (exerciseDB_exercise) => exerciseDB_exercise.name === exercise.name
+    ).gifUrl;
+    console.log(exercise.name);
     try {
       console.log("addeddd exercise");
       const res = await axios({
@@ -244,6 +283,7 @@ export default function Profile() {
           weight: exercise.weight,
           sets: exercise.sets,
           reps: exercise.reps,
+          gif: exerciseGif,
         },
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -252,10 +292,6 @@ export default function Profile() {
 
       if (res) {
         console.log("adding", res.data.exercise);
-        const exerciseGif = exerciseDB.find(
-          (exercise) => res.data.exercise.name === exercise.name
-        ).gifUrl;
-        console.log(exerciseGif);
         setCurrentWorkout([
           ...currentWorkout,
           {
@@ -267,17 +303,7 @@ export default function Profile() {
             gif: exerciseGif,
           },
         ]);
-        console.log("whats the workout", currentWorkout);
 
-        // setworkoutList([
-        //   ...workoutList,
-        //   {
-        //     name: exercise.name,
-        //     weight: exercise.weight,
-        //     sets: exercise.sets,
-        //     reps: exercise.reps,
-        //   },
-        // ]);
       } else {
         console.log("NO RES");
       }
@@ -315,10 +341,16 @@ export default function Profile() {
     setEditMode(false);
     setEditExerciseMode(false);
   };
-
+  // console.log(editedExercise, "EDITEXERCISEPROFILE");
   const editExercise = async (e, exerciseId) => {
     e.preventDefault();
 
+    // console.log(editedExercise.name);
+
+    const exerciseGif = await exerciseDB.find(
+      (exerciseDB_exercise) => editedExercise.name === exerciseDB_exercise.name
+    ).gifUrl;
+    console.log(editedExercise.name, exerciseGif);
     console.log("in exercise route");
     try {
       const res = await axios({
@@ -332,44 +364,49 @@ export default function Profile() {
           weight: editedExercise.weight,
           sets: editedExercise.sets,
           reps: editedExercise.reps,
-          // gif:
+          gif: exerciseGif,
         },
       });
 
       if (res) {
-        console.log(res);
 
-        const exercise_data = res.data.finalUpdateExercise;
-        console.log(exercise_data)
-        // const workout = await res.data.updatedWorkouts;
-        const exerciseGif = exerciseDB.find(
-          (exercise) => exercise_data.name === exercise.name
-        ).gifUrl;
-        console.log(exerciseGif);
+        const exercise_data = await res.data.finalUpdateExercise;
 
-        // setCurrentWorkout(workout);
-        const updateList = currentWorkout.map((exercise) => {
+        const updateList = [...currentWorkout].map((exercise) => {
           if (exercise._id === exerciseId) {
+            console.log("SAME ID");
             return {
               _id: exerciseId,
               name: exercise_data.name,
               weight: exercise_data.weight,
               sets: exercise_data.sets,
               reps: exercise_data.reps,
-              gif: exerciseGif
+              gif: exerciseGif,
             };
           } else {
+            console.log("same exercise");
             return exercise;
           }
         });
-        setCurrentWorkout(updateList);
-        console.log("return updated after editing", updateList);
+
+        setCurrentWorkout(updateList); // updates the current workout with the edited exercise
         setExercise(updateList);
         setEditExerciseMode(false);
         setExerciseId(0);
-        console.log("whats the current", currentWorkout);
+
+
+        //Updates the entire workout container list with the edited exercise
+        const updateWorkoutList = await workouts.map((workout) => {
+          if (workout._id === workoutId) {
+            return { ...workout, exercises: updateList };
+          } else {
+            return workout;
+          }
+        });
+        setWorkouts(updateWorkoutList);
       }
     } catch (e) {
+      console.log(e);
       console.log(e.message);
     }
   };
@@ -397,41 +434,12 @@ export default function Profile() {
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setExercise({
-      ...exercise,
-      [name]: value,
-    });
-  };
-
-  const [editedExercise, setEditedExercise] = useState({
-    exercise,
-  });
-
-  const handleEditExercise = (e) => {
-    const { name, value } = e.target;
-    setEditedExercise({
-      ...editedExercise,
-      [name]: value,
-    });
-  };
-
-  const handleNameChange = (e) => {
-    const { name, value } = e.target;
-    setWorkoutName({
-      name: value,
-    });
-    console.log(workoutName);
-  };
-
   function gotoNewsFeed() {
     navigate("/newsfeed");
   }
 
   const clickEditExercise = async (exerciseId) => {
-    // setEditWorkoutModal(false);
-    // setAddWorkoutModal(false)
+    console.log("CLICK EDIT EXERCISE");
     try {
       const response = await axios({
         method: "get",
@@ -525,9 +533,7 @@ export default function Profile() {
       {/* {loggedInId === id ? ( */}
       <button onClick={gotoNewsFeed}> Return to feed </button>
       <ProfileComp>
-
         <TagInfo className="tag">
-       
           <ImageContainer>
             <img src="../src/images/avatar.png"></img>
             <h2> {username} </h2>
@@ -615,11 +621,14 @@ export default function Profile() {
             editedExercise={editedExercise}
             handleEditExercise={handleEditExercise}
             editExercise={editExercise}
+            activeDropdown={activeDropdown}
+            setActiveDropdown={setActiveDropdown}
           />
         )}
 
         {editWorkoutModal && (
           <EditWorkoutForm
+            exerciseDB={exerciseDB}
             toggleEditWorkoutModal={toggleEditWorkoutModal}
             workoutName={workoutName}
             currentWorkout={currentWorkout}
@@ -632,9 +641,12 @@ export default function Profile() {
             clickEditExercise={clickEditExercise}
             editExercise={editExercise}
             currentWorkoutName={currentWorkoutName}
+            activeDropdown={activeDropdown}
+            setActiveDropdown={setActiveDropdown}
           />
         )}
         <WorkoutContainer className="workouts">
+          {console.log(workouts, "WORKOUTWORKOUTSWORKOUTS")}
           {workouts &&
             workouts.map((workout) => {
               return (
@@ -661,13 +673,51 @@ export default function Profile() {
                     </WorkoutButtonContainer>
                   </WorkoutDivHeader>
                   <WorkoutInfoContainer>
+                    {console.log(workout.exercises, "WORKOUTEXERCISES")}
                     {workout.exercises.map((exercise) => {
                       return (
                         <WorkoutInfo>
-                          <p>
+                          <ExerciseInfo>
                             <b> {exercise.name}: </b> {exercise.weight} lbs -{" "}
                             {exercise.sets} sets - {exercise.reps} - reps
-                          </p>
+                            <ArrowSwitch>
+                              <svg
+                                className={
+                                  activeDropdown === exercise._id
+                                    ? "arrow-up feather feather-chevron-down"
+                                    : "arrow-down feather feather-chevron-down"
+                                }
+                                onClick={() => {
+                                  if (activeDropdown === exercise._id) {
+                                    setActiveDropdown("");
+                                  } else {
+                                    setActiveDropdown(exercise._id);
+                                  }
+                                }}
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                // class="feather feather-chevron-down"
+                              >
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                              </svg>
+                            </ArrowSwitch>
+                          </ExerciseInfo>
+
+                          <ExerciseImage
+                            status={
+                              exercise._id === activeDropdown ? "show" : "hide"
+                            }
+                          >
+                            {" "}
+                            <img src={exercise.gif} alt="loading..." />
+                          </ExerciseImage>
                         </WorkoutInfo>
                       );
                     })}
@@ -676,26 +726,9 @@ export default function Profile() {
               );
             })}
         </WorkoutContainer>
-        {/* <div className="about">
-          <div className="about-header">About Me</div>
-          <div>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nostrum
-            soluta quos voluptas repudiandae eaque cum tempora repellat laborum
-            officia minima placeat, odit molestiae nihil adipisci perspiciatis
-            exercitationem voluptatibus? Vitae, iure.
-          </div>
-        </div>
-        <div className="friends">
-          Followed
-          {following.map((user) => {
-            return <h5> {user.fname}</h5>;
-          })}
-        </div> */}
       </ProfileComp>
 
       <button onClick={gotoNewsFeed}> Return to feed </button>
-      <button onClick={getExerciseList}>GET EXERCISES</button>
-
     </div>
   );
 }
