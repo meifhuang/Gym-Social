@@ -199,6 +199,23 @@ export const ExerciseInfo = styled.div`
   align-items: center;
 `;
 
+export const ExerciseInfo2 = styled.div`
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* justify-content: center;
+  align-items: center;  */
+
+  &>*:nth-child(1) {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+  }
+`;
+
 export const Modal = styled.div`
   width: 100vw;
   height: 100vh;
@@ -207,6 +224,7 @@ export const Modal = styled.div`
   right: 0;
   bottom: 0;
   position: fixed;
+  z-index: 1000;
   /* border: 1px solid red; */
 
   & .modal-content,
