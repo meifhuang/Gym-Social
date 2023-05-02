@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   Modal,
   ModalOverlay,
@@ -27,6 +27,8 @@ const EditWorkoutForm = ({
   activeDropdown,
   setActiveDropdown,
 }) => {
+
+  const [addExerciseMode, setAddExerciseMode] = useState[false]
   console.log(currentWorkout);
   return (
     <Modal className="">

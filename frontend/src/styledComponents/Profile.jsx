@@ -200,15 +200,10 @@ export const ExerciseInfo = styled.div`
 `;
 
 export const ExerciseInfo2 = styled.div`
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
   display: flex;
   flex-direction: column;
   width: 100%;
-  /* justify-content: center;
-  align-items: center;  */
-
+  
   &>*:nth-child(1) {
     display: flex;
     justify-content: center; 
