@@ -8,6 +8,7 @@ import { AuthContext } from "../AuthContext";
 // import ModalComp from "../components/Modal";
 import AddWorkoutForm from "../components/AddWorkoutForm";
 import EditWorkoutForm from "../components/EditWorkoutForm";
+import AddPostForm from "../components/AddPostForm";
 
 import styled from "styled-components";
 import {
@@ -39,14 +40,6 @@ export default function Profile() {
     navigate("/newsfeed");
   }
 
-  const exercises = [
-    "bench press",
-    "conventional deadlifts",
-    "shoulder presses",
-    "barbell squats",
-    "barbell rows",
-  ];
-
   const stats = {
     name: "",
     weight: 0,
@@ -77,6 +70,10 @@ export default function Profile() {
 
   const [exerciseDB, setExerciseDB] = useState("");
   const [activeDropdown, setActiveDropdown] = useState("");
+
+  const [postForm, setPostForm] = useState({caption: ""});
+  const [posts, setPosts] = useState([]);
+
   // if (modal) {
   //   document.body.classList.add("active-modal");
   // } else {
@@ -111,7 +108,14 @@ export default function Profile() {
     console.log(workoutName);
   };
 
-  const exercise_key = import.meta.env.VITE_ExerciseKey;
+const handlePostChange = (e) => {
+    const {name, value} = e.target;
+    setPostForm({
+      [name]: value,
+    })
+  }
+
+  // const exercise_key = import.meta.env.VITE_ExerciseKey;
   useEffect(() => {
     async function getExerciseList() {
       const options = {
@@ -165,6 +169,7 @@ export default function Profile() {
         setnumFollowing(res.data.numFollowing);
         setnumFollowers(res.data.numFollowers);
         setnumWorkouts(res.data.numWorkouts);
+        setPosts(res.data.posts);
       } else {
         console.log("no responses");
       }
@@ -176,6 +181,33 @@ export default function Profile() {
   useEffect(() => {
     getWorkout();
   }, []);
+
+  const createPost = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios({
+        method: "post",
+        url: "http://localhost:4000/createpost",
+        data: {
+          caption: postForm.caption
+        }, 
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
+      });
+      if (response) {
+        console.log("add post");
+        console.log(response.data.posts);
+        setPosts(response.data.posts);
+      }
+      else {
+        throw Error("no response");
+      }
+    }
+    catch (e) {
+      console.log(e)
+    }
+  }
 
   const createWorkout = async () => {
     setAddWorkoutModal(false);
@@ -599,6 +631,25 @@ export default function Profile() {
             )}
           </div>
         </TagInfo>
+            
+        <AddPostForm 
+        handlePostChange={handlePostChange}
+        postForm={postForm}
+        posts={posts}
+        createPost={createPost}
+        />
+
+        {posts && (
+          posts.map((post) => {
+            return (
+              <div> 
+              <h3> POST </h3>
+              <h5> {post.caption} </h5>
+              </div>
+            )
+            })
+        )}
+        
 
         {addWorkoutModal && (
           <AddWorkoutForm
