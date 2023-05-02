@@ -63,11 +63,6 @@ function AddWorkoutForm({
                 required
               >
                 <option value="not chosen"> -- Choose an exercise -- </option>
-                {/* {exercises.map((exercise) => (
-                  <option key={exercise} value={exercise}>
-                    {exercise}
-                  </option>
-                ))} */}
                 {exerciseDB.map((exercise) => (
                   <option key={exercise.id} value={exercise.name}>
                     {exercise.name}

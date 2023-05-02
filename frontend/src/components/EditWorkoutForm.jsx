@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -8,6 +8,7 @@ import {
   ExerciseImage,
   ArrowSwitch,
   ExerciseInfo2,
+  AddExerciseButton,
 } from "../styledComponents/Profile";
 
 const EditWorkoutForm = ({
@@ -26,9 +27,12 @@ const EditWorkoutForm = ({
   exerciseDB,
   activeDropdown,
   setActiveDropdown,
+  addExercise,
+  handleChange,
+  exercise,
+  updateAddExerciseEdit,
 }) => {
-
-  const [addExerciseMode, setAddExerciseMode] = useState[false]
+  const [addExerciseMode, setAddExerciseMode] = useState(false);
   console.log(currentWorkout);
   return (
     <Modal className="">
@@ -39,6 +43,22 @@ const EditWorkoutForm = ({
       <div className="modal-content">
         <>
           <h2> {currentWorkoutName} </h2>
+          {addExerciseMode ? (
+            <FinishEditButton
+              onClick={() => {
+                setAddExerciseMode(false);
+                updateAddExerciseEdit();
+              }}
+            >
+              {" "}
+              Done adding
+            </FinishEditButton>
+          ) : (
+            <FinishEditButton onClick={() => setAddExerciseMode(true)}>
+              Add Exercise
+            </FinishEditButton>
+          )}
+
           {currentWorkout &&
             currentWorkout.map((exercise) => {
               if (exerciseId === exercise._id) {
@@ -176,10 +196,66 @@ const EditWorkoutForm = ({
                 );
               }
             })}
+          {addExerciseMode && (
+            <form onSubmit={(e) => addExercise(e)}>
+              <label htmlFor="name" className="select-exercise">
+                {" "}
+                Select exercise{" "}
+              </label>
+              <SelectExerciseBar
+                value={exercise.name}
+                name="name"
+                onChange={handleChange}
+                required
+              >
+                <option value="not chosen"> -- Choose an exercise -- </option>
+                {exerciseDB.map((exercise) => (
+                  <option key={exercise.id} value={exercise.name}>
+                    {exercise.name}
+                  </option>
+                ))}
+              </SelectExerciseBar>
+              <div className="stats">
+                <label htmlFor="weight"> Weight </label>
+                <input
+                  type="number"
+                  value={exercise.weight}
+                  name="weight"
+                  onChange={handleChange}
+                  min="0"
+                  required
+                />
+                <label htmlFor="sets"> Sets </label>
+                <input
+                  type="number"
+                  value={exercise.sets}
+                  name="sets"
+                  onChange={handleChange}
+                  min="0"
+                  required
+                />
+                <label htmlFor="reps"> Reps </label>
+                <input
+                  type="number"
+                  value={exercise.reps}
+                  name="reps"
+                  onChange={handleChange}
+                  min="0"
+                  required
+                />
+
+                <AddExerciseButton disabled={!exercise}>
+                  {" "}
+                  Add exercise +{" "}
+                </AddExerciseButton>
+              </div>
+            </form>
+          )}
           <FinishEditButton onClick={toggleEditWorkoutModal}>
             {" "}
             Finish editing
           </FinishEditButton>
+
           {/* {editMode ? (
                       <button onClick={editWorkout}> Finish editing</button>
                     ) : (

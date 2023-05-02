@@ -335,7 +335,7 @@ const handlePostChange = (e) => {
             gif: exerciseGif,
           },
         ]);
-
+        console.log(currentWorkout,"CURRENT WORKOUT", workoutId, "WORKOUTID",workouts )
       } else {
         console.log("NO RES");
       }
@@ -442,6 +442,17 @@ const handlePostChange = (e) => {
       console.log(e.message);
     }
   };
+
+  const updateAddExerciseEdit = async () => {
+    const updateWorkoutList = await workouts.map((workout) => {
+      if (workout._id === workoutId) {
+        return {...workout, exercises: currentWorkout}
+      } else {
+        return workout;
+      }
+    });
+    setWorkouts(updateWorkoutList);
+  }
 
   const deleteExercise = async (workoutId, exerciseId) => {
     console.log("in delete route");
@@ -694,10 +705,14 @@ const handlePostChange = (e) => {
             currentWorkoutName={currentWorkoutName}
             activeDropdown={activeDropdown}
             setActiveDropdown={setActiveDropdown}
+            addExercise={addExercise}
+            exercise={exercise}
+            handleChange={handleChange}
+            updateAddExerciseEdit={updateAddExerciseEdit}
           />
         )}
         <WorkoutContainer className="workouts">
-          {console.log(workouts, "WORKOUTWORKOUTSWORKOUTS")}
+          {console.log(workouts, "update edit add workouts")}
           {workouts &&
             workouts.map((workout) => {
               return (
@@ -724,7 +739,6 @@ const handlePostChange = (e) => {
                     </WorkoutButtonContainer>
                   </WorkoutDivHeader>
                   <WorkoutInfoContainer>
-                    {console.log(workout.exercises, "WORKOUTEXERCISES")}
                     {workout.exercises.map((exercise) => {
                       return (
                         <WorkoutInfo>
