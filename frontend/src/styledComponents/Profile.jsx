@@ -88,7 +88,6 @@ export const UserContact = styled.div`
   justify-content: center;
 
   gap: 1rem;
- 
 `;
 
 export const UserStats = styled.div`
@@ -134,7 +133,6 @@ export const WorkoutContainer = styled.div`
   gap: 1rem;
   grid-auto-rows: minmax(340px, 1fr);
 
-
   @media all and (max-width: ${(props) => props.theme.breakpoint.xxs}) {
     grid-template-columns: repeat(auto-fill, 1fr);
     grid-auto-rows: minmax(1fr);
@@ -176,11 +174,29 @@ export const WorkoutInfoContainer = styled.div`
   gap: 0.5rem;
   text-align: center;
   letter-spacing: 0.5px;
+  /* background-color: white; */
 `;
 
 export const WorkoutInfo = styled.div`
-  /* border: 1px solid blue; */
-  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid grey;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  /* gap: 1rem; */
+  background-color: white;
+
+  & div {
+    display: flex;
+  }
+`;
+
+export const ExerciseInfo = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const Modal = styled.div`
@@ -214,7 +230,6 @@ export const Modal = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    
   }
   .select-exercise {
     font-size: 1.2em;
@@ -234,21 +249,30 @@ export const Modal = styled.div`
   }
   form > * {
     margin-bottom: 0.5em;
-    
   }
 
   .inputted-exercises {
-    /* border: 1px solid red; */
+    width: 100%;
     display: flex;
     justify-content: center;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
   }
 
-  & img {
-    /* border: 1px solid blue; */
+  /* .inputted-exercises:nth-child(1) {
+    flex: 1;
+  } */
+  /* 
+  & div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  } */
+  /* & img {
+ 
     width: 200px;
-  }
+  } */
 `;
 export const SelectExerciseBar = styled.select`
   height: 2.3em;
@@ -315,5 +339,54 @@ export const EditForm = styled.form`
   input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+`;
+
+export const ArrowSwitch = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+
+  border-top: 10px solid #7a7777; */
+  /* transition: 0.25s ease-in; */
+  .arrow-down {
+    transform: rotate(0deg);
+  }
+
+  .arrow-up {
+    transform: rotate(-180deg);
+  }
+
+  & svg {
+    transition: 0.3s linear;
+  }
+`;
+
+export const ExerciseImage = styled.div`
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  height: ${(props) => (props.status === "hide" ? "0px" : "200px")};
+  transition: all 0.25s ease-in;
+  /* animation: growDown 200ms linear; */
+  transform-origin: top;
+
+  & img {
+    margin-top: 1rem;
+    width: 200px;
+  }
+
+  @keyframes growDown {
+    0% {
+      transform: scaleY(0);
+    }
+
+    100% {
+      transform: scaleY(1);
+    }
   }
 `;
