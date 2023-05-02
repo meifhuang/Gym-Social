@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLoaderData } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
@@ -9,6 +9,8 @@ import { AuthContext } from "../AuthContext";
 import AddWorkoutForm from "../components/AddWorkoutForm";
 import EditWorkoutForm from "../components/EditWorkoutForm";
 import AddPostForm from "../components/AddPostForm";
+
+import { EditIcon, DeleteIcon } from "../assets/icons.jsx";
 
 import styled from "styled-components";
 import {
@@ -29,9 +31,13 @@ import {
   FollowButton,
   ArrowSwitch,
   ExerciseImage,
+  WorkoutIcons,
 } from "../styledComponents/Profile";
 
 export default function Profile() {
+
+  const exerciseDB = useLoaderData();
+
   const { id } = useParams();
   const { token, userId } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -68,7 +74,7 @@ export default function Profile() {
   const [addWorkoutModal, setAddWorkoutModal] = useState(false);
   const [currentWorkoutName, setCurrentWorkoutName] = useState("");
 
-  const [exerciseDB, setExerciseDB] = useState("");
+  // const [exerciseDB, setExerciseDB] = useState("");
   const [activeDropdown, setActiveDropdown] = useState("");
 
   const [postForm, setPostForm] = useState({caption: ""});
@@ -108,37 +114,30 @@ export default function Profile() {
     console.log(workoutName);
   };
 
-const handlePostChange = (e) => {
-    const {name, value} = e.target;
-    setPostForm({
-      [name]: value,
-    })
-  }
-
   // const exercise_key = import.meta.env.VITE_ExerciseKey;
-  useEffect(() => {
-    async function getExerciseList() {
-      const options = {
-        method: "GET",
-        url: "https://exercisedb.p.rapidapi.com/exercises",
-        headers: {
-          "Content-Type": "application/octet-stream",
-          "X-RapidAPI-Key": exercise_key,
-          "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
-        },
-      };
+  // useEffect(() => {
+  //   async function getExerciseList() {
+  //     const options = {
+  //       method: "GET",
+  //       url: "https://exercisedb.p.rapidapi.com/exercises",
+  //       headers: {
+  //         "Content-Type": "application/octet-stream",
+  //         "X-RapidAPI-Key": exercise_key,
+  //         "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
+  //       },
+  //     };
 
-      try {
-        const response = await axios.request(options);
-        console.log(response.data);
-        setExerciseDB(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
+  //     try {
+  //       const response = await axios.request(options);
+  //       console.log(response.data);
+  //       setExerciseDB(response.data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
 
-    getExerciseList();
-  }, []);
+  //   getExerciseList();
+  // }, []);
   const toggleEditWorkoutModal = () => {
     setEditWorkoutModal(!editWorkoutModal);
     setCurrentWorkout([]);
@@ -335,7 +334,13 @@ const handlePostChange = (e) => {
             gif: exerciseGif,
           },
         ]);
-        console.log(currentWorkout,"CURRENT WORKOUT", workoutId, "WORKOUTID",workouts )
+        console.log(
+          currentWorkout,
+          "CURRENT WORKOUT",
+          workoutId,
+          "WORKOUTID",
+          workouts
+        );
       } else {
         console.log("NO RES");
       }
@@ -401,7 +406,6 @@ const handlePostChange = (e) => {
       });
 
       if (res) {
-
         const exercise_data = await res.data.finalUpdateExercise;
 
         const updateList = [...currentWorkout].map((exercise) => {
@@ -426,7 +430,6 @@ const handlePostChange = (e) => {
         setEditExerciseMode(false);
         setExerciseId(0);
 
-
         //Updates the entire workout container list with the edited exercise
         const updateWorkoutList = await workouts.map((workout) => {
           if (workout._id === workoutId) {
@@ -446,13 +449,13 @@ const handlePostChange = (e) => {
   const updateAddExerciseEdit = async () => {
     const updateWorkoutList = await workouts.map((workout) => {
       if (workout._id === workoutId) {
-        return {...workout, exercises: currentWorkout}
+        return { ...workout, exercises: currentWorkout };
       } else {
         return workout;
       }
     });
     setWorkouts(updateWorkoutList);
-  }
+  };
 
   const deleteExercise = async (workoutId, exerciseId) => {
     console.log("in delete route");
@@ -721,20 +724,18 @@ const handlePostChange = (e) => {
                     <h1> {workout.name} </h1>
                     <WorkoutButtonContainer>
                       {loggedInId === id ? (
-                        <button onClick={() => clickEditWorkout(workout._id)}>
-                          {" "}
-                          edit workout{" "}
-                        </button>
+                        <>
+                          <EditIcon
+                            clickEditWorkout={clickEditWorkout}
+                            workout={workout}
+                          />
+                          <DeleteIcon
+                            deleteWorkout={deleteWorkout}
+                            workoutId={workout._id}
+                          />
+                        </>
                       ) : (
-                        ""
-                      )}
-                      {loggedInId === id ? (
-                        <button onClick={() => deleteWorkout(workout._id)}>
-                          {" "}
-                          delete workout{" "}
-                        </button>
-                      ) : (
-                        ""
+                        <button>Follow</button>
                       )}
                     </WorkoutButtonContainer>
                   </WorkoutDivHeader>

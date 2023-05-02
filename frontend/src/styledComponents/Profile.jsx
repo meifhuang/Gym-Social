@@ -155,7 +155,10 @@ width: 250px; */
 export const WorkoutDivHeader = styled.div`
   display: flex;
   justify-content: space-between;
+  width: 100%
+
 `;
+
 
 export const WorkoutButtonContainer = styled.div`
   display: flex;
@@ -203,10 +206,10 @@ export const ExerciseInfo2 = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  
-  &>*:nth-child(1) {
+
+  & > *:nth-child(1) {
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     align-items: center;
   }
 `;
@@ -402,4 +405,20 @@ export const ExerciseImage = styled.div`
       transform: scaleY(1);
     }
   }
+`;
+
+export const WorkoutIcons = styled(CenteredFlexRow)`
+  width: 25px;
+  /* border: 1px solid red; */
+
+  & svg {
+    /* border: 1px solid blue; */
+  }
+  & svg:hover{
+    /* background-color: crimson; */
+    transition: all .2s;
+    transform : translateY(-1px);
+    color: #789b78;
+    
+}
 `;

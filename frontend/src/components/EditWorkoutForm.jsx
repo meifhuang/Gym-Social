@@ -9,7 +9,10 @@ import {
   ArrowSwitch,
   ExerciseInfo2,
   AddExerciseButton,
+  WorkoutDivHeader,
 } from "../styledComponents/Profile";
+
+import { EditIcon, DeleteIcon, AddIcon } from "../assets/icons.jsx";
 
 const EditWorkoutForm = ({
   toggleEditWorkoutModal,
@@ -42,22 +45,64 @@ const EditWorkoutForm = ({
       ></ModalOverlay>
       <div className="modal-content">
         <>
-          <h2> {currentWorkoutName} </h2>
-          {addExerciseMode ? (
-            <FinishEditButton
-              onClick={() => {
-                setAddExerciseMode(false);
-                updateAddExerciseEdit();
-              }}
-            >
-              {" "}
-              Done adding
-            </FinishEditButton>
-          ) : (
-            <FinishEditButton onClick={() => setAddExerciseMode(true)}>
-              Add Exercise
-            </FinishEditButton>
-          )}
+          <WorkoutDivHeader>
+            <h2> {currentWorkoutName} </h2>
+            {/* <div> */}
+            {addExerciseMode ? (
+                <FinishEditButton
+                  onClick={() => {
+                    setAddExerciseMode(false);
+                    updateAddExerciseEdit();
+                  }}
+                >
+                  {" "}
+                  Done
+              </FinishEditButton>
+              // <svg
+              //   onClick={() => {
+              //     setAddExerciseMode(false);
+              //     updateAddExerciseEdit();
+              //   }}
+              //   viewBox="0 0 24 24"
+              //   width="24"
+              //   height="24"
+              //   stroke="currentColor"
+              //   stroke-width="2"
+              //   fill="none"
+              //   stroke-linecap="round"
+              //   stroke-linejoin="round"
+              //   class="css-i6dzq1"
+              // >
+              //   <polyline points="20 6 9 17 4 12"></polyline>
+              // </svg>
+              // <svg
+              //   onClick={() => {
+              //     setAddExerciseMode(false);
+              //     updateAddExerciseEdit();
+              //   }}
+              //   viewBox="0 0 24 24"
+              //   width="24"
+              //   height="24"
+              //   stroke="currentColor"
+              //   stroke-width="2"
+              //   fill="none"
+              //   stroke-linecap="round"
+              //   stroke-linejoin="round"
+              //   class="css-i6dzq1"
+              // >
+              //   <polyline points="9 11 12 14 22 4"></polyline>
+              //   <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+              // </svg>
+            ) : (
+              <>
+                {/* <FinishEditButton onClick={() => setAddExerciseMode(true)}>
+                    Add Exercise
+                  </FinishEditButton> */}
+                <AddIcon setAddExerciseMode={setAddExerciseMode} />
+              </>
+            )}
+            {/* </div> */}
+          </WorkoutDivHeader>
 
           {currentWorkout &&
             currentWorkout.map((exercise) => {
