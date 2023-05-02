@@ -21,6 +21,8 @@ const userRouter = require("./controllers/user");
 const jwtStrategy = require("./auth/index");
 // const authRouter = require("./controllers/auth");
 const workoutRouter = require("./controllers/workout");
+const exerciseRouter = require("./controllers/exercise");
+const postRouter = require("./controllers/post");
 
 function createServer() {
   jwtStrategy(passport);
@@ -45,7 +47,10 @@ function createServer() {
  
   app.use(createAuthRouter);
   app.use(passport.authenticate("jwt", { session: false }), workoutRouter);
-  app.use(passport.authenticate("jwt", { session: false }),userRouter); 
+  app.use(passport.authenticate("jwt", { session: false }), userRouter); 
+  app.use(passport.authenticate("jwt", { session: false }), exerciseRouter); 
+  app.use(passport.authenticate("jwt", { session: false }), postRouter); 
+  
   
 
   function checkLoggedIn(request, response, next) {
