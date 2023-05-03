@@ -207,9 +207,9 @@ export const ExerciseInfo2 = styled.div`
   flex-direction: column;
   width: 100%;
 
-  & > *:nth-child(1) {
+  &>*:nth-child(1) {
     display: flex;
-    justify-content: center;
+    justify-content: center; 
     align-items: center;
   }
 `;
