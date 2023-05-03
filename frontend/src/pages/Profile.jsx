@@ -37,6 +37,7 @@ import {
 export default function Profile() {
 
   const exerciseDB = useLoaderData();
+  console.log(exerciseDB)
 
   const { id } = useParams();
   const { token, userId } = useContext(AuthContext);
@@ -113,6 +114,13 @@ export default function Profile() {
     });
     console.log(workoutName);
   };
+
+  const handlePostChange = (e) => {
+    const {name, value} = e.target;
+    setPostForm({
+      [name]: value,
+    })
+  }
 
   // const exercise_key = import.meta.env.VITE_ExerciseKey;
   // useEffect(() => {
@@ -672,7 +680,7 @@ export default function Profile() {
             workoutName={workoutName}
             exercise={exercise}
             handleChange={handleChange}
-            exercises={exercises}
+            // exercises={exercises}
             editExerciseMode={editExerciseMode}
             currentWorkout={currentWorkout}
             editWorkout={editWorkout}
@@ -698,7 +706,7 @@ export default function Profile() {
             workoutName={workoutName}
             currentWorkout={currentWorkout}
             exerciseId={exerciseId}
-            exercises={exercises}
+            // exercises={exercises}
             editedExercise={editedExercise}
             handleEditExercise={handleEditExercise}
             editExerciseMode={editExerciseMode}
@@ -718,6 +726,7 @@ export default function Profile() {
           {console.log(workouts, "update edit add workouts")}
           {workouts &&
             workouts.map((workout) => {
+              console.log(workout, "WORKOUT LOOP")
               return (
                 <WorkoutDiv className="">
                   <WorkoutDivHeader>

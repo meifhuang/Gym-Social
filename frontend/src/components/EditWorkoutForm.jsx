@@ -9,10 +9,8 @@ import {
   ArrowSwitch,
   ExerciseInfo2,
   AddExerciseButton,
-<<<<<<< HEAD
   WorkoutDivHeader,
-=======
->>>>>>> f7cde5eaf59d96fb8dd51d29a2b6834be6a7d939
+
 } from "../styledComponents/Profile";
 
 import { EditIcon, DeleteIcon, AddIcon } from "../assets/icons.jsx";
