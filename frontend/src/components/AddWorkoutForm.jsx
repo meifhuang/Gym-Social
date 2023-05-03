@@ -16,6 +16,7 @@ import {
   // ArrowContainer,
 } from "../styledComponents/Profile";
 
+import { EditIcon, DeleteIcon } from "../assets/icons";
 function AddWorkoutForm({
   exerciseDB,
   toggleAddWorkoutModal,
@@ -63,11 +64,6 @@ function AddWorkoutForm({
                 required
               >
                 <option value="not chosen"> -- Choose an exercise -- </option>
-                {/* {exercises.map((exercise) => (
-                  <option key={exercise} value={exercise}>
-                    {exercise}
-                  </option>
-                ))} */}
                 {exerciseDB.map((exercise) => (
                   <option key={exercise.id} value={exercise.name}>
                     {exercise.name}
@@ -192,19 +188,28 @@ function AddWorkoutForm({
                         {exercise.name}: {exercise.weight} lbs - {exercise.sets}{" "}
                         sets - {exercise.reps} reps
                       </div>
-                      <EditDeleteButton
+                      {/* <EditDeleteButton
                         onClick={() => clickEditExercise(exercise._id)}
                       >
                         {" "}
                         edit{" "}
-                      </EditDeleteButton>
+                      </EditDeleteButton> */}
+                      <EditIcon
+                        clickEditWorkout={clickEditExercise}
+                        workout={exercise}
+                      />
                       {/* )} */}
-                      <EditDeleteButton
+                      {/* <EditDeleteButton
                         onClick={() => deleteExercise(workoutId, exercise._id)}
                       >
                         {" "}
                         delete{" "}
-                      </EditDeleteButton>
+                      </EditDeleteButton> */}
+                      <DeleteIcon
+                        deleteWorkout={deleteExercise}
+                        workoutId={workoutId}
+                        exerciseId={exercise._id}
+                      />
                       {/* <ArrowContainer> */}
                       {/* <div> */}
                       <ArrowSwitch>

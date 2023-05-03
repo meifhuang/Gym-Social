@@ -4,7 +4,13 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import axios from "axios";
 // axios.defaults.withCredentials = true;
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 import Register from "./pages/Register";
 import Homepage from "./pages/Homepage";
 import Login from "./components/Login";
@@ -15,15 +21,13 @@ import ExploreUsers from "./pages/ExploreUsers";
 
 import "./App.css";
 
-
 //Styled Components
 import GlobalStyles from "./styledComponents/GlobalStyles";
 import { ThemeProvider } from "styled-components";
 
-
-
+//loaders
+import { getExerciseList } from "../loader/index.js";
 function App() {
-
   const [message, setMessage] = useState("");
 
   // const [message, setMessage] = useState("");
@@ -46,16 +50,53 @@ function App() {
     },
     breakpoint: {
       xxxs: "0px",
-      xxs : "500px",
-      mobile: "768px", 
-      md: "1000px"
-    }
-    
+      xxs: "500px",
+      mobile: "768px",
+      md: "1000px",
+    },
   };
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Homepage />,
+      // loader: rootLoader,
+      // children: [
+      //   {
+      //     path: "team",
+      //     element: <Team />,
+      //     loader: teamLoader,
+      //   },
+      // ],
+    },
+    {
+      path: "/register",
+      element: <Register />,
+    },
+    {
+      path: "/login",
+      element: <Login />,
+    },
+    {
+      path: "/profile/:id",
+      element: <Profile />,
+      loader: getExerciseList,
+    },
+    {
+      path: "/newsfeed",
+      element: <NewsFeed />,
+    },
+    {
+      path: "/explore",
+      element: <ExploreUsers />,
+    },
+  ]);
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <BrowserRouter>
+      <RouterProvider router={router} />
+      {/* <BrowserRouter>
         <Navbar />
         <Routes>
           <Route path="/" element={<Homepage />} />
@@ -65,7 +106,7 @@ function App() {
           <Route path="/newsfeed" element={<NewsFeed />} />
           <Route path="/explore" element={<ExploreUsers />} />
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter> */}
     </ThemeProvider>
   );
 }
