@@ -305,6 +305,26 @@ export default function Profile() {
     }
   };
 
+  const deletePost = async (postId) => {
+    try {
+        const response = await axios({
+            method: "delete",
+            url: `http://localhost:4000/post/${postId}`,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            }
+        })
+        if (response) {
+            setPosts((prev) => {
+                return prev.filter((post) => post._id !== response.data.postId)
+            })
+        }
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+}
+
   const addExercise = async (e) => {
     e.preventDefault();
 
@@ -667,6 +687,7 @@ export default function Profile() {
               <div> 
               <h3> POST </h3>
               <h5> {post.caption} </h5>
+              <button onClick={()=> deletePost(post._id)}> Delete </button>
               </div>
             )
             })
