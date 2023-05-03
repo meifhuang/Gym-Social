@@ -31,4 +31,33 @@ catch (e) {
 }
 })
 
+router.delete("/post/:postId", async (req, res) => {
+    console.log("entering delete post");
+    const {postId} = req. params;
+
+    try {
+        const deleteFromUser = await User.findByIdAndUpdate(req.user.id, {
+            $pull: { posts: postId }
+        })
+        const deletePost = await Post.findByIdAndDelete(postId);
+        if (deleteFromUser) {
+        console.log('deleted post', deleteFromUser);
+        res.status(200).json({
+            success: true,
+            postId: postId
+        })
+        }
+        else {
+            res.status(400).json({
+                success: false,
+                message: "Unable to delete"
+            })
+        }
+    }
+    catch (e) {
+        console.log(e.message);
+    } 
+})
+
+
 module.exports = router;
