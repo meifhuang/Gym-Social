@@ -24,6 +24,10 @@ const workoutRouter = require("./controllers/workout");
 const exerciseRouter = require("./controllers/exercise");
 const postRouter = require("./controllers/post");
 
+const multer = require('multer');
+const {storage} = require('./cloudinary/index');
+const upload = multer({storage});
+
 function createServer() {
   jwtStrategy(passport);
 

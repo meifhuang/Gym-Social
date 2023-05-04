@@ -1,7 +1,7 @@
 import axios from "axios";
 
 async function getExerciseList() {
-  const exercise_key = import.meta.env.VITE_ExerciseKey;
+  // const exercise_key = import.meta.env.VITE_ExerciseKey;
   const options = {
     method: "GET",
     url: "https://exercisedb.p.rapidapi.com/exercises",
