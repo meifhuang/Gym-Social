@@ -5,16 +5,35 @@ const User = require("../models/user");
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 
-
 // function createAuthRouter(passport) {
 router = express.Router();
 
-router.get("/register", (req, res) => {
+router.get("/signup", (req, res) => {
   res.json({ messsage: "Hi" });
 });
 
+router.post("/emailcheck", async (req, res) => {
+  try {
+    const findUser = await User.findOne({ email: req.body.email });
+
+    if (findUser) {
+      console.log(findUser);
+
+      res.status(400).send({
+        message: "Email already exists.",
+      });
+    } else {
+      // throw new Error("Email is fine")
+      res.status(200).json({
+        success: true,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+});
 router.post(
-  "/register",
+  "/signup",
   catchAsync(async (req, res) => {
     console.log(req.body);
     const { fname, lname, email, username, password, cpassword } = req.body;
@@ -64,7 +83,7 @@ router.post("/login", async (req, res) => {
       username: req.body.username,
     });
     // console.log(foundUser.length > 0);
-   console.log(foundUser)
+    console.log(foundUser);
     if (foundUser) {
       try {
         const verifyPassword = await argon2.verify(
@@ -87,7 +106,7 @@ router.post("/login", async (req, res) => {
             success: true,
             message: "User logged in",
             token: token,
-            userId: foundUser._id
+            userId: foundUser._id,
           });
         } else {
           res.status(401).json({
@@ -104,7 +123,7 @@ router.post("/login", async (req, res) => {
       }
       // response.status(500).json({
       //   success: false,
-      //   message: "Email has already been registered.",
+      //   message: "Email has already been signed up.",
       // });
     } else {
       res.status(500).json({
@@ -137,6 +156,3 @@ router.get("/logout", (req, res) => {
 // }
 
 module.exports = router;
-
-
-

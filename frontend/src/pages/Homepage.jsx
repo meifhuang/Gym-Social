@@ -12,8 +12,8 @@ export default function Homepage(props) {
         navigate("/login");
     }
 
-    function registerRedirect() {
-        navigate("/register");
+    function signupRedirect() {
+        navigate("/signup");
     }
 
  
@@ -22,7 +22,7 @@ export default function Homepage(props) {
             <h1> Welcome </h1>
             <p> {message} </p>
             <button onClick={loginRedirect}>Login</button>
-            <button onClick={registerRedirect}>Register</button>
+            <button onClick={signupRedirect}>Signup</button>
         </div>
     )
 }
