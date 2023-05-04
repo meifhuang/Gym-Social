@@ -9,9 +9,10 @@ import {
   FormContainer,
   FormDiv,
   Image,
-  SignupButton,
+  AuthButton,
   GoogleButton,
-} from "../styledComponents/SignUp";
+  AuthRedirect,
+} from "../styledComponents/Auth";
 
 //images
 import SignupImage from "../images/gym_social_on_phone.png";
@@ -97,7 +98,7 @@ export default function Signup() {
       {/* <h1> Signup </h1> */}
       {/* <div className="signupContainer"> */}
       <FormContainer>
-        <h2>Gym Social</h2>
+        {/* <h2>Gym Social</h2> */}
         <StyledForm
         // onSubmit={signupSubmit}
         >
@@ -106,7 +107,6 @@ export default function Signup() {
             <>
               <FormDiv signupPart={signupPart}>
                 {/* <label htmlFor="fname">First Name:</label> */}
-
                 <input
                   className="fadeout"
                   type="text"
@@ -118,7 +118,6 @@ export default function Signup() {
                 />
               </FormDiv>
               <FormDiv signupPart={signupPart}>
-                {/* <label htmlFor="lname">Last Name:</label> */}
                 <input
                   className="fadeout"
                   type="text"
@@ -130,7 +129,6 @@ export default function Signup() {
                 />
               </FormDiv>
               <FormDiv signupPart={signupPart}>
-                {/* <label htmlFor="email">Email Address:</label> */}
                 <input
                   className="fadeout"
                   type="email"
@@ -145,7 +143,6 @@ export default function Signup() {
           ) : (
             <>
               <FormDiv signupPart={signupPart}>
-                {/* <label htmlFor="username">Username:</label> */}
                 <input
                   className="slide-left"
                   type="text"
@@ -157,7 +154,6 @@ export default function Signup() {
                 />
               </FormDiv>
               <FormDiv signupPart={signupPart}>
-                {/* <label htmlFor="password">Password:</label> */}
                 <input
                   className="slide-left"
                   type="password"
@@ -169,7 +165,6 @@ export default function Signup() {
                 />
               </FormDiv>
               <FormDiv signupPart={signupPart}>
-                {/* <label htmlFor="cpassword">Confirm Password:</label> */}
                 <input
                   className="slide-left"
                   type="password"
@@ -183,7 +178,7 @@ export default function Signup() {
             </>
           )}
           <div>{errorMessage}</div>
-          <SignupButton
+          <AuthButton
             onClick={(e) => {
               signupPart === 0 ? checkEmail(e) : signupSubmit(e);
             }}
@@ -196,25 +191,28 @@ export default function Signup() {
                   width="24"
                   height="24"
                   stroke="currentColor"
-                  stroke-width="2"
+                  strokeWidth="2"
                   fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="css-i6dzq1"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="css-i6dzq1"
                 >
                   <polyline points="13 17 18 12 13 7"></polyline>
                   <polyline points="6 17 11 12 6 7"></polyline>
                 </svg>
               </span>
             )}
-          </SignupButton>
-          <GoogleButton>Sign up with Google</GoogleButton>
+          </AuthButton>
+          <GoogleButton>Sign Up with Google</GoogleButton>
+          <GoogleButton>Sign Up with Facebook</GoogleButton>
+          <GoogleButton>Sign Up with Twitter</GoogleButton>
+          <AuthRedirect>
+            Already have an account?{" "}
+            <span onClick={() => navigate("/login")}>Login</span>
+          </AuthRedirect>
         </StyledForm>
       </FormContainer>
-      {/* <div> */}
       <Image src={SignupImage} alt="loading" />
-
-      {/* </div> */}
     </ContainerRow>
   );
 }

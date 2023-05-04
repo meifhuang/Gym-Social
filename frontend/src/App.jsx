@@ -13,7 +13,7 @@ import {
 } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Homepage from "./pages/Homepage";
-import Login from "./components/Login";
+import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Navbar from "./components/Navbar";
 import NewsFeed from "./components/NewsFeed";
