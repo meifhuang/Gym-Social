@@ -43,8 +43,8 @@ export default function Profile() {
   const [loggedInId, setLoggedInId] = useState(localStorage.getItem("id"));
   const [following, setFollowing] = useState([]);
 
-  function registerRedirect() {
-    navigate("/register");
+  function signupRedirect() {
+    navigate("/signup");
   }
 
   const getWorkout = async () => {

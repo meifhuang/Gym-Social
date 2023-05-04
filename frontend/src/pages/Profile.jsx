@@ -156,8 +156,8 @@ export default function Profile() {
     setExerciseId("");
   };
 
-  function registerRedirect() {
-    navigate("/register");
+  function signupRedirect() {
+    navigate("/signup");
   }
 
   const getWorkout = async () => {

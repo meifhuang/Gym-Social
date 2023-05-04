@@ -11,7 +11,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Register from "./pages/Register";
+import Signup from "./pages/Signup";
 import Homepage from "./pages/Homepage";
 import Login from "./components/Login";
 import Profile from "./pages/Profile";
@@ -52,7 +52,8 @@ function App() {
       xxxs: "0px",
       xxs: "500px",
       mobile: "768px",
-      md: "1000px",
+      lg: "1024px",
+      xl: "1264px"
     },
   };
 
@@ -70,8 +71,8 @@ function App() {
       // ],
     },
     {
-      path: "/register",
-      element: <Register />,
+      path: "/signup",
+      element: <Signup />,
     },
     {
       path: "/login",
@@ -100,7 +101,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Homepage />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/newsfeed" element={<NewsFeed />} />

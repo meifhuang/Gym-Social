@@ -15,7 +15,7 @@ const catchAsync = require("./utils/CatchAsync");
 const Workout = require("./models/workout");
 const router = express.Router();
 // const setupLocalStrategy = require("./auth/local");
-const createAuthRouter = require("./controllers/auth");
+const authRouter = require("./controllers/auth");
 const userRouter = require("./controllers/user");
 
 const jwtStrategy = require("./auth/index");
@@ -45,7 +45,7 @@ function createServer() {
   app.use(express.json());
 
  
-  app.use(createAuthRouter);
+  app.use(authRouter);
   app.use(passport.authenticate("jwt", { session: false }), workoutRouter);
   app.use(passport.authenticate("jwt", { session: false }), userRouter); 
   app.use(passport.authenticate("jwt", { session: false }), exerciseRouter); 
