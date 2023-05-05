@@ -7,16 +7,21 @@ import { AuthContext } from "../AuthContext";
 import {
   StyledForm,
   ContainerRowReverse,
+  ContainerColumn,
   FormContainer,
   FormDiv,
   Image,
   AuthButton,
   GoogleButton,
+  FacebookButton,
   AuthRedirect,
 } from "../styledComponents/Auth";
 
 //images
 import LoginImage from "../images/gym_social_login.png";
+
+//
+import { FacebookIcon, GoogleIcon } from "../assets/icons.jsx";
 
 export default function Login(props) {
   const { message } = props;
@@ -64,90 +69,68 @@ export default function Login(props) {
     }
   };
 
-  // }
-  //     if (response) {
-  //         console.log(response.data)
-  //         setUsername(response.data.username)
-  //         return navigate("/profile");
-  //     } else {
-  //         throw Error("No response");
-  //     }
-  // };
 
   return (
-    // <div className="App">
-    //   <h1> Login </h1>
-    //   <form onSubmit={loginSubmit}>
-    //     <label htmlFor="username">Username:</label>
-    //     <input
-    //       type="text"
-    //       id="username"
-    //       name="username"
-    //       value={values.username}
-    //       onChange={handleInputChange}
-    //     />
-    //     <label htmlFor="password">Password:</label>
-    //     <input
-    //       type="password"
-    //       id="password"
-    //       name="password"
-    //       value={values.password}
-    //       onChange={handleInputChange}
-    //     />
-    //     <button>Login</button>
-    //   </form>
-    // </div>
-    <ContainerRowReverse>
-      {/* <h1> Signup </h1> */}
-      {/* <div className="signupContainer"> */}
-      <FormContainer>
-        {/* <h2>Gym Social</h2> */}
-        <StyledForm
-        // onSubmit={signupSubmit}
-        >
-          <h1>Welcome Back!</h1>
-
-          <>
-            <FormDiv>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={values.username}
-                onChange={handleInputChange}
-                placeholder="Username"
-              />
-            </FormDiv>
-            <FormDiv>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={values.password}
-                onChange={handleInputChange}
-                placeholder="Password"
-              />
-            </FormDiv>
-          </>
-
-          {/* <div>{errorMessage}</div> */}
-          <AuthButton
-            onClick={(e) => {
-              loginSubmit(e);
-            }}
+    <ContainerColumn>
+      <ContainerRowReverse>
+        <FormContainer>
+          <h2 className="margin-left">Gym Social</h2>
+          <StyledForm
+          // onSubmit={signupSubmit}
           >
-            Login
-          </AuthButton>
-          <GoogleButton>Login with Google</GoogleButton>
-          <GoogleButton>Login with Facebook</GoogleButton>
-          <GoogleButton>Login with Twitter</GoogleButton>
-          <AuthRedirect>
-            Don't have an account?{" "}
-            <span onClick={() => navigate("/signup")}>Sign Up</span>
-          </AuthRedirect>
-        </StyledForm>
-      </FormContainer>
-      <Image src={LoginImage} alt="loading" />
-    </ContainerRowReverse>
+            <h1>Welcome Back!</h1>
+
+            <>
+              <FormDiv>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  value={values.username}
+                  onChange={handleInputChange}
+                  placeholder="Username"
+                />
+              </FormDiv>
+              <FormDiv>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={values.password}
+                  onChange={handleInputChange}
+                  placeholder="Password"
+                />
+              </FormDiv>
+            </>
+
+            {/* <div>{errorMessage}</div> */}
+            <AuthButton
+              onClick={(e) => {
+                loginSubmit(e);
+              }}
+            >
+              Login
+            </AuthButton>
+            <GoogleButton>
+              <span>
+                <GoogleIcon />
+              </span>
+              Login with Google
+            </GoogleButton>
+            <FacebookButton>
+              <span>
+                <FacebookIcon />
+              </span>
+              Login with Facebook
+            </FacebookButton>
+            <AuthRedirect>
+              Don't have an account?{" "}
+              <span onClick={() => navigate("/signup")}>Sign Up</span>
+            </AuthRedirect>
+          </StyledForm>
+        </FormContainer>
+        <Image src={LoginImage} alt="loading" />
+      </ContainerRowReverse>
+    </ContainerColumn>
   );
 }

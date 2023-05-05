@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 import { useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
@@ -8,9 +8,9 @@ import styled from "styled-components";
 
 const StyledNav = styled.nav`
   display: flex;
-  background-color: #778899;
+  /* background-color: #778899; */
   justify-content: space-between;
-  padding: 2rem 4rem;
+  padding: 2rem 3rem 0rem 3rem;
   position: relative;
   /* border: 1px solid red; */
   align-items: center;
@@ -24,6 +24,7 @@ const StyledProfileTabs = styled.div`
   display: flex;
   gap: 1.5rem;
   color: white;
+  color: black;
   /* border: 1px solid red; */
   align-items: center;
   justify-content: center;
@@ -31,7 +32,6 @@ const StyledProfileTabs = styled.div`
   text-transform: uppercase;
   /* letter-spacing: 1px; */
   font-weight: 600;
-
 
   @media all and (max-width: ${(props) => props.theme.breakpoint.mobile}) {
     & .nav-tab {
@@ -95,28 +95,25 @@ const ProfileDropdown = styled.div`
   }
 `;
 
-
-
 const LogoFont = styled.div`
   font-family: century-gothic, sans-serif;
   font-weight: 700;
-  font-size: 2rem;
+  font-size: 1.5rem;
   letter-spacing: 1px;
-
 `;
 
-const LogoFontCapitalized=styled(LogoFont)`
+const LogoFontCapitalized = styled(LogoFont)`
   text-transform: uppercase;
-  color: #f6f7f9;
-`
+  color: black;
+`;
 
 const MenuTrigger = styled.div`
   display: flex;
   flex-direction: column;
-  gap: .5rem;
+  gap: 0.5rem;
   justify-content: center;
   align-items: center;
-`
+`;
 export default function Navbar(props) {
   const navigate = useNavigate();
   const [isOpen, setOpen] = useState(false);
@@ -128,27 +125,37 @@ export default function Navbar(props) {
 
   const [isActive, setIsActive] = useState("");
   console.log(isOpen);
+  const { hasUserId } = useContext(AuthContext);
+  console.log(hasUserId);
   return (
-    <StyledNav>
-      <LogoFontCapitalized>Gym Social</LogoFontCapitalized>
-      <StyledProfileTabs>
-        <div className="nav-tab">Home</div>
-        <div className="nav-tab">Explore</div>
-        <MenuTrigger
-          className="menu-trigger"
-          onClick={() => setIsActive(!isActive)}
-        >
-          <img src="../src/images/avatar.png" alt="" />
-          <div>Jacky</div>
-        </MenuTrigger>
-        <ProfileDropdown className={` ${isActive ? "active" : "inactive"}`}>
-          <DropdownItem>View Profile</DropdownItem>
-          <DropdownItem>Settings</DropdownItem>
-          <DropdownItem>Logout</DropdownItem>
-        </ProfileDropdown>
-      </StyledProfileTabs>
+    <div className="main-container">
+      <StyledNav>
+        <LogoFontCapitalized>Gym Social</LogoFontCapitalized>
+        <StyledProfileTabs>
+          <div className="nav-tab">Home</div>
+          {hasUserId ? (
+            <>
+              <div className="nav-tab">Explore</div>
+              <MenuTrigger
+                className="menu-trigger"
+                onClick={() => setIsActive(!isActive)}
+              >
+                <img src="../src/images/avatar.png" alt="" />
+                <div>Jacky</div>
+              </MenuTrigger>
+            </>
+          ) : (
+            <div className="nav-tab">Sign Up</div>
+          )}
 
-
-    </StyledNav>
+          <ProfileDropdown className={` ${isActive ? "active" : "inactive"}`}>
+            <DropdownItem>View Profile</DropdownItem>
+            <DropdownItem>Settings</DropdownItem>
+            <DropdownItem>Logout</DropdownItem>
+          </ProfileDropdown>
+        </StyledProfileTabs>
+      </StyledNav>
+      <Outlet />
+    </div>
   );
 }

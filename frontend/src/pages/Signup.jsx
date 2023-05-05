@@ -1,21 +1,25 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import Navbar from "../components/Navbar";
 
 //styling
 import {
   StyledForm,
   ContainerRow,
+  ContainerColumn,
   FormContainer,
   FormDiv,
   Image,
   AuthButton,
   GoogleButton,
+  FacebookButton,
   AuthRedirect,
 } from "../styledComponents/Auth";
 
 //images
 import SignupImage from "../images/gym_social_on_phone.png";
+import { GoogleIcon, FacebookIcon } from "../assets/icons";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -51,6 +55,8 @@ export default function Signup() {
         method: "post",
         url: "http://localhost:4000/emailcheck",
         data: {
+          fname: values.fname,
+          lname: values.lname,
           email: values.email,
         },
       });
@@ -60,7 +66,7 @@ export default function Signup() {
       }
     } catch (e) {
       console.log(e.response.data.message);
-      setErrorMessage("Email already exists.");
+      setErrorMessage(e.response.data.message);
     }
   };
 
@@ -94,11 +100,13 @@ export default function Signup() {
   };
   return (
     // <div className="App">
+    <ContainerColumn>
+    {/* <h2>Gym Social</h2> */}
     <ContainerRow>
       {/* <h1> Signup </h1> */}
       {/* <div className="signupContainer"> */}
-      <FormContainer>
-        {/* <h2>Gym Social</h2> */}
+        <FormContainer>
+        <h2>Gym Social</h2>
         <StyledForm
         // onSubmit={signupSubmit}
         >
@@ -203,9 +211,18 @@ export default function Signup() {
               </span>
             )}
           </AuthButton>
-          <GoogleButton>Sign Up with Google</GoogleButton>
-          <GoogleButton>Sign Up with Facebook</GoogleButton>
-          <GoogleButton>Sign Up with Twitter</GoogleButton>
+          <GoogleButton>
+            <span>
+              <GoogleIcon />
+            </span>
+            Sign Up with Google
+          </GoogleButton>
+          <FacebookButton>
+            <span>
+              <FacebookIcon />
+            </span>
+            Sign Up with Facebook
+          </FacebookButton>
           <AuthRedirect>
             Already have an account?{" "}
             <span onClick={() => navigate("/login")}>Login</span>
@@ -213,6 +230,7 @@ export default function Signup() {
         </StyledForm>
       </FormContainer>
       <Image src={SignupImage} alt="loading" />
-    </ContainerRow>
+      </ContainerRow>
+      </ContainerColumn>
   );
 }

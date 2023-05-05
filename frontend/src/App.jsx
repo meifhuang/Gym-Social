@@ -30,16 +30,6 @@ import { getExerciseList } from "./loader/index";
 function App() {
   const [message, setMessage] = useState("");
 
-  // const [message, setMessage] = useState("");
-
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:4000/")
-  //     .then((response) => {
-  //       setMessage(response.data.workout);
-  //     })
-  //     .catch((error) => console.log(error.message));
-  // }, []);
 
   const theme = {
     // font: {
@@ -53,11 +43,27 @@ function App() {
       xxs: "500px",
       mobile: "768px",
       lg: "1024px",
-      xl: "1264px"
+      xl: "1264px",
+      xxl: "1400px"
     },
   };
 
   const router = createBrowserRouter([
+    // {
+    //   path: "/",
+    //   element: <Navbar />,
+    //   children: [
+    //     {
+    //       path: "/signup",
+    //       element: <Signup />,
+    //     },
+    //     {
+    //       path: "/login",
+    //       element: <Login />,
+    //     },
+    //   ],
+    // },
+
     {
       path: "/",
       element: <Homepage />,
