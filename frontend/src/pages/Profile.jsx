@@ -80,6 +80,7 @@ export default function Profile() {
 
   const [postForm, setPostForm] = useState({caption: ""});
   const [posts, setPosts] = useState([]);
+  const [file, setFile] = useState(null)
 
   // if (modal) {
   //   document.body.classList.add("active-modal");
@@ -121,6 +122,11 @@ export default function Profile() {
       [name]: value,
     })
   }
+
+    const handleFileUpload = (e) => {
+      setFile(e.target.files[0]);
+    }
+  
 
   // const exercise_key = import.meta.env.VITE_ExerciseKey;
   // useEffect(() => {
@@ -192,13 +198,15 @@ export default function Profile() {
   const createPost = async (e) => {
     e.preventDefault();
     try {
+      const formData = new FormData()
+      formData.append("image", file)
+      formData.append("caption", postForm.caption);
       const response = await axios({
         method: "post",
         url: "http://localhost:4000/createpost",
-        data: {
-          caption: postForm.caption
-        }, 
+        data: formData,
         headers: {
+        'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         }
       });
@@ -679,6 +687,7 @@ export default function Profile() {
         postForm={postForm}
         posts={posts}
         createPost={createPost}
+        handleFileUpload={handleFileUpload}
         />
 
         {posts && (

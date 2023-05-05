@@ -7,13 +7,16 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_SECRET
 })
 
+
 const storage = new CloudinaryStorage({
-    cloudinary,
+    cloudinary, 
+    params: {
     folder: 'Gym-Social',
     allowedFormats: ['jpeg', 'png', 'jpg']
+    }
 })
 
 module.exports = {
     cloudinary, 
-    storage
+    storage 
 }
