@@ -80,7 +80,8 @@ export default function Profile() {
 
   const [postForm, setPostForm] = useState({caption: ""});
   const [posts, setPosts] = useState([]);
-  const [file, setFile] = useState(null)
+  const [file, setFile] = useState([]);
+  const [files, setFiles] = useState(null)
 
   // if (modal) {
   //   document.body.classList.add("active-modal");
@@ -123,10 +124,9 @@ export default function Profile() {
     })
   }
 
-    const handleFileUpload = (e) => {
-      setFile(e.target.files[0]);
-    }
-  
+  const handleFileUpload = (e) => {
+      setFiles([...e.target.files]);
+  }
 
   // const exercise_key = import.meta.env.VITE_ExerciseKey;
   // useEffect(() => {
@@ -176,6 +176,7 @@ export default function Profile() {
         },
       });
       if (res) {
+        console.log('here', res.data.posts);
         setUsername(res.data.username);
         setWorkouts(res.data.workouts);
         setFollowing(res.data.loggedInUserFollowing);
@@ -183,6 +184,7 @@ export default function Profile() {
         setnumFollowers(res.data.numFollowers);
         setnumWorkouts(res.data.numWorkouts);
         setPosts(res.data.posts);
+       
       } else {
         console.log("no responses");
       }
@@ -199,15 +201,19 @@ export default function Profile() {
     e.preventDefault();
     try {
       const formData = new FormData()
-      formData.append("image", file)
+      for (let i = 0; i < files.length; i++) {
+        formData.append("image", files[i]);
+      }
       formData.append("caption", postForm.caption);
+      console.log(formData);
+
       const response = await axios({
         method: "post",
         url: "http://localhost:4000/createpost",
         data: formData,
         headers: {
         'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
         }
       });
       if (response) {
@@ -696,6 +702,13 @@ export default function Profile() {
               <div> 
               <h3> POST </h3>
               <h5> {post.caption} </h5>
+              <div> 
+                {post.images.map((img) => {
+                return (
+                  <img width="100px" height="100px" src={img.url} />
+                )
+                })}
+                </div>
               <button onClick={()=> deletePost(post._id)}> Delete </button>
               </div>
             )

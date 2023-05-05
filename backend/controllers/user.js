@@ -7,6 +7,8 @@ const mongoose = require("mongoose");
 
 router = express.Router();
 
+//**When deleting a user - have to delete their posts and workouts as well */
+
 router.get("/profile/:id", async (req, res) => {
   console.log("accessing profile route");
   const loggedInId = req.user.id;

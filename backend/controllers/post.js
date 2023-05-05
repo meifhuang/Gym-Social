@@ -8,12 +8,14 @@ const upload = multer({storage});
 
 router = express.Router();
 
-router.post("/createpost", upload.single('image'), async (req, res) => {
+router.post("/createpost", upload.array('image'), async (req, res) => {
     try {
     console.log("create post");
     const user = await User.findById(req.user.id).populate("posts");
     const post = new Post(req.body);
-    post.url = req.file.path; 
+    // post.url = req.file.path; 
+    console.log(req.files);
+    post.images = req.files.map(file => ({url: file.path}));
     console.log(post);
 
     if (post) {
