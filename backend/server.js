@@ -9,20 +9,19 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const AppError = require("./utils/AppError");
 const catchAsync = require("./utils/CatchAsync");
-// const cookieParser = require("cookie-parser");
-// const bodyParser = require("body-parser");
-// const session = require("express-session");
 const Workout = require("./models/workout");
 const router = express.Router();
-// const setupLocalStrategy = require("./auth/local");
+
 const authRouter = require("./controllers/auth");
 const userRouter = require("./controllers/user");
 
 const jwtStrategy = require("./auth/index");
-// const authRouter = require("./controllers/auth");
+
 const workoutRouter = require("./controllers/workout");
 const exerciseRouter = require("./controllers/exercise");
 const postRouter = require("./controllers/post");
+
+
 
 function createServer() {
   jwtStrategy(passport);
@@ -34,15 +33,16 @@ function createServer() {
 
   // mongoose.set("strictQuery", false);
   const db = mongoose.connection;
-  // db.on("error", console.error.bind(console, "connection err:"));
-  // db.once("open", () => {
-  //   console.log("database connected");
-  // });
+  db.on("error", console.error.bind(console, "connection err:"));
+  db.once("open", () => {
+    console.log("database connected");
+  });
   app.use(cors());
   // app.use(mongoSanitize());
   // app.use(express.static(path.join(__dirname, "public")));
 
   app.use(express.json());
+  app.use(express.urlencoded({extended: true}));
 
  
   app.use(authRouter);

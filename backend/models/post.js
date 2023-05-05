@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const ImageSchema = new Schema({
+    url: String,
+})
+
+
 const PostSchema = new Schema({
-    url: {
-        type: String,
-    },
+    images:[ImageSchema],
     createdAt: {
         type: Date, default: Date.now
     },

@@ -7,17 +7,18 @@ const mongoose = require("mongoose");
 
 router = express.Router();
 
+//**When deleting a user - have to delete their posts and workouts as well */
+
 router.get("/profile/:id", async (req, res) => {
   console.log("accessing profile route");
   const loggedInId = req.user.id;
   const paramId = req.params.id;
-  const user = await User.findById(paramId).populate({
+  const user = await User.findById(paramId).populate([{
     path: "workouts",
     populate: { path: "exercises" },
-  });
+  }, "posts"]);
   const loggedInUser = await User.findById(loggedInId).populate(["following", "followers", "posts"]);
   const workouts = user.workouts;
-  const posts = user.posts; 
   const numWorkouts = user.workouts.length;
   const username = user.username;
   const numFollowing = user.following.length;
@@ -32,7 +33,7 @@ router.get("/profile/:id", async (req, res) => {
     numFollowing: numFollowing, 
     numFollowers: numFollowers,
     numWorkouts: numWorkouts,
-    posts: posts
+    posts: loggedInUser.posts
   });
 });
 
