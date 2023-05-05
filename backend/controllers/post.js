@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const multer = require('multer');
 const {storage} = require('../cloudinary'); 
 const upload = multer({storage});
+const {cloudinary} = require('../cloudinary');
 
 router = express.Router();
 
@@ -15,7 +16,7 @@ router.post("/createpost", upload.array('image'), async (req, res) => {
     const post = new Post(req.body);
     // post.url = req.file.path; 
     console.log(req.files);
-    post.images = req.files.map(file => ({url: file.path}));
+    post.images = req.files.map(file => ({url: file.path, filename: file.filename}));
     console.log(post);
 
     if (post) {
@@ -44,12 +45,16 @@ router.delete("/post/:postId", async (req, res) => {
     const {postId} = req.params
 
     try {
+        const post = await Post.findById(req.params.postId).populate('images');
         const deleteFromUser = await User.findByIdAndUpdate(req.user.id, {
             $pull: { posts: req.params.postId }
         })
         const deletePost = await Post.findByIdAndDelete(postId);
         if (deleteFromUser && deletePost) {
-        console.log('deleted post', deleteFromUser);
+        console.log('deleted post', post.images);
+        for (let file of post.images) {
+            await cloudinary.uploader.destroy(file.filename)
+        }
         res.status(200).json({
             success: true,
             postId: postId

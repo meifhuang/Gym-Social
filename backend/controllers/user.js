@@ -23,6 +23,7 @@ router.get("/profile/:id", async (req, res) => {
   const username = user.username;
   const numFollowing = user.following.length;
   const numFollowers = user.followers.length; 
+  const numPosts = user.posts.length;
   console.log(numWorkouts);
   res.status(200).json({
     success: true,
@@ -33,6 +34,7 @@ router.get("/profile/:id", async (req, res) => {
     numFollowing: numFollowing, 
     numFollowers: numFollowers,
     numWorkouts: numWorkouts,
+    numPosts: numPosts,
     posts: loggedInUser.posts
   });
 });
