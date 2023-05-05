@@ -12,10 +12,10 @@ function AddPostForm(
     {
     return (
         <>       
-        <form onSubmit= {(e) => createPost(e)} enctype="multipart/form-data"> 
+        <form onSubmit= {(e) => createPost(e)} encType="multipart/form-data"> 
             <label htmlFor="caption"> Caption </label>
             <input type="text" name="caption" value={postForm.caption} onChange={handlePostChange} required/>
-            <label for="image"> Upload Image(s) </label>
+            <label htmlFor="image"> Upload Image(s) </label>
             <input onChange={handleFileUpload} type="file" name="image" id="image"  accept="image/*" multiple/>
             <button> Add post </button>
         </form>

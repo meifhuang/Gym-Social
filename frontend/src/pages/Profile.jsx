@@ -67,9 +67,11 @@ export default function Profile() {
   const [exerciseId, setExerciseId] = useState([]);
   const [loggedInId, setLoggedInId] = useState(localStorage.getItem("id"));
   const [following, setFollowing] = useState([]);
+
   const [numFollowing, setnumFollowing] = useState(0);
   const [numFollowers, setnumFollowers] = useState(0);
   const [numWorkouts, setnumWorkouts] = useState(0);
+  const [numPosts, setnumPosts] = useState(0);
 
   const [editWorkoutModal, setEditWorkoutModal] = useState(false);
   const [addWorkoutModal, setAddWorkoutModal] = useState(false);
@@ -80,7 +82,6 @@ export default function Profile() {
 
   const [postForm, setPostForm] = useState({caption: ""});
   const [posts, setPosts] = useState([]);
-  const [file, setFile] = useState([]);
   const [files, setFiles] = useState(null)
 
   // if (modal) {
@@ -183,6 +184,7 @@ export default function Profile() {
         setnumFollowing(res.data.numFollowing);
         setnumFollowers(res.data.numFollowers);
         setnumWorkouts(res.data.numWorkouts);
+        setnumPosts(res.data.numPosts); 
         setPosts(res.data.posts);
        
       } else {
@@ -220,6 +222,7 @@ export default function Profile() {
         console.log("add post");
         console.log(response.data.posts);
         setPosts(response.data.posts);
+        setnumPosts(prev => prev + 1);
       }
       else {
         throw Error("no response");
@@ -332,6 +335,8 @@ export default function Profile() {
             setPosts((prev) => {
                 return prev.filter((post) => post._id !== response.data.postId)
             })
+
+            setnumPosts(prev => prev - 1); 
         }
     }
     catch (e) {
@@ -646,9 +651,10 @@ export default function Profile() {
               </div>
             </UserContact>
             <UserStats>
-              <div>Posts {numWorkouts} </div>
-              <div>Followers {numFollowers}</div>
-              <div>Following {numFollowing}</div>
+              <div> Posts {numPosts} </div>
+              <div> Workouts {numWorkouts} </div>
+              <div> Followers {numFollowers}</div>
+              <div> Following {numFollowing}</div>
             </UserStats>
             <About>
               {/* <div className="about-header">About Me</div> */}
