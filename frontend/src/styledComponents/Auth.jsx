@@ -1,20 +1,19 @@
 import styled from "styled-components";
 
-
 export const ContainerColumn = styled.div`
-display: flex ;
-flex-direction: column;
-height: 100%;
-/* padding: 3rem 3rem 0rem 3rem; */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* padding: 3rem 3rem 0rem 3rem; */
 
-& h2 {
-  padding: 2rem 2rem 0rem 2rem;
-}
-`
+  & h2 {
+    padding: 2rem 2rem 0rem 2rem;
+  }
+`;
 export const ContainerRow = styled.div`
   /* margin: 3rem; */
   position: relative;
-  padding: 2rem ;
+  padding: 2rem;
   display: flex;
   height: 100%;
   flex: 1;
@@ -38,12 +37,10 @@ export const FormContainer = styled.div`
   position: relative;
   /* border: 1px solid red; */
 
-
   & h2 {
-     position: absolute;
+    position: absolute;
     top: 0;
     left: 0;
-    
   }
 
   & h1 {
@@ -143,6 +140,12 @@ export const FormDiv = styled.div`
       }
     }
   }
+`;
+
+export const ErrorMessage = styled.div`
+  text-align: center;
+  /* border: 1px solid red; */
+  color:  #ff0033;
 `;
 
 export const Image = styled.img`

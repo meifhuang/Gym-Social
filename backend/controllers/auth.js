@@ -5,7 +5,6 @@ const User = require("../models/user");
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 
-// function createAuthRouter(passport) {
 router = express.Router();
 
 router.get("/signup", (req, res) => {
@@ -106,7 +105,6 @@ router.post(
           }
         } catch (e) {
           console.log(e);
-        
         }
       }
     } catch (e) {
@@ -122,61 +120,66 @@ router.get("/login", (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  try {
-    const foundUser = await User.findOne({
-      username: req.body.username,
+  const { username, password } = req.body;
+  if (username === "" || password === "") {
+    res.status(400).send({
+      message: "Please fill in all sections.",
     });
-    // console.log(foundUser.length > 0);
-    console.log(foundUser);
-    if (foundUser) {
-      try {
-        const verifyPassword = await argon2.verify(
-          foundUser.password,
-          req.body.password
-        );
+  } else {
+    try {
+      const foundUser = await User.findOne({
+        username: req.body.username,
+      });
 
-        // console.log(verifyPassword, foundUser);
-        if (verifyPassword) {
-          const user_id = foundUser._id.toString();
-          console.log(user_id);
-          const token = jwt.sign(
-            { username: foundUser.username, id: user_id },
-            process.env.JSONKEY
-            // { expiresIn: "1h" }
+      if (foundUser) {
+        try {
+          const verifyPassword = await argon2.verify(
+            foundUser.password,
+            req.body.password
           );
-          console.log("verified");
 
-          res.status(200).json({
-            success: true,
-            message: "User logged in",
-            token: token,
-            userId: foundUser._id,
-          });
-        } else {
-          res.status(401).json({
+          if (verifyPassword) {
+            const user_id = foundUser._id.toString();
+            console.log(user_id);
+            const token = jwt.sign(
+              { username: foundUser.username, id: user_id },
+              process.env.JSONKEY
+              // { expiresIn: "1h" }
+            );
+            console.log("verified");
+
+            res.status(200).json({
+              success: true,
+              message: "User logged in.",
+              token: token,
+              userId: foundUser._id,
+            });
+          } else {
+            res.status(401).json({
+              success: false,
+              message: "Wrong username or password.",
+            });
+          }
+        } catch (e) {
+          console.log(e);
+          res.status(500).json({
             success: false,
-            message: "Wrong username or password",
+            message: "Something went wrong.",
           });
         }
-      } catch (e) {
-        console.log(e);
+        // response.status(500).json({
+        //   success: false,
+        //   message: "Email has already been signed up.",
+        // });
+      } else {
         res.status(500).json({
           success: false,
-          message: "Something went wrong",
+          message: "Wrong username or password.",
         });
       }
-      // response.status(500).json({
-      //   success: false,
-      //   message: "Email has already been signed up.",
-      // });
-    } else {
-      res.status(500).json({
-        success: false,
-        message: "User not found.",
-      });
+    } catch (e) {
+      console.log(e);
     }
-  } catch (e) {
-    console.log(e);
   }
 });
 
@@ -196,7 +199,5 @@ router.get("/logout", (req, res) => {
   });
 });
 
-// return router;
-// }
 
 module.exports = router;

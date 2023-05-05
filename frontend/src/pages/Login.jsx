@@ -15,6 +15,7 @@ import {
   GoogleButton,
   FacebookButton,
   AuthRedirect,
+  ErrorMessage,
 } from "../styledComponents/Auth";
 
 //images
@@ -26,6 +27,7 @@ import { FacebookIcon, GoogleIcon } from "../assets/icons.jsx";
 export default function Login(props) {
   const { message } = props;
   const { username, setUsername, token, setToken } = useContext(AuthContext);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const initialValues = {
@@ -52,23 +54,22 @@ export default function Login(props) {
         password: values.password,
       });
       if (response) {
-        console.log(response);
-        // setToken(response.data.token)
         const data = response.data;
         localStorage.setItem("token", data.token);
         localStorage.setItem("id", data.userId);
-        // setUsername(response.data.username);
+        setErrorMessage("");
         return navigate("/newsfeed");
       } else {
-        throw Error("no response");
         console.log("Login failed");
       }
     } catch (e) {
-      console.log(e.message);
-      console.log(e);
+      setErrorMessage(e.response.data.message);
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 10000);
+
     }
   };
-
 
   return (
     <ContainerColumn>
@@ -103,7 +104,7 @@ export default function Login(props) {
               </FormDiv>
             </>
 
-            {/* <div>{errorMessage}</div> */}
+            <ErrorMessage>{errorMessage}</ErrorMessage>
             <AuthButton
               onClick={(e) => {
                 loginSubmit(e);

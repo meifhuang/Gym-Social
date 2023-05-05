@@ -10,6 +10,7 @@ import {
   ContainerColumn,
   FormContainer,
   FormDiv,
+  ErrorMessage,
   Image,
   AuthButton,
   GoogleButton,
@@ -65,8 +66,10 @@ export default function Signup() {
         setErrorMessage("");
       }
     } catch (e) {
-      console.log(e.response.data.message);
       setErrorMessage(e.response.data.message);
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 10000);
     }
   };
 
@@ -99,138 +102,132 @@ export default function Signup() {
     }
   };
   return (
-    // <div className="App">
     <ContainerColumn>
-    {/* <h2>Gym Social</h2> */}
-    <ContainerRow>
-      {/* <h1> Signup </h1> */}
-      {/* <div className="signupContainer"> */}
+      <ContainerRow>
         <FormContainer>
-        <h2>Gym Social</h2>
-        <StyledForm
-        // onSubmit={signupSubmit}
-        >
-          <h1>Join the Community!</h1>
-          {signupPart === 0 ? (
-            <>
-              <FormDiv signupPart={signupPart}>
-                {/* <label htmlFor="fname">First Name:</label> */}
-                <input
-                  className="fadeout"
-                  type="text"
-                  id="fname"
-                  name="fname"
-                  value={values.fname}
-                  onChange={handleInputChange}
-                  placeholder="First Name"
-                />
-              </FormDiv>
-              <FormDiv signupPart={signupPart}>
-                <input
-                  className="fadeout"
-                  type="text"
-                  id="lname"
-                  name="lname"
-                  value={values.lname}
-                  onChange={handleInputChange}
-                  placeholder="Last Name"
-                />
-              </FormDiv>
-              <FormDiv signupPart={signupPart}>
-                <input
-                  className="fadeout"
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={values.email}
-                  onChange={handleInputChange}
-                  placeholder="Email"
-                />
-              </FormDiv>
-            </>
-          ) : (
-            <>
-              <FormDiv signupPart={signupPart}>
-                <input
-                  className="slide-left"
-                  type="text"
-                  id="username"
-                  name="username"
-                  value={values.username}
-                  onChange={handleInputChange}
-                  placeholder="Username"
-                />
-              </FormDiv>
-              <FormDiv signupPart={signupPart}>
-                <input
-                  className="slide-left"
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={values.password}
-                  onChange={handleInputChange}
-                  placeholder="Password"
-                />
-              </FormDiv>
-              <FormDiv signupPart={signupPart}>
-                <input
-                  className="slide-left"
-                  type="password"
-                  id="cpassword"
-                  name="cpassword"
-                  value={values.cpassword}
-                  onChange={handleInputChange}
-                  placeholder="Confirm Password"
-                />
-              </FormDiv>
-            </>
-          )}
-          <div>{errorMessage}</div>
-          <AuthButton
-            onClick={(e) => {
-              signupPart === 0 ? checkEmail(e) : signupSubmit(e);
-            }}
-          >
-            Create Account{" "}
-            {signupPart === 0 && (
-              <span>
-                <svg
-                  viewBox="0 0 24 24"
-                  width="24"
-                  height="24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="css-i6dzq1"
-                >
-                  <polyline points="13 17 18 12 13 7"></polyline>
-                  <polyline points="6 17 11 12 6 7"></polyline>
-                </svg>
-              </span>
+          <h2>Gym Social</h2>
+          <StyledForm>
+            <h1>Join the Community!</h1>
+            {signupPart === 0 ? (
+              <>
+                <FormDiv signupPart={signupPart}>
+                  {/* <label htmlFor="fname">First Name:</label> */}
+                  <input
+                    className="fadeout"
+                    type="text"
+                    id="fname"
+                    name="fname"
+                    value={values.fname}
+                    onChange={handleInputChange}
+                    placeholder="First Name"
+                  />
+                </FormDiv>
+                <FormDiv signupPart={signupPart}>
+                  <input
+                    className="fadeout"
+                    type="text"
+                    id="lname"
+                    name="lname"
+                    value={values.lname}
+                    onChange={handleInputChange}
+                    placeholder="Last Name"
+                  />
+                </FormDiv>
+                <FormDiv signupPart={signupPart}>
+                  <input
+                    className="fadeout"
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={values.email}
+                    onChange={handleInputChange}
+                    placeholder="Email"
+                  />
+                </FormDiv>
+              </>
+            ) : (
+              <>
+                <FormDiv signupPart={signupPart}>
+                  <input
+                    className="slide-left"
+                    type="text"
+                    id="username"
+                    name="username"
+                    value={values.username}
+                    onChange={handleInputChange}
+                    placeholder="Username"
+                  />
+                </FormDiv>
+                <FormDiv signupPart={signupPart}>
+                  <input
+                    className="slide-left"
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={values.password}
+                    onChange={handleInputChange}
+                    placeholder="Password"
+                  />
+                </FormDiv>
+                <FormDiv signupPart={signupPart}>
+                  <input
+                    className="slide-left"
+                    type="password"
+                    id="cpassword"
+                    name="cpassword"
+                    value={values.cpassword}
+                    onChange={handleInputChange}
+                    placeholder="Confirm Password"
+                  />
+                </FormDiv>
+              </>
             )}
-          </AuthButton>
-          <GoogleButton>
-            <span>
-              <GoogleIcon />
-            </span>
-            Sign Up with Google
-          </GoogleButton>
-          <FacebookButton>
-            <span>
-              <FacebookIcon />
-            </span>
-            Sign Up with Facebook
-          </FacebookButton>
-          <AuthRedirect>
-            Already have an account?{" "}
-            <span onClick={() => navigate("/login")}>Login</span>
-          </AuthRedirect>
-        </StyledForm>
-      </FormContainer>
-      <Image src={SignupImage} alt="loading" />
+            <ErrorMessage>{errorMessage}</ErrorMessage>
+            <AuthButton
+              onClick={(e) => {
+                signupPart === 0 ? checkEmail(e) : signupSubmit(e);
+              }}
+            >
+              Create Account{" "}
+              {signupPart === 0 && (
+                <span>
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="css-i6dzq1"
+                  >
+                    <polyline points="13 17 18 12 13 7"></polyline>
+                    <polyline points="6 17 11 12 6 7"></polyline>
+                  </svg>
+                </span>
+              )}
+            </AuthButton>
+            <GoogleButton>
+              <span>
+                <GoogleIcon />
+              </span>
+              Sign Up with Google
+            </GoogleButton>
+            <FacebookButton>
+              <span>
+                <FacebookIcon />
+              </span>
+              Sign Up with Facebook
+            </FacebookButton>
+            <AuthRedirect>
+              Already have an account?{" "}
+              <span onClick={() => navigate("/login")}>Login</span>
+            </AuthRedirect>
+          </StyledForm>
+        </FormContainer>
+        <Image src={SignupImage} alt="loading" />
       </ContainerRow>
-      </ContainerColumn>
+    </ContainerColumn>
   );
 }
