@@ -10,7 +10,6 @@ import {
   ExerciseInfo2,
   AddExerciseButton,
   WorkoutDivHeader,
-
 } from "../styledComponents/Profile";
 
 import { EditIcon, DeleteIcon, AddIcon } from "../assets/icons.jsx";
@@ -50,15 +49,16 @@ const EditWorkoutForm = ({
             <h2> {currentWorkoutName} </h2>
             {/* <div> */}
             {addExerciseMode ? (
-                <FinishEditButton
-                  onClick={() => {
-                    setAddExerciseMode(false);
-                    updateAddExerciseEdit();
-                  }}
-                >
-                  {" "}
-                  Done
+              <FinishEditButton
+                onClick={() => {
+                  setAddExerciseMode(false);
+                  updateAddExerciseEdit();
+                }}
+              >
+                {" "}
+                Done
               </FinishEditButton>
+            ) : (
               // <svg
               //   onClick={() => {
               //     setAddExerciseMode(false);
@@ -68,10 +68,10 @@ const EditWorkoutForm = ({
               //   width="24"
               //   height="24"
               //   stroke="currentColor"
-              //   stroke-width="2"
+              //   strokeWidth="2"
               //   fill="none"
-              //   stroke-linecap="round"
-              //   stroke-linejoin="round"
+              //   strokeLinecap="round"
+              //   strokeLinejoin="round"
               //   class="css-i6dzq1"
               // >
               //   <polyline points="20 6 9 17 4 12"></polyline>
@@ -85,16 +85,15 @@ const EditWorkoutForm = ({
               //   width="24"
               //   height="24"
               //   stroke="currentColor"
-              //   stroke-width="2"
+              //   strokeWidth="2"
               //   fill="none"
-              //   stroke-linecap="round"
-              //   stroke-linejoin="round"
+              //   strokeLinecap="round"
+              //   strokeLinejoin="round"
               //   class="css-i6dzq1"
               // >
               //   <polyline points="9 11 12 14 22 4"></polyline>
               //   <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
               // </svg>
-            ) : (
               <>
                 {/* <FinishEditButton onClick={() => setAddExerciseMode(true)}>
                     Add Exercise
