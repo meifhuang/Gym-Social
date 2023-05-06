@@ -105,7 +105,7 @@ export default function Signup() {
     <ContainerColumn>
       <ContainerRow>
         <FormContainer>
-          <h2>Gym Social</h2>
+          <h2 onClick={() => navigate("/")}>Gym Social</h2>
           <StyledForm>
             <h1>Join the Community!</h1>
             {signupPart === 0 ? (

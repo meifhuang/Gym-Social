@@ -30,7 +30,6 @@ import { getExerciseList } from "./loader/index";
 function App() {
   const [message, setMessage] = useState("");
 
-
   const theme = {
     // font: {
 
@@ -44,26 +43,37 @@ function App() {
       mobile: "768px",
       lg: "1024px",
       xl: "1264px",
-      xxl: "1400px"
+      xxl: "1400px",
     },
   };
 
   const router = createBrowserRouter([
-    // {
-    //   path: "/",
-    //   element: <Navbar />,
-    //   children: [
-    //     {
-    //       path: "/signup",
-    //       element: <Signup />,
-    //     },
-    //     {
-    //       path: "/login",
-    //       element: <Login />,
-    //     },
-    //   ],
-    // },
-
+    {
+      path: "/",
+      element: <Navbar />,
+      children: [
+        // {
+        //   path: "/signup",
+        //   element: <Signup />,
+        // },
+        // {
+        //   path: "/login",
+        //   element: <Login />,
+        // },
+        {
+          path: "/",
+          element: <Homepage />,
+          // loader: rootLoader,
+          // children: [
+          //   {
+          //     path: "team",
+          //     element: <Team />,
+          //     loader: teamLoader,
+          //   },
+          // ],
+        },
+      ],
+    },
     {
       path: "/",
       element: <Homepage />,
@@ -87,7 +97,7 @@ function App() {
     {
       path: "/profile/:id",
       element: <Profile />,
-      // loader: getExerciseList,
+      loader: getExerciseList,
     },
     {
       path: "/newsfeed",

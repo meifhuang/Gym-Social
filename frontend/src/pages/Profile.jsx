@@ -35,9 +35,8 @@ import {
 } from "../styledComponents/Profile";
 
 export default function Profile() {
-
   const exerciseDB = useLoaderData();
-  console.log(exerciseDB)
+  console.log(exerciseDB);
 
   const { id } = useParams();
   const { token, userId } = useContext(AuthContext);
@@ -78,10 +77,10 @@ export default function Profile() {
   // const [exerciseDB, setExerciseDB] = useState("");
   const [activeDropdown, setActiveDropdown] = useState("");
 
-  const [postForm, setPostForm] = useState({caption: ""});
+  const [postForm, setPostForm] = useState({ caption: "" });
   const [posts, setPosts] = useState([]);
   const [file, setFile] = useState([]);
-  const [files, setFiles] = useState(null)
+  const [files, setFiles] = useState(null);
 
   // if (modal) {
   //   document.body.classList.add("active-modal");
@@ -118,40 +117,16 @@ export default function Profile() {
   };
 
   const handlePostChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     setPostForm({
       [name]: value,
-    })
-  }
+    });
+  };
 
   const handleFileUpload = (e) => {
-      setFiles([...e.target.files]);
-  }
+    setFiles([...e.target.files]);
+  };
 
-  // const exercise_key = import.meta.env.VITE_ExerciseKey;
-  // useEffect(() => {
-  //   async function getExerciseList() {
-  //     const options = {
-  //       method: "GET",
-  //       url: "https://exercisedb.p.rapidapi.com/exercises",
-  //       headers: {
-  //         "Content-Type": "application/octet-stream",
-  //         "X-RapidAPI-Key": exercise_key,
-  //         "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
-  //       },
-  //     };
-
-  //     try {
-  //       const response = await axios.request(options);
-  //       console.log(response.data);
-  //       setExerciseDB(response.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
-
-  //   getExerciseList();
-  // }, []);
   const toggleEditWorkoutModal = () => {
     setEditWorkoutModal(!editWorkoutModal);
     setCurrentWorkout([]);
@@ -176,7 +151,7 @@ export default function Profile() {
         },
       });
       if (res) {
-        console.log('here', res.data.posts);
+        console.log("here", res.data.posts);
         setUsername(res.data.username);
         setWorkouts(res.data.workouts);
         setFollowing(res.data.loggedInUserFollowing);
@@ -184,7 +159,6 @@ export default function Profile() {
         setnumFollowers(res.data.numFollowers);
         setnumWorkouts(res.data.numWorkouts);
         setPosts(res.data.posts);
-       
       } else {
         console.log("no responses");
       }
@@ -200,7 +174,7 @@ export default function Profile() {
   const createPost = async (e) => {
     e.preventDefault();
     try {
-      const formData = new FormData()
+      const formData = new FormData();
       for (let i = 0; i < files.length; i++) {
         formData.append("image", files[i]);
       }
@@ -212,23 +186,21 @@ export default function Profile() {
         url: "http://localhost:4000/createpost",
         data: formData,
         headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        }
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
       if (response) {
         console.log("add post");
         console.log(response.data.posts);
         setPosts(response.data.posts);
-      }
-      else {
+      } else {
         throw Error("no response");
       }
+    } catch (e) {
+      console.log(e);
     }
-    catch (e) {
-      console.log(e)
-    }
-  }
+  };
 
   const createWorkout = async () => {
     setAddWorkoutModal(false);
@@ -321,23 +293,22 @@ export default function Profile() {
 
   const deletePost = async (postId) => {
     try {
-        const response = await axios({
-            method: "delete",
-            url: `http://localhost:4000/post/${postId}`,
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            }
-        })
-        if (response) {
-            setPosts((prev) => {
-                return prev.filter((post) => post._id !== response.data.postId)
-            })
-        }
+      const response = await axios({
+        method: "delete",
+        url: `http://localhost:4000/post/${postId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response) {
+        setPosts((prev) => {
+          return prev.filter((post) => post._id !== response.data.postId);
+        });
+      }
+    } catch (e) {
+      console.log(e.message);
     }
-    catch (e) {
-        console.log(e.message);
-    }
-}
+  };
 
   const addExercise = async (e) => {
     e.preventDefault();
@@ -687,34 +658,30 @@ export default function Profile() {
             )}
           </div>
         </TagInfo>
-            
-        <AddPostForm 
-        handlePostChange={handlePostChange}
-        postForm={postForm}
-        posts={posts}
-        createPost={createPost}
-        handleFileUpload={handleFileUpload}
+
+        <AddPostForm
+          handlePostChange={handlePostChange}
+          postForm={postForm}
+          posts={posts}
+          createPost={createPost}
+          handleFileUpload={handleFileUpload}
         />
 
-        {posts && (
+        {posts &&
           posts.map((post) => {
             return (
-              <div> 
-              <h3> POST </h3>
-              <h5> {post.caption} </h5>
-              <div> 
-                {post.images.map((img) => {
-                return (
-                  <img width="100px" height="100px" src={img.url} />
-                )
-                })}
+              <div>
+                <h3> POST </h3>
+                <h5> {post.caption} </h5>
+                <div>
+                  {post.images.map((img) => {
+                    return <img width="100px" height="100px" src={img.url} />;
+                  })}
                 </div>
-              <button onClick={()=> deletePost(post._id)}> Delete </button>
+                <button onClick={() => deletePost(post._id)}> Delete </button>
               </div>
-            )
-            })
-        )}
-        
+            );
+          })}
 
         {addWorkoutModal && (
           <AddWorkoutForm
@@ -769,7 +736,7 @@ export default function Profile() {
           {console.log(workouts, "update edit add workouts")}
           {workouts &&
             workouts.map((workout) => {
-              console.log(workout, "WORKOUT LOOP")
+              console.log(workout, "WORKOUT LOOP");
               return (
                 <WorkoutDiv className="">
                   <WorkoutDivHeader>

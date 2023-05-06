@@ -4,11 +4,6 @@ export const ContainerColumn = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  /* padding: 3rem 3rem 0rem 3rem; */
-
-  & h2 {
-    padding: 2rem 2rem 0rem 2rem;
-  }
 `;
 export const ContainerRow = styled.div`
   /* margin: 3rem; */
@@ -41,6 +36,7 @@ export const FormContainer = styled.div`
     position: absolute;
     top: 0;
     left: 0;
+    cursor: pointer;
   }
 
   & h1 {
@@ -145,7 +141,7 @@ export const FormDiv = styled.div`
 export const ErrorMessage = styled.div`
   text-align: center;
   /* border: 1px solid red; */
-  color:  #ff0033;
+  color: #ff0033;
 `;
 
 export const Image = styled.img`
