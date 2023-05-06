@@ -24,6 +24,11 @@ import LoginImage from "../images/gym_social_login.png";
 //
 import { FacebookIcon, GoogleIcon } from "../assets/icons.jsx";
 
+// const auth = new GoogleAuth({
+//   clientId: import.meta.env.CLIENT_ID,
+//   scope: 'profile email'
+// })
+
 export default function Login(props) {
   const { message } = props;
   const { username, setUsername, token, setToken } = useContext(AuthContext);
@@ -44,6 +49,29 @@ export default function Login(props) {
       [name]: value,
     });
   };
+
+  const handleGoogleLogin = () => {
+    window.open("http://localhost:4000/auth/google", "_self");
+  }
+  
+const handleGoogleCallback = async (code) => {
+  try {
+    const response = await axios.get("http://localhost:4000/auth/google/callback?code=${code}", {
+    })
+    if (response) {
+      const data = response.data;
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("id", data.userId);
+      return navigate("/newsfeed");
+    }
+    else {
+      console.log("Login failed")
+    }
+  }
+  catch (e) {
+    console.log(e.message);
+  }
+}
 
   const loginSubmit = async (e) => {
     e.preventDefault();
@@ -112,7 +140,9 @@ export default function Login(props) {
             >
               Login
             </AuthButton>
-            <GoogleButton>
+            </StyledForm>
+        </FormContainer>
+            <GoogleButton onClick={handleGoogleLogin}>
               <span>
                 <GoogleIcon />
               </span>
@@ -128,8 +158,7 @@ export default function Login(props) {
               Don't have an account?{" "}
               <span onClick={() => navigate("/signup")}>Sign Up</span>
             </AuthRedirect>
-          </StyledForm>
-        </FormContainer>
+       
         <Image src={LoginImage} alt="loading" />
       </ContainerRowReverse>
     </ContainerColumn>

@@ -1,6 +1,7 @@
 const { isAlpha } = require("validator");
 const mongoose = require("mongoose");
 const { default: isEmail } = require("validator/lib/isEmail");
+const findOrCreate = require('mongoose-findorcreate');
 
 const Schema = mongoose.Schema;
 
@@ -29,7 +30,6 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: true,
-    unique: true,
   },
   workouts: [
     {
@@ -41,5 +41,7 @@ const UserSchema = new Schema({
   followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
   posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 });
+
+UserSchema.plugin(findOrCreate);
 
 module.exports = mongoose.model("User", UserSchema);

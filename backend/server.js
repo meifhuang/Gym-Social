@@ -2,7 +2,6 @@ const express = require("express");
 require("dotenv").config();
 const path = require("path");
 const app = express();
-const cors = require("cors");
 const mongoose = require("mongoose");
 const User = require("./models/user");
 const passport = require("passport");
@@ -14,13 +13,13 @@ const router = express.Router();
 
 const authRouter = require("./controllers/auth");
 const userRouter = require("./controllers/user");
+const googleRouter = require("./auth/googleauth");
 
 const jwtStrategy = require("./auth/index");
 
 const workoutRouter = require("./controllers/workout");
 const exerciseRouter = require("./controllers/exercise");
 const postRouter = require("./controllers/post");
-
 
 
 function createServer() {
@@ -37,7 +36,7 @@ function createServer() {
   db.once("open", () => {
     console.log("database connected");
   });
-  app.use(cors());
+  
   // app.use(mongoSanitize());
   // app.use(express.static(path.join(__dirname, "public")));
 
@@ -46,6 +45,7 @@ function createServer() {
 
  
   app.use(authRouter);
+  app.use(googleRouter); 
   app.use(passport.authenticate("jwt", { session: false }), workoutRouter);
   app.use(passport.authenticate("jwt", { session: false }), userRouter); 
   app.use(passport.authenticate("jwt", { session: false }), exerciseRouter); 
