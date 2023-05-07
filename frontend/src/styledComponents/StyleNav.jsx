@@ -2,41 +2,85 @@ import styled from "styled-components";
 
 export const StyledNav = styled.nav`
   display: flex;
-  /* background-color: #778899; */
   justify-content: space-between;
-  padding: 2rem 3rem 0rem 3rem;
-  position: relative;
-  /* border: 1px solid red; */
+  padding: 1rem 3rem 1rem 3rem;
   align-items: center;
+  background-color: #f7f4f4;
+  position: relative;
+  z-index: 1000;
+  width: 100%;
 
-  @media (min-width: ${(props) => props.theme.mobile}) {
-    /* background-color: red; */
+  & .hamburger-react {
+    position: relative;
+    margin-left: auto;
+  }
+
+`;
+
+export const NavTabContainer = styled.div`
+  display: flex;
+  gap: 1.5rem;
+  @media all and (max-width: ${(props) => props.theme.breakpoint.mobile}) {
+    display: none;
+  }
+`;
+
+export const NavTabDropdown = styled.div`
+  position: absolute;
+  width: 100%;
+  top: 100%;
+  background-color: #f7f4f4;
+right: 0;
+
+
+`;
+export const NavTab = styled.div`
+  &:hover {
+    transition: 0.1s;
+    color: #95c295;
+    cursor: pointer;
+  }
+`;
+export const NavTab2 = styled.div`
+  /* opacity: ${(props) => (props.isOpen === true ? "1" : "0")}; */
+  height: ${(props) => (props.isOpen ? "50px" : "0")};
+  transition: height 0.2s ease;
+  overflow: hidden;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  font-weight: 700;
+  margin-right: 3rem;
+
+  &:last-child{
+   margin-bottom: ${(props) => (props.isOpen ? "1rem" : "0")};
+  }
+  &>* {
+    border-bottom: 2px solid #95c295;
+  }
+  & >*:hover {
+    transition: 0.1s;
+    color: #95c295;
+    cursor: pointer;
+    /* border: 1px solid red; */
+  }
+
+  @media all and (min-width: ${(props) => props.theme.breakpoint.mobile}) {
+    height: 0
   }
 `;
 
 export const StyledProfileTabs = styled.div`
   display: flex;
   gap: 1.5rem;
-  color: white;
-  color: black;
-  /* border: 1px solid red; */
   align-items: center;
   justify-content: center;
   font-family: century-gothic, sans-serif;
   text-transform: uppercase;
-  /* letter-spacing: 1px; */
   font-weight: 600;
-
-  @media all and (max-width: ${(props) => props.theme.breakpoint.mobile}) {
-    & .nav-tab {
-      display: none;
-      border: 1px solid red;
-    }
-  }
 `;
 
 export const DropdownItem = styled.ul`
-  /* border: 1px solid red; */
   width: 100%;
   text-align: center;
   z-index: 2;
@@ -49,7 +93,7 @@ export const DropdownItem = styled.ul`
   }
 `;
 
-export  const ProfileDropdown = styled.div`
+export const ProfileDropdown = styled.div`
   position: absolute;
   top: 120px;
   right: 20px;
@@ -99,6 +143,7 @@ export const LogoFont = styled.div`
 export const LogoFontCapitalized = styled(LogoFont)`
   text-transform: uppercase;
   color: black;
+  cursor: pointer;
 `;
 
 export const MenuTrigger = styled.div`
