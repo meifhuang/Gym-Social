@@ -1,6 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand&display=swap");
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-html, body, #root, .App {
+html,
+body,
+#root,
+.App {
   height: 100%;
   width: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+
+#root * {
+  font-family: 'Poppins', sans-serif;
 }

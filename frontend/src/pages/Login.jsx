@@ -109,7 +109,6 @@ export default function Login(props) {
       setTimeout(() => {
         setErrorMessage("");
       }, 10000);
-
     }
   };
 
@@ -117,7 +116,9 @@ export default function Login(props) {
     <ContainerColumn>
       <ContainerRowReverse>
         <FormContainer>
-          <h2 className="margin-left">Gym Social</h2>
+          <h2 className="margin-left" onClick={() => navigate("/")}>
+            Gym Social
+          </h2>
           <StyledForm
           // onSubmit={signupSubmit}
           >
