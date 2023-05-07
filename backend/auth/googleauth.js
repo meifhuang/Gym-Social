@@ -3,17 +3,13 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const passport = require("passport");
 const User = require("../models/user");
 const jwt = require('jsonwebtoken');
-const cors = require("cors");
+
 
 router = express.Router();
 
-router.use(cors({origin: true}));
-
 router.use(express.json());
 
-  router.use(passport.initialize());
-//   router.use(passport.session())
-
+router.use(passport.initialize());
 
   passport.use(new GoogleStrategy({
     clientID : process.env.CLIENT_ID,
@@ -21,38 +17,61 @@ router.use(express.json());
     callbackURL: "http://localhost:4000/auth/google/callback",
     passReqToCallback: true,
   },
-  function(request, accessToken, refreshToken, profile, done) {
-    User.findOrCreate
-    ({ email: profile.emails[0].value }, 
-        {fname: profile.name.givenName,
-        lname: profile.name.familyName,
-        email: profile.emails[0].value,
-        username: profile.username || profile.emails[0].value,
-        password: "defaultpassword"}
-        , 
-        function (err, user) {
-            return done(err, user);
-    })
-}))
-
-  
+  async function(request, accessToken, refreshToken, profile, done) {
+    try {
+    const user = await User.findOne({email: profile.emails[0].value });
+    if (user) {
+      done(null, user);
+    }
+    else {
+      const newUser = new User({
+          fname: profile.name.givenName,
+          lname: profile.name.familyName,
+          email: profile.emails[0].value,
+          username: profile.username || profile.emails[0].value,
+          password: "defaultpassword" 
+      })
+     
+      await newUser.save();
+      done(null,newUser);
+    }
+  }
+    catch (err) {
+      done(err,null)
+    }
+  }));
+   
   router.get('/auth/google', passport.authenticate('google', {
     scope: ['profile', 'email']}
   ))
 
-  router.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/', session: false }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    const token = jwt.sign({user:{"email":req.user.email}, id:req.user._id}, process.env.JSONKEY);
-        res.status(200).send({
-            success: true, 
-            message: "YAY",
-            token: token,
-            userId: req.user._id,
-           
-        })
-    })
+//   router.get('/auth/google/callback', 
+//   passport.authenticate('google', { failureRedirect: '/', session: false }),
+//   function(req, res) {
+//     const token = jwt.sign({user:{"email":req.user.email}, id:req.user._id}, process.env.JSONKEY);
+//     res.redirect(`http://localhost:5173/newsfeed?token=${token}&userId=${req.user._id}`);
+//   }
+// );
+
+        // res.status(200).send({
+        //     success: true, 
+        //     message: "YAY",
+        //     token: token,
+        //     userId: req.user._id,
+        // 
+
+        router.get('/auth/google/callback', 
+        passport.authenticate('google', { failureRedirect: '/', session: false }),
+        function(req, res) {
+          const token = jwt.sign({user:{"email":req.user.email}, id:req.user._id}, process.env.JSONKEY);
+          res.redirect(`http://localhost:5173/newsfeed?token=${token}&userId=${req.user._id}`);
+        }
+      );
+      
+      router.use(function(err, req, res, next) {
+        console.error(err);
+        res.status(500).send('Internal server error');
+      });
 
     passport.serializeUser((user, done) => {
         console.log("Serialize")

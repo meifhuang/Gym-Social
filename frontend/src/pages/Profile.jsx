@@ -203,9 +203,11 @@ export default function Profile() {
     e.preventDefault();
     try {
       const formData = new FormData()
+      if (files) { 
       for (let i = 0; i < files.length; i++) {
         formData.append("image", files[i]);
       }
+    }
       formData.append("caption", postForm.caption);
       console.log(formData);
 

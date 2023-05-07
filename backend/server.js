@@ -10,6 +10,7 @@ const AppError = require("./utils/AppError");
 const catchAsync = require("./utils/CatchAsync");
 const Workout = require("./models/workout");
 const router = express.Router();
+const cors = require("cors");
 
 const authRouter = require("./controllers/auth");
 const userRouter = require("./controllers/user");
@@ -20,6 +21,7 @@ const jwtStrategy = require("./auth/index");
 const workoutRouter = require("./controllers/workout");
 const exerciseRouter = require("./controllers/exercise");
 const postRouter = require("./controllers/post");
+
 
 
 function createServer() {
@@ -42,6 +44,7 @@ function createServer() {
 
   app.use(express.json());
   app.use(express.urlencoded({extended: true}));
+  app.use(cors());
 
  
   app.use(authRouter);
@@ -72,19 +75,7 @@ function createServer() {
     //   }, 2000)
   }
 
-  // middleware
-  // app.use((req, res, next) => {
-  //   // console.log(req);
-  //   res.locals.currentUser = req.user;
-  //   console.log(req.user);
-  //   next();
-  // });
-
-  // app.get("/", (req, res) => {
-  //   res.json({
-  //     message: "Gym Social",
-  //   });
-  // });
+ 
 
   app.get("/protected", checkLoggedIn, function (request, response) {
     try {
@@ -96,21 +87,6 @@ function createServer() {
       console.log(e);
     }
   });
-
-
-  //if none of the routes prior to this matches
-
-  // app.all("*", (req, res, next) => {
-  //   next(new AppError("Page Not Found", 404));
-  // });
-
-  //note : eventually create an error template page?
-  // app.use((err, req, res, next) => {
-  //   const { status = 500 } = err;
-  //   console.log(err);
-  //   if (!err.message) err.message = "Something went wrong";
-  //   res.status(status).send({ err });
-  // });
 
 
   return app;

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect} from "react";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
 
@@ -24,10 +24,6 @@ import LoginImage from "../images/gym_social_login.png";
 //
 import { FacebookIcon, GoogleIcon } from "../assets/icons.jsx";
 
-// const auth = new GoogleAuth({
-//   clientId: import.meta.env.CLIENT_ID,
-//   scope: 'profile email'
-// })
 
 export default function Login(props) {
   const { message } = props;
@@ -42,6 +38,20 @@ export default function Login(props) {
 
   const [values, setValues] = useState(initialValues);
 
+  // useEffect(() => {
+  //   const urlParams = new URLSearchParams(window.location.search);
+  //   console.log(urlParams);
+  //   // const token = urlParams.get('token');
+  //   // const userId = urlParams.get('userId');
+  //   // if (token && userId) {
+  //   //   // save the tokens in localStorage or Redux state
+  //   //   localStorage.setItem('token', token);
+  //   //   localStorage.setItem('userId', userId);
+  //   //   // redirect to a new URL without the tokens in the query string
+  //   //   // navigate('/newsfeed');
+  // },[]);
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValues({
@@ -52,30 +62,34 @@ export default function Login(props) {
 
   const handleGoogleLogin = () => {
     window.open("http://localhost:4000/auth/google", "_self");
+    // window.location.replace("http://localhost:4000/auth/google");
   }
+
+  // useEffect(() => {
+  //   const urlParams = new URLSearchParams(window.location.search);
+  //   const code = urlParams.get("code");
+  //   console.log("HI CODE", code); 
+  //   if (code) {
+  //     handleGoogleCallback(code);
+  //   }
+  // }, []);
   
-const handleGoogleCallback = async (code) => {
-  try {
-    const response = await axios.get("http://localhost:4000/auth/google/callback?code=${code}", {
-    })
-    if (response) {
-      const data = response.data;
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("id", data.userId);
-      return navigate("/newsfeed");
-    }
-    else {
-      console.log("Login failed")
-    }
-  }
-  catch (e) {
-    console.log(e.message);
-  }
-}
+  // const handleGoogleCallback = async (code) => {
+  //   console.log(" IN CALL BACK ")
+  //   try {
+  //     const response = await axios.get(`http://localhost:4000/auth/google/callback?code=${code}`);
+  //     const data = response.data;
+  //     console.log(data);
+  //     localStorage.setItem('token', data.token);
+  //     localStorage.setItem('id', data.userId);
+  //     // window.location.replace(`http://127.0.0.1:5173/newsfeed`);
+      
+  //   } catch (e) {
+  //     console.log(e.message);
+  //   }}
 
   const loginSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const response = await axios.post("http://localhost:4000/login", {
         username: values.username,
@@ -91,7 +105,7 @@ const handleGoogleCallback = async (code) => {
         console.log("Login failed");
       }
     } catch (e) {
-      setErrorMessage(e.response.data.message);
+      // setErrorMessage(e.response.data.message);
       setTimeout(() => {
         setErrorMessage("");
       }, 10000);
@@ -140,9 +154,8 @@ const handleGoogleCallback = async (code) => {
             >
               Login
             </AuthButton>
-            </StyledForm>
-        </FormContainer>
-            <GoogleButton onClick={handleGoogleLogin}>
+            
+            <GoogleButton type="button" onClick={handleGoogleLogin}>
               <span>
                 <GoogleIcon />
               </span>
@@ -158,7 +171,8 @@ const handleGoogleCallback = async (code) => {
               Don't have an account?{" "}
               <span onClick={() => navigate("/signup")}>Sign Up</span>
             </AuthRedirect>
-       
+            </StyledForm>
+        </FormContainer>
         <Image src={LoginImage} alt="loading" />
       </ContainerRowReverse>
     </ContainerColumn>

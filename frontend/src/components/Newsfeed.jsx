@@ -40,9 +40,23 @@ export default function Newsfeed() {
     }
   }  
 
-  useEffect(() => {
-    getUsers();
-  },[]);
+    useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    const userId = urlParams.get('userId');
+    if (token && userId) {
+      localStorage.setItem('token', token);
+      localStorage.setItem('id', userId);
+      window.location.replace('http://localhost:5173/newsfeed');
+      getUsers(); 
+    }
+  }, []);
+  
+
+  // useEffect(() => {
+  //   getUsers();
+  // },[]);
+
 
 
 const viewProfile = async (userId) => {
