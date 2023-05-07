@@ -66,9 +66,11 @@ export default function Profile() {
   const [exerciseId, setExerciseId] = useState([]);
   const [loggedInId, setLoggedInId] = useState(localStorage.getItem("id"));
   const [following, setFollowing] = useState([]);
+
   const [numFollowing, setnumFollowing] = useState(0);
   const [numFollowers, setnumFollowers] = useState(0);
   const [numWorkouts, setnumWorkouts] = useState(0);
+  const [numPosts, setnumPosts] = useState(0);
 
   const [editWorkoutModal, setEditWorkoutModal] = useState(false);
   const [addWorkoutModal, setAddWorkoutModal] = useState(false);
@@ -79,8 +81,10 @@ export default function Profile() {
 
   const [postForm, setPostForm] = useState({ caption: "" });
   const [posts, setPosts] = useState([]);
-  const [file, setFile] = useState([]);
-  const [files, setFiles] = useState(null);
+
+
+  const [files, setFiles] = useState(null)
+
 
   // if (modal) {
   //   document.body.classList.add("active-modal");
@@ -158,6 +162,7 @@ export default function Profile() {
         setnumFollowing(res.data.numFollowing);
         setnumFollowers(res.data.numFollowers);
         setnumWorkouts(res.data.numWorkouts);
+        setnumPosts(res.data.numPosts); 
         setPosts(res.data.posts);
       } else {
         console.log("no responses");
@@ -174,10 +179,13 @@ export default function Profile() {
   const createPost = async (e) => {
     e.preventDefault();
     try {
-      const formData = new FormData();
+
+      const formData = new FormData()
+      if (files) { 
       for (let i = 0; i < files.length; i++) {
         formData.append("image", files[i]);
       }
+    }
       formData.append("caption", postForm.caption);
       console.log(formData);
 
@@ -194,7 +202,9 @@ export default function Profile() {
         console.log("add post");
         console.log(response.data.posts);
         setPosts(response.data.posts);
-      } else {
+         setnumPosts(prev => prev + 1);
+         }
+      else {
         throw Error("no response");
       }
     } catch (e) {
@@ -293,20 +303,23 @@ export default function Profile() {
 
   const deletePost = async (postId) => {
     try {
-      const response = await axios({
-        method: "delete",
-        url: `http://localhost:4000/post/${postId}`,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      if (response) {
-        setPosts((prev) => {
-          return prev.filter((post) => post._id !== response.data.postId);
-        });
-      }
-    } catch (e) {
-      console.log(e.message);
+        const response = await axios({
+            method: "delete",
+            url: `http://localhost:4000/post/${postId}`,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            }
+        })
+        if (response) {
+            setPosts((prev) => {
+                return prev.filter((post) => post._id !== response.data.postId)
+            })
+
+            setnumPosts(prev => prev - 1); 
+        }
+    }
+    catch (e) {
+        console.log(e.message);
     }
   };
 
@@ -617,9 +630,10 @@ export default function Profile() {
               </div>
             </UserContact>
             <UserStats>
-              <div>Posts {numWorkouts} </div>
-              <div>Followers {numFollowers}</div>
-              <div>Following {numFollowing}</div>
+              <div> Posts {numPosts} </div>
+              <div> Workouts {numWorkouts} </div>
+              <div> Followers {numFollowers}</div>
+              <div> Following {numFollowing}</div>
             </UserStats>
             <About>
               {/* <div className="about-header">About Me</div> */}

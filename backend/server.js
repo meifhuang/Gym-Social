@@ -2,7 +2,6 @@ const express = require("express");
 require("dotenv").config();
 const path = require("path");
 const app = express();
-const cors = require("cors");
 const mongoose = require("mongoose");
 const User = require("./models/user");
 const passport = require("passport");
@@ -11,9 +10,11 @@ const AppError = require("./utils/AppError");
 const catchAsync = require("./utils/CatchAsync");
 const Workout = require("./models/workout");
 const router = express.Router();
+const cors = require("cors");
 
 const authRouter = require("./controllers/auth");
 const userRouter = require("./controllers/user");
+const googleRouter = require("./auth/googleauth");
 
 const jwtStrategy = require("./auth/index");
 
@@ -37,15 +38,17 @@ function createServer() {
   db.once("open", () => {
     console.log("database connected");
   });
-  app.use(cors());
+  
   // app.use(mongoSanitize());
   // app.use(express.static(path.join(__dirname, "public")));
 
   app.use(express.json());
   app.use(express.urlencoded({extended: true}));
+  app.use(cors());
 
  
   app.use(authRouter);
+  app.use(googleRouter); 
   app.use(passport.authenticate("jwt", { session: false }), workoutRouter);
   app.use(passport.authenticate("jwt", { session: false }), userRouter); 
   app.use(passport.authenticate("jwt", { session: false }), exerciseRouter); 
@@ -72,19 +75,7 @@ function createServer() {
     //   }, 2000)
   }
 
-  // middleware
-  // app.use((req, res, next) => {
-  //   // console.log(req);
-  //   res.locals.currentUser = req.user;
-  //   console.log(req.user);
-  //   next();
-  // });
-
-  // app.get("/", (req, res) => {
-  //   res.json({
-  //     message: "Gym Social",
-  //   });
-  // });
+ 
 
   app.get("/protected", checkLoggedIn, function (request, response) {
     try {
@@ -96,21 +87,6 @@ function createServer() {
       console.log(e);
     }
   });
-
-
-  //if none of the routes prior to this matches
-
-  // app.all("*", (req, res, next) => {
-  //   next(new AppError("Page Not Found", 404));
-  // });
-
-  //note : eventually create an error template page?
-  // app.use((err, req, res, next) => {
-  //   const { status = 500 } = err;
-  //   console.log(err);
-  //   if (!err.message) err.message = "Something went wrong";
-  //   res.status(status).send({ err });
-  // });
 
 
   return app;
