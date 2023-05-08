@@ -83,7 +83,7 @@ export default function Profile() {
   const [postForm, setPostForm] = useState({ caption: "" });
   const [posts, setPosts] = useState([]);
   const [slidePosition, setSlidePosition] = useState(0); 
-  const [isVisible, setIsVisible] = useState(false); 
+  const [slidePostId, setSlidePostId] = useState(0);
 
   const [files, setFiles] = useState(null)
 
@@ -602,8 +602,7 @@ export default function Profile() {
     }
   };
 
-  const nextSlide = (imglength) => {
-    // hideSlides();
+  const nextSlide = (imglength, postId) => {
     console.log('next');
     if (slidePosition === imglength-1) {
       setSlidePosition(0);
@@ -611,11 +610,18 @@ export default function Profile() {
     else {
       setSlidePosition(prev => prev+1);
     }
-    posts[slidePosition].classList.add("carousel-item-visible"); 
+    setSlidePostId(postId);
   }
 
-  const prevSlide = () => {
+  const prevSlide = (imglength,postId) => {
     console.log("prev");
+    if (slidePosition === 0) {
+      setSlidePosition(imglength-1);
+    }
+    else {
+      setSlidePosition(prev => prev - 1); 
+    }
+    setSlidePostId(postId);
   }
 
   return (
@@ -706,20 +712,21 @@ export default function Profile() {
               <div className="posts">
                <h3> {username} </h3>
                 <div className="carousel">
-                  <div className="carousel-item carousel-item-visible">
-                    <img src={post.images[0].url}/>
-                    </div> 
-                  {post.images.slice(1,post.images.length).map((img) => {
+                  {post.images.map((img,index) => {
                     return (
-                    <div className="carousel-item carousel-item-hidden"> 
+                      <> 
+                    { slidePostId === post._id ? 
+                    <div className={`carousel ${index === slidePosition ? "carousel-item-visible" : "carousel-item-hidden"}`}> 
                       <img src={img.url} />
-                    </div> 
-                    )
-                  })}
-                  <div className="carousel-actions">
-                    <button onClick={prevSlide} id="carousel-button-prev" aria-label="Previous"> &lt; </button>
-                    <button onClick={() => nextSlide(post.images.length)} id="carousel-button-prev" aria-label="Next"> &gt; </button>
-                  </div>
+                    </div> :
+                    <div className="carousel-item-visible"> <img src={img.url} /> </div> 
+                    }
+                    { post.images.length > 1 ? 
+                    <div className="carousel-actions">
+                      <button onClick={() => prevSlide(post.images.length, post._id)} id={`carousel-button-prev`} aria-label="Previous"> &lt; </button>
+                      <button onClick={() => nextSlide(post.images.length, post._id)} id={`carousel-button-next`} aria-label="Next"> &gt; </button>
+                  </div> : <div> </div> }
+                </>  )})}
                 </div>
                 <h4> {post.caption} </h4>
                 {/* <button onClick={() => deletePost(post._id)}> Delete </button> */}
