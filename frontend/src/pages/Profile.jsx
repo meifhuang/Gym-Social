@@ -999,6 +999,7 @@ export default function Profile() {
           </div>
         </div>
         <TabBar
+          //props for WORKOUTS
           workouts={workouts}
           loggedInId={loggedInId}
           id={id}
@@ -1006,6 +1007,12 @@ export default function Profile() {
           clickEditWorkout={clickEditWorkout}
           deleteWorkout={deleteWorkout}
           activeDropdown={activeDropdown}
+          //props for POSTS
+          handlePostChange={handlePostChange}
+          postForm={postForm}
+          posts={posts}
+          createPost={createPost}
+          handleFileUpload={handleFileUpload}
         />
       </ProfileMain>
 

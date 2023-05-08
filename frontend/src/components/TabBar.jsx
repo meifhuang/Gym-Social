@@ -10,6 +10,7 @@ import AddPostForm from "./AddPostForm";
 
 import WorkoutContainerComp from "./WorkoutContainerComp";
 const TabBar = ({
+  //props for WORKOUTS
   workouts,
   loggedInId,
   id,
@@ -17,6 +18,12 @@ const TabBar = ({
   clickEditWorkout,
   deleteWorkout,
   activeDropdown,
+  //props for POSTS
+  handlePostChange,
+  postForm,
+  posts,
+  createPost,
+  handleFileUpload,
 }) => {
   const [toggleState, setToggleState] = useState(1);
 
@@ -36,7 +43,7 @@ const TabBar = ({
           </span>
           <div>Workouts </div>
         </button>
-        {/* <button
+        <button
           className={toggleState === 2 ? "tabs active-tabs" : "tabs"}
           onClick={() => toggleTab(2)}
         >
@@ -53,7 +60,7 @@ const TabBar = ({
             <FavoriteIcon />
           </span>
           <div>Favorites</div>
-        </button> */}
+        </button>
       </div>
 
       <div className="content-tabs">
@@ -71,7 +78,7 @@ const TabBar = ({
           />
         </div>
 
-        {/* <div
+        <div
           className={toggleState === 2 ? "content  active-content" : "content"}
         >
           <AddPostForm
@@ -97,8 +104,8 @@ const TabBar = ({
                 </div>
               );
             })}
-        </div> */}
-        {/* <div
+        </div>
+        <div
           className={toggleState === 3 ? "content  active-content" : "content"}
         >
           <div>
@@ -107,7 +114,7 @@ const TabBar = ({
             odit veritatis ipsa quaerat, quia voluptatibus quisquam magni vel,
             reiciendis deleniti laboriosam quod!
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
