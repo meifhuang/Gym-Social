@@ -32,6 +32,7 @@ import {
   ArrowSwitch,
   ExerciseImage,
   WorkoutIcons,
+  PostContainer
 } from "../styledComponents/Profile";
 
 export default function Profile() {
@@ -81,7 +82,8 @@ export default function Profile() {
 
   const [postForm, setPostForm] = useState({ caption: "" });
   const [posts, setPosts] = useState([]);
-
+  const [slidePosition, setSlidePosition] = useState(0); 
+  const [slidePostId, setSlidePostId] = useState(0);
 
   const [files, setFiles] = useState(null)
 
@@ -600,6 +602,28 @@ export default function Profile() {
     }
   };
 
+  const nextSlide = (imglength, postId) => {
+    console.log('next');
+    if (slidePosition === imglength-1) {
+      setSlidePosition(0);
+    }
+    else {
+      setSlidePosition(prev => prev+1);
+    }
+    setSlidePostId(postId);
+  }
+
+  const prevSlide = (imglength,postId) => {
+    console.log("prev");
+    if (slidePosition === 0) {
+      setSlidePosition(imglength-1);
+    }
+    else {
+      setSlidePosition(prev => prev - 1); 
+    }
+    setSlidePostId(postId);
+  }
+
   return (
     <div className="App">
       {/* {loggedInId === id ? ( */}
@@ -681,21 +705,36 @@ export default function Profile() {
           handleFileUpload={handleFileUpload}
         />
 
+        <PostContainer> 
         {posts &&
           posts.map((post) => {
             return (
-              <div>
-                <h3> POST </h3>
-                <h5> {post.caption} </h5>
-                <div>
-                  {post.images.map((img) => {
-                    return <img width="100px" height="100px" src={img.url} />;
-                  })}
+              <div className="posts">
+               <h3> {username} </h3>
+                <div className="carousel">
+                  {post.images.map((img,index) => {
+                    return (
+                      <> 
+                    { slidePostId === post._id ? 
+                    <div className={`carousel ${index === slidePosition ? "carousel-item-visible" : "carousel-item-hidden"}`}> 
+                      <img src={img.url} />
+                    </div> :
+                    <div className="carousel-item-visible"> <img src={img.url} /> </div> 
+                    }
+                    { post.images.length > 1 ? 
+                    <div className="carousel-actions">
+                      <button onClick={() => prevSlide(post.images.length, post._id)} id={`carousel-button-prev`} aria-label="Previous"> &lt; </button>
+                      <button onClick={() => nextSlide(post.images.length, post._id)} id={`carousel-button-next`} aria-label="Next"> &gt; </button>
+                  </div> : <div> </div> }
+                </>  )})}
                 </div>
-                <button onClick={() => deletePost(post._id)}> Delete </button>
+                <h4> {post.caption} </h4>
+                {/* <button onClick={() => deletePost(post._id)}> Delete </button> */}
+                <h5> Comments </h5>
               </div>
             );
           })}
+          </PostContainer>
 
         {addWorkoutModal && (
           <AddWorkoutForm
