@@ -13,8 +13,17 @@ export const CenteredFlexRow = styled.div`
   align-items: center;
 `;
 
+export const ProfileMain = styled.main`
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  margin: 2rem calc(1rem + 10vw);
+  gap: 2rem;
+`
+
 export const ProfileComp = styled.main`
   /* background-color: lightblue; */
+  display: flex;
   letter-spacing: 1px;
   padding: 2rem;
   margin: 2rem calc(1rem + 10vw);
@@ -42,7 +51,7 @@ export const ProfileComp = styled.main`
 export const TagInfo = styled.div`
   display: flex;
   /* margin: 2rem; */
-  border: 2px solid rgb(163, 158, 158);
+  /* border: 2px solid rgb(163, 158, 158); */
   border-radius: 0.25rem;
   padding: 5rem;
   gap: 3rem;

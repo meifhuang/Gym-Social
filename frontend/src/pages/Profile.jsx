@@ -9,8 +9,15 @@ import { AuthContext } from "../AuthContext";
 import AddWorkoutForm from "../components/AddWorkoutForm";
 import EditWorkoutForm from "../components/EditWorkoutForm";
 import AddPostForm from "../components/AddPostForm";
+import TabBar from "../components/TabBar";
 
-import { EditIcon, DeleteIcon } from "../assets/icons.jsx";
+import {
+  EditIcon,
+  DeleteIcon,
+  GridIcon,
+  WorkoutIcon,
+  FavoriteIcon,
+} from "../assets/icons.jsx";
 
 import styled from "styled-components";
 import {
@@ -32,12 +39,13 @@ import {
   ArrowSwitch,
   ExerciseImage,
   WorkoutIcons,
+  ProfileMain,
   PostContainer
 } from "../styledComponents/Profile";
 
 export default function Profile() {
   const exerciseDB = useLoaderData();
-  console.log(exerciseDB);
+
 
   const { id } = useParams();
   const { token, userId } = useContext(AuthContext);
@@ -48,6 +56,12 @@ export default function Profile() {
     weight: 0,
     reps: 0,
     sets: 0,
+  };
+
+  const [toggleState, setToggleState] = useState(1);
+
+  const toggleTab = (index) => {
+    setToggleState(index);
   };
 
   const [username, setUsername] = useState("");
@@ -79,6 +93,10 @@ export default function Profile() {
 
   const [postForm, setPostForm] = useState({ caption: "" });
   const [posts, setPosts] = useState([]);
+
+
+  const [files, setFiles] = useState(null);
+
   const [slidePosition, setSlidePosition] = useState(0); 
   const [slidePostId, setSlidePostId] = useState(0);
 
@@ -90,6 +108,7 @@ export default function Profile() {
   // } else {
   //   document.body.classList.remove("active-modal");
   // }
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -169,7 +188,7 @@ export default function Profile() {
         setnumFollowing(res.data.numFollowing);
         setnumFollowers(res.data.numFollowers);
         setnumWorkouts(res.data.numWorkouts);
-        setnumPosts(res.data.numPosts); 
+        setnumPosts(res.data.numPosts);
         setPosts(res.data.posts);
 
       } else {
@@ -187,13 +206,12 @@ export default function Profile() {
   const createPost = async (e) => {
     e.preventDefault();
     try {
-
-      const formData = new FormData()
-      if (files) { 
-      for (let i = 0; i < files.length; i++) {
-        formData.append("image", files[i]);
+      const formData = new FormData();
+      if (files) {
+        for (let i = 0; i < files.length; i++) {
+          formData.append("image", files[i]);
+        }
       }
-    }
       formData.append("caption", postForm.caption);
       console.log(formData);
 
@@ -210,9 +228,8 @@ export default function Profile() {
         console.log("add post");
         console.log(response.data.posts);
         setPosts(response.data.posts);
-         setnumPosts(prev => prev + 1);
-         }
-      else {
+        setnumPosts((prev) => prev + 1);
+      } else {
         throw Error("no response");
       }
     } catch (e) {
@@ -311,23 +328,22 @@ export default function Profile() {
 
   const deletePost = async (postId) => {
     try {
-        const response = await axios({
-            method: "delete",
-            url: `http://localhost:4000/post/${postId}`,
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            }
-        })
-        if (response) {
-            setPosts((prev) => {
-                return prev.filter((post) => post._id !== response.data.postId)
-            })
+      const response = await axios({
+        method: "delete",
+        url: `http://localhost:4000/post/${postId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response) {
+        setPosts((prev) => {
+          return prev.filter((post) => post._id !== response.data.postId);
+        });
 
-            setnumPosts(prev => prev - 1); 
-        }
-    }
-    catch (e) {
-        console.log(e.message);
+        setnumPosts((prev) => prev - 1);
+      }
+    } catch (e) {
+      console.log(e.message);
     }
   };
 
@@ -635,8 +651,9 @@ export default function Profile() {
     <div className="App">
       {/* {loggedInId === id ? ( */}
       <button onClick={gotoNewsFeed}> Return to feed </button>
+      <ProfileMain>
       <button onClick={logout}> Logout </button>
-      <ProfileComp>
+
         <TagInfo className="tag">
           <ImageContainer>
             <img src="../src/images/avatar.png"></img>
@@ -681,78 +698,7 @@ export default function Profile() {
             </About>
           </UserInformation>
           {/* is user logged in the person your page is on ? if not, show follow/unfollow depending on if the person is in the user's follow list */}
-
-          <div className="create-workout">
-            {loggedInId === id ? (
-              <form onSubmit={(e) => handleExerciseForm(e)}>
-                <label htmlFor="workoutname"> Workout Name </label>
-                <input
-                  type="text"
-                  value={workoutName.name}
-                  name="name"
-                  onChange={handleNameChange}
-                  required
-                />
-                <button
-                  disabled={!workoutName.name}
-                  onClick={toggleAddWorkoutModal}
-                >
-                  + Create a workout
-                </button>{" "}
-              </form>
-            ) : (
-              ""
-            )}
-          </div>
         </TagInfo>
-
-        <AddPostForm
-          handlePostChange={handlePostChange}
-          postForm={postForm}
-          posts={posts}
-          createPost={createPost}
-          handleFileUpload={handleFileUpload}
-        />
-
-        <PostContainer> 
-        {posts &&
-          posts.map((post) => {
-            return (
-              <div className="posts">
-               <h3> {user.fname} </h3>
-                <div className="carousel">
-                  {post.images.map((img,index) => {
-                    return (
-                      <> 
-                    { slidePostId === post._id ? 
-                    <div className={`carousel-item ${index === slidePosition ? "carousel-item-visible" : "carousel-item-hidden"}`}> 
-                      <img src={img.url} />
-                    </div> :
-                    <>
-                    { index === 0 ? 
-                    <div className="carousel-item-visible"> 
-                      <img src={img.url} /> 
-                    </div>
-                    :  <div className="carousel-item-hidden"> 
-                    <img src={img.url} /> 
-                      </div>
-                    }
-                    </>
-                    }
-                    { post.images.length > 1 ? 
-                    <div className="carousel-actions">
-                      <button onClick={() => prevSlide(post.images.length, post._id)} id={`carousel-button-prev`} aria-label="Previous"> &lt; </button>
-                      <button onClick={() => nextSlide(post.images.length, post._id)} id={`carousel-button-next`} aria-label="Next"> &gt; </button>
-                  </div> : <div> </div> }
-                </>  )})}
-                </div>
-                <h4> {post.caption} </h4>
-                <h5> Comments </h5>
-                <button onClick={() => deletePost(post._id)}> Delete </button>
-              </div>
-            );
-          })}
-          </PostContainer>
 
         {addWorkoutModal && (
           <AddWorkoutForm
@@ -803,86 +749,28 @@ export default function Profile() {
             updateAddExerciseEdit={updateAddExerciseEdit}
           />
         )}
-        <WorkoutContainer className="workouts">
-          {console.log(workouts, "update edit add workouts")}
-          {workouts &&
-            workouts.map((workout) => {
-              console.log(workout, "WORKOUT LOOP");
-              return (
-                <WorkoutDiv className="">
-                  <WorkoutDivHeader>
-                    <h1> {workout.name} </h1>
-                    <WorkoutButtonContainer>
-                      {loggedInId === id ? (
-                        <>
-                          <EditIcon
-                            clickEditWorkout={clickEditWorkout}
-                            workout={workout}
-                          />
-                          <DeleteIcon
-                            deleteWorkout={deleteWorkout}
-                            workoutId={workout._id}
-                          />
-                        </>
-                      ) : (
-                        <button>Follow</button>
-                      )}
-                    </WorkoutButtonContainer>
-                  </WorkoutDivHeader>
-                  <WorkoutInfoContainer>
-                    {workout.exercises.map((exercise) => {
-                      return (
-                        <WorkoutInfo>
-                          <ExerciseInfo>
-                            <b> {exercise.name}: </b> {exercise.weight} lbs -{" "}
-                            {exercise.sets} sets - {exercise.reps} - reps
-                            <ArrowSwitch>
-                              <svg
-                                className={
-                                  activeDropdown === exercise._id
-                                    ? "arrow-up feather feather-chevron-down"
-                                    : "arrow-down feather feather-chevron-down"
-                                }
-                                onClick={() => {
-                                  if (activeDropdown === exercise._id) {
-                                    setActiveDropdown("");
-                                  } else {
-                                    setActiveDropdown(exercise._id);
-                                  }
-                                }}
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                // class="feather feather-chevron-down"
-                              >
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                              </svg>
-                            </ArrowSwitch>
-                          </ExerciseInfo>
 
-                          <ExerciseImage
-                            status={
-                              exercise._id === activeDropdown ? "show" : "hide"
-                            }
-                          >
-                            {" "}
-                            <img src={exercise.gif} alt="loading..." />
-                          </ExerciseImage>
-                        </WorkoutInfo>
-                      );
-                    })}
-                  </WorkoutInfoContainer>
-                </WorkoutDiv>
-              );
-            })}
-        </WorkoutContainer>
-      </ProfileComp>
+        <TabBar
+          //props for WORKOUTS
+          handleExerciseForm={handleExerciseForm}
+          workoutName={workoutName}
+          handleNameChange={handleNameChange}
+          toggleAddWorkoutModal ={toggleAddWorkoutModal }
+          workouts={workouts}
+          loggedInId={loggedInId}
+          id={id}
+          EditIcon={EditIcon}
+          clickEditWorkout={clickEditWorkout}
+          deleteWorkout={deleteWorkout}
+          activeDropdown={activeDropdown}
+          //props for POSTS
+          handlePostChange={handlePostChange}
+          postForm={postForm}
+          posts={posts}
+          createPost={createPost}
+          handleFileUpload={handleFileUpload}
+        />
+      </ProfileMain>
 
     </div>
   );

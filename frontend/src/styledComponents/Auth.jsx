@@ -8,7 +8,7 @@ export const ContainerColumn = styled.div`
 export const ContainerRow = styled.div`
   /* margin: 3rem; */
   position: relative;
-  padding: 2rem;
+  /* padding: 2rem; */
   display: flex;
   height: 100%;
   flex: 1;
@@ -31,6 +31,7 @@ export const FormContainer = styled.div`
   align-items: center;
   position: relative;
   /* border: 1px solid red; */
+  margin: 2rem;
 
   & h2 {
     position: absolute;
@@ -44,7 +45,7 @@ export const FormContainer = styled.div`
   }
 
   & .margin-left {
-    margin-left: 1rem;
+    /* margin-left: 2rem; */
   }
 
   @media only screen and (max-width: ${(props) =>
@@ -147,6 +148,7 @@ export const ErrorMessage = styled.div`
 export const Image = styled.img`
   object-fit: cover;
   border-radius: 1rem;
+  margin: 2rem;
   width: 55%;
   z-index: 2;
   @media only screen and (max-width: ${(props) =>
