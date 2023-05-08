@@ -13,8 +13,17 @@ export const CenteredFlexRow = styled.div`
   align-items: center;
 `;
 
+export const ProfileMain = styled.main`
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  margin: 2rem calc(1rem + 10vw);
+  gap: 2rem;
+`
+
 export const ProfileComp = styled.main`
   /* background-color: lightblue; */
+  display: flex;
   letter-spacing: 1px;
   padding: 2rem;
   margin: 2rem calc(1rem + 10vw);

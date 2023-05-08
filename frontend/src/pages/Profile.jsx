@@ -9,8 +9,15 @@ import { AuthContext } from "../AuthContext";
 import AddWorkoutForm from "../components/AddWorkoutForm";
 import EditWorkoutForm from "../components/EditWorkoutForm";
 import AddPostForm from "../components/AddPostForm";
+import TabBar from "../components/TabBar";
 
-import { EditIcon, DeleteIcon } from "../assets/icons.jsx";
+import {
+  EditIcon,
+  DeleteIcon,
+  GridIcon,
+  WorkoutIcon,
+  FavoriteIcon,
+} from "../assets/icons.jsx";
 
 import styled from "styled-components";
 import {
@@ -32,6 +39,7 @@ import {
   ArrowSwitch,
   ExerciseImage,
   WorkoutIcons,
+  ProfileMain,
 } from "../styledComponents/Profile";
 
 export default function Profile() {
@@ -51,6 +59,12 @@ export default function Profile() {
     weight: 0,
     reps: 0,
     sets: 0,
+  };
+
+  const [toggleState, setToggleState] = useState(1);
+
+  const toggleTab = (index) => {
+    setToggleState(index);
   };
 
   const [username, setUsername] = useState("");
@@ -82,15 +96,7 @@ export default function Profile() {
   const [postForm, setPostForm] = useState({ caption: "" });
   const [posts, setPosts] = useState([]);
 
-
-  const [files, setFiles] = useState(null)
-
-
-  // if (modal) {
-  //   document.body.classList.add("active-modal");
-  // } else {
-  //   document.body.classList.remove("active-modal");
-  // }
+  const [files, setFiles] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -162,7 +168,7 @@ export default function Profile() {
         setnumFollowing(res.data.numFollowing);
         setnumFollowers(res.data.numFollowers);
         setnumWorkouts(res.data.numWorkouts);
-        setnumPosts(res.data.numPosts); 
+        setnumPosts(res.data.numPosts);
         setPosts(res.data.posts);
       } else {
         console.log("no responses");
@@ -179,13 +185,12 @@ export default function Profile() {
   const createPost = async (e) => {
     e.preventDefault();
     try {
-
-      const formData = new FormData()
-      if (files) { 
-      for (let i = 0; i < files.length; i++) {
-        formData.append("image", files[i]);
+      const formData = new FormData();
+      if (files) {
+        for (let i = 0; i < files.length; i++) {
+          formData.append("image", files[i]);
+        }
       }
-    }
       formData.append("caption", postForm.caption);
       console.log(formData);
 
@@ -202,9 +207,8 @@ export default function Profile() {
         console.log("add post");
         console.log(response.data.posts);
         setPosts(response.data.posts);
-         setnumPosts(prev => prev + 1);
-         }
-      else {
+        setnumPosts((prev) => prev + 1);
+      } else {
         throw Error("no response");
       }
     } catch (e) {
@@ -303,23 +307,22 @@ export default function Profile() {
 
   const deletePost = async (postId) => {
     try {
-        const response = await axios({
-            method: "delete",
-            url: `http://localhost:4000/post/${postId}`,
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            }
-        })
-        if (response) {
-            setPosts((prev) => {
-                return prev.filter((post) => post._id !== response.data.postId)
-            })
+      const response = await axios({
+        method: "delete",
+        url: `http://localhost:4000/post/${postId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response) {
+        setPosts((prev) => {
+          return prev.filter((post) => post._id !== response.data.postId);
+        });
 
-            setnumPosts(prev => prev - 1); 
-        }
-    }
-    catch (e) {
-        console.log(e.message);
+        setnumPosts((prev) => prev - 1);
+      }
+    } catch (e) {
+      console.log(e.message);
     }
   };
 
@@ -604,7 +607,7 @@ export default function Profile() {
     <div className="App">
       {/* {loggedInId === id ? ( */}
       <button onClick={gotoNewsFeed}> Return to feed </button>
-      <ProfileComp>
+      <ProfileMain>
         <TagInfo className="tag">
           <ImageContainer>
             <img src="../src/images/avatar.png"></img>
@@ -673,7 +676,7 @@ export default function Profile() {
           </div>
         </TagInfo>
 
-        <AddPostForm
+        {/* <AddPostForm
           handlePostChange={handlePostChange}
           postForm={postForm}
           posts={posts}
@@ -695,7 +698,7 @@ export default function Profile() {
                 <button onClick={() => deletePost(post._id)}> Delete </button>
               </div>
             );
-          })}
+          })} */}
 
         {addWorkoutModal && (
           <AddWorkoutForm
@@ -746,7 +749,7 @@ export default function Profile() {
             updateAddExerciseEdit={updateAddExerciseEdit}
           />
         )}
-        <WorkoutContainer className="workouts">
+        {/* <WorkoutContainer className="workouts">
           {console.log(workouts, "update edit add workouts")}
           {workouts &&
             workouts.map((workout) => {
@@ -824,8 +827,187 @@ export default function Profile() {
                 </WorkoutDiv>
               );
             })}
-        </WorkoutContainer>
-      </ProfileComp>
+        </WorkoutContainer> */}
+
+        <div className="container">
+          <div className="bloc-tabs">
+            <button
+              className={toggleState === 1 ? "tabs active-tabs" : "tabs"}
+              onClick={() => toggleTab(1)}
+            >
+              <span>
+                <WorkoutIcon />
+              </span>
+              <div>Workouts </div>
+            </button>
+            <button
+              className={toggleState === 2 ? "tabs active-tabs" : "tabs"}
+              onClick={() => toggleTab(2)}
+            >
+              <span>
+                <GridIcon />
+              </span>
+              <div>Posts </div>
+            </button>
+            <button
+              className={toggleState === 3 ? "tabs active-tabs" : "tabs"}
+              onClick={() => toggleTab(3)}
+            >
+              <span>
+                <FavoriteIcon />
+              </span>
+              <div>Favorites</div>
+            </button>
+          </div>
+
+          <div className="content-tabs">
+            <div
+              className={
+                toggleState === 1 ? "content  active-content" : "content"
+              }
+            >
+              <WorkoutContainer className="workouts">
+                {console.log(workouts, "update edit add workouts")}
+                {workouts &&
+                  workouts.map((workout) => {
+                    console.log(workout, "WORKOUT LOOP");
+                    return (
+                      <WorkoutDiv className="">
+                        <WorkoutDivHeader>
+                          <h1> {workout.name} </h1>
+                          <WorkoutButtonContainer>
+                            {loggedInId === id ? (
+                              <>
+                                <EditIcon
+                                  clickEditWorkout={clickEditWorkout}
+                                  workout={workout}
+                                />
+                                <DeleteIcon
+                                  deleteWorkout={deleteWorkout}
+                                  workoutId={workout._id}
+                                />
+                              </>
+                            ) : (
+                              <button>Follow</button>
+                            )}
+                          </WorkoutButtonContainer>
+                        </WorkoutDivHeader>
+                        <WorkoutInfoContainer>
+                          {workout.exercises.map((exercise) => {
+                            return (
+                              <WorkoutInfo>
+                                <ExerciseInfo>
+                                  <b> {exercise.name}: </b> {exercise.weight}{" "}
+                                  lbs - {exercise.sets} sets - {exercise.reps} -
+                                  reps
+                                  <ArrowSwitch>
+                                    <svg
+                                      className={
+                                        activeDropdown === exercise._id
+                                          ? "arrow-up feather feather-chevron-down"
+                                          : "arrow-down feather feather-chevron-down"
+                                      }
+                                      onClick={() => {
+                                        if (activeDropdown === exercise._id) {
+                                          setActiveDropdown("");
+                                        } else {
+                                          setActiveDropdown(exercise._id);
+                                        }
+                                      }}
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width="24"
+                                      height="24"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      // class="feather feather-chevron-down"
+                                    >
+                                      <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                  </ArrowSwitch>
+                                </ExerciseInfo>
+
+                                <ExerciseImage
+                                  status={
+                                    exercise._id === activeDropdown
+                                      ? "show"
+                                      : "hide"
+                                  }
+                                >
+                                  {" "}
+                                  <img src={exercise.gif} alt="loading..." />
+                                </ExerciseImage>
+                              </WorkoutInfo>
+                            );
+                          })}
+                        </WorkoutInfoContainer>
+                      </WorkoutDiv>
+                    );
+                  })}
+              </WorkoutContainer>
+            </div>
+
+            <div
+              className={
+                toggleState === 2 ? "content  active-content" : "content"
+              }
+            >
+              <AddPostForm
+                handlePostChange={handlePostChange}
+                postForm={postForm}
+                posts={posts}
+                createPost={createPost}
+                handleFileUpload={handleFileUpload}
+              />
+
+              {posts &&
+                posts.map((post) => {
+                  return (
+                    <div>
+                      <h3> POST </h3>
+                      <h5> {post.caption} </h5>
+                      <div>
+                        {post.images.map((img) => {
+                          return (
+                            <img width="100px" height="100px" src={img.url} />
+                          );
+                        })}
+                      </div>
+                      <button onClick={() => deletePost(post._id)}>
+                        {" "}
+                        Delete{" "}
+                      </button>
+                    </div>
+                  );
+                })}
+            </div>
+            <div
+              className={
+                toggleState === 3 ? "content  active-content" : "content"
+              }
+            >
+              <div>
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. In,
+                cupiditate. Provident nisi explicabo aliquid fugit libero
+                dolores odit veritatis ipsa quaerat, quia voluptatibus quisquam
+                magni vel, reiciendis deleniti laboriosam quod!
+              </div>
+            </div>
+          </div>
+        </div>
+        <TabBar
+          workouts={workouts}
+          loggedInId={loggedInId}
+          id={id}
+          EditIcon={EditIcon}
+          clickEditWorkout={clickEditWorkout}
+          deleteWorkout={deleteWorkout}
+          activeDropdown={activeDropdown}
+        />
+      </ProfileMain>
 
       <button onClick={gotoNewsFeed}> Return to feed </button>
     </div>

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useContext, useEffect} from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
 
@@ -23,7 +23,6 @@ import LoginImage from "../images/gym_social_login.png";
 
 //
 import { FacebookIcon, GoogleIcon } from "../assets/icons.jsx";
-
 
 export default function Login(props) {
   const { message } = props;
@@ -51,7 +50,6 @@ export default function Login(props) {
   //   //   // navigate('/newsfeed');
   // },[]);
 
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValues({
@@ -63,17 +61,17 @@ export default function Login(props) {
   const handleGoogleLogin = () => {
     window.open("http://localhost:4000/auth/google", "_self");
     // window.location.replace("http://localhost:4000/auth/google");
-  }
+  };
 
   // useEffect(() => {
   //   const urlParams = new URLSearchParams(window.location.search);
   //   const code = urlParams.get("code");
-  //   console.log("HI CODE", code); 
+  //   console.log("HI CODE", code);
   //   if (code) {
   //     handleGoogleCallback(code);
   //   }
   // }, []);
-  
+
   // const handleGoogleCallback = async (code) => {
   //   console.log(" IN CALL BACK ")
   //   try {
@@ -83,7 +81,7 @@ export default function Login(props) {
   //     localStorage.setItem('token', data.token);
   //     localStorage.setItem('id', data.userId);
   //     // window.location.replace(`http://127.0.0.1:5173/newsfeed`);
-      
+
   //   } catch (e) {
   //     console.log(e.message);
   //   }}
@@ -155,7 +153,7 @@ export default function Login(props) {
             >
               Login
             </AuthButton>
-            
+
             <GoogleButton type="button" onClick={handleGoogleLogin}>
               <span>
                 <GoogleIcon />
@@ -172,9 +170,9 @@ export default function Login(props) {
               Don't have an account?{" "}
               <span onClick={() => navigate("/signup")}>Sign Up</span>
             </AuthRedirect>
-            </StyledForm>
+          </StyledForm>
         </FormContainer>
-        <Image src={LoginImage} alt="loading" />
+          <Image src={LoginImage} alt="loading" />
       </ContainerRowReverse>
     </ContainerColumn>
   );
