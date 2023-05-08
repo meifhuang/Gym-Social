@@ -126,7 +126,8 @@ const TabBar = ({
                 <button
                   type="button"
                   disabled={!workoutName.name}
-                  onClick={toggleAddWorkoutModal}
+                                  onClick={toggleAddWorkoutModal}
+                                  title="Create a Workout"
                 >
      
                  <CreateWorkoutIcon />
@@ -136,28 +137,6 @@ const TabBar = ({
               ""
                       )}
                       
-                      {/* <div className="create-workout">
-            {loggedInId === id ? (
-              <form onSubmit={(e) => handleExerciseForm(e)}>
-                <label htmlFor="workoutname"> Workout Name </label>
-                <input
-                  type="text"
-                  value={workoutName.name}
-                  name="name"
-                  onChange={handleNameChange}
-                  required
-                />
-                <button
-                  disabled={!workoutName.name}
-                  onClick={toggleAddWorkoutModal}
-                >
-                  + Create a workout
-                </button>{" "}
-              </form>
-            ) : (
-              ""
-            )}
-          </div> */}
           </CreateWorkoutContainer>
           <WorkoutContainerComp
             workouts={workouts}

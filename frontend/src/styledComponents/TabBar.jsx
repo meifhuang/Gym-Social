@@ -17,40 +17,42 @@ export const TabContainer = styled.div`
 `;
 
 export const CreateWorkoutContainer = styled.div`
-position: absolute;
-/* margin-left: auto; */
-/* margin-right: auto; */
-/* left: 0; */
-/* top: 0; */
-/* bottom: 0; */
-top: 0;
-margin-top: .5rem;
-right: 0;
-text-align: center;
-/* border: 1px solid red; */
-/* display: flex;
+  position: absolute;
+  /* margin-left: auto; */
+  /* margin-right: auto; */
+  /* left: 0; */
+  /* top: 0; */
+  /* bottom: 0; */
+  top: 0;
+  margin-top: 1rem;
+  right: 0;
+  text-align: center;
+  /* border: 1px solid red; */
+  /* display: flex;
 justify-content: center;
 align-items: center; */
-& button {
+  & button {
     background: none;
-}
-& form {
     display: flex;
-justify-content: center;
-align-items: center;
-gap: .5rem;
-
-}
-& input {
+    justify-content: center;
+    align-items: center;
+  }
+  & form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  & input {
     text-align: center;
-}
+  }
 
-& svg {
+  & svg {
     color: #a19f9f;
-    margin-top: .25rem;
+    /* margin-top: .25rem; */
     /* border: 1px solid red; */
     background: none;
-}
+  }
 `;
 // export const Tab = styled.div`
 //   padding: 0.75rem;
