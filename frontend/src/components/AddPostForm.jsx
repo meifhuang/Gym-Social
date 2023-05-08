@@ -16,7 +16,7 @@ function AddPostForm(
             <label htmlFor="caption"> Caption </label>
             <input type="text" name="caption" value={postForm.caption} onChange={handlePostChange} required/>
             <label htmlFor="image"> Upload Image(s) </label>
-            <input onChange={handleFileUpload} type="file" name="image" id="image"  accept="image/*" multiple/>
+            <input onChange={handleFileUpload} type="file" name="image" id="image"  accept="image/*" required multiple/>
             <button> Add post </button>
         </form>
         </>

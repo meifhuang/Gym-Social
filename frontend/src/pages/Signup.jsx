@@ -39,6 +39,10 @@ export default function Signup() {
 
   const [values, setValues] = useState(initialValues);
 
+  const handleGoogleLogin = () => {
+    window.open("http://localhost:4000/auth/google", "_self");
+  }
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValues({
@@ -208,7 +212,7 @@ export default function Signup() {
                 </span>
               )}
             </AuthButton>
-            <GoogleButton>
+            <GoogleButton type="button" onClick={handleGoogleLogin}>
               <span>
                 <GoogleIcon />
               </span>

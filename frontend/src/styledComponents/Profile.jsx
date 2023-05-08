@@ -125,15 +125,21 @@ export const FollowButton = styled.button`
 // `
 
 export const PostContainer = styled.div`
+  min-width: 1000px;
+  min-height: 400px;
   border-radius: 5px;
-  display: flex;
-  gap: 1em;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: end;
+  align-items: end;
+  gap: 2em;
+  border: 1px solid red;
 
   .posts {
     border: 1px solid black;
+    min-height: 300px;
   }
   .carousel {
-    max-width: 600px;
     position: relative; 
     margin: 0 auto;
   }
@@ -145,7 +151,7 @@ export const PostContainer = styled.div`
 
   .carousel .carousel-item-visible {
     display: block;
-    animation: fade 0.5s; 
+    animation: fade 1.5s; 
   }
 
   .carousel .carousel-actions {
@@ -170,8 +176,9 @@ export const PostContainer = styled.div`
     margin: .5em;
   }
   img {
-    width: 17em;
-    height: 15em;
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
   }
   @keyframes fade {
     0% {

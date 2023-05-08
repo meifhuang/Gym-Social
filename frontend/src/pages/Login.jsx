@@ -48,7 +48,6 @@ export default function Login(props) {
 
   const handleGoogleLogin = () => {
     window.open("http://localhost:4000/auth/google", "_self");
-    // window.location.replace("http://localhost:4000/auth/google");
   }
 
   const loginSubmit = async (e) => {

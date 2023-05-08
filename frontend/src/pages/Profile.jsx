@@ -43,10 +43,6 @@ export default function Profile() {
   const { token, userId } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  function redirectNewsFeed() {
-    navigate("/newsfeed");
-  }
-
   const stats = {
     name: "",
     weight: 0,
@@ -55,6 +51,7 @@ export default function Profile() {
   };
 
   const [username, setUsername] = useState("");
+  const [user, setUser] = useState([]);
   const [showExerciseForm, setShowExerciseForm] = useState(true);
   const [changeId, setChangeId] = useState("");
   const [exercise, setExercise] = useState(stats);
@@ -147,7 +144,7 @@ export default function Profile() {
     navigate("/signup");
   }
 
-  const getWorkout = async () => {
+  const getUser = async () => {
     try {
       const res = await axios({
         method: "get",
@@ -157,8 +154,16 @@ export default function Profile() {
         },
       });
       if (res) {
-        console.log("here", res.data.posts);
-        setUsername(res.data.username);
+        const userLength = res.data.user.username.length
+        if (res.data.user.username.includes('@')) {
+          const username = res.data.user.username.substring(0, userLength - 10);
+          setUsername(username)
+        }
+        else {
+          const username = res.data.user.username
+          setUsername(username)
+        }
+        setUser(res.data.user); 
         setWorkouts(res.data.workouts);
         setFollowing(res.data.loggedInUserFollowing);
         setnumFollowing(res.data.numFollowing);
@@ -166,6 +171,7 @@ export default function Profile() {
         setnumWorkouts(res.data.numWorkouts);
         setnumPosts(res.data.numPosts); 
         setPosts(res.data.posts);
+
       } else {
         console.log("no responses");
       }
@@ -175,7 +181,7 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    getWorkout();
+    getUser();
   }, []);
 
   const createPost = async (e) => {
@@ -250,7 +256,7 @@ export default function Profile() {
     setEditMode(false);
     setCurrentWorkout([]);
     //alternative to calling this?
-    getWorkout();
+    getUser();
   };
 
   const clickEditWorkout = async (workoutId) => {
@@ -603,13 +609,14 @@ export default function Profile() {
   };
 
   const nextSlide = (imglength, postId) => {
-    console.log('next');
+    console.log('next', postId, slidePosition);
     if (slidePosition === imglength-1) {
       setSlidePosition(0);
     }
     else {
       setSlidePosition(prev => prev+1);
     }
+    console.log('next', slidePosition);
     setSlidePostId(postId);
   }
 
@@ -628,15 +635,17 @@ export default function Profile() {
     <div className="App">
       {/* {loggedInId === id ? ( */}
       <button onClick={gotoNewsFeed}> Return to feed </button>
+      <button onClick={logout}> Logout </button>
       <ProfileComp>
         <TagInfo className="tag">
           <ImageContainer>
             <img src="../src/images/avatar.png"></img>
-            <h2> {username} </h2>
+            <h2> {user.fname} {user.lname} </h2>
           </ImageContainer>
           <UserInformation>
             <UserContact>
-              <h3> @{username}</h3>
+              <h3> @ { username }</h3>
+
               <div>
                 {loggedInId === id ? (
                   ""
@@ -710,16 +719,25 @@ export default function Profile() {
           posts.map((post) => {
             return (
               <div className="posts">
-               <h3> {username} </h3>
+               <h3> {user.fname} </h3>
                 <div className="carousel">
                   {post.images.map((img,index) => {
                     return (
                       <> 
                     { slidePostId === post._id ? 
-                    <div className={`carousel ${index === slidePosition ? "carousel-item-visible" : "carousel-item-hidden"}`}> 
+                    <div className={`carousel-item ${index === slidePosition ? "carousel-item-visible" : "carousel-item-hidden"}`}> 
                       <img src={img.url} />
                     </div> :
-                    <div className="carousel-item-visible"> <img src={img.url} /> </div> 
+                    <>
+                    { index === 0 ? 
+                    <div className="carousel-item-visible"> 
+                      <img src={img.url} /> 
+                    </div>
+                    :  <div className="carousel-item-hidden"> 
+                    <img src={img.url} /> 
+                      </div>
+                    }
+                    </>
                     }
                     { post.images.length > 1 ? 
                     <div className="carousel-actions">
@@ -729,8 +747,8 @@ export default function Profile() {
                 </>  )})}
                 </div>
                 <h4> {post.caption} </h4>
-                {/* <button onClick={() => deletePost(post._id)}> Delete </button> */}
                 <h5> Comments </h5>
+                <button onClick={() => deletePost(post._id)}> Delete </button>
               </div>
             );
           })}
@@ -866,7 +884,6 @@ export default function Profile() {
         </WorkoutContainer>
       </ProfileComp>
 
-      <button onClick={gotoNewsFeed}> Return to feed </button>
     </div>
   );
 }
