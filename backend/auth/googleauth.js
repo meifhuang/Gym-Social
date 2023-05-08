@@ -72,6 +72,7 @@ router.use(passport.initialize());
         console.error(err);
         res.status(500).send('Internal server error');
       });
+      
 
     passport.serializeUser((user, done) => {
         console.log("Serialize")

@@ -40,6 +40,7 @@ import {
   ExerciseImage,
   WorkoutIcons,
   ProfileMain,
+  PostContainer
 } from "../styledComponents/Profile";
 
 export default function Profile() {
@@ -49,10 +50,6 @@ export default function Profile() {
   const { id } = useParams();
   const { token, userId } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  function redirectNewsFeed() {
-    navigate("/newsfeed");
-  }
 
   const stats = {
     name: "",
@@ -68,6 +65,7 @@ export default function Profile() {
   };
 
   const [username, setUsername] = useState("");
+  const [user, setUser] = useState([]);
   const [showExerciseForm, setShowExerciseForm] = useState(true);
   const [changeId, setChangeId] = useState("");
   const [exercise, setExercise] = useState(stats);
@@ -96,7 +94,21 @@ export default function Profile() {
   const [postForm, setPostForm] = useState({ caption: "" });
   const [posts, setPosts] = useState([]);
 
+
   const [files, setFiles] = useState(null);
+
+  const [slidePosition, setSlidePosition] = useState(0); 
+  const [slidePostId, setSlidePostId] = useState(0);
+
+  const [files, setFiles] = useState(null)
+
+
+  // if (modal) {
+  //   document.body.classList.add("active-modal");
+  // } else {
+  //   document.body.classList.remove("active-modal");
+  // }
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -151,7 +163,7 @@ export default function Profile() {
     navigate("/signup");
   }
 
-  const getWorkout = async () => {
+  const getUser = async () => {
     try {
       const res = await axios({
         method: "get",
@@ -161,8 +173,16 @@ export default function Profile() {
         },
       });
       if (res) {
-        console.log("here", res.data.posts);
-        setUsername(res.data.username);
+        const userLength = res.data.user.username.length
+        if (res.data.user.username.includes('@')) {
+          const username = res.data.user.username.substring(0, userLength - 10);
+          setUsername(username)
+        }
+        else {
+          const username = res.data.user.username
+          setUsername(username)
+        }
+        setUser(res.data.user); 
         setWorkouts(res.data.workouts);
         setFollowing(res.data.loggedInUserFollowing);
         setnumFollowing(res.data.numFollowing);
@@ -170,6 +190,7 @@ export default function Profile() {
         setnumWorkouts(res.data.numWorkouts);
         setnumPosts(res.data.numPosts);
         setPosts(res.data.posts);
+
       } else {
         console.log("no responses");
       }
@@ -179,8 +200,7 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    console.log("RERERERENDERERED")
-    getWorkout();
+    getUser();
   }, []);
 
   const createPost = async (e) => {
@@ -253,7 +273,7 @@ export default function Profile() {
     setEditMode(false);
     setCurrentWorkout([]);
     //alternative to calling this?
-    getWorkout();
+    getUser();
   };
 
   const clickEditWorkout = async (workoutId) => {
@@ -604,19 +624,45 @@ export default function Profile() {
     }
   };
 
+  const nextSlide = (imglength, postId) => {
+    console.log('next', postId, slidePosition);
+    if (slidePosition === imglength-1) {
+      setSlidePosition(0);
+    }
+    else {
+      setSlidePosition(prev => prev+1);
+    }
+    console.log('next', slidePosition);
+    setSlidePostId(postId);
+  }
+
+  const prevSlide = (imglength,postId) => {
+    console.log("prev");
+    if (slidePosition === 0) {
+      setSlidePosition(imglength-1);
+    }
+    else {
+      setSlidePosition(prev => prev - 1); 
+    }
+    setSlidePostId(postId);
+  }
+
   return (
     <div className="App">
       {/* {loggedInId === id ? ( */}
       <button onClick={gotoNewsFeed}> Return to feed </button>
       <ProfileMain>
+      <button onClick={logout}> Logout </button>
+
         <TagInfo className="tag">
           <ImageContainer>
             <img src="../src/images/avatar.png"></img>
-            <h2> {username} </h2>
+            <h2> {user.fname} {user.lname} </h2>
           </ImageContainer>
           <UserInformation>
             <UserContact>
-              <h3> @{username}</h3>
+              <h3> @ { username }</h3>
+
               <div>
                 {loggedInId === id ? (
                   ""
@@ -653,7 +699,7 @@ export default function Profile() {
           </UserInformation>
           {/* is user logged in the person your page is on ? if not, show follow/unfollow depending on if the person is in the user's follow list */}
         </TagInfo>
-{console.log(addWorkoutModal)}
+
         {addWorkoutModal && (
           <AddWorkoutForm
             exerciseDB={exerciseDB}
@@ -726,7 +772,6 @@ export default function Profile() {
         />
       </ProfileMain>
 
-      <button onClick={gotoNewsFeed}> Return to feed </button>
     </div>
   );
 }

@@ -133,6 +133,72 @@ export const FollowButton = styled.button`
 // export const UnfollowButton = styled(FollowButton)`
 // `
 
+export const PostContainer = styled.div`
+  min-width: 1000px;
+  min-height: 400px;
+  border-radius: 5px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: end;
+  align-items: end;
+  gap: 2em;
+  border: 1px solid red;
+
+  .posts {
+    border: 1px solid black;
+    min-height: 300px;
+  }
+  .carousel {
+    position: relative; 
+    margin: 0 auto;
+  }
+
+  .carousel .carousel-item, 
+  .carousel .carousel-item-hidden {
+  display: none; 
+  }
+
+  .carousel .carousel-item-visible {
+    display: block;
+    animation: fade 1.5s; 
+  }
+
+  .carousel .carousel-actions {
+    display: flex;
+    width: 100%;
+    justify-content: space-between; 
+    position: absolute; 
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .carousel .carousel-actions button {
+    border-radius: 50px;
+    background-color: transparent;
+    border: 0;
+    font-size: 20px;
+    color: white;
+    cursor: pointer; 
+    width: 40px; 
+    height: 40px; 
+  }
+  h3,h4,h5 {
+    margin: .5em;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+  }
+  @keyframes fade {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1
+    }
+  }
+`
+
 export const WorkoutContainer = styled.div`
   display: grid;
   /* flex-direction: column; */
