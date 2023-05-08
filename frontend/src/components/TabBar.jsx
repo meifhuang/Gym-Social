@@ -10,6 +10,7 @@ import {
 } from "../assets/icons";
 import AddPostForm from "./AddPostForm";
 
+import { PostContainer } from "../styledComponents/Profile";
 import {
   TabBarContainer,
   TabContainer,
@@ -38,6 +39,11 @@ const TabBar = ({
   posts,
   createPost,
   handleFileUpload,
+  user,
+  slidePostId,
+  nextSlide,
+  prevSlide,
+  slidePosition
 }) => {
   const [toggleState, setToggleState] = useState(1);
 
@@ -91,7 +97,7 @@ const TabBar = ({
             handleFileUpload={handleFileUpload}
           />
 
-          {posts &&
+          {/* {posts &&
             posts.map((post) => {
               return (
                 <div>
@@ -105,7 +111,82 @@ const TabBar = ({
                   <button onClick={() => deletePost(post._id)}> Delete </button>
                 </div>
               );
-            })}
+            })} */}
+
+          <PostContainer>
+          {console.log(posts)}
+            {posts &&
+              posts.map((post) => {
+                return (
+                  <div className="posts">
+                    <h3> {user.fname} </h3>
+                    <div className="carousel">
+                      {post.images.map((img, index) => {
+                        return (
+                          <>
+                            {slidePostId === post._id ? (
+                              <div
+                                className={`carousel-item ${
+                                  index === slidePosition
+                                    ? "carousel-item-visible"
+                                    : "carousel-item-hidden"
+                                }`}
+                              >
+                                <img src={img.url} />
+                              </div>
+                            ) : (
+                              <>
+                                {index === 0 ? (
+                                  <div className="carousel-item-visible">
+                                    <img src={img.url} />
+                                  </div>
+                                ) : (
+                                  <div className="carousel-item-hidden">
+                                    <img src={img.url} />
+                                  </div>
+                                )}
+                              </>
+                            )}
+                            {post.images.length > 1 ? (
+                              <div className="carousel-actions">
+                                <button
+                                  onClick={() =>
+                                    prevSlide(post.images.length, post._id)
+                                  }
+                                  id={`carousel-button-prev`}
+                                  aria-label="Previous"
+                                >
+                                  {" "}
+                                  &lt;{" "}
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    nextSlide(post.images.length, post._id)
+                                  }
+                                  id={`carousel-button-next`}
+                                  aria-label="Next"
+                                >
+                                  {" "}
+                                  &gt;{" "}
+                                </button>
+                              </div>
+                            ) : (
+                              <div> </div>
+                            )}
+                          </>
+                        );
+                      })}
+                    </div>
+                    <h4> {post.caption} </h4>
+                    <h5> Comments </h5>
+                    <button onClick={() => deletePost(post._id)}>
+                      {" "}
+                      Delete{" "}
+                    </button>
+                  </div>
+                );
+              })}
+          </PostContainer>
         </div>
 
         <div
@@ -124,19 +205,17 @@ const TabBar = ({
                   required
                 />
                 <button
-                  type="button"
+                  // type="button"
                   disabled={!workoutName.name}
-                                  onClick={toggleAddWorkoutModal}
-                                  title="Create a Workout"
+                  onClick={toggleAddWorkoutModal}
+                  title="Create a Workout"
                 >
-     
-                 <CreateWorkoutIcon />
+                  <CreateWorkoutIcon />
                 </button>{" "}
               </form>
             ) : (
               ""
-                      )}
-                      
+            )}
           </CreateWorkoutContainer>
           <WorkoutContainerComp
             workouts={workouts}

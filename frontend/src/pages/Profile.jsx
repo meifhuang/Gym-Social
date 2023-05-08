@@ -762,11 +762,16 @@ export default function Profile() {
           deleteWorkout={deleteWorkout}
           activeDropdown={activeDropdown}
           //props for POSTS
+          user={user}
+          slidePostId= {slidePostId}
           handlePostChange={handlePostChange}
           postForm={postForm}
           posts={posts}
           createPost={createPost}
           handleFileUpload={handleFileUpload}
+          nextSlide={nextSlide}
+          prevSlide={prevSlide}
+          slidePosition={slidePosition}
         />
       </ProfileMain>
 
