@@ -29,10 +29,8 @@ const WorkoutContainerComp = ({
 }) => {
   return (
     <WorkoutContainer className="workouts">
-      {console.log(workouts, "update edit add workouts")}
       {workouts &&
         workouts.map((workout) => {
-          console.log(workout, "WORKOUT LOOP");
           return (
             <WorkoutDiv className="">
               <WorkoutDivHeader>

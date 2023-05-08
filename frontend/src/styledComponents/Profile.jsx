@@ -19,7 +19,6 @@ export const ProfileMain = styled.main`
   padding: 2rem;
   margin: 2rem calc(1rem + 10vw);
   gap: 2rem;
-  border: 1px solid red;
 `
 
 export const ProfileComp = styled.main`
@@ -52,7 +51,7 @@ export const ProfileComp = styled.main`
 export const TagInfo = styled.div`
   display: flex;
   /* margin: 2rem; */
-  border: 2px solid rgb(163, 158, 158);
+  /* border: 2px solid rgb(163, 158, 158); */
   border-radius: 0.25rem;
   padding: 5rem;
   gap: 3rem;

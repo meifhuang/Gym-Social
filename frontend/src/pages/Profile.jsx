@@ -44,7 +44,7 @@ import {
 
 export default function Profile() {
   const exerciseDB = useLoaderData();
-  console.log(exerciseDB);
+
 
   const { id } = useParams();
   const { token, userId } = useContext(AuthContext);
@@ -179,6 +179,7 @@ export default function Profile() {
   };
 
   useEffect(() => {
+    console.log("RERERERENDERERED")
     getWorkout();
   }, []);
 
@@ -651,31 +652,8 @@ export default function Profile() {
             </About>
           </UserInformation>
           {/* is user logged in the person your page is on ? if not, show follow/unfollow depending on if the person is in the user's follow list */}
-
-          <div className="create-workout">
-            {loggedInId === id ? (
-              <form onSubmit={(e) => handleExerciseForm(e)}>
-                <label htmlFor="workoutname"> Workout Name </label>
-                <input
-                  type="text"
-                  value={workoutName.name}
-                  name="name"
-                  onChange={handleNameChange}
-                  required
-                />
-                <button
-                  disabled={!workoutName.name}
-                  onClick={toggleAddWorkoutModal}
-                >
-                  + Create a workout
-                </button>{" "}
-              </form>
-            ) : (
-              ""
-            )}
-          </div>
         </TagInfo>
-
+{console.log(addWorkoutModal)}
         {addWorkoutModal && (
           <AddWorkoutForm
             exerciseDB={exerciseDB}
@@ -728,6 +706,10 @@ export default function Profile() {
 
         <TabBar
           //props for WORKOUTS
+          handleExerciseForm={handleExerciseForm}
+          workoutName={workoutName}
+          handleNameChange={handleNameChange}
+          toggleAddWorkoutModal ={toggleAddWorkoutModal }
           workouts={workouts}
           loggedInId={loggedInId}
           id={id}

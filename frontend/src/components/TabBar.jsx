@@ -5,19 +5,26 @@ import {
   GridIcon,
   FavoriteIcon,
   DeleteIcon,
+  AddIcon,
+  CreateWorkoutIcon,
 } from "../assets/icons";
 import AddPostForm from "./AddPostForm";
 
 import {
   TabBarContainer,
   TabContainer,
-  Tab,
+  //   Tab,
   TabIconContainer,
   TabButton,
+  CreateWorkoutContainer,
 } from "../styledComponents/TabBar";
 import WorkoutContainerComp from "./WorkoutContainerComp";
 const TabBar = ({
   //props for WORKOUTS
+  handleExerciseForm,
+  workoutName,
+  handleNameChange,
+  toggleAddWorkoutModal,
   workouts,
   loggedInId,
   id,
@@ -104,6 +111,54 @@ const TabBar = ({
         <div
           className={toggleState === 2 ? "content  active-content" : "content"}
         >
+          <CreateWorkoutContainer className="create-workout">
+            {loggedInId === id ? (
+              <form onSubmit={(e) => handleExerciseForm(e)}>
+                <input
+                  type="text"
+                  value={workoutName.name}
+                  name="name"
+                  onChange={handleNameChange}
+                  placeholder="Workout Name"
+                  size="15"
+                  required
+                />
+                <button
+                  type="button"
+                  disabled={!workoutName.name}
+                  onClick={toggleAddWorkoutModal}
+                >
+     
+                 <CreateWorkoutIcon />
+                </button>{" "}
+              </form>
+            ) : (
+              ""
+                      )}
+                      
+                      {/* <div className="create-workout">
+            {loggedInId === id ? (
+              <form onSubmit={(e) => handleExerciseForm(e)}>
+                <label htmlFor="workoutname"> Workout Name </label>
+                <input
+                  type="text"
+                  value={workoutName.name}
+                  name="name"
+                  onChange={handleNameChange}
+                  required
+                />
+                <button
+                  disabled={!workoutName.name}
+                  onClick={toggleAddWorkoutModal}
+                >
+                  + Create a workout
+                </button>{" "}
+              </form>
+            ) : (
+              ""
+            )}
+          </div> */}
+          </CreateWorkoutContainer>
           <WorkoutContainerComp
             workouts={workouts}
             loggedInId={loggedInId}
