@@ -100,8 +100,6 @@ export default function Profile() {
   const [slidePosition, setSlidePosition] = useState(0); 
   const [slidePostId, setSlidePostId] = useState(0);
 
-  const [files, setFiles] = useState(null)
-
 
   // if (modal) {
   //   document.body.classList.add("active-modal");
