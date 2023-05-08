@@ -8,6 +8,13 @@ import {
 } from "../assets/icons";
 import AddPostForm from "./AddPostForm";
 
+import {
+  TabBarContainer,
+  TabContainer,
+  Tab,
+  TabIconContainer,
+  TabButton,
+} from "../styledComponents/TabBar";
 import WorkoutContainerComp from "./WorkoutContainerComp";
 const TabBar = ({
   //props for WORKOUTS
@@ -32,54 +39,42 @@ const TabBar = ({
   };
 
   return (
-    <div className="container">
-      <div className="bloc-tabs">
-        <button
+    <TabBarContainer className="container">
+      <TabContainer className="bloc-tabs">
+        <TabButton
           className={toggleState === 1 ? "tabs active-tabs" : "tabs"}
           onClick={() => toggleTab(1)}
         >
-          <span>
-            <WorkoutIcon />
-          </span>
-          <div>Workouts </div>
-        </button>
-        <button
+          <TabIconContainer>
+            <GridIcon />
+          </TabIconContainer>
+          <div>Posts </div>
+        </TabButton>
+
+        <TabButton
           className={toggleState === 2 ? "tabs active-tabs" : "tabs"}
           onClick={() => toggleTab(2)}
         >
-          <span>
-            <GridIcon />
-          </span>
-          <div>Posts </div>
-        </button>
-        <button
+          <TabIconContainer>
+            <WorkoutIcon />
+          </TabIconContainer>
+          <div>Workouts </div>
+        </TabButton>
+
+        <TabButton
           className={toggleState === 3 ? "tabs active-tabs" : "tabs"}
           onClick={() => toggleTab(3)}
         >
-          <span>
+          <TabIconContainer>
             <FavoriteIcon />
-          </span>
+          </TabIconContainer>
           <div>Favorites</div>
-        </button>
-      </div>
+        </TabButton>
+      </TabContainer>
 
       <div className="content-tabs">
         <div
           className={toggleState === 1 ? "content  active-content" : "content"}
-        >
-          <WorkoutContainerComp
-            workouts={workouts}
-            loggedInId={loggedInId}
-            id={id}
-            EditIcon={EditIcon}
-            clickEditWorkout={clickEditWorkout}
-            deleteWorkout={deleteWorkout}
-            activeDropdown={activeDropdown}
-          />
-        </div>
-
-        <div
-          className={toggleState === 2 ? "content  active-content" : "content"}
         >
           <AddPostForm
             handlePostChange={handlePostChange}
@@ -105,6 +100,21 @@ const TabBar = ({
               );
             })}
         </div>
+
+        <div
+          className={toggleState === 2 ? "content  active-content" : "content"}
+        >
+          <WorkoutContainerComp
+            workouts={workouts}
+            loggedInId={loggedInId}
+            id={id}
+            EditIcon={EditIcon}
+            clickEditWorkout={clickEditWorkout}
+            deleteWorkout={deleteWorkout}
+            activeDropdown={activeDropdown}
+          />
+        </div>
+
         <div
           className={toggleState === 3 ? "content  active-content" : "content"}
         >
@@ -116,7 +126,7 @@ const TabBar = ({
           </div>
         </div>
       </div>
-    </div>
+    </TabBarContainer>
   );
 };
 

@@ -19,6 +19,7 @@ export const ProfileMain = styled.main`
   padding: 2rem;
   margin: 2rem calc(1rem + 10vw);
   gap: 2rem;
+  border: 1px solid red;
 `
 
 export const ProfileComp = styled.main`

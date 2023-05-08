@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
 html,
 body,
@@ -8,102 +8,50 @@ body,
 .App {
   height: 100%;
   width: 100%;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
-
 #root * {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 body {
   background: #fff;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  /* width: 500px;
-  height: 300px; */
-  /* background: #f1f1f1; */
-  /* margin: 100px auto 0; */
-  word-break: break-all;
-  /* width: 100%; */
-  /* flex: 1; */
-  /* border: 1px solid red; */
-  /* min-height: 1000px; */
-}
 
-.bloc-tabs {
-  display: flex;
-  /* border: 1px solid red; */
-  justify-content: center;
-  /* gap: 2rem */
-}
 .tabs {
-  padding: .75rem;
+  padding: 0.75rem;
   text-align: center;
-  /* width: 50%; */
   background: white;
   cursor: pointer;
-  /* border-bottom: 1px solid rgba(0, 0, 0, 0.274); */
   box-sizing: content-box;
   position: relative;
   outline: none;
   font-size: 1rem;
   color: #a19f9f;
 }
-.tabs:not(:last-child){
-  /* border-right: 1px solid rgba(0, 0, 0, 0.274); */
-}
 
-.active-tabs  {
+.active-tabs {
   background: white;
   border-bottom: 1px solid transparent;
 }
 
-/* .active-tabs::after {
-  content: "";
-  display: block;
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% + 2px);
-  height: 5px;
-  background: rgb(88, 147, 241);
-} */
+
 
 .active-tabs {
   border: none;
   border-bottom: 1.5px solid rgba(0, 0, 0, 0.637);
-  color: rgba(0, 0, 0, 0.863)
+  color: rgba(0, 0, 0, 0.863);
 }
-
 
 button {
   border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: .4rem
-
-  
-}
-button span {
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-button span svg{
-  width: 20px;
-}
+} 
 
 
 .content-tabs {
-  flex-grow : 1;
+  flex-grow: 1;
 }
 .content {
   background: white;
@@ -112,19 +60,7 @@ button span svg{
   height: 100%;
   display: none;
 }
-.content h2 {
-  padding: 0px 0 5px 0px;
-}
-.content hr {
-  width: 100px;
-  height: 2px;
-  background: #222;
-  margin-bottom: 5px;
-}
-.content p {
-  width: 100%;
-  height: 100%;
-}
+
 .active-content {
   display: block;
 }
