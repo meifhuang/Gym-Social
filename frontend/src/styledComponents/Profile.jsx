@@ -90,6 +90,9 @@ export const UserInformation = styled(CenteredFlexColumn)`
 
 export const ImageContainer = styled(CenteredFlexColumn)`
   gap: 1rem;
+  .profilepic {
+    cursor: pointer;
+  }
 `;
 
 export const UserContact = styled.div`

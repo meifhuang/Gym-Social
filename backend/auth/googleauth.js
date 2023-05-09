@@ -31,8 +31,9 @@ router.use(passport.initialize());
           username: profile.username || profile.emails[0].value,
           password: "defaultpassword" 
       })
-     
-      await newUser.save();
+      const file = {url: "https://res.cloudinary.com/dxq4m23dd/image/upload/v1683580896/Gym-Social/byytsi7td2m3hy6gbtww.png" , filename: 'Gym-Social/byytsi7td2m3hy6gbtww'}
+      newUser.profilepic.push(file);
+      await newUser.save()
       done(null,newUser);
     }
   }

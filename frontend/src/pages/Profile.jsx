@@ -66,6 +66,8 @@ export default function Profile() {
 
   const [username, setUsername] = useState("");
   const [user, setUser] = useState([]);
+  const [userPicUrl, setUserPicUrl] = useState("");
+
   const [showExerciseForm, setShowExerciseForm] = useState(true);
   const [changeId, setChangeId] = useState("");
   const [exercise, setExercise] = useState(stats);
@@ -93,11 +95,12 @@ export default function Profile() {
 
   const [postForm, setPostForm] = useState({ caption: "" });
   const [posts, setPosts] = useState([]);
-  const [postDisplay, setpostDisplay] = useState([]); 
 
 
   const [files, setFiles] = useState(null);
+  const [proPic, setProPic] = useState()
   const [prevSlidePosition, setPrevSlidePosition] = useState({});
+
 
 
   const handleChange = (e) => {
@@ -139,6 +142,10 @@ export default function Profile() {
     setFiles([...e.target.files]);
   };
 
+  const handlePicChange = (e) => {
+    setProPic([...e.target.files]);
+  }
+
   const toggleEditWorkoutModal = () => {
     setEditWorkoutModal(!editWorkoutModal);
     setCurrentWorkout([]);
@@ -173,6 +180,7 @@ export default function Profile() {
           setUsername(username)
         }
         setUser(res.data.user); 
+        setUserPicUrl(res.data.user.profilepic[0].url);
         setWorkouts(res.data.workouts);
         setFollowing(res.data.loggedInUserFollowing);
         setnumFollowing(res.data.numFollowing);
@@ -182,6 +190,7 @@ export default function Profile() {
         setPosts(res.data.posts);
         const postIdAndPosition = res.data.posts.map(post => {return ({postId:post._id, index: 0})});
         setPrevSlidePosition(postIdAndPosition);
+
 
       } else {
         console.log("no responses");
@@ -657,16 +666,22 @@ export default function Profile() {
     console.log('prev',prevSlidePosition);
   }
 
+  const changeProfilePicture = () => {
+    console.log("CHANGE PFP");
+  }
+
   return (
     <div className="App">
-      {/* {loggedInId === id ? ( */}
       <button onClick={gotoNewsFeed}> Return to feed </button>
       <ProfileMain>
       <button onClick={logout}> Logout </button>
 
         <TagInfo className="tag">
           <ImageContainer>
-            <img src="../src/images/avatar.png"></img>
+            <div className="profilepic" onClick={changeProfilePicture}> 
+            {/* <h3> {userPicUrl} </h3> */}
+            <img src={userPicUrl}></img>
+            </div>
             <h2> {user.fname} {user.lname} </h2>
           </ImageContainer>
           <UserInformation>
@@ -778,7 +793,6 @@ export default function Profile() {
           handlePostChange={handlePostChange}
           postForm={postForm}
           posts={posts}
-          postDisplay={postDisplay}
           createPost={createPost}
           handleFileUpload={handleFileUpload}
           nextSlide={nextSlide}

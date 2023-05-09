@@ -6,7 +6,6 @@ const ImageSchema = new Schema({
     filename: String
 })
 
-
 const PostSchema = new Schema({
     images:[ImageSchema],
     createdAt: {
