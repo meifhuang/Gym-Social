@@ -3,7 +3,12 @@ const passport = require("passport");
 const Workout = require("../models/workout");
 const Exercise = require("../models/exercise");
 const User = require("../models/user");
+const Image = require("../models/user");
 const mongoose = require("mongoose");
+const multer = require('multer');
+const {storage} = require('../cloudinary'); 
+const upload = multer({storage});
+const {cloudinary} = require('../cloudinary');
 
 router = express.Router();
 
@@ -23,7 +28,6 @@ router.get("/profile/:id", async (req, res) => {
   const numFollowing = user.following.length;
   const numFollowers = user.followers.length; 
   const numPosts = user.posts.length;
-  console.log(numWorkouts);
   res.status(200).json({
     success: true,
     workouts: workouts,
@@ -76,8 +80,6 @@ router.post("/profile/:id/follow", async (req, res) => {
       _id: req.user.id,
       following: { _id: userToFollow._id },
     });
-    console.log("already following", isalreadyFollowing);
-    console.log(userToFollow);
     if (isalreadyFollowing.length === 0) {
       user.following.push(userToFollow);
       userToFollow.followers.push(user);
@@ -146,5 +148,34 @@ router.get("/explore", async (req, res) => {
     console.log(e.message);
   }
 });
+
+
+router.post("/updateuserpic", upload.single('image'), async (req, res) => {
+    try {
+      const user = await User.findById(req.user.id).populate("picture");
+      // console.log('in updatepic route', user.profilepic);
+      if (user) { 
+      user.picture.pop();
+      const newImage = {url: req.file.path, filename: req.file.filename};
+      console.log(newImage); 
+      user.picture.push(newImage);
+      await user.save();
+      res.status(200).json({
+        user: user
+      })
+      }
+      else {
+        res.status(400).json({
+          success: false,
+          message: "couldnt find user",
+       
+        });
+      }
+      // console.log(user); 
+    }
+    catch (e) {
+      console.log(e.message);
+    }
+})
 
 module.exports = router;

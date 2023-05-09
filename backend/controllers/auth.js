@@ -91,7 +91,7 @@ router.post(
               password: hashPassword,
             });
             const file = {url: "https://res.cloudinary.com/dxq4m23dd/image/upload/v1683580896/Gym-Social/byytsi7td2m3hy6gbtww.png" , filename: 'Gym-Social/byytsi7td2m3hy6gbtww'}
-            user.profilepic.push(file);
+            user.picture.push(file);
             await user.save()
 
             res.status(201).json({
