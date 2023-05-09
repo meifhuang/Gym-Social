@@ -44,7 +44,7 @@ import {
 } from "../styledComponents/Profile";
 
 export default function Profile() {
-  const exerciseDB = useLoaderData();
+  // const exerciseDB = useLoaderData();
 
 
   const { id } = useParams();
@@ -93,19 +93,11 @@ export default function Profile() {
 
   const [postForm, setPostForm] = useState({ caption: "" });
   const [posts, setPosts] = useState([]);
+  const [postDisplay, setpostDisplay] = useState([]); 
 
 
   const [files, setFiles] = useState(null);
-
-  const [slidePosition, setSlidePosition] = useState(0); 
-  const [slidePostId, setSlidePostId] = useState(0);
-
-
-  // if (modal) {
-  //   document.body.classList.add("active-modal");
-  // } else {
-  //   document.body.classList.remove("active-modal");
-  // }
+  const [prevSlidePosition, setPrevSlidePosition] = useState({});
 
 
   const handleChange = (e) => {
@@ -188,6 +180,8 @@ export default function Profile() {
         setnumWorkouts(res.data.numWorkouts);
         setnumPosts(res.data.numPosts);
         setPosts(res.data.posts);
+        const postIdAndPosition = res.data.posts.map(post => {return ({postId:post._id, index: 0})});
+        setPrevSlidePosition(postIdAndPosition);
 
       } else {
         console.log("no responses");
@@ -226,6 +220,8 @@ export default function Profile() {
         console.log("add post");
         console.log(response.data.posts);
         setPosts(response.data.posts);
+        const postIdAndPosition = response.data.posts.map(post => {return ({postId:post._id, index: 0})});
+        setPrevSlidePosition(postIdAndPosition);
         setnumPosts((prev) => prev + 1);
       } else {
         throw Error("no response");
@@ -623,26 +619,42 @@ export default function Profile() {
   };
 
   const nextSlide = (imglength, postId) => {
-    console.log('next', postId, slidePosition);
-    if (slidePosition === imglength-1) {
-      setSlidePosition(0);
-    }
-    else {
-      setSlidePosition(prev => prev+1);
-    }
-    console.log('next', slidePosition);
-    setSlidePostId(postId);
+    // setSlidePostId(postId);
+    // if (slidePosition === imglength-1) {
+      // setSlidePosition(0);
+      setPrevSlidePosition(prevSlides => {
+        return prevSlides.map(slide => {
+          if (slide.postId === postId) {
+            if (slide.index === imglength-1) {
+              return { ...slide, index: 0 };
+            }
+            else {
+              return {...slide, index: slide.index+1}
+            }
+          } else {
+            return slide;
+          }
+        });
+      });
+    console.log('next' , prevSlidePosition);
   }
 
   const prevSlide = (imglength,postId) => {
-    console.log("prev");
-    if (slidePosition === 0) {
-      setSlidePosition(imglength-1);
-    }
-    else {
-      setSlidePosition(prev => prev - 1); 
-    }
-    setSlidePostId(postId);
+      setPrevSlidePosition(prevSlides => {
+        return prevSlides.map(slide => {
+          if (slide.postId === postId) {
+            if (slide.index === 0) {
+            return { ...slide, index: imglength-1 };
+            }
+            else {
+              return {...slide, index: slide.index-1}
+            }
+          } else {
+            return slide;
+          }
+        });
+      });
+    console.log('prev',prevSlidePosition);
   }
 
   return (
@@ -763,15 +775,16 @@ export default function Profile() {
           activeDropdown={activeDropdown}
           //props for POSTS
           user={user}
-          slidePostId= {slidePostId}
           handlePostChange={handlePostChange}
           postForm={postForm}
           posts={posts}
+          postDisplay={postDisplay}
           createPost={createPost}
           handleFileUpload={handleFileUpload}
           nextSlide={nextSlide}
           prevSlide={prevSlide}
-          slidePosition={slidePosition}
+          deletePost={deletePost}
+          prevSlidePosition={prevSlidePosition}
         />
       </ProfileMain>
 

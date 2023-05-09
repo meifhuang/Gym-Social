@@ -18,6 +18,7 @@ import {
   TabIconContainer,
   TabButton,
   CreateWorkoutContainer,
+
 } from "../styledComponents/TabBar";
 import WorkoutContainerComp from "./WorkoutContainerComp";
 const TabBar = ({
@@ -40,10 +41,10 @@ const TabBar = ({
   createPost,
   handleFileUpload,
   user,
-  slidePostId,
   nextSlide,
   prevSlide,
-  slidePosition
+  deletePost,
+  prevSlidePosition
 }) => {
   const [toggleState, setToggleState] = useState(1);
 
@@ -96,58 +97,18 @@ const TabBar = ({
             createPost={createPost}
             handleFileUpload={handleFileUpload}
           />
-
-          {/* {posts &&
-            posts.map((post) => {
+    <PostContainer>
+          {posts &&
+            posts.map((post,index) => {
               return (
                 <div>
-                  <h3> POST </h3>
-                  <h5> {post.caption} </h5>
-                  <div>
-                    {post.images.map((img) => {
-                      return <img width="100px" height="100px" src={img.url} />;
-                    })}
-                  </div>
-                  <button onClick={() => deletePost(post._id)}> Delete </button>
-                </div>
-              );
-            })} */}
-
-          <PostContainer>
-          {console.log(posts)}
-            {posts &&
-              posts.map((post) => {
-                return (
-                  <div className="posts">
-                    <h3> {user.fname} </h3>
-                    <div className="carousel">
-                      {post.images.map((img, index) => {
+                  <div className="carousel"> 
+                      {prevSlidePosition.map(slides => {
                         return (
-                          <>
-                            {slidePostId === post._id ? (
-                              <div
-                                className={`carousel-item ${
-                                  index === slidePosition
-                                    ? "carousel-item-visible"
-                                    : "carousel-item-hidden"
-                                }`}
-                              >
-                                <img src={img.url} />
-                              </div>
-                            ) : (
-                              <>
-                                {index === 0 ? (
-                                  <div className="carousel-item-visible">
-                                    <img src={img.url} />
-                                  </div>
-                                ) : (
-                                  <div className="carousel-item-hidden">
-                                    <img src={img.url} />
-                                  </div>
-                                )}
-                              </>
-                            )}
-                            {post.images.length > 1 ? (
+                          slides.postId === post._id ? <img className="carousel-item carousel-item-visible" src={post.images[slides.index].url} /> : <> </>
+                        )
+                      })}
+                  {post.images.length > 1 ? (
                               <div className="carousel-actions">
                                 <button
                                   onClick={() =>
@@ -159,6 +120,7 @@ const TabBar = ({
                                   {" "}
                                   &lt;{" "}
                                 </button>
+                               
                                 <button
                                   onClick={() =>
                                     nextSlide(post.images.length, post._id)
@@ -173,19 +135,12 @@ const TabBar = ({
                             ) : (
                               <div> </div>
                             )}
-                          </>
-                        );
-                      })}
-                    </div>
-                    <h4> {post.caption} </h4>
-                    <h5> Comments </h5>
-                    <button onClick={() => deletePost(post._id)}>
-                      {" "}
-                      Delete{" "}
-                    </button>
+                             <h5> {post.caption} </h5>
+                  <button onClick={() => deletePost(post._id)}> Delete </button>
                   </div>
-                );
-              })}
+                </div>
+              );
+            })}
           </PostContainer>
         </div>
 

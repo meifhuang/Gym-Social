@@ -55,6 +55,7 @@ export const TagInfo = styled.div`
   border-radius: 0.25rem;
   padding: 5rem;
   gap: 3rem;
+
   img {
     width: 200px;
   }
@@ -186,7 +187,7 @@ export const PostContainer = styled.div`
   }
   img {
     width: 100%;
-    height: 100%;
+    height: 300px;
     border: 1px solid black;
   }
   @keyframes fade {

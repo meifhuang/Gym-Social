@@ -44,6 +44,10 @@ export const HeroInfo = styled.div`
     font-weight: 600;
   }
 
+  & button:hover {
+    background-color: #D3D3D3;
+  }
+
   @media screen and (max-width: ${(props) => props.theme.breakpoint.lg}) {
     flex-direction: column;
 

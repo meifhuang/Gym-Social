@@ -59,8 +59,8 @@ export default function Navbar(props) {
               <NavTab className="nav-tab" onClick={() => navigate("/about")}>
                 About
               </NavTab>
-              <NavTab className="nav-tab" onClick={() => navigate("/signup")}>
-                Sign Up
+              <NavTab className="nav-tab" onClick={() => navigate("/login")}>
+                Login
               </NavTab>
             </NavTabContainer>
           )}

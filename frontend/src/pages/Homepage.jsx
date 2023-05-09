@@ -38,7 +38,7 @@ export default function Homepage(props) {
             </div>
           </div>
           <div>
-            <button>Start Your Journey</button>
+            <button className="sign-up" onClick={()=> navigate('/signup')}>Start Your Journey</button>
           </div>
         </HeroInfo>
       </HeroContainer>
