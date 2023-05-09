@@ -8,7 +8,7 @@ import { AuthContext } from "../AuthContext";
 // import ModalComp from "../components/Modal";
 import AddWorkoutForm from "../components/AddWorkoutForm";
 import EditWorkoutForm from "../components/EditWorkoutForm";
-import AddPostForm from "../components/AddPostForm";
+import ProfilePictureForm from "../components/ProfilePictureForm";
 import TabBar from "../components/TabBar";
 
 import {
@@ -98,7 +98,7 @@ export default function Profile() {
 
 
   const [files, setFiles] = useState(null);
-  const [proPic, setProPic] = useState()
+  const [proPic, setProPic] = useState(null)
   const [prevSlidePosition, setPrevSlidePosition] = useState({});
 
 
@@ -180,7 +180,7 @@ export default function Profile() {
           setUsername(username)
         }
         setUser(res.data.user); 
-        setUserPicUrl(res.data.user.profilepic[0].url);
+        setUserPicUrl(res.data.user.picture[0].url);
         setWorkouts(res.data.workouts);
         setFollowing(res.data.loggedInUserFollowing);
         setnumFollowing(res.data.numFollowing);
@@ -190,7 +190,6 @@ export default function Profile() {
         setPosts(res.data.posts);
         const postIdAndPosition = res.data.posts.map(post => {return ({postId:post._id, index: 0})});
         setPrevSlidePosition(postIdAndPosition);
-
 
       } else {
         console.log("no responses");
@@ -628,9 +627,6 @@ export default function Profile() {
   };
 
   const nextSlide = (imglength, postId) => {
-    // setSlidePostId(postId);
-    // if (slidePosition === imglength-1) {
-      // setSlidePosition(0);
       setPrevSlidePosition(prevSlides => {
         return prevSlides.map(slide => {
           if (slide.postId === postId) {
@@ -666,8 +662,37 @@ export default function Profile() {
     console.log('prev',prevSlidePosition);
   }
 
-  const changeProfilePicture = () => {
-    console.log("CHANGE PFP");
+  const changeProPic = () => {
+    console.log("CHANGE PFP!!!");
+  }
+
+  const updatePicture = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      if (proPic) {
+        for (let i = 0; i < proPic.length; i++) {
+          formData.append("image", proPic[i]);
+        }
+      }
+      const response = await axios({
+        method: "post",
+        url: "http://localhost:4000/updateuserpic",
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response) {
+        console.log("update user pic");
+        setUserPicUrl(response.data.user.picture[0].url);
+      } else {
+        throw Error("no response");
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return (
@@ -678,10 +703,17 @@ export default function Profile() {
 
         <TagInfo className="tag">
           <ImageContainer>
-            <div className="profilepic" onClick={changeProfilePicture}> 
+            {loggedInId === id ?
+            <ProfilePictureForm
+             handlePicChange={handlePicChange}
+             updatePicture={updatePicture}
+             changeProPic={changeProPic}
+            /> : <> </>
+            }
+            <div className="profilepic"> 
+                <img src={userPicUrl}></img>
+                </div>
             {/* <h3> {userPicUrl} </h3> */}
-            <img src={userPicUrl}></img>
-            </div>
             <h2> {user.fname} {user.lname} </h2>
           </ImageContainer>
           <UserInformation>

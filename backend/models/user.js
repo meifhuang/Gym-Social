@@ -5,7 +5,6 @@ const findOrCreate = require('mongoose-findorcreate');
 
 const Schema = mongoose.Schema;
 
-
 const ImageSchema = new Schema({
   url: String, 
   filename: String
@@ -46,7 +45,7 @@ const UserSchema = new Schema({
   following: [{ type: Schema.Types.ObjectId, ref: "User" }],
   followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
   posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
-  profilepic: [ImageSchema]
+  picture: [ImageSchema]
 });
 
 UserSchema.plugin(findOrCreate);

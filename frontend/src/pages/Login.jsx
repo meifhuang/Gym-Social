@@ -37,20 +37,6 @@ export default function Login(props) {
 
   const [values, setValues] = useState(initialValues);
 
-  // useEffect(() => {
-  //   const urlParams = new URLSearchParams(window.location.search);
-  //   console.log(urlParams);
-  //   // const token = urlParams.get('token');
-  //   // const userId = urlParams.get('userId');
-  //   // if (token && userId) {
-  //   //   // save the tokens in localStorage or Redux state
-  //   //   localStorage.setItem('token', token);
-  //   //   localStorage.setItem('userId', userId);
-  //   //   // redirect to a new URL without the tokens in the query string
-  //   //   // navigate('/newsfeed');
-  // },[]);
-
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValues({
@@ -64,32 +50,6 @@ export default function Login(props) {
 
     // window.location.replace("http://localhost:4000/auth/google");
   };
-
-  // useEffect(() => {
-  //   const urlParams = new URLSearchParams(window.location.search);
-  //   const code = urlParams.get("code");
-  //   console.log("HI CODE", code);
-  //   if (code) {
-  //     handleGoogleCallback(code);
-  //   }
-  // }, []);
-
-  // const handleGoogleCallback = async (code) => {
-  //   console.log(" IN CALL BACK ")
-  //   try {
-  //     const response = await axios.get(`http://localhost:4000/auth/google/callback?code=${code}`);
-  //     const data = response.data;
-  //     console.log(data);
-  //     localStorage.setItem('token', data.token);
-  //     localStorage.setItem('id', data.userId);
-  //     // window.location.replace(`http://127.0.0.1:5173/newsfeed`);
-
-  //   } catch (e) {
-  //     console.log(e.message);
-  //   }}
-
-
-  // }
 
 
   const loginSubmit = async (e) => {

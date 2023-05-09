@@ -56,37 +56,37 @@ function createServer() {
   
   
 
-  function checkLoggedIn(request, response, next) {
-    // console.log(request.cookies);
-    // console.log(passport)
-    console.log(request.user);
-    console.log(request.session);
+  // function checkLoggedIn(request, response, next) {
+  //   // console.log(request.cookies);
+  //   // console.log(passport)
+  //   console.log(request.user);
+  //   console.log(request.session);
 
-    if (!request.user) {
-      response.status(401).json({
-        success: false,
-        message: "You are not authorized",
-      });
-    } else {
-      next();
-    }
-    //   setTimeout(()=> {
-    //     next()
-    //   }, 2000)
-  }
+  //   if (!request.user) {
+  //     response.status(401).json({
+  //       success: false,
+  //       message: "You are not authorized",
+  //     });
+  //   } else {
+  //     next();
+  //   }
+  //   //   setTimeout(()=> {
+  //   //     next()
+  //   //   }, 2000)
+  // }
 
  
 
-  app.get("/protected", checkLoggedIn, function (request, response) {
-    try {
-      response.status(200).json({
-        success: true,
-        message: "You should be good",
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  });
+  // app.get("/protected", checkLoggedIn, function (request, response) {
+  //   try {
+  //     response.status(200).json({
+  //       success: true,
+  //       message: "You should be good",
+  //     });
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // });
 
 
   return app;
