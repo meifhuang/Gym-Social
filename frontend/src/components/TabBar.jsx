@@ -7,6 +7,7 @@ import {
   DeleteIcon,
   AddIcon,
   CreateWorkoutIcon,
+  SaveIcon
 } from "../assets/icons";
 import AddPostForm from "./AddPostForm";
 
@@ -33,7 +34,9 @@ const TabBar = ({
   EditIcon,
   clickEditWorkout,
   deleteWorkout,
+  saveWorkout, 
   activeDropdown,
+  workoutId,
   //props for POSTS
   handlePostChange,
   postForm,
@@ -80,9 +83,9 @@ const TabBar = ({
           onClick={() => toggleTab(3)}
         >
           <TabIconContainer>
-            <FavoriteIcon />
+            <SaveIcon />
           </TabIconContainer>
-          <div>Favorites</div>
+          <div>Saved</div>
         </TabButton>
       </TabContainer>
 
@@ -180,6 +183,8 @@ const TabBar = ({
             clickEditWorkout={clickEditWorkout}
             deleteWorkout={deleteWorkout}
             activeDropdown={activeDropdown}
+            saveWorkout={saveWorkout}
+            workoutId={workoutId}
           />
         </div>
 
@@ -187,10 +192,7 @@ const TabBar = ({
           className={toggleState === 3 ? "content  active-content" : "content"}
         >
           <div>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. In,
-            cupiditate. Provident nisi explicabo aliquid fugit libero dolores
-            odit veritatis ipsa quaerat, quia voluptatibus quisquam magni vel,
-            reiciendis deleniti laboriosam quod!
+            Favorito 
           </div>
         </div>
       </div>

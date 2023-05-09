@@ -278,6 +278,27 @@ export default function Profile() {
     getUser();
   };
 
+  const saveWorkout = async (workoutId) => {
+    "saving workout"
+    try { const response = await axios({
+      method: "post",
+      url: `http://localhost:4000/user/saveworkout/${workoutId}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    if (response) {
+      console.log('save workout to Saved!')
+    }
+    else {
+      throw Error("No response");
+    }
+  }
+  catch (e) {
+    console.log(e);
+  }
+  }
+
   const clickEditWorkout = async (workoutId) => {
     // setWorkoutName()
     setEditWorkoutModal(true);
@@ -820,6 +841,8 @@ export default function Profile() {
           clickEditWorkout={clickEditWorkout}
           deleteWorkout={deleteWorkout}
           activeDropdown={activeDropdown}
+          saveWorkout={saveWorkout}
+          workoutId={workoutId}
           //props for POSTS
           user={user}
           handlePostChange={handlePostChange}
