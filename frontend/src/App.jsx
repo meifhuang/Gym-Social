@@ -26,7 +26,7 @@ import GlobalStyles from "./styledComponents/GlobalStyles";
 import { ThemeProvider } from "styled-components";
 
 //loaders
-import { getExerciseList } from "./loader/index";
+// import { getExerciseList } from "./loader/index";
 function App() {
   const [message, setMessage] = useState("");
 

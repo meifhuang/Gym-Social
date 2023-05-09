@@ -282,13 +282,13 @@ export default function Profile() {
     "saving workout"
     try { const response = await axios({
       method: "post",
-      url: `http://localhost:4000/user/saveworkout/${workoutId}`,
+      url: `http://localhost:4000/saveworkout/${workoutId}`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
     if (response) {
-      console.log('save workout to Saved!')
+      console.log('save unsave', response.data.saved);
     }
     else {
       throw Error("No response");

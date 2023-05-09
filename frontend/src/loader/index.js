@@ -21,4 +21,4 @@ import axios from "axios";
 //   }
 // }
 
-export { getExerciseList };
+// export { getExerciseList };

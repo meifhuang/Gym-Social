@@ -150,6 +150,56 @@ router.get("/explore", async (req, res) => {
 });
 
 
+router.post("/saveworkout/:workoutId", async (req, res ) => {
+  try { 
+      const user = await User.findById(req.user.id).populate("saved");
+      const workout = await Workout.findById(req.params.workoutId).populate("exercises");
+      const isalreadySaved = await User.find({_id: req.user.id, saved: {_id: req.params.workoutId}});
+
+      if (user && workout) {
+        //if workout already saved ... 
+        if (isalreadySaved.length === 0) {
+            user.saved.push(workout);
+            await user.save();
+            res.status(200).json({
+              success: true, 
+              saved: user.saved
+            })
+        }
+      //clicking it again will unsave it. 
+        else {
+          const unsave = await User.findByIdAndUpdate(req.user.id, {
+            $pull: {saved: req.params.workoutId}})
+          const updateduser = await User.findById(req.user.id).populate("saved");
+          if (unsave && updateduser) {
+            res.status(200).json({
+              success: true,
+              saved: updateduser.saved
+            })
+          console.log('unsaved')
+          }
+          else {
+            res.status(400).json({
+              success: false, 
+              message: 'coudlnt delete'
+            })
+          }
+        }
+      console.log("updated", user.saved)
+      }
+      else {
+        res.status(400).json({
+          success:false, 
+          message: 'couldnt save workout'
+        })
+      }
+    }
+  catch (e) {
+      console.log(e.message);
+    }
+  })
+
+
 router.post("/updateuserpic", upload.single('image'), async (req, res) => {
     try {
       const user = await User.findById(req.user.id).populate("picture");
