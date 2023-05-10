@@ -21,14 +21,13 @@ router.get("/profile/:id", async (req, res) => {
   const user = await User.findById(paramId).populate([{
     path: "workouts",
     populate: { path: "exercises" },
-  }, "posts"]);
+  }, {path: "saved", populate: { path: "exercises" }}, "posts"]);
   const loggedInUser = await User.findById(loggedInId).populate([{path: "saved", populate: { path: "exercises" }} , "following", "followers", "posts"]);
   const workouts = user.workouts;
   const numWorkouts = user.workouts.length;
   const numFollowing = user.following.length;
   const numFollowers = user.followers.length; 
   const numPosts = user.posts.length;
-
   res.status(200).json({
     success: true,
     workouts: workouts,
@@ -37,8 +36,8 @@ router.get("/profile/:id", async (req, res) => {
     numWorkouts: numWorkouts,
     numPosts: numPosts,
     user: user,
+    savedWorkouts: user.saved,
     posts: loggedInUser.posts,
-    savedWorkouts: loggedInUser.saved,
     loggedInId: loggedInId,
     loggedInUserFollowing: loggedInUser.following,
   });
@@ -154,7 +153,7 @@ router.get("/explore", async (req, res) => {
 
 router.post("/saveworkout/:workoutId", async (req, res ) => {
   try { 
-      const user = await User.findById(req.user.id).populate("saved");
+      const user = await User.findById(req.user.id).populate({path: "saved", populate: { path: "exercises" }})
       const workout = await Workout.findById(req.params.workoutId).populate("exercises");
       const isalreadySaved = await User.find({_id: req.user.id, saved: {_id: req.params.workoutId}});
 
@@ -172,7 +171,7 @@ router.post("/saveworkout/:workoutId", async (req, res ) => {
         else {
           const unsave = await User.findByIdAndUpdate(req.user.id, {
             $pull: {saved: req.params.workoutId}})
-          const updateduser = await User.findById(req.user.id).populate("saved");
+          const updateduser = await User.findById(req.user.id).populate({path: "saved", populate: { path: "exercises" }});
           if (unsave && updateduser) {
             res.status(200).json({
               success: true,
@@ -201,6 +200,28 @@ router.post("/saveworkout/:workoutId", async (req, res ) => {
     }
   })
 
+router.delete("/unsaveworkout/:workoutId", async (req, res) => {
+  try {
+    const unsave = await User.findByIdAndUpdate(req.user.id, {$pull: {saved: req.params.workoutId}})
+    const user = await User.findById(req.user.id).populate({path: "saved", populate: { path: "exercises" }});
+
+    if (unsave) {   
+      res.status(200).json({
+        success: true,
+        workoutId: req.params.workoutId
+      })
+    }
+    else {
+      res.status(400).json({
+        success: false, 
+        message: 'coudlnt delete'
+      })
+    }
+  }
+  catch (e) {
+    console.log(e.message);
+  }
+})
 
 router.post("/updateuserpic", upload.single('image'), async (req, res) => {
     try {
@@ -229,5 +250,7 @@ router.post("/updateuserpic", upload.single('image'), async (req, res) => {
       console.log(e.message);
     }
 })
+
+
 
 module.exports = router;

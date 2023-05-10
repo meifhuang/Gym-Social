@@ -44,8 +44,7 @@ import {
 } from "../styledComponents/Profile";
 
 export default function Profile() {
-  // const exerciseDB = useLoaderData();
-
+  const exerciseDB = useLoaderData();
 
   const { id } = useParams();
   const { token, userId } = useContext(AuthContext);
@@ -291,7 +290,7 @@ export default function Profile() {
       },
     })
     if (response) {
-      setSavedWorkouts(response.data.savedWorkouts);
+      setSavedWorkouts(response.data.saved);
       console.log('save unsave', response.data.saved);
     }
     else {
@@ -301,6 +300,28 @@ export default function Profile() {
   catch (e) {
     console.log(e);
   }
+  }
+
+  const deleteSavedWorkout = async (workoutId) => {
+    console.log("IN DELETE ROUTE SAVE WORKOUT")
+    try {
+      const response = await axios({
+        method: "delete", 
+        url: `http://localhost:4000/unsaveworkout/${workoutId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      if (response) {
+        setSavedWorkouts((prev) => prev.filter((workout) => workout._id !== response.data.workoutId));
+      }
+      else {
+        throw Error("no response")
+      }
+    }
+    catch (e) {
+      console.log(e.message);
+    }
   }
 
   const clickEditWorkout = async (workoutId) => {
@@ -849,6 +870,7 @@ export default function Profile() {
           workoutId={workoutId}
           savedWorkouts={savedWorkouts} 
           setSavedWorkouts={setSavedWorkouts}
+          deleteSavedWorkout={deleteSavedWorkout}
           //props for POSTS
           user={user}
           handlePostChange={handlePostChange}

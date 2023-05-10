@@ -7,7 +7,8 @@ import {
   DeleteIcon,
   AddIcon,
   CreateWorkoutIcon,
-  SaveIcon
+  SaveIcon,
+  DeleteSaveIcon
 } from "../assets/icons";
 import AddPostForm from "./AddPostForm";
 
@@ -50,6 +51,7 @@ const TabBar = ({
   activeDropdown,
   workoutId,
   savedWorkouts,
+  deleteSavedWorkout,
   //props for POSTS
   handlePostChange,
   postForm,
@@ -211,6 +213,11 @@ const TabBar = ({
             <WorkoutDiv className="">
               <WorkoutDivHeader>
                 <h1> {workout.name} </h1>
+                <WorkoutButtonContainer>
+                  <DeleteSaveIcon
+                  deleteSavedWorkout={deleteSavedWorkout}
+                  workoutId={workout._id}/>
+                </WorkoutButtonContainer>
                 </WorkoutDivHeader>
               <WorkoutInfoContainer>
                 {workout.exercises.map((exercise) => {
@@ -266,20 +273,6 @@ const TabBar = ({
         })}
     </WorkoutContainer>
 
-          {/* <div> 
-            {savedWorkouts && savedWorkouts.map(workout => { return (
-              <div> 
-                <h3> Created by </h3>
-                <h4> {workout.name} </h4> 
-                {workout.exercises.map(exercises => { return (
-                  <>
-                  <h3> {exercises.name} </h3>
-                  <h4> {exercises.weight} </h4>
-                  </>
-                )})}
-                </div>
-            )})}
-          </div> */}
         </div>
       </div>
     </TabBarContainer>

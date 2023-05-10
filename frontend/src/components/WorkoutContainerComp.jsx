@@ -17,6 +17,7 @@ import {
 import {
   DeleteIcon,
   SaveIcon,
+  DeleteSaveIcon,
 } from "../assets/icons";
 
 const WorkoutContainerComp = ({
@@ -27,7 +28,8 @@ const WorkoutContainerComp = ({
   clickEditWorkout,
   deleteWorkout,
   activeDropdown,
-  saveAWorkout
+  saveAWorkout,
+  deleteSavedWorkout
 }) => {
   return (
     <WorkoutContainer className="workouts">

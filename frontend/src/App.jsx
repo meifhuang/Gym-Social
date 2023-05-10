@@ -26,7 +26,8 @@ import GlobalStyles from "./styledComponents/GlobalStyles";
 import { ThemeProvider } from "styled-components";
 
 //loaders
-// import { getExerciseList } from "./loader/index";
+import { getExerciseList } from "./loader/index";
+
 function App() {
   const [message, setMessage] = useState("");
 
@@ -97,7 +98,7 @@ function App() {
     {
       path: "/profile/:id",
       element: <Profile />,
-      // loader: getExerciseList,
+      loader: getExerciseList,
     },
     {
       path: "/newsfeed",
