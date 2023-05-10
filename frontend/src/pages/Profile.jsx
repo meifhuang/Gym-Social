@@ -89,6 +89,7 @@ export default function Profile() {
   const [editWorkoutModal, setEditWorkoutModal] = useState(false);
   const [addWorkoutModal, setAddWorkoutModal] = useState(false);
   const [currentWorkoutName, setCurrentWorkoutName] = useState("");
+  const [savedWorkouts, setSavedWorkouts] = useState([]);
 
   // const [exerciseDB, setExerciseDB] = useState("");
   const [activeDropdown, setActiveDropdown] = useState("");
@@ -180,7 +181,7 @@ export default function Profile() {
           setUsername(username)
         }
         setUser(res.data.user); 
-        setUserPicUrl(res.data.user.picture[0].url);
+        // setUserPicUrl(res.data.user.picture[0].url);
         setWorkouts(res.data.workouts);
         setFollowing(res.data.loggedInUserFollowing);
         setnumFollowing(res.data.numFollowing);
@@ -188,6 +189,8 @@ export default function Profile() {
         setnumWorkouts(res.data.numWorkouts);
         setnumPosts(res.data.numPosts);
         setPosts(res.data.posts);
+        console.log('checking workouts', res.data.savedWorkouts);
+        setSavedWorkouts(res.data.savedWorkouts);
         const postIdAndPosition = res.data.posts.map(post => {return ({postId:post._id, index: 0})});
         setPrevSlidePosition(postIdAndPosition);
 
@@ -278,7 +281,7 @@ export default function Profile() {
     getUser();
   };
 
-  const saveWorkout = async (workoutId) => {
+  const saveAWorkout = async (workoutId) => {
     "saving workout"
     try { const response = await axios({
       method: "post",
@@ -288,6 +291,7 @@ export default function Profile() {
       },
     })
     if (response) {
+      setSavedWorkouts(response.data.savedWorkouts);
       console.log('save unsave', response.data.saved);
     }
     else {
@@ -841,8 +845,10 @@ export default function Profile() {
           clickEditWorkout={clickEditWorkout}
           deleteWorkout={deleteWorkout}
           activeDropdown={activeDropdown}
-          saveWorkout={saveWorkout}
+          saveAWorkout={saveAWorkout}
           workoutId={workoutId}
+          savedWorkouts={savedWorkouts} 
+          setSavedWorkouts={setSavedWorkouts}
           //props for POSTS
           user={user}
           handlePostChange={handlePostChange}
@@ -854,6 +860,8 @@ export default function Profile() {
           prevSlide={prevSlide}
           deletePost={deletePost}
           prevSlidePosition={prevSlidePosition}
+         
+
         />
       </ProfileMain>
 

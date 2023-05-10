@@ -27,7 +27,7 @@ const WorkoutContainerComp = ({
   clickEditWorkout,
   deleteWorkout,
   activeDropdown,
-  saveWorkout
+  saveAWorkout
 }) => {
   return (
     <WorkoutContainer className="workouts">
@@ -51,7 +51,7 @@ const WorkoutContainerComp = ({
                     </>
                   ) : (
                     <SaveIcon
-                    saveWorkout={saveWorkout}
+                    saveAWorkout={saveAWorkout}
                     workoutId={workout._id}/>
                   )}
                 </WorkoutButtonContainer>

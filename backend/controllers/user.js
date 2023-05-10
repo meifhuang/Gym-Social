@@ -22,23 +22,25 @@ router.get("/profile/:id", async (req, res) => {
     path: "workouts",
     populate: { path: "exercises" },
   }, "posts"]);
-  const loggedInUser = await User.findById(loggedInId).populate(["following", "followers", "posts"]);
+  const loggedInUser = await User.findById(loggedInId).populate([{path: "saved", populate: { path: "exercises" }} , "following", "followers", "posts"]);
   const workouts = user.workouts;
   const numWorkouts = user.workouts.length;
   const numFollowing = user.following.length;
   const numFollowers = user.followers.length; 
   const numPosts = user.posts.length;
+
   res.status(200).json({
     success: true,
     workouts: workouts,
-    loggedInId: loggedInId,
-    loggedInUserFollowing: loggedInUser.following,
     numFollowing: numFollowing, 
     numFollowers: numFollowers,
     numWorkouts: numWorkouts,
     numPosts: numPosts,
+    user: user,
     posts: loggedInUser.posts,
-    user: user
+    savedWorkouts: loggedInUser.saved,
+    loggedInId: loggedInId,
+    loggedInUserFollowing: loggedInUser.following,
   });
 });
 
