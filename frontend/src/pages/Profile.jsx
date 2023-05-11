@@ -89,6 +89,7 @@ export default function Profile() {
   const [addWorkoutModal, setAddWorkoutModal] = useState(false);
   const [currentWorkoutName, setCurrentWorkoutName] = useState("");
   const [savedWorkouts, setSavedWorkouts] = useState([]);
+ 
 
   // const [exerciseDB, setExerciseDB] = useState("");
   const [activeDropdown, setActiveDropdown] = useState("");
@@ -290,8 +291,9 @@ export default function Profile() {
       },
     })
     if (response) {
+      console.log("SAVING WORKOUT", response.data.workout);
       setSavedWorkouts(response.data.saved);
-      console.log('save unsave', response.data.saved);
+      // setWorkouts(response.data.workout);
     }
     else {
       throw Error("No response");
@@ -867,9 +869,9 @@ export default function Profile() {
           deleteWorkout={deleteWorkout}
           activeDropdown={activeDropdown}
           saveAWorkout={saveAWorkout}
+  
           workoutId={workoutId}
           savedWorkouts={savedWorkouts} 
-          setSavedWorkouts={setSavedWorkouts}
           deleteSavedWorkout={deleteSavedWorkout}
           //props for POSTS
           user={user}

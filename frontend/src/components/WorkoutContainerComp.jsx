@@ -51,11 +51,14 @@ const WorkoutContainerComp = ({
                         workoutId={workout._id}
                       />
                     </>
-                  ) : (
-                    <SaveIcon
-                    saveAWorkout={saveAWorkout}
-                    workoutId={workout._id}/>
-                  )}
+                  ) : 
+                  <>
+                  {  !workout.savedBy.includes(loggedInId) ? 
+                    <SaveIcon saveAWorkout={saveAWorkout} workoutId={workout._id} /> :
+                    <DeleteSaveIcon deleteSavedWorkout={deleteSavedWorkout} workoutId={workout._id}/>
+                  }
+                  </> 
+        }
                 </WorkoutButtonContainer>
               </WorkoutDivHeader>
               <WorkoutInfoContainer>

@@ -154,40 +154,44 @@ router.get("/explore", async (req, res) => {
 router.post("/saveworkout/:workoutId", async (req, res ) => {
   try { 
       const user = await User.findById(req.user.id).populate({path: "saved", populate: { path: "exercises" }})
-      const workout = await Workout.findById(req.params.workoutId).populate("exercises");
+      const workout = await Workout.findById(req.params.workoutId).populate(["exercises",  "savedBy"]);
       const isalreadySaved = await User.find({_id: req.user.id, saved: {_id: req.params.workoutId}});
 
       if (user && workout) {
+        // console.log(workout);
         //if workout already saved ... 
         if (isalreadySaved.length === 0) {
             user.saved.push(workout);
+            workout.savedBy.push(user);
+            await workout.save(); 
             await user.save();
             res.status(200).json({
               success: true, 
-              saved: user.saved
+              saved: user.saved,
+              workout: workout
             })
         }
-      //clicking it again will unsave it. 
-        else {
-          const unsave = await User.findByIdAndUpdate(req.user.id, {
-            $pull: {saved: req.params.workoutId}})
-          const updateduser = await User.findById(req.user.id).populate({path: "saved", populate: { path: "exercises" }});
-          if (unsave && updateduser) {
-            res.status(200).json({
-              success: true,
-              saved: updateduser.saved
-            })
-          console.log('unsaved')
-          }
-          else {
-            res.status(400).json({
-              success: false, 
-              message: 'coudlnt delete'
-            })
-          }
-        }
-      console.log("updated", user.saved)
-      }
+      // //clicking it again will unsave it. 
+      //   else {
+      //     const unsave = await User.findByIdAndUpdate(req.user.id, {
+      //       $pull: {saved: req.params.workoutId}})
+      //     const updateduser = await User.findById(req.user.id).populate({path: "saved", populate: { path: "exercises" }});
+      //     if (unsave && updateduser) {
+      //       res.status(200).json({
+      //         success: true,
+      //         saved: updateduser.saved
+      //       })
+      //     console.log('unsaved')
+      // //     }
+      //     else {
+      //       res.status(400).json({
+      //         success: false, 
+      //         message: 'coudlnt delete'
+      //       })
+      //     }
+      //   }
+      // console.log("updated", user.saved)
+      // }
       else {
         res.status(400).json({
           success:false, 
@@ -195,6 +199,7 @@ router.post("/saveworkout/:workoutId", async (req, res ) => {
         })
       }
     }
+  }
   catch (e) {
       console.log(e.message);
     }
@@ -203,9 +208,10 @@ router.post("/saveworkout/:workoutId", async (req, res ) => {
 router.delete("/unsaveworkout/:workoutId", async (req, res) => {
   try {
     const unsave = await User.findByIdAndUpdate(req.user.id, {$pull: {saved: req.params.workoutId}})
+    const workout = await Workout.findByIdAndUpdate(req.params.workoutId, {$pull: {savedBy: req.user.id}});
     const user = await User.findById(req.user.id).populate({path: "saved", populate: { path: "exercises" }});
 
-    if (unsave) {   
+    if (unsave && workout) {   
       res.status(200).json({
         success: true,
         workoutId: req.params.workoutId

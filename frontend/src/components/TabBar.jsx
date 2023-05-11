@@ -8,6 +8,7 @@ import {
   AddIcon,
   CreateWorkoutIcon,
   SaveIcon,
+  SavedIcon,
   DeleteSaveIcon
 } from "../assets/icons";
 import AddPostForm from "./AddPostForm";
@@ -98,7 +99,7 @@ const TabBar = ({
           onClick={() => toggleTab(3)}
         >
           <TabIconContainer>
-            <SaveIcon />
+            <SavedIcon />
           </TabIconContainer>
           <div>Saved</div>
         </TabButton>
@@ -199,6 +200,7 @@ const TabBar = ({
             deleteWorkout={deleteWorkout}
             activeDropdown={activeDropdown}
             saveAWorkout={saveAWorkout}
+            deleteSavedWorkout={deleteSavedWorkout}
             workoutId={workoutId}
           />
         </div>
