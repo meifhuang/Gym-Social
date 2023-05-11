@@ -23,11 +23,12 @@ router.get("/profile/:id", async (req, res) => {
     populate: { path: "exercises" },
   }, {path: "saved", populate: { path: "exercises" }}, "posts"]);
   const loggedInUser = await User.findById(loggedInId).populate([{path: "saved", populate: { path: "exercises" }} , "following", "followers", "posts"]);
-  const workouts = user.workouts;
+  const workouts = user.workouts
   const numWorkouts = user.workouts.length;
   const numFollowing = user.following.length;
   const numFollowers = user.followers.length; 
   const numPosts = user.posts.length;
+
   res.status(200).json({
     success: true,
     workouts: workouts,
@@ -167,8 +168,7 @@ router.post("/saveworkout/:workoutId", async (req, res ) => {
             await user.save();
             res.status(200).json({
               success: true, 
-              saved: user.saved,
-              workout: workout
+              saved: user.saved
             })
         }
       // //clicking it again will unsave it. 

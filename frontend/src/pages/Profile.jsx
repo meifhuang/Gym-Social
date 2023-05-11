@@ -181,7 +181,7 @@ export default function Profile() {
           setUsername(username)
         }
         setUser(res.data.user); 
-        // setUserPicUrl(res.data.user.picture[0].url);
+        setUserPicUrl(res.data.user.picture[0].url);
         setWorkouts(res.data.workouts);
         setFollowing(res.data.loggedInUserFollowing);
         setnumFollowing(res.data.numFollowing);
@@ -189,7 +189,6 @@ export default function Profile() {
         setnumWorkouts(res.data.numWorkouts);
         setnumPosts(res.data.numPosts);
         setPosts(res.data.posts);
-        console.log('checking workouts', res.data.savedWorkouts);
         setSavedWorkouts(res.data.savedWorkouts);
         const postIdAndPosition = res.data.posts.map(post => {return ({postId:post._id, index: 0})});
         setPrevSlidePosition(postIdAndPosition);
@@ -292,7 +291,9 @@ export default function Profile() {
     })
     if (response) {
       console.log("SAVING WORKOUT", response.data.workout);
-      setSavedWorkouts(response.data.saved);
+      setSavedWorkouts(response.data.saved);  
+      //figure out another way to update saved/unsaved without needing to call this function
+      getUser(); 
       // setWorkouts(response.data.workout);
     }
     else {
@@ -316,6 +317,8 @@ export default function Profile() {
       })
       if (response) {
         setSavedWorkouts((prev) => prev.filter((workout) => workout._id !== response.data.workoutId));
+        //figure out another way to update saved/unsaved without needing to call this function
+        getUser(); 
       }
       else {
         throw Error("no response")
@@ -869,6 +872,7 @@ export default function Profile() {
           deleteWorkout={deleteWorkout}
           activeDropdown={activeDropdown}
           saveAWorkout={saveAWorkout}
+
   
           workoutId={workoutId}
           savedWorkouts={savedWorkouts} 

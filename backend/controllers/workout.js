@@ -22,30 +22,30 @@ const isLoggedIn = function (req, res, next) {
 //NOTE ISSUE : if in the middle of adding exercises .. it doensn't add and link to users unless
 //the End workout button is pressed ... but it addes the exercises and workout to database..
 
-// router.get("/workout/:workoutId", async (req, res) => {
-//   console.log("entering edit workout");
-//   const { workoutId } = req.params;
-//   try {
-//     const workout = await Workout.findById(workoutId).populate("exercises");
-//     // const workout = await User.findOne({'workouts._id': workoutId}).populate("exercises");
-//     if (workout) {
-//       console.log("getting workout", workout);
-//       res.status(200).json({
-//         success: true,
-//         workout: workout,
-//         // workouts: workout.exercises,
-//         // workoutId: workoutId
-//       });
-//     } else {
-//       res.status(400).json({
-//         success: false,
-//         message: "Unable to get workout",
-//       });
-//     }
-//   } catch (e) {
-//     console.log(e.message);
-//   }
-// });
+router.get("/workout/:workoutId", async (req, res) => {
+  console.log("entering edit workout");
+  const { workoutId } = req.params;
+  try {
+    const workout = await Workout.findById(workoutId).populate("exercises");
+    // const workout = await User.findOne({'workouts._id': workoutId}).populate("exercises");
+    if (workout) {
+      console.log("getting workout", workout);
+      res.status(200).json({
+        success: true,
+        workout: workout,
+        // workouts: workout.exercises,
+        // workoutId: workoutId
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "Unable to get workout",
+      });
+    }
+  } catch (e) {
+    console.log(e.message);
+  }
+});
 
 router.delete("/workout/:workoutId", async (req, res) => {
   console.log("entering delete");
