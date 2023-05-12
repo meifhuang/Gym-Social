@@ -293,6 +293,7 @@ export default function Profile() {
       })
       if (response) {
         console.log(response.data);
+        getUser();
       }
     }
     catch (e) {
@@ -342,6 +343,26 @@ export default function Profile() {
       }
       else {
         throw Error("no response")
+      }
+    }
+    catch (e) {
+      console.log(e.message);
+    }
+  }
+
+  const unlikeAPost = async (postId) => {
+    console.log("UNLIKEE");
+    try {
+      const response = await axios({
+        method: "delete",
+        url: `http://localhost:4000/unlikepost/${postId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      if (response) {
+        console.log(response.data);
+        getUser();
       }
     }
     catch (e) {
@@ -903,6 +924,7 @@ export default function Profile() {
           postForm={postForm}
           posts={posts}
           postLikes={postLikes}
+          unlikeAPost={unlikeAPost}
           likeAPost={likeAPost}
           createPost={createPost}
           handleFileUpload={handleFileUpload}
@@ -910,7 +932,6 @@ export default function Profile() {
           prevSlide={prevSlide}
           deletePost={deletePost}
           prevSlidePosition={prevSlidePosition}
-         
 
         />
       </ProfileMain>

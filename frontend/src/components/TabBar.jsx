@@ -67,6 +67,7 @@ const TabBar = ({
   prevSlide,
   deletePost,
   likeAPost,
+  unlikeAPost,
   prevSlidePosition
 }) => {
   const [toggleState, setToggleState] = useState(1);
@@ -158,7 +159,10 @@ const TabBar = ({
                             ) : (
                               <div> </div>
                             )}
-                      <HeartIcon likeAPost={likeAPost} postId={post._id}/> <p> {postLikes} likes</p>
+                      { !post.likedBy.includes(loggedInId) ?
+                      <HeartIcon likeAPost={likeAPost} postId={post._id}/> : 
+                      <UnHeartIcon unlikeAPost={unlikeAPost} postId={post._id}/>}
+                      <p> {post.likedBy.length} likes</p>
                              <h5> {post.caption} </h5>
                   <button onClick={() => deletePost(post._id)}> Delete </button>
                   </div>

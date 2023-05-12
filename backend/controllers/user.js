@@ -21,15 +21,14 @@ router.get("/profile/:id", async (req, res) => {
   const paramId = req.params.id;
   const user = await User.findById(paramId).populate([
    {path: "workouts", populate: { path: "exercises" }}, 
-   {path: "saved", populate: { path: "exercises" }}, 
-   "posts"]);
+   {path: "saved", populate: { path: "exercises" }}, "posts"]);
   const loggedInUser = await User.findById(loggedInId).populate([{path: "saved", populate: { path: "exercises" }} , "following", "followers", "posts"]);
   const workouts = user.workouts
   const numWorkouts = user.workouts.length;
   const numFollowing = user.following.length;
   const numFollowers = user.followers.length; 
   const numPosts = user.posts.length;
-  console.log(user.posts.likedBy);
+  // const postLikes = user.posts.likedBy.length;
 
   res.status(200).json({
     success: true,
@@ -41,7 +40,7 @@ router.get("/profile/:id", async (req, res) => {
     user: user,
     savedWorkouts: user.saved,
     posts: user.posts,
-    postLikes : numPosts,
+    // postLikes : postLikes,
     loggedInId: loggedInId,
     loggedInUserFollowing: loggedInUser.following,
   });
@@ -159,14 +158,16 @@ router.post("/likepost/:postId", async (req, res) => {
     const user = await User.findById(req.user.id);
     const post = await Post.findById(req.params.postId).populate("likedBy");
     const isalreadyLiked = await Post.find({_id: req.params.postId, likedBy: {_id: req.user.id}});
-
+    
+    console.log(isalreadyLiked);
     if (post) {
       if (isalreadyLiked.length === 0) {
-        post.likedBy.push(post); 
+        post.likedBy.push(user); 
         await post.save(); 
         console.log("LIKING POST");
         res.status(200).json({
-          success: true
+          success: true,
+          message: 'like post'
         })
       }
       else {
@@ -180,6 +181,27 @@ router.post("/likepost/:postId", async (req, res) => {
   catch(e) {
     console.log(e.message);
   }
+})
+
+router.delete("/unlikepost/:postId", async (req, res) => {
+    try {
+      const unlikePost = await Post.findByIdAndUpdate(req.params.postId, {$pull: {likedBy: req.user.id}});
+      if (unlikePost) {
+        res.status(200).json({
+          success: true,
+          message: "unliked!"
+        })
+      }
+      else {
+        res.status(400).json({
+          success: false, 
+          message: "couldnt unlike"
+        })
+      }
+    }
+    catch (e) {
+      console.log(e.message);
+    }
 })
 
 
