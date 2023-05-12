@@ -91,6 +91,7 @@ router.post("/createworkout", async (req, res) => {
   const user = await User.findById(req.user.id).populate("workouts");
   const { name } = req.body;
   const workout = new Workout(name);
+  workout.createdBy.push(user);
   const workoutId = workout._id;
   await user.save();
   await workout.save();

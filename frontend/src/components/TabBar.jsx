@@ -279,6 +279,7 @@ const TabBar = ({
                   );
                 })}
               </WorkoutInfoContainer>
+              {(loggedInId === id) ? <p> created by: {workout.createdBy[0].fname} {workout.createdBy[0].lname}</p> : <> </>}
             </WorkoutDiv>
           );
         })}

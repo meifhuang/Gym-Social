@@ -38,7 +38,7 @@ const WorkoutContainerComp = ({
           return (
             <WorkoutDiv className="">
               <WorkoutDivHeader>
-                <h1> {workout.name} </h1>
+                <h1> {workout.name}</h1>
                 <WorkoutButtonContainer>
                   {loggedInId === id ? (
                     <>
@@ -113,6 +113,7 @@ const WorkoutContainerComp = ({
             </WorkoutDiv>
           );
         })}
+        
     </WorkoutContainer>
   );
 };

@@ -20,15 +20,15 @@ router.get("/profile/:id", async (req, res) => {
   const loggedInId = req.user.id;
   const paramId = req.params.id;
   const user = await User.findById(paramId).populate([
-   {path: "workouts", populate: { path: "exercises" }}, 
-   {path: "saved", populate: { path: "exercises" }}, "posts"]);
+    {path: "workouts", populate: { path: "exercises" }},
+   {path: "saved", populate: { path: "exercises"}},
+   {path: "saved", populate: {path: "createdBy"}}, "posts"]);
   const loggedInUser = await User.findById(loggedInId).populate([{path: "saved", populate: { path: "exercises" }} , "following", "followers", "posts"]);
   const workouts = user.workouts
   const numWorkouts = user.workouts.length;
   const numFollowing = user.following.length;
   const numFollowers = user.followers.length; 
   const numPosts = user.posts.length;
-  // const postLikes = user.posts.likedBy.length;
 
   res.status(200).json({
     success: true,
@@ -40,7 +40,6 @@ router.get("/profile/:id", async (req, res) => {
     user: user,
     savedWorkouts: user.saved,
     posts: user.posts,
-    // postLikes : postLikes,
     loggedInId: loggedInId,
     loggedInUserFollowing: loggedInUser.following,
   });
