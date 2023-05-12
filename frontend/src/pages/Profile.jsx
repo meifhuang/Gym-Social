@@ -96,6 +96,7 @@ export default function Profile() {
 
   const [postForm, setPostForm] = useState({ caption: "" });
   const [posts, setPosts] = useState([]);
+  const [postLikes, setPostLikes] = useState(0); 
 
 
   const [files, setFiles] = useState(null);
@@ -189,6 +190,7 @@ export default function Profile() {
         setnumWorkouts(res.data.numWorkouts);
         setnumPosts(res.data.numPosts);
         setPosts(res.data.posts);
+        setPostLikes(res.data.postLikes); 
         setSavedWorkouts(res.data.savedWorkouts);
         const postIdAndPosition = res.data.posts.map(post => {return ({postId:post._id, index: 0})});
         setPrevSlidePosition(postIdAndPosition);
@@ -279,6 +281,24 @@ export default function Profile() {
     //alternative to calling this?
     getUser();
   };
+
+  const likeAPost = async(postId) => {
+    try {
+      const response = await axios({
+        method: "post",
+        url: `http://localhost:4000/likepost/${postId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      if (response) {
+        console.log(response.data);
+      }
+    }
+    catch (e) {
+      console.log(e.message); 
+    }
+  }
 
   const saveAWorkout = async (workoutId) => {
     "saving workout"
@@ -882,6 +902,8 @@ export default function Profile() {
           handlePostChange={handlePostChange}
           postForm={postForm}
           posts={posts}
+          postLikes={postLikes}
+          likeAPost={likeAPost}
           createPost={createPost}
           handleFileUpload={handleFileUpload}
           nextSlide={nextSlide}
