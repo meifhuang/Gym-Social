@@ -66,6 +66,7 @@ const TabBar = ({
   posts,
   handleCommentChange,
   commentForm,
+  createComment,
   postLikes,
   createPost,
   comments,
@@ -182,14 +183,16 @@ const TabBar = ({
                       <p> {post.caption} </p>
                     </div>
                     <h5> View Comments </h5>
-                    { comments && comments.map((comment) => { 
+                    { post.comments.map((comment) => { 
                       return (
-                         <p> {comment} </p>
+                         <p> {comment.username} : {comment.description} </p>
                       )
                     })}
                     <CommentForm 
                       handleCommentChange={handleCommentChange}
                       commentForm={commentForm}
+                      createComment={createComment}
+                      postId={post._id}
                     /> 
                   {/* <button onClick={() => deletePost(post._id)}> Delete </button> */}
                   </div>

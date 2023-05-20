@@ -147,8 +147,9 @@ export default function Profile() {
   const handleCommentChange = (e) => {
     const {name, value} = e.target;
     setCommentForm({
-      [name]: value,
+      description: value,
     });
+    console.log(commentForm);
   };
 
   const handleFileUpload = (e) => {
@@ -253,6 +254,34 @@ export default function Profile() {
       console.log(e);
     }
   };
+
+  const createComment = async (e,postId) => {
+    e.preventDefault();
+    console.log("INSIDE COMMENT")
+    try {
+      const response = await axios({
+        method: "post",
+        url: `http://localhost:4000/post/${postId}/createcomment`, 
+        data: {
+          description: commentForm.description
+        }, 
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response) {
+        console.log(response.data.comment);
+      }
+      else {
+        console.log("no response");
+      }
+    }
+    catch (e) {
+      console.log(e.message);
+    }
+  }
+
+  //still need the page to update when a comment is added
 
   const createWorkout = async () => {
     setAddWorkoutModal(false);
@@ -936,6 +965,7 @@ export default function Profile() {
           handlePostChange={handlePostChange}
           handleCommentChange={handleCommentChange}
           commentForm={commentForm}
+          createComment={createComment}
           postForm={postForm}
           posts={posts}
           postLikes={postLikes}

@@ -22,7 +22,8 @@ router.get("/profile/:id", async (req, res) => {
   const user = await User.findById(paramId).populate([
     {path: "workouts", populate: { path: "exercises" }},
    {path: "saved", populate: { path: "exercises"}},
-   {path: "saved", populate: {path: "createdBy"}}, "posts"]);
+   {path: "saved", populate: {path: "createdBy"}}, 
+   {path:"posts", populate: {path: "comments"}}]);
   const loggedInUser = await User.findById(loggedInId).populate([{path: "saved", populate: { path: "exercises" }} , "following", "followers", "posts"]);
   const workouts = user.workouts
   const numWorkouts = user.workouts.length;

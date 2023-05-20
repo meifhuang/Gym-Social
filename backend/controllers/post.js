@@ -14,6 +14,7 @@ router.post("/createpost", upload.array('image'), async (req, res) => {
     console.log("create post");
     const user = await User.findById(req.user.id).populate("posts");
     const post = new Post(req.body);
+    console.log(post);
     // post.url = req.file.path; 
     console.log(req.files);
     post.images = req.files.map(file => ({url: file.path, filename: file.filename}));
