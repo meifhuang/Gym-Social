@@ -67,7 +67,11 @@ export default function Profile() {
   const [user, setUser] = useState([]);
   const [userPicUrl, setUserPicUrl] = useState("");
 
+  //forms
   const [showExerciseForm, setShowExerciseForm] = useState(true);
+  const [postForm, setPostForm] = useState({ caption: "" });
+  const [commentForm, setCommentForm] = useState({ description: "" }); 
+
   const [changeId, setChangeId] = useState("");
   const [exercise, setExercise] = useState(stats);
   const [workoutName, setWorkoutName] = useState({ name: "" });
@@ -94,7 +98,7 @@ export default function Profile() {
   // const [exerciseDB, setExerciseDB] = useState("");
   const [activeDropdown, setActiveDropdown] = useState("");
 
-  const [postForm, setPostForm] = useState({ caption: "" });
+
   const [posts, setPosts] = useState([]);
   const [postLikes, setPostLikes] = useState(0); 
 
@@ -136,6 +140,13 @@ export default function Profile() {
   const handlePostChange = (e) => {
     const { name, value } = e.target;
     setPostForm({
+      [name]: value,
+    });
+  };
+
+  const handleCommentChange = (e) => {
+    const {name, value} = e.target;
+    setCommentForm({
       [name]: value,
     });
   };
@@ -923,6 +934,8 @@ export default function Profile() {
           //props for POSTS
           user={user}
           handlePostChange={handlePostChange}
+          handleCommentChange={handleCommentChange}
+          commentForm={commentForm}
           postForm={postForm}
           posts={posts}
           postLikes={postLikes}

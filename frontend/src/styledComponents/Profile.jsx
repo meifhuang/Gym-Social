@@ -137,6 +137,7 @@ export const FollowButton = styled.button`
 // export const UnfollowButton = styled(FollowButton)`
 // `
 
+
 export const PostContainer = styled.div`
   min-width: 1200px;
   min-height: 400px;
@@ -147,77 +148,82 @@ export const PostContainer = styled.div`
   align-items: end;
   gap: 2em;
   border: 1px solid red;
-  .post {
-    border: 1px solid black;
-    margin: .5em;
-  }
-  b {
-    font-weight: 600;
-  }
-  .likes {
-    display: flex;
-    margin: .5em;
-    gap: .5em;
-  }
-  .post h4 {
-    font-weight: 800;
-  }
-  .deletePost {
-    margin-left: 14em;
-    cursor: pointer;
-  }
-  .carousel {
-    position: relative; 
-    margin: 0 auto;
-  }
-  .caption {
-    display: flex;
-    align-items: center
-  }
-  .carousel .carousel-item, 
-  .carousel .carousel-item-hidden {
-  display: none; 
-  }
+  
+`
 
-  .carousel .carousel-item-visible {
-    display: block;
-    animation: fade 1.5s; 
-  }
+export const Post = styled.div`
 
-  .carousel .carousel-actions {
-    display: flex;
-    width: 100%;
-    justify-content: space-between; 
-    position: absolute; 
-    top: 50%;
-    transform: translateY(-50%);
+.post {
+  border: 1px solid black;
+  margin: .5em;
+}
+b {
+  font-weight: 600;
+}
+.likes {
+  display: flex;
+  margin: .5em;
+  gap: .5em;
+}
+.post h4 {
+  font-weight: 800;
+}
+.deletePost {
+  margin-left: 14em;
+  cursor: pointer;
+}
+.carousel {
+  position: relative; 
+  margin: 0 auto;
+}
+.caption {
+  display: flex;
+  align-items: center
+}
+.carousel .carousel-item, 
+.carousel .carousel-item-hidden {
+display: none; 
+}
+
+.carousel .carousel-item-visible {
+  display: block;
+  animation: fade 1.5s; 
+}
+
+.carousel .carousel-actions {
+  display: flex;
+  width: 100%;
+  justify-content: space-between; 
+  position: absolute; 
+  top: 50%;
+  transform: translateY(-50%);
+}
+.carousel .carousel-actions button {
+  border-radius: 50px;
+  background-color: transparent;
+  border: 0;
+  font-size: 20px;
+  color: white;
+  cursor: pointer; 
+  width: 40px; 
+  height: 40px; 
+}
+h3,h4,h5 {
+  margin: .5em;
+}
+img {
+  width: 100%;
+  height: 300px;
+  border: 1px solid black;
+}
+@keyframes fade {
+  0% {
+    opacity: 0;
   }
-  .carousel .carousel-actions button {
-    border-radius: 50px;
-    background-color: transparent;
-    border: 0;
-    font-size: 20px;
-    color: white;
-    cursor: pointer; 
-    width: 40px; 
-    height: 40px; 
+  100% {
+    opacity: 1
   }
-  h3,h4,h5 {
-    margin: .5em;
-  }
-  img {
-    width: 100%;
-    height: 300px;
-    border: 1px solid black;
-  }
-  @keyframes fade {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1
-    }
-  }
+}
 `
 
 export const WorkoutContainer = styled.div`

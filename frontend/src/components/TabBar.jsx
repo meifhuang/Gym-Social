@@ -15,10 +15,13 @@ import {
   DeletePostIcon
 } from "../assets/icons";
 import AddPostForm from "./AddPostForm";
+import CommentForm from "./CommentForm";
 
 //styling
 
-import { PostContainer,
+import { 
+  Post,
+  PostContainer,
   WorkoutContainer,
   WorkoutDiv,
   WorkoutDivHeader,
@@ -61,8 +64,11 @@ const TabBar = ({
   handlePostChange,
   postForm,
   posts,
+  handleCommentChange,
+  commentForm,
   postLikes,
   createPost,
+  comments,
   handleFileUpload,
   user,
   nextSlide,
@@ -127,6 +133,7 @@ const TabBar = ({
           {posts &&
             posts.map((post,index) => {
               return (
+                <Post>
                 <div className="post">
                   <div className="carousel"> 
                       {prevSlidePosition.map(slides => {
@@ -175,9 +182,19 @@ const TabBar = ({
                       <p> {post.caption} </p>
                     </div>
                     <h5> View Comments </h5>
+                    { comments && comments.map((comment) => { 
+                      return (
+                         <p> {comment} </p>
+                      )
+                    })}
+                    <CommentForm 
+                      handleCommentChange={handleCommentChange}
+                      commentForm={commentForm}
+                    /> 
                   {/* <button onClick={() => deletePost(post._id)}> Delete </button> */}
                   </div>
                 </div>
+                </Post>
               );
             })}
           </PostContainer>
