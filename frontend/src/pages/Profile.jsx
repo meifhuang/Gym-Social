@@ -421,6 +421,7 @@ export default function Profile() {
   };
 
   const deletePost = async (postId) => {
+  
     try {
       const response = await axios({
         method: "delete",
@@ -901,6 +902,7 @@ export default function Profile() {
 
         <TabBar
           //props for WORKOUTS
+          username={username}
           handleExerciseForm={handleExerciseForm}
           workoutName={workoutName}
           handleNameChange={handleNameChange}

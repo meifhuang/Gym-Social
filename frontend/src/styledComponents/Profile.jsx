@@ -138,7 +138,7 @@ export const FollowButton = styled.button`
 // `
 
 export const PostContainer = styled.div`
-  min-width: 1000px;
+  min-width: 1200px;
   min-height: 400px;
   border-radius: 5px;
   display: grid;
@@ -147,16 +147,33 @@ export const PostContainer = styled.div`
   align-items: end;
   gap: 2em;
   border: 1px solid red;
-
-  .posts {
+  .post {
     border: 1px solid black;
-    min-height: 300px;
+    margin: .5em;
+  }
+  b {
+    font-weight: 600;
+  }
+  .likes {
+    display: flex;
+    margin: .5em;
+    gap: .5em;
+  }
+  .post h4 {
+    font-weight: 800;
+  }
+  .deletePost {
+    margin-left: 14em;
+    cursor: pointer;
   }
   .carousel {
     position: relative; 
     margin: 0 auto;
   }
-
+  .caption {
+    display: flex;
+    align-items: center
+  }
   .carousel .carousel-item, 
   .carousel .carousel-item-hidden {
   display: none; 

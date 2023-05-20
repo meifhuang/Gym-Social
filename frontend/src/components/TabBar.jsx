@@ -11,7 +11,8 @@ import {
   SavedIcon,
   DeleteSaveIcon,
   HeartIcon, 
-  UnHeartIcon
+  UnHeartIcon, 
+  DeletePostIcon
 } from "../assets/icons";
 import AddPostForm from "./AddPostForm";
 
@@ -46,6 +47,7 @@ const TabBar = ({
   toggleAddWorkoutModal,
   workouts,
   loggedInId,
+  username,
   id,
   EditIcon,
   clickEditWorkout,
@@ -125,7 +127,7 @@ const TabBar = ({
           {posts &&
             posts.map((post,index) => {
               return (
-                <div>
+                <div className="post">
                   <div className="carousel"> 
                       {prevSlidePosition.map(slides => {
                         return (
@@ -159,12 +161,21 @@ const TabBar = ({
                             ) : (
                               <div> </div>
                             )}
+                    <div className="likes"> 
                       { !post.likedBy.includes(loggedInId) ?
                       <HeartIcon likeAPost={likeAPost} postId={post._id}/> : 
-                      <UnHeartIcon unlikeAPost={unlikeAPost} postId={post._id}/>}
-                      <p> {post.likedBy.length} likes</p>
-                             <h5> {post.caption} </h5>
-                  <button onClick={() => deletePost(post._id)}> Delete </button>
+                      <UnHeartIcon unlikeAPost={unlikeAPost} postId={post._id}/> }
+                    
+                      <p> {post.likedBy.length} likes </p>
+                      <DeletePostIcon deletePost={deletePost} postId={post._id}/>
+                    </div>
+                    
+                    <div className="caption"> 
+                      <h4> {username} </h4>
+                      <p> {post.caption} </p>
+                    </div>
+                    <h5> View Comments </h5>
+                  {/* <button onClick={() => deletePost(post._id)}> Delete </button> */}
                   </div>
                 </div>
               );
