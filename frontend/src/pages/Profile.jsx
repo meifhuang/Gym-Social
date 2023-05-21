@@ -270,7 +270,8 @@ export default function Profile() {
         },
       });
       if (response) {
-        console.log(response.data.comment);
+        //gotta figure out better way 
+        getUser();
       }
       else {
         console.log("no response");
@@ -459,6 +460,24 @@ export default function Profile() {
       console.log(e.message);
     }
   };
+
+  const deleteComment = async (postId, commentId) => {
+    try {
+      const response = await axios({
+        method: "delete",
+        url: `http://localhost:4000/post/${postId}/comment/${commentId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response) {
+        getUser();
+      }
+      }
+    catch (e) {
+      console.log(e.message);
+    }
+  }
 
   const deletePost = async (postId) => {
   
@@ -966,6 +985,7 @@ export default function Profile() {
           handleCommentChange={handleCommentChange}
           commentForm={commentForm}
           createComment={createComment}
+          deleteComment={deleteComment}
           postForm={postForm}
           posts={posts}
           postLikes={postLikes}

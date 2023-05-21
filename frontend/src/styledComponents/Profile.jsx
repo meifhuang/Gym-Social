@@ -168,6 +168,12 @@ b {
 .post h4 {
   font-weight: 800;
 }
+
+.comments {
+  display: flex;
+  margin: .5em;
+  justify-content: space-between;
+}
 .deletePost {
   margin-left: 14em;
   cursor: pointer;
