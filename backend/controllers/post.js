@@ -9,6 +9,30 @@ const {cloudinary} = require('../cloudinary');
 
 router = express.Router();
 
+
+router.get("/posts", async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).populate({path:"following", populate: {path: 'posts'}});
+        const following = user.following; 
+        const posts = [];
+        for (let each of following) {
+            for (let post of each.posts) {
+                posts.push(post)
+            }
+        }
+        res.status(200).json({
+            success: true,
+            posts: posts
+        })
+    }
+    catch (e) {
+        res.status(400).json({
+            success: false,
+            message: 'unable to get posts'
+        })
+    }
+})
+
 router.post("/createpost", upload.array('image'), async (req, res) => {
     try {
     console.log("create post");

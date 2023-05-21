@@ -20,7 +20,7 @@ import CommentForm from "./CommentForm";
 //styling
 
 import { 
-  Post,
+  PostStyle,
   PostContainer,
   WorkoutContainer,
   WorkoutDiv,
@@ -42,6 +42,7 @@ import {
 
 } from "../styledComponents/TabBar";
 import WorkoutContainerComp from "./WorkoutContainerComp";
+
 const TabBar = ({
   //props for WORKOUTS
   handleExerciseForm,
@@ -135,7 +136,7 @@ const TabBar = ({
           {posts &&
             posts.map((post,index) => {
               return (
-                <Post>
+                <PostStyle>
                 <div className="post">
                   <div className="carousel"> 
                       {prevSlidePosition.map(slides => {
@@ -184,7 +185,7 @@ const TabBar = ({
                       <p> {post.caption} </p>
                     </div>
                     <h4> View Comments </h4>
-                    { post.comments.map((comment) => { 
+                    {/* { post.comments.map((comment) => { 
                       return (
                         <div className="comments"> 
                          <h5> {comment.username} : {comment.description} </h5>
@@ -197,11 +198,11 @@ const TabBar = ({
                       commentForm={commentForm}
                       createComment={createComment}
                       postId={post._id}
-                    /> 
+                    />  */}
                   {/* <button onClick={() => deletePost(post._id)}> Delete </button> */}
                   </div>
                 </div>
-                </Post>
+                </PostStyle>
               );
             })}
           </PostContainer>

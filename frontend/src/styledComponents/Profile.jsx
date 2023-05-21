@@ -151,8 +151,15 @@ export const PostContainer = styled.div`
   
 `
 
-export const Post = styled.div`
+export const NewsFeed = styled.div`
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center;
 
+`
+
+export const PostStyle = styled.div`
 .post {
   border: 1px solid black;
   margin: .5em;
@@ -218,7 +225,7 @@ h3,h4,h5 {
   margin: .5em;
 }
 img {
-  width: 100%;
+  width: 350px;
   height: 300px;
   border: 1px solid black;
 }

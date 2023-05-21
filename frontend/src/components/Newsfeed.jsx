@@ -1,11 +1,40 @@
 import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
-import axios from "axios";
+import axios from "axios"; 
 import { AuthContext } from "../AuthContext";
+import Post from "./Post";
 
+import {
+  NewsFeed
+} from "../styledComponents/Profile";
 
-export default function Newsfeed() {
+ import {
+  HeartIcon, 
+  UnHeartIcon, 
+  DeletePostIcon
+} from "../assets/icons";
+
+export default function Newsfeed({
+  loggedInId,
+  //props for POSTS
+  handlePostChange,
+  postForm,
+  handleCommentChange,
+  commentForm,
+  deleteComment,
+  createComment,
+  postLikes,
+  createPost,
+  comments,
+  handleFileUpload,
+  user,
+  nextSlide,
+  prevSlide,
+  deletePost,
+  likeAPost,
+  unlikeAPost
+}) {
 
     const navigate = useNavigate();
 
@@ -15,12 +44,37 @@ export default function Newsfeed() {
     const [workouts, setWorkouts] = useState([]);
     const [following, setFollowing] = useState([]);
     const [notFollowing, setnotFollowing] = useState([]);
+
+    const [prevSlidePosition, setPrevSlidePosition] = useState({})
+    const [posts, setPosts] = useState([]); 
+
+    const getPosts = async () => {
+      console.log('supposedToGet')
+      try {
+        const response = await axios({
+          method: "get",
+          url: "http://localhost:4000/posts",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        if (response) {
+          setPosts(response.data.posts);
+          const postIdAndPosition = response.data.posts.map(post => {return ({postId:post._id, index: 0})});
+          setPrevSlidePosition(postIdAndPosition);
+        }
+      }
+      catch (e) {
+        console.log(e.message);
+      }
+    }
   
     const getUsers =  async () => {
     try {
       const res = await axios({
         method: "get",
         url: "http://localhost:4000/newsfeed",
+        
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -48,8 +102,8 @@ export default function Newsfeed() {
       localStorage.setItem('token', token);
       localStorage.setItem('id', userId);
       window.location.replace('http://localhost:5173/newsfeed');
-      getUsers(); 
     }
+    getPosts(); 
   }, []);
   
 
@@ -69,9 +123,8 @@ const exploreUsers = async () => {
 
     return (
         <div>
-            <h1> HOME </h1>
-            <button onClick={() => viewProfile(loggedInUser)}> Go to my profile </button>
-            { following.length > 0 ? following.map((follower) => {
+       
+            {/* { following.length > 0 ? following.map((follower) => {
                   return (
                     <div className="users">
                     <h2> {follower.fname} {follower.lname} {follower.workouts} <button onClick={() => viewProfile(follower._id)}> View profile </button> </h2>
@@ -81,10 +134,24 @@ const exploreUsers = async () => {
                  :
                 <h2> Nothing on newsfeed. Go follow and explore! </h2>
           
-                }
-            <div >
-              <button onClick={exploreUsers}> Explore other users </button> 
-          </div>
-        </div>
+                } */}
+              <NewsFeed> 
+              <h1> HOME </h1>
+            {/* <button onClick={getPosts}> getPosts </button> */}
+            <button onClick={() => viewProfile(loggedInUser)}> Go to my profile </button>
+                { posts && posts.map((post) => {
+              return (
+               <Post 
+                  post={post}
+                  nextSlide={nextSlide}
+                  prevSlide={prevSlide}
+                  prevSlidePosition={prevSlidePosition}
+                  username={username}
+               />
+              )
+              })
+            }
+            </NewsFeed>
+          </div> 
     )
 }

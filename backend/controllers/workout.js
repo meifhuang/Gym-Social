@@ -23,13 +23,13 @@ const isLoggedIn = function (req, res, next) {
 //the End workout button is pressed ... but it addes the exercises and workout to database..
 
 router.get("/workout/:workoutId", async (req, res) => {
-  console.log("entering edit workout");
+
   const { workoutId } = req.params;
   try {
     const workout = await Workout.findById(workoutId).populate("exercises");
     // const workout = await User.findOne({'workouts._id': workoutId}).populate("exercises");
     if (workout) {
-      console.log("getting workout", workout);
+
       res.status(200).json({
         success: true,
         workout: workout,
@@ -48,7 +48,7 @@ router.get("/workout/:workoutId", async (req, res) => {
 });
 
 router.delete("/workout/:workoutId", async (req, res) => {
-  console.log("entering delete");
+
   const userId = await User.findById(req.user.id);
   const { workoutId } = req.params;
 
@@ -61,11 +61,11 @@ router.delete("/workout/:workoutId", async (req, res) => {
         await Exercise.findByIdAndDelete(each._id);
       }
       const deleteWorkout = await Workout.findByIdAndDelete(workoutId);
-      console.log("delete workout", deleteWorkout);
+     
       const deletefromUser = await User.findByIdAndUpdate(userId, {
         $pull: { workouts: workoutId },
       });
-      console.log(deletefromUser);
+  
       res.status(200).json({
         success: true,
         workoutId: workoutId,
@@ -106,20 +106,18 @@ router.post("/createworkout", async (req, res) => {
 //this happens after finishing creating the rest of the workout and add exercises
 
 router.post("/createuserworkout", async (req, res) => {
-  console.log(req.body);
+
   const { name, workoutId } = req.body;
   const user = await User.findById(req.user.id).populate({
     path: "workouts",
     populate: { path: "exercises" },
   });
   const workout = await Workout.findById(workoutId).populate("exercises");
-  console.log(workout);
+
   const workouts = user.workouts;
 
   workouts.push(workout);
   await user.save();
-  // await workout.save();
-  console.log("Added workout!");
   res.status(200).json({
     success: "true",
     workouts: workouts,
