@@ -11,25 +11,59 @@ import {
 } from "../styledComponents/Profile";
 
 export default function Newsfeed({
-  loggedInId,
   //props for POSTS
   handlePostChange,
   postForm,
-  handleCommentChange,
-  commentForm,
-  deleteComment,
-  createComment,
   handleFileUpload,
-  deletePost,
-  likeAPost,
-  unlikeAPost
+  deletePost
 }) {
 
     const navigate = useNavigate();
-    const [loggedInUser, setLoggedInUser] = useState(localStorage.getItem('id'));
+    const [loggedInId, setLoggedInId] = useState(localStorage.getItem('id'));
     const [prevSlidePosition, setPrevSlidePosition] = useState({});
     const [posts, setPosts] = useState([]); 
 
+    
+  const likeAPost = async(postId) => {
+    try {
+      const response = await axios({
+        method: "post",
+        url: `http://localhost:4000/likepost/${postId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      if (response) {
+        console.log(response.data);
+        getPosts();
+      }
+    }
+    catch (e) {
+      console.log(e.message); 
+    }
+  }
+
+  const unlikeAPost = async (postId) => {
+    console.log("UNLIKEE");
+    try {
+      const response = await axios({
+        method: "delete",
+        url: `http://localhost:4000/unlikepost/${postId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      if (response) {
+        console.log(response.data);
+        getPosts();
+      }
+    }
+    catch (e) {
+      console.log(e.message);
+    }
+  }
+
+    
     const getPosts = async () => {
       try {
         const response = await axios({
@@ -40,7 +74,7 @@ export default function Newsfeed({
           },
         });
         if (response) {
-          console.log(response.data.posts);
+          console.log('checking',response.data.posts);
           setPosts(response.data.posts);
           const postIdAndPosition = response.data.posts.map(post => {return ({postId: post._id, index: 0})});
           console.log("postId", postIdAndPosition)
@@ -88,7 +122,6 @@ export default function Newsfeed({
     console.log('prev',prevSlidePosition);
   }
 
-
     useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
@@ -114,9 +147,10 @@ const exploreUsers = async () => {
               <h1> HOME </h1>
             {/* <button onClick={getPosts}> getPosts </button> */}
             <button onClick={exploreUsers}> Explore users</button>
-            <button onClick={() => viewProfile(loggedInUser)}> Go to my profile </button>
+            <button onClick={() => viewProfile(loggedInId)}> Go to my profile </button>
                 { posts && posts.map((post) => {
               return (
+       
                 <Post 
                 deletePost={deletePost}
                 unlikeAPost={unlikeAPost}
@@ -128,14 +162,12 @@ const exploreUsers = async () => {
                 prevSlide={prevSlide}
                 prevSlidePosition={prevSlidePosition}
                 loggedInId={loggedInId}
-                commentForm={commentForm}
-                handleCommentChange={handleCommentChange}
-                createComment={createComment}
-                deleteComment={deleteComment}
              />
+         
               )
               })
             }
             </NewsFeed>
+   
     )
 }

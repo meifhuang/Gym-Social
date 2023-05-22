@@ -20,12 +20,6 @@ export default function Post({
   loggedInId,
   post,
   prevSlidePosition,
-  handleCommentChange,
-  commentForm,
-  deleteComment,
-  createComment,
-  nextSlide,
-  prevSlide,
   deletePost,
   likeAPost,
   unlikeAPost
@@ -34,7 +28,8 @@ export default function Post({
     const [prevSlidePositionShow, setPrevSlidePositionShow] = useState({});
     const [showPost, setShowPost] = useState(false); 
     const [postToShow, setPostToShow] = useState([]);
-
+    const [commentForm, setCommentForm] = useState({ description: "" }); 
+    
 
 const getPost = async (postId) => {
     try {
@@ -57,6 +52,95 @@ const getPost = async (postId) => {
       console.log(e.message);
     }
   }
+
+  const nextSlide = (imglength, postId) => {
+    setPrevSlidePositionShow(prevSlides => {
+      return prevSlides.map(slide => {
+        if (slide.postId === postId) {
+          if (slide.index === imglength-1) {
+            return { ...slide, index: 0 };
+          }
+          else {
+            return {...slide, index: slide.index+1}
+          }
+        } else {
+          return slide;
+        }
+      });
+    });
+ 
+}
+
+const prevSlide = (imglength,postId) => {
+    setPrevSlidePositionShow(prevSlides => {
+      return prevSlides.map(slide => {
+        if (slide.postId === postId) {
+          if (slide.index === 0) {
+          return { ...slide, index: imglength-1 };
+          }
+          else {
+            return {...slide, index: slide.index-1}
+          }
+        } else {
+          return slide;
+        }
+      });
+    });
+}
+
+const handleCommentChange = (e) => {
+  const {name, value} = e.target;
+  setCommentForm({
+    description: value,
+  });
+  console.log(commentForm);
+};
+
+
+const createComment = async (e,postId) => {
+e.preventDefault();
+console.log("INSIDE COMMENT")
+try {
+  const response = await axios({
+    method: "post",
+    url: `http://localhost:4000/post/${postId}/createcomment`, 
+    data: {
+      description: commentForm.description
+    }, 
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  if (response) {
+    //gotta figure out better way 
+    getPost(postId);
+  }
+  else {
+    console.log("no response");
+  }
+}
+catch (e) {
+  console.log(e.message);
+}
+}
+
+const deleteComment = async (postId, commentId) => {
+try {
+  const response = await axios({
+    method: "delete",
+    url: `http://localhost:4000/post/${postId}/comment/${commentId}`,
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  if (response) {
+    getPost(postId);
+  }
+  }
+catch (e) {
+  console.log(e.message);
+}
+}
 
 const toggleComment = async (postId) => {
     getPost(postId);
@@ -145,7 +229,6 @@ const toggleComment = async (postId) => {
                         unlikeAPost={unlikeAPost}
                         likeAPost={likeAPost}
                         key={post._id}
-
                         nextSlide={nextSlide}
                         prevSlide={prevSlide}
                         prevSlidePositionShow={prevSlidePositionShow}

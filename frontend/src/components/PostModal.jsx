@@ -6,7 +6,7 @@ import axios from "axios";
 import CommentForm from "./CommentForm";
 
 import { 
-  PostStyle,
+  PostModalParentStyle,
   PostModalStyle
 } from "../styledComponents/Profile";
 
@@ -30,10 +30,17 @@ export default function PostModal({
   likeAPost,
   unlikeAPost
 }) {
+      const [showPost, setShowPost] = useState(true);
+
+      const toggleShowPost = () => {
+          setShowPost(false);
+      }
 
         return (
-         
-          <PostStyle>
+          <>
+                    {showPost && 
+            <PostModalParentStyle>
+            <PostModalStyle>
                 <div className="post">
                   <div className="carousel"> 
                       {prevSlidePositionShow.map(slides => {
@@ -56,7 +63,7 @@ export default function PostModal({
                                 
                                     <button
                                     onClick={() =>
-                                        nextSlide(posty.images.length, post._id)
+                                        nextSlide(posty.images.length, posty._id)
                                     }
                                     id={`carousel-button-next`}
                                     aria-label="Next"
@@ -82,7 +89,7 @@ export default function PostModal({
                             <p> {posty.caption} </p>
                         </div>
                         
-                        { posty.comments && posty.comments.map((comment) => { 
+                        { posty.comments.length > 0 && posty.comments.map((comment) => { 
                       return (
                         <div className="comments"> 
                          <h5> {comment.username} : {comment.description} </h5>
@@ -90,16 +97,22 @@ export default function PostModal({
                         </div> 
                       )
                     })}
-
                     <CommentForm 
                       handleCommentChange={handleCommentChange}
                       commentForm={commentForm}
                       createComment={createComment}
                       postId={posty._id}
                     /> 
+
+                <button onClick={toggleShowPost }className="closepost"> CLOSE X </button>  
+                     
                 </div>
+               
                 </div>
-                </PostStyle>
-              
-              );
+            
+                </PostModalStyle>
+                </PostModalParentStyle>
+                  }
+                  </>
+              )
                 }

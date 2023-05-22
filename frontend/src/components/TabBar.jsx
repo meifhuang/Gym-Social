@@ -127,7 +127,6 @@ const TabBar = ({
             createPost={createPost}
             handleFileUpload={handleFileUpload}
           />
-     <PostModalStyle> 
     <PostContainer>
           {posts &&
             posts.map((post,index) => {
@@ -153,7 +152,6 @@ const TabBar = ({
               );
             })}
           </PostContainer>
-          </PostModalStyle> 
         </div>
 
         <div

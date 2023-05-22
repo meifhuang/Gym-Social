@@ -41,10 +41,8 @@ router.get("/getpost/:postId", async (req, res) => {
 router.get("/newsfeed/posts", async (req, res) => {
     try {
         const user = await User.findById(req.user.id).populate(
-            [{path: "posts", populate: {path: "comments"}}, 
-             {path: "posts", populate: {path: "createdBy"}},
-             {path: "following", populate: {path: "posts"}},
-        ]);
+            [{path: "following", populate: {path: "posts", populate: {path: "createdBy"}}},
+             {path: "following", populate: {path: "posts", populate: {path: "comments"}}}]);
         const following = user.following; 
         const posts = [];
         for (let each of following) {

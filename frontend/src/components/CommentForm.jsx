@@ -13,9 +13,9 @@ function CommentForm(
     return (
         <>       
         <form onSubmit= {(e) => createComment(e,postId)}> 
-            <label htmlFor="description"> Comment </label>
-            <input type="text" name="description" value={commentForm.description} onChange={handleCommentChange} required/>
-            <button> + Add Comment </button>
+            {/* <label className="comment-label" htmlFor="description"> Comment </label> */}
+            <input type="text" id="description" class="description" value={commentForm.description} onChange={handleCommentChange} required/>
+            <button className="comment-button"> + Comment </button>
         </form>
         </>
     )

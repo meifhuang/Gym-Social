@@ -71,7 +71,6 @@ export default function Profile() {
   const [showExerciseForm, setShowExerciseForm] = useState(true);
   const [postForm, setPostForm] = useState({ caption: "" });
   const [commentForm, setCommentForm] = useState({ description: "" }); 
-
   const [changeId, setChangeId] = useState("");
   const [exercise, setExercise] = useState(stats);
   const [workoutName, setWorkoutName] = useState({ name: "" });
@@ -850,8 +849,9 @@ export default function Profile() {
 
   return (
     <div className="App">
-      <button onClick={gotoNewsFeed}> Return to feed </button>
+      
       <ProfileMain>
+      <button onClick={gotoNewsFeed}> Return to feed </button>
       <button onClick={logout}> Logout </button>
 
         <TagInfo className="tag">
@@ -981,10 +981,6 @@ export default function Profile() {
           //props for POSTS
           user={user}
           handlePostChange={handlePostChange}
-          handleCommentChange={handleCommentChange}
-          commentForm={commentForm}
-          createComment={createComment}
-          deleteComment={deleteComment}
           postForm={postForm}
           posts={posts}
           postLikes={postLikes}
@@ -996,6 +992,9 @@ export default function Profile() {
           prevSlide={prevSlide}
           deletePost={deletePost} 
           prevSlidePosition={prevSlidePosition}
+          commentForm={commentForm}
+          createComment={createComment}
+          deleteComment={deleteComment}
 
         />
       </ProfileMain>

@@ -17,7 +17,7 @@ export const ProfileMain = styled.main`
   display: flex;
   flex-direction: column;
   padding: 2rem;
-  margin: 2rem calc(1rem + 10vw);
+  margin: 0rem calc(1rem + 10vw);
   gap: 2rem;
 `
 
@@ -155,15 +155,124 @@ export const NewsFeed = styled.div`
   flex-direction: column; 
   justify-content: center;
   align-items: center;
+  
+`
 
+export const PostModalParentStyle = styled.div`
+position: absolute;
+top: 0;
+left: 0;
+height: 100%;
+width: 100%;
+background-color: rgba(0,0,0,0.8);
+z-index: 9999;
+display: flex;
+justify-content: center;
+align-items: center;
 `
 
 export const PostModalStyle = styled.div`
-  width: 100vw; 
-  height: 100vh;
-  z-index: 1000;
-  background: #f1f1f1;
-  `
+
+.post {
+  border: 1px solid red;
+  background-color: white;
+
+}
+
+.post-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: .6em;
+}
+
+b {
+  font-weight: 600;
+}
+.likes {
+  display: flex;
+  justify-content: space-between;
+  gap: .7em;
+}
+.post h4 {
+  font-weight: 800;
+}
+.comments {
+  display: flex;
+  margin: .5em;
+  justify-content: space-between;
+}
+.deletePost {
+  // margin-left: 14em;
+  cursor: pointer;
+}
+.carousel {
+  position: relative; 
+  margin: 0 auto;
+}
+.caption {
+  display: flex;
+  align-items: center
+}
+.carousel .carousel-item, 
+.carousel .carousel-item-hidden {
+display: none; 
+}
+
+.carousel .carousel-item-visible {
+  display: block;
+  animation: fade 1.5s; 
+}
+
+.carousel .carousel-actions {
+  display: flex;
+  width: 100%;
+  justify-content: space-between; 
+  position: absolute; 
+  top: 40%;
+  transform: translateY(-50%);
+}
+.carousel .carousel-actions button {
+  border-radius: 50px;
+  background-color: transparent;
+  border: 0;
+  font-size: 20px;
+  color: white;
+  cursor: pointer; 
+  width: 50px; 
+  height: 50px; 
+}
+#description {
+  margin: .8em;
+  width: 60%;
+  height:100%;
+  border-radius: 8px; 
+}
+.comment-button {
+  padding: 5px;
+  border-radius: 10px; 
+}
+.closepost {
+  padding: 1em;
+  margin-left: 40%;
+}
+h3,h4,h5 {
+  margin: .5em;
+}
+img {
+  width: 350px;
+  height: 300px;
+  border: 1px solid black;
+}
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1
+  }
+}
+`
 
 export const PostStyle = styled.div`
 .post {
