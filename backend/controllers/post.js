@@ -9,19 +9,51 @@ const {cloudinary} = require('../cloudinary');
 
 router = express.Router();
 
-
-router.get("/posts", async (req, res) => {
+router.get("/getpost/:postId", async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).populate([
-            {path: "posts", populate: {path: "comments"}},
-            {path: "posts", populate: {path: "createdBy"}}]);
+        const getpost = await Post.findById(req.params.postId).populate(["comments","createdBy"]);
+        const post = []
+        post.push(getpost); 
+        console.log(post);
+        if (getpost) {
+            res.status(200).json({
+                success: true,
+                post: post
+            })
+        }
+        else {
+            res.status(400).json({
+                success: false, 
+                message: 'cannot find post'
+            })
+        }
+    }
+    catch (e) {
+        console.log(e);
+        res.status(400).json({
+            success: false,
+            message: 'post no work'
+        })
+    }
+})
+
+
+router.get("/newsfeed/posts", async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).populate(
+            [{path: "posts", populate: {path: "comments"}}, 
+             {path: "posts", populate: {path: "createdBy"}},
+             {path: "following", populate: {path: "posts"}},
+        ]);
         const following = user.following; 
         const posts = [];
         for (let each of following) {
+            console.log(each); 
             for (let post of each.posts) {
                 posts.push(post)
             }
         }
+        console.log(posts);
         res.status(200).json({
             success: true,
             posts: posts

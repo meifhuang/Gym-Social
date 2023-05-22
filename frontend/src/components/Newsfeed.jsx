@@ -10,15 +10,8 @@ import {
   NewsFeed
 } from "../styledComponents/Profile";
 
- import {
-  HeartIcon, 
-  UnHeartIcon, 
-  DeletePostIcon
-} from "../assets/icons";
-
 export default function Newsfeed({
   loggedInId,
-  // username, 
   //props for POSTS
   handlePostChange,
   postForm,
@@ -26,25 +19,14 @@ export default function Newsfeed({
   commentForm,
   deleteComment,
   createComment,
-  postLikes,
-  createPost,
-  comments,
   handleFileUpload,
-  user,
   deletePost,
   likeAPost,
   unlikeAPost
 }) {
 
     const navigate = useNavigate();
-
-    const [users, setUsers] = useState([])
     const [loggedInUser, setLoggedInUser] = useState(localStorage.getItem('id'));
-    const [username, setUsername] = useState("");
-    const [workouts, setWorkouts] = useState([]);
-    const [following, setFollowing] = useState([]);
-    const [notFollowing, setnotFollowing] = useState([]);
-
     const [prevSlidePosition, setPrevSlidePosition] = useState({});
     const [posts, setPosts] = useState([]); 
 
@@ -52,19 +34,21 @@ export default function Newsfeed({
       try {
         const response = await axios({
           method: "get",
-          url: "http://localhost:4000/posts",
+          url: "http://localhost:4000/newsfeed/posts",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
         if (response) {
+          console.log(response.data.posts);
           setPosts(response.data.posts);
-          const postIdAndPosition = response.data.posts.map(post => {return ({postId:post._id, index: 0})});
+          const postIdAndPosition = response.data.posts.map(post => {return ({postId: post._id, index: 0})});
+          console.log("postId", postIdAndPosition)
           setPrevSlidePosition(postIdAndPosition);
         }
       }
       catch (e) {
-        console.log(e.message);
+        console.log(e);
       }
     }
 
@@ -103,31 +87,7 @@ export default function Newsfeed({
       });
     console.log('prev',prevSlidePosition);
   }
-  
-  //   const getUsers =  async () => {
-  //   try {
-  //     const res = await axios({
-  //       method: "get",
-  //       url: "http://localhost:4000/newsfeed",
-        
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       },
-  //     });
-  //     if (res) {
-  //       console.log('reached getusers', res.data.users);
-  //       console.log('following', res.data.following);
-  //       // setUsers(res.data.users);
-  //       setFollowing(res.data.following)
-  //     }
-  //     else {
-  //       console.log("no responses")
-  //     }
-  //   }
-  //   catch (e) {
-  //     console.log(e.message);
-  //   }
-  // }  
+
 
     useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -141,12 +101,6 @@ export default function Newsfeed({
     getPosts(); 
   }, []);
   
-
-  // useEffect(() => {
-  //   getUsers();
-  // },[]);
-
-
 const viewProfile = async (userId) => {
     navigate(`/profile/${userId}`);
 }
@@ -156,21 +110,7 @@ const exploreUsers = async () => {
 }
 
     return (
-        <div>
-       
-            {/* { following.length > 0 ? following.map((follower) => {
-                  return (
-                    <div className="users">
-                    <h2> {follower.fname} {follower.lname} {follower.workouts} <button onClick={() => viewProfile(follower._id)}> View profile </button> </h2>
-                  </div> 
-                    )
-                  })
-                 :
-                <h2> Nothing on newsfeed. Go follow and explore! </h2>
-          
-                } */}
-
-              <NewsFeed> 
+           <NewsFeed> 
               <h1> HOME </h1>
             {/* <button onClick={getPosts}> getPosts </button> */}
             <button onClick={exploreUsers}> Explore users</button>
@@ -183,12 +123,10 @@ const exploreUsers = async () => {
                 likeAPost={likeAPost}
                 handleFileUpload={handleFileUpload}
                 key={post._id}
-                index={index}
                 post={post}
                 nextSlide={nextSlide}
                 prevSlide={prevSlide}
                 prevSlidePosition={prevSlidePosition}
-                id={id}
                 loggedInId={loggedInId}
                 commentForm={commentForm}
                 handleCommentChange={handleCommentChange}
@@ -199,6 +137,5 @@ const exploreUsers = async () => {
               })
             }
             </NewsFeed>
-          </div> 
     )
 }

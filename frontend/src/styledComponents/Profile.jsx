@@ -158,6 +158,13 @@ export const NewsFeed = styled.div`
 
 `
 
+export const PostModalStyle = styled.div`
+  width: 100vw; 
+  height: 100vh;
+  z-index: 1000;
+  background: #f1f1f1;
+  `
+
 export const PostStyle = styled.div`
 .post {
   border: 1px solid black;

@@ -4,6 +4,7 @@ import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 
 import CommentForm from "./CommentForm";
+import PostModal from "./PostModal"; 
 
 import { 
   PostStyle
@@ -17,21 +18,12 @@ import {
 
 export default function Post({
   loggedInId,
-  prevSlidePosition,
   post,
-  username,
-  //props for POSTS
-  handlePostChange,
-  postForm,
+  prevSlidePosition,
   handleCommentChange,
   commentForm,
   deleteComment,
   createComment,
-  postLikes,
-  createPost,
-  comments,
-  handleFileUpload,
-  user,
   nextSlide,
   prevSlide,
   deletePost,
@@ -39,7 +31,40 @@ export default function Post({
   unlikeAPost
 }) {
 
+    const [prevSlidePositionShow, setPrevSlidePositionShow] = useState({});
+    const [showPost, setShowPost] = useState(false); 
+    const [postToShow, setPostToShow] = useState([]);
+
+
+const getPost = async (postId) => {
+    try {
+      const response = await axios({
+        method: "get",
+        url: `http://localhost:4000/getpost/${postId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response) {
+        console.log('double checking', response.data.post); 
+        setPostToShow(response.data.post); 
+        // setPostToShow(response.data.post);
+        const postIdAndPosition = [{postId: response.data.post[0]._id, index: 0}];
+        setPrevSlidePositionShow(postIdAndPosition);
+      }
+    }
+    catch (e) {
+      console.log(e.message);
+    }
+  }
+
+const toggleComment = async (postId) => {
+    getPost(postId);
+    setShowPost(true);
+}
+
         return (
+            <> 
                 <PostStyle>
                 <div className="post">
                   <div className="carousel"> 
@@ -88,7 +113,10 @@ export default function Post({
                             <h4> {post.createdBy[0].fname} {post.createdBy[0].lname } </h4>
                             <p> {post.caption} </p>
                         </div>
-                        <h4> View Comments </h4>
+                        <h4 onClick={() => toggleComment(post._id)}> View Comments </h4> 
+                        {/* { 
+                            showComment ? 
+                            <> 
                         { post.comments && post.comments.map((comment) => { 
                       return (
                         <div className="comments"> 
@@ -103,8 +131,32 @@ export default function Post({
                       createComment={createComment}
                       postId={post._id}
                     /> 
+                    </> :
+                    } */}
                     </div>
                 </div>
+
+                {/* {showPost && postToShow.map((post) => { return (<h5> {post.comments[0].username} </h5>)})} */}
                 </PostStyle>
-              );
-                      }
+                   
+                { showPost ? postToShow.map((posty) => {return (
+                    <PostModal
+                        deletePost={deletePost}
+                        unlikeAPost={unlikeAPost}
+                        likeAPost={likeAPost}
+                        key={post._id}
+
+                        nextSlide={nextSlide}
+                        prevSlide={prevSlide}
+                        prevSlidePositionShow={prevSlidePositionShow}
+                        posty={posty}
+                        loggedInId={loggedInId}
+                        commentForm={commentForm}
+                        handleCommentChange={handleCommentChange}
+                        createComment={createComment}
+                        deleteComment={deleteComment}
+                /> )})
+                : <></> }
+            </>
+        )
+    }
