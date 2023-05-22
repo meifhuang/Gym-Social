@@ -49,7 +49,6 @@ export default function Newsfeed({
     const [posts, setPosts] = useState([]); 
 
     const getPosts = async () => {
-      console.log('supposedToGet')
       try {
         const response = await axios({
           method: "get",
@@ -170,6 +169,7 @@ const exploreUsers = async () => {
                 <h2> Nothing on newsfeed. Go follow and explore! </h2>
           
                 } */}
+
               <NewsFeed> 
               <h1> HOME </h1>
             {/* <button onClick={getPosts}> getPosts </button> */}
@@ -177,14 +177,24 @@ const exploreUsers = async () => {
             <button onClick={() => viewProfile(loggedInUser)}> Go to my profile </button>
                 { posts && posts.map((post) => {
               return (
-               <Post 
-                  post={post}
-                  nextSlide={nextSlide}
-                  prevSlide={prevSlide}
-                  prevSlidePosition={prevSlidePosition}
-                  username={username}
-                  loggedInId={loggedInId}
-               />
+                <Post 
+                deletePost={deletePost}
+                unlikeAPost={unlikeAPost}
+                likeAPost={likeAPost}
+                handleFileUpload={handleFileUpload}
+                key={post._id}
+                index={index}
+                post={post}
+                nextSlide={nextSlide}
+                prevSlide={prevSlide}
+                prevSlidePosition={prevSlidePosition}
+                id={id}
+                loggedInId={loggedInId}
+                commentForm={commentForm}
+                handleCommentChange={handleCommentChange}
+                createComment={createComment}
+                deleteComment={deleteComment}
+             />
               )
               })
             }

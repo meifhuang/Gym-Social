@@ -17,7 +17,6 @@ import {
   DeletePostIcon
 } from "../assets/icons";
 import AddPostForm from "./AddPostForm";
-import CommentForm from "./CommentForm";
 
 //styling
 
@@ -139,14 +138,23 @@ const TabBar = ({
             posts.map((post,index) => {
               return (
                 <Post 
-                  index={index}
-                  post={post}
-                  nextSlide={nextSlide}
-                  prevSlide={prevSlide}
-                  prevSlidePosition={prevSlidePosition}
-                  id={id}
-                  loggedInId={loggedInId}
-               />
+                deletePost={deletePost}
+                unlikeAPost={unlikeAPost}
+                likeAPost={likeAPost}
+                handleFileUpload={handleFileUpload}
+                key={post._id}
+                index={index}
+                post={post}
+                nextSlide={nextSlide}
+                prevSlide={prevSlide}
+                prevSlidePosition={prevSlidePosition}
+                id={id}
+                loggedInId={loggedInId}
+                commentForm={commentForm}
+                handleCommentChange={handleCommentChange}
+                createComment={createComment}
+                deleteComment={deleteComment}
+             />
                 // <PostStyle>
                 // <div className="post">
                 //   <div className="carousel"> 
@@ -196,20 +204,7 @@ const TabBar = ({
                 //       <p> {post.caption} </p>
                 //     </div>
                 //     <h4> View Comments </h4>
-                //     {/* { post.comments.map((comment) => { 
-                //       return (
-                //         <div className="comments"> 
-                //          <h5> {comment.username} : {comment.description} </h5>
-                //          <button onClick={() => deleteComment(post._id, comment._id)}> delete </button>
-                //         </div> 
-                //       )
-                //     })}
-                //     <CommentForm 
-                //       handleCommentChange={handleCommentChange}
-                //       commentForm={commentForm}
-                //       createComment={createComment}
-                //       postId={post._id}
-                //     />  */}
+                //     
                 //   {/* <button onClick={() => deletePost(post._id)}> Delete </button> */}
                 //   </div>
                 // </div>

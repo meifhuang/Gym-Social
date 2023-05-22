@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 
+import CommentForm from "./CommentForm";
+
 import { 
   PostStyle
 } from "../styledComponents/Profile";
@@ -87,7 +89,20 @@ export default function Post({
                             <p> {post.caption} </p>
                         </div>
                         <h4> View Comments </h4>
-                            {/* <button onClick={() => deletePost(post._id)}> Delete </button> */}
+                        { post.comments && post.comments.map((comment) => { 
+                      return (
+                        <div className="comments"> 
+                         <h5> {comment.username} : {comment.description} </h5>
+                         <button onClick={() => deleteComment(post._id, comment._id)}> delete </button>
+                        </div> 
+                      )
+                    })}
+                    <CommentForm 
+                      handleCommentChange={handleCommentChange}
+                      commentForm={commentForm}
+                      createComment={createComment}
+                      postId={post._id}
+                    /> 
                     </div>
                 </div>
                 </PostStyle>

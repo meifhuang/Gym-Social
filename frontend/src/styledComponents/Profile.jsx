@@ -148,7 +148,6 @@ export const PostContainer = styled.div`
   align-items: end;
   gap: 2em;
   border: 1px solid red;
-  
 `
 
 export const NewsFeed = styled.div`
@@ -156,7 +155,6 @@ export const NewsFeed = styled.div`
   flex-direction: column; 
   justify-content: center;
   align-items: center;
-  border: 1px solid red; 
 
 `
 

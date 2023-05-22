@@ -206,6 +206,7 @@ export default function Profile() {
         setSavedWorkouts(res.data.savedWorkouts);
         const postIdAndPosition = res.data.posts.map(post => {return ({postId:post._id, index: 0})});
         setPrevSlidePosition(postIdAndPosition);
+        console.log(res.data.posts);
 
       } else {
         console.log("no responses");
@@ -974,8 +975,6 @@ export default function Profile() {
           deleteWorkout={deleteWorkout}
           activeDropdown={activeDropdown}
           saveAWorkout={saveAWorkout}
-
-  
           workoutId={workoutId}
           savedWorkouts={savedWorkouts} 
           deleteSavedWorkout={deleteSavedWorkout}
