@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 
+import CommentForm from "./CommentForm";
+import PostModal from "./PostModal"; 
+
 import { 
   PostStyle
 } from "../styledComponents/Profile";
@@ -15,29 +18,137 @@ import {
 
 export default function Post({
   loggedInId,
-  prevSlidePosition,
   post,
-  username,
-  //props for POSTS
-  handlePostChange,
-  postForm,
-  handleCommentChange,
-  commentForm,
-  deleteComment,
-  createComment,
-  postLikes,
-  createPost,
-  comments,
-  handleFileUpload,
-  user,
-  nextSlide,
-  prevSlide,
+  prevSlidePosition,
   deletePost,
   likeAPost,
   unlikeAPost
 }) {
 
+    const [prevSlidePositionShow, setPrevSlidePositionShow] = useState({});
+    const [showPost, setShowPost] = useState(false); 
+    const [postToShow, setPostToShow] = useState([]);
+    const [commentForm, setCommentForm] = useState({ description: "" }); 
+    
+
+const getPost = async (postId) => {
+    try {
+      const response = await axios({
+        method: "get",
+        url: `http://localhost:4000/getpost/${postId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response) {
+        console.log('double checking', response.data.post); 
+        setPostToShow(response.data.post); 
+        // setPostToShow(response.data.post);
+        const postIdAndPosition = [{postId: response.data.post[0]._id, index: 0}];
+        setPrevSlidePositionShow(postIdAndPosition);
+      }
+    }
+    catch (e) {
+      console.log(e.message);
+    }
+  }
+
+  const nextSlide = (imglength, postId) => {
+    setPrevSlidePositionShow(prevSlides => {
+      return prevSlides.map(slide => {
+        if (slide.postId === postId) {
+          if (slide.index === imglength-1) {
+            return { ...slide, index: 0 };
+          }
+          else {
+            return {...slide, index: slide.index+1}
+          }
+        } else {
+          return slide;
+        }
+      });
+    });
+ 
+}
+
+const prevSlide = (imglength,postId) => {
+    setPrevSlidePositionShow(prevSlides => {
+      return prevSlides.map(slide => {
+        if (slide.postId === postId) {
+          if (slide.index === 0) {
+          return { ...slide, index: imglength-1 };
+          }
+          else {
+            return {...slide, index: slide.index-1}
+          }
+        } else {
+          return slide;
+        }
+      });
+    });
+}
+
+const handleCommentChange = (e) => {
+  const {name, value} = e.target;
+  setCommentForm({
+    description: value,
+  });
+  console.log(commentForm);
+};
+
+
+const createComment = async (e,postId) => {
+e.preventDefault();
+console.log("INSIDE COMMENT")
+try {
+  const response = await axios({
+    method: "post",
+    url: `http://localhost:4000/post/${postId}/createcomment`, 
+    data: {
+      description: commentForm.description
+    }, 
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  if (response) {
+    //gotta figure out better way 
+    getPost(postId);
+  }
+  else {
+    console.log("no response");
+  }
+}
+catch (e) {
+  console.log(e.message);
+}
+}
+
+const deleteComment = async (postId, commentId) => {
+try {
+  const response = await axios({
+    method: "delete",
+    url: `http://localhost:4000/post/${postId}/comment/${commentId}`,
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  if (response) {
+    getPost(postId);
+  }
+  }
+catch (e) {
+  console.log(e.message);
+}
+}
+
+const toggleComment = async (postId) => {
+    getPost(postId);
+    setShowPost(true);
+}
+
         return (
+            <> 
                 <PostStyle>
                 <div className="post">
                   <div className="carousel"> 
@@ -86,10 +197,49 @@ export default function Post({
                             <h4> {post.createdBy[0].fname} {post.createdBy[0].lname } </h4>
                             <p> {post.caption} </p>
                         </div>
-                        <h4> View Comments </h4>
-                            {/* <button onClick={() => deletePost(post._id)}> Delete </button> */}
+                        <h4 onClick={() => toggleComment(post._id)}> View Comments </h4> 
+                        {/* { 
+                            showComment ? 
+                            <> 
+                        { post.comments && post.comments.map((comment) => { 
+                      return (
+                        <div className="comments"> 
+                         <h5> {comment.username} : {comment.description} </h5>
+                         <button onClick={() => deleteComment(post._id, comment._id)}> delete </button>
+                        </div> 
+                      )
+                    })}
+                    <CommentForm 
+                      handleCommentChange={handleCommentChange}
+                      commentForm={commentForm}
+                      createComment={createComment}
+                      postId={post._id}
+                    /> 
+                    </> :
+                    } */}
                     </div>
                 </div>
+
+                {/* {showPost && postToShow.map((post) => { return (<h5> {post.comments[0].username} </h5>)})} */}
                 </PostStyle>
-              );
-                      }
+                   
+                { showPost ? postToShow.map((posty) => {return (
+                    <PostModal
+                        deletePost={deletePost}
+                        unlikeAPost={unlikeAPost}
+                        likeAPost={likeAPost}
+                        key={post._id}
+                        nextSlide={nextSlide}
+                        prevSlide={prevSlide}
+                        prevSlidePositionShow={prevSlidePositionShow}
+                        posty={posty}
+                        loggedInId={loggedInId}
+                        commentForm={commentForm}
+                        handleCommentChange={handleCommentChange}
+                        createComment={createComment}
+                        deleteComment={deleteComment}
+                /> )})
+                : <></> }
+            </>
+        )
+    }

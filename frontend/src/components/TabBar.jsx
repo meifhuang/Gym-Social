@@ -5,24 +5,17 @@ import Post from "./Post";
 import {
   WorkoutIcon,
   GridIcon,
-  FavoriteIcon,
-  DeleteIcon,
-  AddIcon,
   CreateWorkoutIcon,
-  SaveIcon,
   SavedIcon,
   DeleteSaveIcon,
-  HeartIcon, 
-  UnHeartIcon, 
-  DeletePostIcon
 } from "../assets/icons";
 import AddPostForm from "./AddPostForm";
-import CommentForm from "./CommentForm";
 
 //styling
 
+
 import { 
-  PostStyle,
+  PostModalStyle,
   PostContainer,
   WorkoutContainer,
   WorkoutDiv,
@@ -139,81 +132,23 @@ const TabBar = ({
             posts.map((post,index) => {
               return (
                 <Post 
-                  index={index}
-                  post={post}
-                  nextSlide={nextSlide}
-                  prevSlide={prevSlide}
-                  prevSlidePosition={prevSlidePosition}
-                  id={id}
-                  loggedInId={loggedInId}
-               />
-                // <PostStyle>
-                // <div className="post">
-                //   <div className="carousel"> 
-                //       {prevSlidePosition.map(slides => {
-                //         return (
-                //           slides.postId === post._id ? <img className="carousel-item carousel-item-visible" src={post.images[slides.index].url} /> : <> </>
-                //         )
-                //       })}
-                //   {post.images.length > 1 ? (
-                //               <div className="carousel-actions">
-                //                 <button
-                //                   onClick={() =>
-                //                     prevSlide(post.images.length, post._id)
-                //                   }
-                //                   id={`carousel-button-prev`}
-                //                   aria-label="Previous"
-                //                 >
-                //                   {" "}
-                //                   &lt;{" "}
-                //                 </button>
-                               
-                //                 <button
-                //                   onClick={() =>
-                //                     nextSlide(post.images.length, post._id)
-                //                   }
-                //                   id={`carousel-button-next`}
-                //                   aria-label="Next"
-                //                 >
-                //                   {" "}
-                //                   &gt;{" "}
-                //                 </button>
-                //               </div>
-                //             ) : (
-                //               <div> </div>
-                //             )}
-                //     <div className="likes"> 
-                //       { !post.likedBy.includes(loggedInId) ?
-                //       <HeartIcon likeAPost={likeAPost} postId={post._id}/> : 
-                //       <UnHeartIcon unlikeAPost={unlikeAPost} postId={post._id}/> }
-                    
-                //       <p> {post.likedBy.length} likes </p>
-                //       <DeletePostIcon deletePost={deletePost} postId={post._id}/>
-                //     </div>
-                    
-                //     <div className="caption"> 
-                //       <h4> {username} </h4>
-                //       <p> {post.caption} </p>
-                //     </div>
-                //     <h4> View Comments </h4>
-                //     {/* { post.comments.map((comment) => { 
-                //       return (
-                //         <div className="comments"> 
-                //          <h5> {comment.username} : {comment.description} </h5>
-                //          <button onClick={() => deleteComment(post._id, comment._id)}> delete </button>
-                //         </div> 
-                //       )
-                //     })}
-                //     <CommentForm 
-                //       handleCommentChange={handleCommentChange}
-                //       commentForm={commentForm}
-                //       createComment={createComment}
-                //       postId={post._id}
-                //     />  */}
-                //   {/* <button onClick={() => deletePost(post._id)}> Delete </button> */}
-                //   </div>
-                // </div>
-                // </PostStyle>
+                deletePost={deletePost}
+                unlikeAPost={unlikeAPost}
+                likeAPost={likeAPost}
+                handleFileUpload={handleFileUpload}
+                key={post._id}
+                index={index}
+                post={post}
+                nextSlide={nextSlide}
+                prevSlide={prevSlide}
+                prevSlidePosition={prevSlidePosition}
+                id={id}
+                loggedInId={loggedInId}
+                commentForm={commentForm}
+                handleCommentChange={handleCommentChange}
+                createComment={createComment}
+                deleteComment={deleteComment}
+             />
               );
             })}
           </PostContainer>
