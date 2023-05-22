@@ -137,6 +137,7 @@ export const FollowButton = styled.button`
 // export const UnfollowButton = styled(FollowButton)`
 // `
 
+
 export const PostContainer = styled.div`
   min-width: 1200px;
   min-height: 400px;
@@ -147,77 +148,101 @@ export const PostContainer = styled.div`
   align-items: end;
   gap: 2em;
   border: 1px solid red;
-  .post {
-    border: 1px solid black;
-    margin: .5em;
-  }
-  b {
-    font-weight: 600;
-  }
-  .likes {
-    display: flex;
-    margin: .5em;
-    gap: .5em;
-  }
-  .post h4 {
-    font-weight: 800;
-  }
-  .deletePost {
-    margin-left: 14em;
-    cursor: pointer;
-  }
-  .carousel {
-    position: relative; 
-    margin: 0 auto;
-  }
-  .caption {
-    display: flex;
-    align-items: center
-  }
-  .carousel .carousel-item, 
-  .carousel .carousel-item-hidden {
-  display: none; 
-  }
+  
+`
 
-  .carousel .carousel-item-visible {
-    display: block;
-    animation: fade 1.5s; 
-  }
+export const NewsFeed = styled.div`
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center;
+  border: 1px solid red; 
 
-  .carousel .carousel-actions {
-    display: flex;
-    width: 100%;
-    justify-content: space-between; 
-    position: absolute; 
-    top: 50%;
-    transform: translateY(-50%);
+`
+
+export const PostStyle = styled.div`
+.post {
+  border: 1px solid black;
+  margin: 1em;
+}
+.post-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: .6em;
+}
+b {
+  font-weight: 600;
+}
+.likes {
+  display: flex;
+  justify-content: space-between;
+  gap: .7em;
+}
+.post h4 {
+  font-weight: 800;
+}
+.comments {
+  display: flex;
+  margin: .5em;
+  justify-content: space-between;
+}
+.deletePost {
+  // margin-left: 14em;
+  cursor: pointer;
+}
+.carousel {
+  position: relative; 
+  margin: 0 auto;
+}
+.caption {
+  display: flex;
+  align-items: center
+}
+.carousel .carousel-item, 
+.carousel .carousel-item-hidden {
+display: none; 
+}
+
+.carousel .carousel-item-visible {
+  display: block;
+  animation: fade 1.5s; 
+}
+
+.carousel .carousel-actions {
+  display: flex;
+  width: 100%;
+  justify-content: space-between; 
+  position: absolute; 
+  top: 40%;
+  transform: translateY(-50%);
+}
+.carousel .carousel-actions button {
+  border-radius: 50px;
+  background-color: transparent;
+  border: 0;
+  font-size: 20px;
+  color: white;
+  cursor: pointer; 
+  width: 50px; 
+  height: 50px; 
+}
+h3,h4,h5 {
+  margin: .5em;
+}
+img {
+  width: 350px;
+  height: 300px;
+  border: 1px solid black;
+}
+@keyframes fade {
+  0% {
+    opacity: 0;
   }
-  .carousel .carousel-actions button {
-    border-radius: 50px;
-    background-color: transparent;
-    border: 0;
-    font-size: 20px;
-    color: white;
-    cursor: pointer; 
-    width: 40px; 
-    height: 40px; 
+  100% {
+    opacity: 1
   }
-  h3,h4,h5 {
-    margin: .5em;
-  }
-  img {
-    width: 100%;
-    height: 300px;
-    border: 1px solid black;
-  }
-  @keyframes fade {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1
-    }
-  }
+}
 `
 
 export const WorkoutContainer = styled.div`

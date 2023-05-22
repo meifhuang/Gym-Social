@@ -67,7 +67,11 @@ export default function Profile() {
   const [user, setUser] = useState([]);
   const [userPicUrl, setUserPicUrl] = useState("");
 
+  //forms
   const [showExerciseForm, setShowExerciseForm] = useState(true);
+  const [postForm, setPostForm] = useState({ caption: "" });
+  const [commentForm, setCommentForm] = useState({ description: "" }); 
+
   const [changeId, setChangeId] = useState("");
   const [exercise, setExercise] = useState(stats);
   const [workoutName, setWorkoutName] = useState({ name: "" });
@@ -94,7 +98,7 @@ export default function Profile() {
   // const [exerciseDB, setExerciseDB] = useState("");
   const [activeDropdown, setActiveDropdown] = useState("");
 
-  const [postForm, setPostForm] = useState({ caption: "" });
+
   const [posts, setPosts] = useState([]);
   const [postLikes, setPostLikes] = useState(0); 
 
@@ -138,6 +142,14 @@ export default function Profile() {
     setPostForm({
       [name]: value,
     });
+  };
+
+  const handleCommentChange = (e) => {
+    const {name, value} = e.target;
+    setCommentForm({
+      description: value,
+    });
+    console.log(commentForm);
   };
 
   const handleFileUpload = (e) => {
@@ -242,6 +254,35 @@ export default function Profile() {
       console.log(e);
     }
   };
+
+  const createComment = async (e,postId) => {
+    e.preventDefault();
+    console.log("INSIDE COMMENT")
+    try {
+      const response = await axios({
+        method: "post",
+        url: `http://localhost:4000/post/${postId}/createcomment`, 
+        data: {
+          description: commentForm.description
+        }, 
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response) {
+        //gotta figure out better way 
+        getUser();
+      }
+      else {
+        console.log("no response");
+      }
+    }
+    catch (e) {
+      console.log(e.message);
+    }
+  }
+
+  //still need the page to update when a comment is added
 
   const createWorkout = async () => {
     setAddWorkoutModal(false);
@@ -419,6 +460,24 @@ export default function Profile() {
       console.log(e.message);
     }
   };
+
+  const deleteComment = async (postId, commentId) => {
+    try {
+      const response = await axios({
+        method: "delete",
+        url: `http://localhost:4000/post/${postId}/comment/${commentId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response) {
+        getUser();
+      }
+      }
+    catch (e) {
+      console.log(e.message);
+    }
+  }
 
   const deletePost = async (postId) => {
   
@@ -923,6 +982,10 @@ export default function Profile() {
           //props for POSTS
           user={user}
           handlePostChange={handlePostChange}
+          handleCommentChange={handleCommentChange}
+          commentForm={commentForm}
+          createComment={createComment}
+          deleteComment={deleteComment}
           postForm={postForm}
           posts={posts}
           postLikes={postLikes}

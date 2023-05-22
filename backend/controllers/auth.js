@@ -38,8 +38,6 @@ router.post("/emailcheck", async (req, res) => {
       const findUser = await User.findOne({ email });
 
       if (findUser) {
-        console.log(findUser);
-
         res.status(400).send({
           message: "Email already exists.",
         });
@@ -141,7 +139,7 @@ router.post("/login", async (req, res) => {
 
           if (verifyPassword) {
             const user_id = foundUser._id.toString();
-            console.log(user_id);
+  
             const token = jwt.sign(
               { username: foundUser.username, id: user_id },
               process.env.JSONKEY
@@ -162,7 +160,6 @@ router.post("/login", async (req, res) => {
             });
           }
         } catch (e) {
-          console.log(e);
           res.status(500).json({
             success: false,
             message: "Something went wrong.",
@@ -183,16 +180,6 @@ router.post("/login", async (req, res) => {
     }
   }
 });
-
-// router.get("/logout", (req, res) => {
-//   req.logout(function (err) {
-//     if (err) {
-//       return next(err);
-//     }
-//     console.log("Logged out!");
-//     res.redirect("/");
-//   });
-// });
 
 router.get("/logout", (req, res) => {
   res.status(200).json({

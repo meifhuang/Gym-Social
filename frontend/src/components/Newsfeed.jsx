@@ -1,11 +1,40 @@
 import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
-import axios from "axios";
+import axios from "axios"; 
 import { AuthContext } from "../AuthContext";
+import Post from "./Post";
 
 
-export default function Newsfeed() {
+import {
+  NewsFeed
+} from "../styledComponents/Profile";
+
+ import {
+  HeartIcon, 
+  UnHeartIcon, 
+  DeletePostIcon
+} from "../assets/icons";
+
+export default function Newsfeed({
+  loggedInId,
+  // username, 
+  //props for POSTS
+  handlePostChange,
+  postForm,
+  handleCommentChange,
+  commentForm,
+  deleteComment,
+  createComment,
+  postLikes,
+  createPost,
+  comments,
+  handleFileUpload,
+  user,
+  deletePost,
+  likeAPost,
+  unlikeAPost
+}) {
 
     const navigate = useNavigate();
 
@@ -15,30 +44,91 @@ export default function Newsfeed() {
     const [workouts, setWorkouts] = useState([]);
     const [following, setFollowing] = useState([]);
     const [notFollowing, setnotFollowing] = useState([]);
-  
-    const getUsers =  async () => {
-    try {
-      const res = await axios({
-        method: "get",
-        url: "http://localhost:4000/newsfeed",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+
+    const [prevSlidePosition, setPrevSlidePosition] = useState({});
+    const [posts, setPosts] = useState([]); 
+
+    const getPosts = async () => {
+      console.log('supposedToGet')
+      try {
+        const response = await axios({
+          method: "get",
+          url: "http://localhost:4000/posts",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        if (response) {
+          setPosts(response.data.posts);
+          const postIdAndPosition = response.data.posts.map(post => {return ({postId:post._id, index: 0})});
+          setPrevSlidePosition(postIdAndPosition);
+        }
+      }
+      catch (e) {
+        console.log(e.message);
+      }
+    }
+
+    const nextSlide = (imglength, postId) => {
+      setPrevSlidePosition(prevSlides => {
+        return prevSlides.map(slide => {
+          if (slide.postId === postId) {
+            if (slide.index === imglength-1) {
+              return { ...slide, index: 0 };
+            }
+            else {
+              return {...slide, index: slide.index+1}
+            }
+          } else {
+            return slide;
+          }
+        });
       });
-      if (res) {
-        console.log('reached getusers', res.data.users);
-        console.log('following', res.data.following);
-        // setUsers(res.data.users);
-        setFollowing(res.data.following)
-      }
-      else {
-        console.log("no responses")
-      }
-    }
-    catch (e) {
-      console.log(e.message);
-    }
-  }  
+    console.log('next' , prevSlidePosition);
+  }
+
+  const prevSlide = (imglength,postId) => {
+      setPrevSlidePosition(prevSlides => {
+        return prevSlides.map(slide => {
+          if (slide.postId === postId) {
+            if (slide.index === 0) {
+            return { ...slide, index: imglength-1 };
+            }
+            else {
+              return {...slide, index: slide.index-1}
+            }
+          } else {
+            return slide;
+          }
+        });
+      });
+    console.log('prev',prevSlidePosition);
+  }
+  
+  //   const getUsers =  async () => {
+  //   try {
+  //     const res = await axios({
+  //       method: "get",
+  //       url: "http://localhost:4000/newsfeed",
+        
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
+  //     if (res) {
+  //       console.log('reached getusers', res.data.users);
+  //       console.log('following', res.data.following);
+  //       // setUsers(res.data.users);
+  //       setFollowing(res.data.following)
+  //     }
+  //     else {
+  //       console.log("no responses")
+  //     }
+  //   }
+  //   catch (e) {
+  //     console.log(e.message);
+  //   }
+  // }  
 
     useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -48,15 +138,14 @@ export default function Newsfeed() {
       localStorage.setItem('token', token);
       localStorage.setItem('id', userId);
       window.location.replace('http://localhost:5173/newsfeed');
-      getUsers(); 
     }
+    getPosts(); 
   }, []);
   
 
   // useEffect(() => {
   //   getUsers();
   // },[]);
-
 
 
 const viewProfile = async (userId) => {
@@ -69,9 +158,8 @@ const exploreUsers = async () => {
 
     return (
         <div>
-            <h1> HOME </h1>
-            <button onClick={() => viewProfile(loggedInUser)}> Go to my profile </button>
-            { following.length > 0 ? following.map((follower) => {
+       
+            {/* { following.length > 0 ? following.map((follower) => {
                   return (
                     <div className="users">
                     <h2> {follower.fname} {follower.lname} {follower.workouts} <button onClick={() => viewProfile(follower._id)}> View profile </button> </h2>
@@ -81,10 +169,26 @@ const exploreUsers = async () => {
                  :
                 <h2> Nothing on newsfeed. Go follow and explore! </h2>
           
-                }
-            <div >
-              <button onClick={exploreUsers}> Explore other users </button> 
-          </div>
-        </div>
+                } */}
+              <NewsFeed> 
+              <h1> HOME </h1>
+            {/* <button onClick={getPosts}> getPosts </button> */}
+            <button onClick={exploreUsers}> Explore users</button>
+            <button onClick={() => viewProfile(loggedInUser)}> Go to my profile </button>
+                { posts && posts.map((post) => {
+              return (
+               <Post 
+                  post={post}
+                  nextSlide={nextSlide}
+                  prevSlide={prevSlide}
+                  prevSlidePosition={prevSlidePosition}
+                  username={username}
+                  loggedInId={loggedInId}
+               />
+              )
+              })
+            }
+            </NewsFeed>
+          </div> 
     )
 }
