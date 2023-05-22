@@ -156,33 +156,39 @@ export const NewsFeed = styled.div`
   flex-direction: column; 
   justify-content: center;
   align-items: center;
+  border: 1px solid red; 
 
 `
 
 export const PostStyle = styled.div`
 .post {
   border: 1px solid black;
-  margin: .5em;
+  margin: 1em;
+}
+.post-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: .6em;
 }
 b {
   font-weight: 600;
 }
 .likes {
   display: flex;
-  margin: .5em;
-  gap: .5em;
+  justify-content: space-between;
+  gap: .7em;
 }
 .post h4 {
   font-weight: 800;
 }
-
 .comments {
   display: flex;
   margin: .5em;
   justify-content: space-between;
 }
 .deletePost {
-  margin-left: 14em;
+  // margin-left: 14em;
   cursor: pointer;
 }
 .carousel {
@@ -208,7 +214,7 @@ display: none;
   width: 100%;
   justify-content: space-between; 
   position: absolute; 
-  top: 50%;
+  top: 40%;
   transform: translateY(-50%);
 }
 .carousel .carousel-actions button {
@@ -218,8 +224,8 @@ display: none;
   font-size: 20px;
   color: white;
   cursor: pointer; 
-  width: 40px; 
-  height: 40px; 
+  width: 50px; 
+  height: 50px; 
 }
 h3,h4,h5 {
   margin: .5em;

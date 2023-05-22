@@ -23,7 +23,7 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Comment'
     }],
-    creaetdBy: [{
+    createdBy: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
     }], 

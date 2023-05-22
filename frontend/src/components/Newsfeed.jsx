@@ -5,6 +5,7 @@ import axios from "axios";
 import { AuthContext } from "../AuthContext";
 import Post from "./Post";
 
+
 import {
   NewsFeed
 } from "../styledComponents/Profile";
@@ -17,6 +18,7 @@ import {
 
 export default function Newsfeed({
   loggedInId,
+  // username, 
   //props for POSTS
   handlePostChange,
   postForm,
@@ -29,8 +31,6 @@ export default function Newsfeed({
   comments,
   handleFileUpload,
   user,
-  nextSlide,
-  prevSlide,
   deletePost,
   likeAPost,
   unlikeAPost
@@ -45,7 +45,7 @@ export default function Newsfeed({
     const [following, setFollowing] = useState([]);
     const [notFollowing, setnotFollowing] = useState([]);
 
-    const [prevSlidePosition, setPrevSlidePosition] = useState({})
+    const [prevSlidePosition, setPrevSlidePosition] = useState({});
     const [posts, setPosts] = useState([]); 
 
     const getPosts = async () => {
@@ -68,31 +68,67 @@ export default function Newsfeed({
         console.log(e.message);
       }
     }
-  
-    const getUsers =  async () => {
-    try {
-      const res = await axios({
-        method: "get",
-        url: "http://localhost:4000/newsfeed",
-        
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+
+    const nextSlide = (imglength, postId) => {
+      setPrevSlidePosition(prevSlides => {
+        return prevSlides.map(slide => {
+          if (slide.postId === postId) {
+            if (slide.index === imglength-1) {
+              return { ...slide, index: 0 };
+            }
+            else {
+              return {...slide, index: slide.index+1}
+            }
+          } else {
+            return slide;
+          }
+        });
       });
-      if (res) {
-        console.log('reached getusers', res.data.users);
-        console.log('following', res.data.following);
-        // setUsers(res.data.users);
-        setFollowing(res.data.following)
-      }
-      else {
-        console.log("no responses")
-      }
-    }
-    catch (e) {
-      console.log(e.message);
-    }
-  }  
+    console.log('next' , prevSlidePosition);
+  }
+
+  const prevSlide = (imglength,postId) => {
+      setPrevSlidePosition(prevSlides => {
+        return prevSlides.map(slide => {
+          if (slide.postId === postId) {
+            if (slide.index === 0) {
+            return { ...slide, index: imglength-1 };
+            }
+            else {
+              return {...slide, index: slide.index-1}
+            }
+          } else {
+            return slide;
+          }
+        });
+      });
+    console.log('prev',prevSlidePosition);
+  }
+  
+  //   const getUsers =  async () => {
+  //   try {
+  //     const res = await axios({
+  //       method: "get",
+  //       url: "http://localhost:4000/newsfeed",
+        
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
+  //     if (res) {
+  //       console.log('reached getusers', res.data.users);
+  //       console.log('following', res.data.following);
+  //       // setUsers(res.data.users);
+  //       setFollowing(res.data.following)
+  //     }
+  //     else {
+  //       console.log("no responses")
+  //     }
+  //   }
+  //   catch (e) {
+  //     console.log(e.message);
+  //   }
+  // }  
 
     useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -110,7 +146,6 @@ export default function Newsfeed({
   // useEffect(() => {
   //   getUsers();
   // },[]);
-
 
 
 const viewProfile = async (userId) => {
@@ -138,6 +173,7 @@ const exploreUsers = async () => {
               <NewsFeed> 
               <h1> HOME </h1>
             {/* <button onClick={getPosts}> getPosts </button> */}
+            <button onClick={exploreUsers}> Explore users</button>
             <button onClick={() => viewProfile(loggedInUser)}> Go to my profile </button>
                 { posts && posts.map((post) => {
               return (
@@ -147,6 +183,7 @@ const exploreUsers = async () => {
                   prevSlide={prevSlide}
                   prevSlidePosition={prevSlidePosition}
                   username={username}
+                  loggedInId={loggedInId}
                />
               )
               })

@@ -12,7 +12,7 @@ router = express.Router();
 
 router.get("/posts", async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).populate({path:"following", populate: {path: 'posts'}});
+        const user = await User.findById(req.user.id).populate({path:"following", populate: {path: 'posts', populate: {path: 'createdBy'}}});
         const following = user.following; 
         const posts = [];
         for (let each of following) {
@@ -42,8 +42,8 @@ router.post("/createpost", upload.array('image'), async (req, res) => {
     // post.url = req.file.path; 
     console.log(req.files);
     post.images = req.files.map(file => ({url: file.path, filename: file.filename}));
-    console.log(post);
-
+    post.createdBy.push(user);
+    
     if (post) {
     user.posts.push(post); 
     await user.save();
