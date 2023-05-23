@@ -14,6 +14,7 @@ import { HeartIcon, UnHeartIcon, DeletePostIcon, CrossIcon } from "../assets/ico
 
 export default function Post({
   post,
+  userPicUrl,
   prevSlidePosition,
   prevSlide,
   nextSlide,
@@ -172,15 +173,6 @@ export default function Post({
     }
   };
 
-  const toggleComment = async (postId) => {
-    getPost(postId);
-    setShowPost(!showPost);
-  };
-
-  const closeComment = async () => {
-    setShowPost(!showPost);
-  };
-
   return (
     <>
       <PostStyle>
@@ -244,7 +236,6 @@ export default function Post({
               </h4>
               <p> {post.caption} </p>
             </div>
-            {/* <h4 onClick={() => toggleComment(post._id)}> View Comments </h4>  */}
             <h4 onClick={() => toggleModal(post._id)}> View Comments </h4>
             {/* { 
                             showComment ? 
@@ -274,31 +265,13 @@ export default function Post({
       {modal ? (
         postToShow.map((posty) => {
           return (
-            //   <PostModal
-            //       loggedInId={loggedInId}
-            //       deletePost={deletePost}
-            //       unlikeAPost={unlikeAPost}
-            //       likeAPost={likeAPost}
-            //       key={post._id}
-            //       nextSlideM={nextSlideM}
-            //       prevSlideM={prevSlideM}
-            //       prevSlidePositionShow={prevSlidePositionShow}
-            //       posty={posty}
-            //       commentForm={commentForm}
-            //       handleCommentChange={handleCommentChange}
-            //       createComment={createComment}
-            //       deleteComment={deleteComment}
-            //       closeComment={closeComment}
-            //       viewProfile={viewProfile}
-
-            // />
             <Modal className="">
               <ModalOverlay
                 onClick={() => setModal(!modal)}
                 className=""
               ></ModalOverlay>
               <div className="modal-content">
-                <div className="cross-icon"><CrossIcon /></div>
+                <div onClick={()=> setModal(!modal)} className="cross-icon"><CrossIcon /></div>
                 <PostModal
                   loggedInId={loggedInId}
                   deletePost={deletePost}
@@ -313,8 +286,8 @@ export default function Post({
                   handleCommentChange={handleCommentChange}
                   createComment={createComment}
                   deleteComment={deleteComment}
-                  closeComment={closeComment}
                   viewProfile={viewProfile}
+                  userPicUrl={userPicUrl}
                 />
               </div>
             </Modal>

@@ -856,27 +856,23 @@ export default function Profile() {
 
         <TagInfo className="tag">
           <ImageContainer>
-            {loggedInId === id ?
-            <ProfilePictureForm
-             handlePicChange={handlePicChange}
-             updatePicture={updatePicture}
-             changeProPic={changeProPic}
-            /> : <> </>
-            }
             <div className="profilepic"> 
                 <img src={userPicUrl}></img>
                 </div>
-            {/* <h3> {userPicUrl} </h3> */}
-            <h2> {user.fname} {user.lname} </h2>
+            <h2> {user.fname} {user.lname} </h2> 
+           
           </ImageContainer>
           <UserInformation>
             <UserContact>
               <h3> @ { username }</h3>
-
               <div>
-                {loggedInId === id ? (
-                  ""
-                ) : following.some((user) => user._id === id) ? (
+                {loggedInId === id ? 
+                <ProfilePictureForm
+             handlePicChange={handlePicChange}
+             updatePicture={updatePicture}
+             changeProPic={changeProPic}
+            /> 
+            : following.some((user) => user._id === id) ? (
                   <FollowButton followed="false" onClick={() => unfollow(id)}>
                     {" "}
                     Unfollow{" "}
@@ -995,7 +991,6 @@ export default function Profile() {
           commentForm={commentForm}
           createComment={createComment}
           deleteComment={deleteComment}
-
         />
       </ProfileMain>
 

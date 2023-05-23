@@ -15,14 +15,12 @@ export const PostModalStyle = styled.div`
     background-color: white;
     height: 100%;
   }
-
-  .post-options {
+  .postlikes-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0.6em;
+    margin-left: 1em;
   }
-
   b {
     font-weight: 600;
   }
@@ -36,15 +34,24 @@ export const PostModalStyle = styled.div`
   }
   .comments {
     display: flex;
-    margin: 0.5em;
+    margin-left: 0.5em;
+    align-items: center;
     justify-content: space-between;
   }
   .deletePost {
-    // margin-left: 14em;
     cursor: pointer;
   }
+  .delete-comment-icon {
+    display: flex;
+    padding: .7em;
+    color: black;
+    cursor: pointer;
+    margin-right: .2em;
+  }
+  .delete-comment-icon: hover {
+    color: red;
+  }
   .carousel {
-    /* margin: 0 auto; */
     width: 100%;
     display: flex;
     justify-content: center;
@@ -55,6 +62,14 @@ export const PostModalStyle = styled.div`
   .caption {
     display: flex;
     align-items: center;
+    border-bottom: 1.5px solid #f1f1f1;
+    margin: 1em;
+  }
+  .userpic-icon {
+    width: 40px;
+    height: 40px; 
+    border-radius: 50%; 
+    margin-bottom: .5em;
   }
   .user-post:hover {
     color: #d0e1e4;
@@ -89,15 +104,40 @@ export const PostModalStyle = styled.div`
     width: 50px;
     height: 50px;
   }
+  .comment-form {
+    height: 9%;
+    display: flex;
+    flex-direction: row;
+    margin-top: auto;
+    border: 1px solid black;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+    border-radius: 10px;
+    border: 1px solid grey;
+  }
   #description {
-    margin: 0.8em;
-    width: 60%;
+    width: 90%;
     height: 100%;
-    border-radius: 8px;
+    border: none;
+  }
+  .comment-button-container {
+    height: 100%;
+    border-left: 1px solid #f1f1f1;
+    width: 16%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .comment-button {
-    padding: 5px;
-    border-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+  }
+  .comment-button: hover {
+    background-color: #f2f2f2;
   }
   .closepost {
     padding: 1em;
@@ -177,8 +217,7 @@ export const PostStyle = styled.div`
     /* width: 100%; */
   }
   .caption {
-    display: flex;
-    align-items: center;
+    
   }
   .user-post:hover {
     color: #d0e1e4;
@@ -245,19 +284,18 @@ export const PostStyle = styled.div`
   }
 `;
 export const PostDetails = styled.div`
-  /* overflow: auto; */
   width: 100%;
-  /* min-width: 400px; */
-  /* flex-shrink: 1; */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
   & .comment-container {
     overflow: auto;
-    height: 200px;
+    height: 400px;
   }
 
   @media only screen and (min-width: 800px) {
     width: 60%;
-
     & .comment-container {
       overflow: auto;
       height: 400px;
@@ -274,13 +312,14 @@ export const Modal = styled.div`
   bottom: 0;
   position: fixed;
   z-index: 1000;
-  background-color: red;
+  background-color: #f1f1f1;
   /* border: 1px solid red; */
 
   .cross-icon {
     position: absolute;
     left: 10px;
     top: 10px;
+    cursor: pointer;
   }
 
   .cross-icon svg {
@@ -325,7 +364,7 @@ export const Modal = styled.div`
     justify-content: center;
   }
   form > * {
-    margin-bottom: 0.5em;
+    // margin-bottom: 0.5em;
   }
 
   .inputted-exercises {

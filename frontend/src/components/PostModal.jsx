@@ -7,7 +7,7 @@ import CommentForm from "./CommentForm";
 
 import { PostModalStyle, PostDetails } from "../styledComponents/PostModal";
 
-import { HeartIcon, UnHeartIcon, DeletePostIcon } from "../assets/icons";
+import { HeartIcon, UnHeartIcon, DeletePostIcon, DeleteCommentIcon} from "../assets/icons";
 
 export default function PostModal({
   loggedInId,
@@ -22,7 +22,6 @@ export default function PostModal({
   deletePost,
   likeAPost,
   unlikeAPost,
-  closeComment,
 }) {
   const [showPost, setShowPost] = useState(true);
 
@@ -67,7 +66,24 @@ export default function PostModal({
               )}
             </div>
             <PostDetails>
-              <div className="post-options">
+           
+              <div className="caption">
+                <img className="userpic-icon" src={posty.createdBy[0].picture[0].url}></img>
+                  <h4
+                    className="user-post"
+                    onClick={() => viewProfile(posty.createdBy[0]._id)}
+                  >
+                    {" "}
+                    {posty.createdBy[0].fname} {posty.createdBy[0].lname}{" "}
+                  </h4>
+                  <p> {posty.caption} </p>
+                  {/* {posty.createdBy[0]._id === loggedInId ? (
+                  <DeletePostIcon deletePost={deletePost} postId={posty._id} />
+                ) : (
+                  <></>
+                )} */}
+              </div>
+              <div className="postlikes-container">
                 <div className="likes">
                   {posty && !posty.likedBy.includes(loggedInId) ? (
                     <HeartIcon likeAPost={likeAPost} postId={posty._id} />
@@ -76,23 +92,10 @@ export default function PostModal({
                   )}
                   <p> {posty.likedBy.length} likes </p>
                 </div>
-                {posty.createdBy[0]._id === loggedInId ? (
-                  <DeletePostIcon deletePost={deletePost} postId={posty._id} />
-                ) : (
-                  <></>
-                )}
+                
               </div>
-              <div className="caption">
-                <h4
-                  className="user-post"
-                  onClick={() => viewProfile(posty.createdBy[0]._id)}
-                >
-                  {" "}
-                  {posty.createdBy[0].fname} {posty.createdBy[0].lname}{" "}
-                </h4>
-                <p> {posty.caption} </p>
-              </div>
-                <div className="comment-container">
+         
+              <div className="comment-container">
               {posty.comments.length > 0 &&
                 posty.comments.map((comment) => {
                   return (
@@ -103,12 +106,9 @@ export default function PostModal({
                         {comment.createdBy[0].lname} : {comment.description}{" "}
                       </h5>
                       {comment.createdBy[0]._id === loggedInId ? (
-                        <button
-                          onClick={() => deleteComment(posty._id, comment._id)}
-                        >
-                          {" "}
-                          delete{" "}
-                        </button>
+                        <div className="delete-comment-icon"> 
+                          <DeleteCommentIcon deleteComment={deleteComment} postId={posty._id} commentId={comment._id} />
+                        </div>
                       ) : (
                         <></>
                       )}
@@ -116,17 +116,14 @@ export default function PostModal({
                   );
                 })}
                 </div>
+             
               <CommentForm
                 handleCommentChange={handleCommentChange}
                 commentForm={commentForm}
                 createComment={createComment}
                 postId={posty._id}
               />
-
-              <button onClick={closeComment} className="closepost">
-                {" "}
-                CLOSE X{" "}
-              </button>
+              
             </PostDetails>
           </div>
         </PostModalStyle>

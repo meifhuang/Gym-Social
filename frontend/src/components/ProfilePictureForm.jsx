@@ -12,7 +12,7 @@ function ProfilePictureForm(
         <>       
         <form onSubmit= {(e) => updatePicture(e)}encType="multipart/form-data"> 
             <input onChange={handlePicChange} type="file" name="image" id="image" accept="image/*" required/>
-            <button> update </button>
+            <button> Edit Profile </button>
         </form>
         </>
     )

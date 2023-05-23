@@ -208,7 +208,8 @@ b {
 }
 .caption {
   display: flex;
-  align-items: center
+  justify-content: space-between;
+  align-items: center;
 }
 .user-post:hover {
   color: #d0e1e4;
@@ -312,7 +313,9 @@ b {
 }
 .caption {
   display: flex;
-  align-items: center
+  justify-content: space-between;
+  align-items: center;
+
 }
 .user-post:hover {
   color: #d0e1e4;
