@@ -1,4 +1,4 @@
-import React from 'react';
+ import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import axios from "axios"; 
@@ -7,7 +7,7 @@ import Post from "./Post";
 
 
 import {
-  NewsFeed
+  NewsFeed, PostModalParentStyle
 } from "../styledComponents/Profile";
 
 export default function Newsfeed({
@@ -144,17 +144,17 @@ const exploreUsers = async () => {
 
     return (
            <NewsFeed> 
+           
               <h1> HOME </h1>
             {/* <button onClick={getPosts}> getPosts </button> */}
             <button onClick={exploreUsers}> Explore users</button>
             <button onClick={() => viewProfile(loggedInId)}> Go to my profile </button>
+           
                 { posts && posts.map((post) => {
               return (
-       
+              
                 <Post 
                 deletePost={deletePost}
-                unlikeAPost={unlikeAPost}
-                likeAPost={likeAPost}
                 handleFileUpload={handleFileUpload}
                 key={post._id}
                 post={post}
@@ -162,12 +162,13 @@ const exploreUsers = async () => {
                 prevSlide={prevSlide}
                 prevSlidePosition={prevSlidePosition}
                 loggedInId={loggedInId}
+                viewProfile={viewProfile}
              />
          
               )
               })
             }
             </NewsFeed>
-   
+       
     )
 }

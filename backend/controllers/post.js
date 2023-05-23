@@ -11,10 +11,9 @@ router = express.Router();
 
 router.get("/getpost/:postId", async (req, res) => {
     try {
-        const getpost = await Post.findById(req.params.postId).populate(["comments","createdBy"]);
+        const getpost = await Post.findById(req.params.postId).populate(["comments","createdBy", {path: "comments" , populate: {path: "createdBy"}}]);
         const post = []
-        post.push(getpost); 
-        console.log(post);
+        post.push(getpost);
         if (getpost) {
             res.status(200).json({
                 success: true,
@@ -46,12 +45,12 @@ router.get("/newsfeed/posts", async (req, res) => {
         const following = user.following; 
         const posts = [];
         for (let each of following) {
-            console.log(each); 
+           
             for (let post of each.posts) {
                 posts.push(post)
             }
         }
-        console.log(posts);
+       
         res.status(200).json({
             success: true,
             posts: posts
@@ -72,9 +71,7 @@ router.post("/createpost", upload.array('image'), async (req, res) => {
         {path: "posts", populate: {path: "comments"}},
         {path: "posts", populate: {path: "createdBy"}}]);
     const post = new Post(req.body);
-    console.log(post);
-    // post.url = req.file.path; 
-    console.log(req.files);
+
     post.images = req.files.map(file => ({url: file.path, filename: file.filename}));
     post.createdBy.push(user);
     
@@ -110,7 +107,7 @@ router.delete("/post/:postId", async (req, res) => {
         })
         const deletePost = await Post.findByIdAndDelete(postId);
         if (deleteFromUser && deletePost) {
-        console.log('deleted post', post.images);
+       
         for (let file of post.images) {
             await cloudinary.uploader.destroy(file.filename)
         }

@@ -11,23 +11,11 @@ router.post("/post/:postId/createcomment", async (req, res) => {
         const post = await Post.findById(req.params.postId).populate("comments");
         const comment = new Comment(req.body);
         const user = await User.findById(req.user.id);
-        console.log(user.username);
-        console.log(comment);
-        const userLength = user.username.length;
-        let username = ""; 
-        if (user.username.includes('@')) {
-          username = user.username.substring(0, userLength - 10);
-        }
-        else {
-            username = user.username
-        }
-        comment.username = username;
+        comment.createdBy.push(user);
         post.comments.push(comment);
         await comment.save();
         await post.save();
-
         const updatedPost = await Post.findById(req.params.postId).populate("comments"); 
-
         res.status(200).json({
             success: true,
             updatedPost: updatedPost

@@ -17,7 +17,7 @@ export const ProfileMain = styled.main`
   display: flex;
   flex-direction: column;
   padding: 2rem;
-  margin: 0rem calc(1rem + 10vw);
+  margin: 0rem calc(1rem + 5vw);
   gap: 2rem;
 `
 
@@ -26,7 +26,7 @@ export const ProfileComp = styled.main`
   display: flex;
   letter-spacing: 1px;
   padding: 2rem;
-  margin: 2rem calc(1rem + 10vw);
+  margin: 2rem calc(1rem + 5vw);
   gap: 2rem;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
@@ -51,11 +51,10 @@ export const ProfileComp = styled.main`
 export const TagInfo = styled.div`
   display: flex;
   /* margin: 2rem; */
-  /* border: 2px solid rgb(163, 158, 158); */
+  border: 2px solid rgb(163, 158, 158); 
   border-radius: 0.25rem;
-  padding: 5rem;
+  padding: 3rem;
   gap: 3rem;
-
   img {
     width: 200px;
   }
@@ -147,7 +146,8 @@ export const PostContainer = styled.div`
   justify-content: end;
   align-items: end;
   gap: 2em;
-  border: 1px solid red;
+  margin-top: 1em;
+
 `
 
 export const NewsFeed = styled.div`
@@ -155,7 +155,14 @@ export const NewsFeed = styled.div`
   flex-direction: column; 
   justify-content: center;
   align-items: center;
+
+ 
   
+`
+
+export const PostFormStyle = styled.div`
+    display: flex;
+    justify-content: center;
 `
 
 export const PostModalParentStyle = styled.div`
@@ -176,7 +183,6 @@ export const PostModalStyle = styled.div`
 .post {
   border: 1px solid red;
   background-color: white;
-
 }
 
 .post-options {
@@ -214,6 +220,11 @@ b {
   display: flex;
   align-items: center
 }
+.user-post:hover {
+  color: #d0e1e4;
+  cursor: pointer;
+}
+
 .carousel .carousel-item, 
 .carousel .carousel-item-hidden {
 display: none; 
@@ -312,6 +323,18 @@ b {
 .caption {
   display: flex;
   align-items: center
+}
+.user-post:hover {
+  color: #d0e1e4;
+  cursor: pointer;
+}
+.comment-button {
+  padding: 5px;
+  border-radius: 10px; 
+}
+.closepost {
+  padding: 1em;
+  margin-left: 40%;
 }
 .carousel .carousel-item, 
 .carousel .carousel-item-hidden {

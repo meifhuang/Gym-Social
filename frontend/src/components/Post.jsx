@@ -17,12 +17,13 @@ import {
 } from "../assets/icons";
 
 export default function Post({
-  loggedInId,
   post,
   prevSlidePosition,
+  prevSlide,
+  nextSlide,
+  loggedInId,
   deletePost,
-  likeAPost,
-  unlikeAPost
+  viewProfile,
 }) {
 
     const [prevSlidePositionShow, setPrevSlidePositionShow] = useState({});
@@ -52,8 +53,46 @@ const getPost = async (postId) => {
       console.log(e.message);
     }
   }
+  const likeAPost = async(postId) => {
+    try {
+      const response = await axios({
+        method: "post",
+        url: `http://localhost:4000/likepost/${postId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      if (response) {
+        console.log(response.data);
+        getPost(postId);
+      }
+    }
+    catch (e) {
+      console.log(e.message); 
+    }
+  }
 
-  const nextSlide = (imglength, postId) => {
+  const unlikeAPost = async (postId) => {
+    console.log("UNLIKEE");
+    try {
+      const response = await axios({
+        method: "delete",
+        url: `http://localhost:4000/unlikepost/${postId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      if (response) {
+        console.log(response.data);
+        getPost(postId);
+      }
+    }
+    catch (e) {
+      console.log(e.message);
+    }
+  }
+
+  const nextSlideM = (imglength, postId) => {
     setPrevSlidePositionShow(prevSlides => {
       return prevSlides.map(slide => {
         if (slide.postId === postId) {
@@ -71,7 +110,7 @@ const getPost = async (postId) => {
  
 }
 
-const prevSlide = (imglength,postId) => {
+const prevSlideM = (imglength,postId) => {
     setPrevSlidePositionShow(prevSlides => {
       return prevSlides.map(slide => {
         if (slide.postId === postId) {
@@ -144,7 +183,11 @@ catch (e) {
 
 const toggleComment = async (postId) => {
     getPost(postId);
-    setShowPost(true);
+    setShowPost(!showPost);
+}
+
+const closeComment = async () => {
+  setShowPost(!showPost);
 }
 
         return (
@@ -194,7 +237,7 @@ const toggleComment = async (postId) => {
                                 { post.createdBy[0]._id === loggedInId ? <DeletePostIcon deletePost={deletePost} postId={post._id}/> : <></>}
                         </div>
                         <div className="caption"> 
-                            <h4> {post.createdBy[0].fname} {post.createdBy[0].lname } </h4>
+                            <h4 className="user-post" onClick={()=> viewProfile(post.createdBy[0]._id)}> {post.createdBy[0].fname} {post.createdBy[0].lname } </h4>
                             <p> {post.caption} </p>
                         </div>
                         <h4 onClick={() => toggleComment(post._id)}> View Comments </h4> 
@@ -225,19 +268,22 @@ const toggleComment = async (postId) => {
                    
                 { showPost ? postToShow.map((posty) => {return (
                     <PostModal
+                        loggedInId={loggedInId}
                         deletePost={deletePost}
                         unlikeAPost={unlikeAPost}
                         likeAPost={likeAPost}
                         key={post._id}
-                        nextSlide={nextSlide}
-                        prevSlide={prevSlide}
+                        nextSlideM={nextSlideM}
+                        prevSlideM={prevSlideM}
                         prevSlidePositionShow={prevSlidePositionShow}
                         posty={posty}
-                        loggedInId={loggedInId}
                         commentForm={commentForm}
                         handleCommentChange={handleCommentChange}
                         createComment={createComment}
                         deleteComment={deleteComment}
+                        closeComment={closeComment}
+                        viewProfile={viewProfile}
+                       
                 /> )})
                 : <></> }
             </>

@@ -16,6 +16,7 @@ import AddPostForm from "./AddPostForm";
 
 import { 
   PostModalStyle,
+  PostStyle,
   PostContainer,
   WorkoutContainer,
   WorkoutDiv,
@@ -120,6 +121,7 @@ const TabBar = ({
         <div
           className={toggleState === 1 ? "content  active-content" : "content"}
         >
+          { id === loggedInId &&
           <AddPostForm
             handlePostChange={handlePostChange}
             postForm={postForm}
@@ -127,9 +129,10 @@ const TabBar = ({
             createPost={createPost}
             handleFileUpload={handleFileUpload}
           />
+      }
     <PostContainer>
-          {posts &&
-            posts.map((post,index) => {
+
+             { posts && posts.map((post,index) => {
               return (
                 <Post 
                 deletePost={deletePost}
@@ -148,9 +151,9 @@ const TabBar = ({
                 handleCommentChange={handleCommentChange}
                 createComment={createComment}
                 deleteComment={deleteComment}
-             />
-              );
-            })}
+             /> 
+              )})
+        }
           </PostContainer>
         </div>
 

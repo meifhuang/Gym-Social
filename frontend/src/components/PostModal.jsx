@@ -24,18 +24,15 @@ export default function PostModal({
   commentForm,
   deleteComment,
   createComment,
-  nextSlide,
-  prevSlide,
+  nextSlideM,
+  prevSlideM,
   deletePost,
   likeAPost,
-  unlikeAPost
+  unlikeAPost,
+  closeComment
 }) {
       const [showPost, setShowPost] = useState(true);
-
-      const toggleShowPost = () => {
-          setShowPost(false);
-      }
-
+      
         return (
           <>
                     {showPost && 
@@ -52,7 +49,7 @@ export default function PostModal({
                               <div className="carousel-actions">
                                     <button
                                     onClick={() =>
-                                        prevSlide(posty.images.length, posty._id)
+                                        prevSlideM(posty.images.length, posty._id)
                                     }
                                     id={`carousel-button-prev`}
                                     aria-label="Previous"
@@ -63,7 +60,7 @@ export default function PostModal({
                                 
                                     <button
                                     onClick={() =>
-                                        nextSlide(posty.images.length, posty._id)
+                                        nextSlideM(posty.images.length, posty._id)
                                     }
                                     id={`carousel-button-next`}
                                     aria-label="Next"
@@ -85,15 +82,16 @@ export default function PostModal({
                                 { posty.createdBy[0]._id === loggedInId ? <DeletePostIcon deletePost={deletePost} postId={posty._id}/> : <></>}
                         </div>
                         <div className="caption"> 
-                            <h4> {posty.createdBy[0].fname} {posty.createdBy[0].lname } </h4>
+                            <h4 className="user-post" onClick={() => viewProfile(posty.createdBy[0]._id)}> {posty.createdBy[0].fname} {posty.createdBy[0].lname } </h4>
                             <p> {posty.caption} </p>
                         </div>
                         
                         { posty.comments.length > 0 && posty.comments.map((comment) => { 
                       return (
                         <div className="comments"> 
-                         <h5> {comment.username} : {comment.description} </h5>
-                         <button onClick={() => deleteComment(posty._id, comment._id)}> delete </button>
+                         <h5> {comment.createdBy[0].fname} {comment.createdBy[0].lname} : {comment.description} </h5>
+                         { (comment.createdBy[0]._id === loggedInId) ?
+                          <button onClick={() => deleteComment(posty._id, comment._id)}> delete </button> : <></> }
                         </div> 
                       )
                     })}
@@ -104,7 +102,7 @@ export default function PostModal({
                       postId={posty._id}
                     /> 
 
-                <button onClick={toggleShowPost }className="closepost"> CLOSE X </button>  
+                <button onClick={closeComment}className="closepost"> CLOSE X </button>  
                      
                 </div>
                
