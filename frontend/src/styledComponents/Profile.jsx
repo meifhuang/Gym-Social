@@ -165,22 +165,12 @@ export const PostFormStyle = styled.div`
     justify-content: center;
 `
 
-export const PostModalParentStyle = styled.div`
-position: absolute;
-top: 0;
-left: 0;
-height: 100%;
-width: 100%;
-background-color: rgba(0,0,0,0.8);
-z-index: 9999;
-display: flex;
-justify-content: center;
-align-items: center;
-`
+
 
 export const PostModalStyle = styled.div`
 
 .post {
+  display: flex;
   border: 1px solid red;
   background-color: white;
 }
@@ -495,7 +485,7 @@ export const Modal = styled.div`
     border-radius: 5px;
     max-width: 600px;
     min-width: 500px;
-    /* border: 1px solid red; */
+    border: 1px solid blue;
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -1,7 +1,10 @@
 import React from "react";
 import { Modal, ModalOverlay } from "../styledComponents/Profile";
 
+import { CrossIcon } from "../assets/icons";
 const ModalComp = () => {
+
+  
   return (
     <Modal className="">
       <ModalOverlay onClick={toggleModal} className=""></ModalOverlay>

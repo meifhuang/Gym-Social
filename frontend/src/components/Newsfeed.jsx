@@ -7,7 +7,7 @@ import Post from "./Post";
 
 
 import {
-  NewsFeed, PostModalParentStyle
+  NewsFeed,
 } from "../styledComponents/Profile";
 
 export default function Newsfeed({

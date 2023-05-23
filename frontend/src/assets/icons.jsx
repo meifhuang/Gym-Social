@@ -24,103 +24,113 @@ function EditIcon({ clickEditWorkout, workout }) {
   );
 }
 
-function HeartIcon({likeAPost, postId}) {
+function HeartIcon({ likeAPost, postId }) {
   return (
     <WorkoutIcons>
-      <svg onClick={()=> likeAPost(postId)} 
-      xmlns="http://www.w3.org/2000/svg" 
-      width="24" height="24" 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
-      className="feather feather-heart">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      <svg
+        onClick={() => likeAPost(postId)}
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="feather feather-heart"
+      >
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
       </svg>
-  </WorkoutIcons>
-  )
+    </WorkoutIcons>
+  );
 }
 
-function UnHeartIcon({unlikeAPost, postId}) {
+function UnHeartIcon({ unlikeAPost, postId }) {
   return (
     <WorkoutIcons>
-  <svg onClick={()=> unlikeAPost(postId)} 
-  xmlns="http://www.w3.org/2000/svg" 
-  width="24" 
-  height="24" 
-  viewBox="0 0 24 24"
-   fill="black" 
-   stroke="currentColor" 
-   strokeWidth="2" 
-   strokeLinecap="round" 
-   strokeLinejoin="round" 
-   className="feather feather-heart">
-  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-  </svg>
-  </WorkoutIcons>
-  )
+      <svg
+        onClick={() => unlikeAPost(postId)}
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="black"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="feather feather-heart"
+      >
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+      </svg>
+    </WorkoutIcons>
+  );
 }
 
 function SavedIcon() {
   return (
     <WorkoutIcons>
-        <svg
-        xmlns="http://www.w3.org/2000/svg" 
-        width="24" 
-        height="24" 
-        viewBox="0 0 24 24" 
-        fill="none" 
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
         stroke="currentColor"
-        strokeWidth="2" 
-        strokeLinecap="round" 
+        strokeWidth="2"
+        strokeLinecap="round"
         strokeLinejoin="round"
-        className="feather feather-bookmark">
-          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-        </svg>
+        className="feather feather-bookmark"
+      >
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+      </svg>
     </WorkoutIcons>
-  )
+  );
 }
 
-function SaveIcon({saveAWorkout, workoutId}) {
+function SaveIcon({ saveAWorkout, workoutId }) {
   return (
     <WorkoutIcons>
-        <svg onClick={() => saveAWorkout(workoutId)}
-        xmlns="http://www.w3.org/2000/svg" 
-        width="24" 
-        height="24" 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="currentColor" 
-        strokeWidth="2" 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
-        className="feather feather-bookmark">
-        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-          </svg>
+      <svg
+        onClick={() => saveAWorkout(workoutId)}
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="feather feather-bookmark"
+      >
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+      </svg>
     </WorkoutIcons>
-  )
+  );
 }
 
-function DeleteSaveIcon({deleteSavedWorkout, workoutId}) {
+function DeleteSaveIcon({ deleteSavedWorkout, workoutId }) {
   return (
     <WorkoutIcons>
-        <svg onClick={() => deleteSavedWorkout(workoutId)}
-        xmlns="http://www.w3.org/2000/svg" 
-        width="24" 
-        height="24" 
-        viewBox="0 0 24 24" 
+      <svg
+        onClick={() => deleteSavedWorkout(workoutId)}
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
         fill="black"
-        stroke="currentColor" 
-        strokeWidth="2" 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
-        className="feather feather-bookmark">
-          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-        </svg>
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="feather feather-bookmark"
+      >
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+      </svg>
     </WorkoutIcons>
-  )
+  );
 }
 
 function DeleteIcon({ deleteWorkout, workoutId, exerciseId = null }) {
@@ -228,24 +238,27 @@ function GridIcon() {
   );
 }
 
-function DeletePostIcon({deletePost, postId}) {
+function DeletePostIcon({ deletePost, postId }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" 
-    onClick={() => deletePost(postId)}
-    width="24" 
-    height="24" 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
-    className="feather feather-trash-2 deletePost">
-      <polyline points="3 6 5 6 21 6"/>
-      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-      <line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>
-      </svg>
-  )
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      onClick={() => deletePost(postId)}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="feather feather-trash-2 deletePost"
+    >
+      <polyline points="3 6 5 6 21 6" />
+      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+      <line x1="10" y1="11" x2="10" y2="17" />
+      <line x1="14" y1="11" x2="14" y2="17" />
+    </svg>
+  );
 }
 function WorkoutIcon() {
   return (
@@ -303,6 +316,26 @@ function CreateWorkoutIcon() {
     </svg>
   );
 }
+
+function CrossIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="24"
+      height="24"
+      stroke="currentColor"
+      stroke-width="2"
+      fill="none"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="css-i6dzq1"
+    >
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  );
+}
+
 export {
   EditIcon,
   DeleteIcon,
@@ -318,5 +351,6 @@ export {
   SavedIcon,
   HeartIcon,
   UnHeartIcon,
-  DeletePostIcon
+  DeletePostIcon,
+  CrossIcon
 };
