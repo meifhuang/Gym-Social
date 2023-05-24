@@ -8,7 +8,7 @@ import { AuthContext } from "../AuthContext";
 // import ModalComp from "../components/Modal";
 import AddWorkoutForm from "../components/AddWorkoutForm";
 import EditWorkoutForm from "../components/EditWorkoutForm";
-import ProfilePictureForm from "../components/ProfilePictureForm";
+import EditProfileForm from "../components/EditProfileForm";
 import TabBar from "../components/TabBar";
 
 import {
@@ -108,6 +108,8 @@ export default function Profile() {
   const [proPic, setProPic] = useState(null)
   const [prevSlidePosition, setPrevSlidePosition] = useState({});
   const [profileInfoModal, setProfileInfoModal] = useState(false);
+  const prof = {username: "", bio: ""}
+  const [profileInfo, setProfileInfo] = useState(prof);
 
 
   const handleChange = (e) => {
@@ -161,6 +163,14 @@ export default function Profile() {
     setProPic([...e.target.files]);
   }
 
+  const handleProfileInfoChange = (e) => {
+    const { name, value } = e.target;
+    setProfileInfo({
+      ...profileInfo, 
+      [name]: value,
+    })
+  }
+
   const toggleEditWorkoutModal = () => {
     setEditWorkoutModal(!editWorkoutModal);
     setCurrentWorkout([]);
@@ -189,6 +199,7 @@ export default function Profile() {
         if (res.data.user.username.includes('@')) {
           const username = res.data.user.username.substring(0, userLength - 10);
           setUsername(username)
+          setProfileInfo({...profileInfo, username: username, bio: res.data.user.bio});
         }
         else {
           const username = res.data.user.username
@@ -207,7 +218,6 @@ export default function Profile() {
         setSavedWorkouts(res.data.savedWorkouts);
         const postIdAndPosition = res.data.posts.map(post => {return ({postId:post._id, index: 0})});
         setPrevSlidePosition(postIdAndPosition);
-        console.log(res.data.posts);
 
       } else {
         console.log("no responses");
@@ -829,6 +839,9 @@ export default function Profile() {
           formData.append("image", proPic[i]);
         }
       }
+      formData.append("bio", profileInfo.bio);
+      formData.append("username", profileInfo.username);
+
       const response = await axios({
         method: "post",
         url: "http://localhost:4000/updateuserpic",
@@ -841,7 +854,9 @@ export default function Profile() {
       if (response) {
         console.log("update user pic");
         setUserPicUrl(response.data.user.picture[0].url);
+        getUser();
         toggleProfileInfo(!profileInfoModal);
+
       } else {
         throw Error("no response");
       }
@@ -870,7 +885,7 @@ export default function Profile() {
               <h3> @ { username }</h3>
               <div>
                 {loggedInId === id ?
-                <button onClick={toggleProfileInfo}> Edit Profile Picture </button>
+                <button onClick={toggleProfileInfo}> Edit Profile </button>
             : following.some((user) => user._id === id) ? (
                   <FollowButton followed="false" onClick={() => unfollow(id)}>
                     {" "}
@@ -893,12 +908,7 @@ export default function Profile() {
             <About>
               {/* <div className="about-header">About Me</div> */}
               <div>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Nostrum soluta quos voluptas repudiandae eaque cum tempora
-                repellat laborum officia minima placeat, odit molestiae nihil
-                adipisci perspiciatis exercitationem voluptatibus? Vitae, iure.
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Nostrum soluta quos voluptas repudiandae eaque cum tempora
+                {user.bio}
               </div>
             </About>
           </UserInformation>
@@ -958,9 +968,11 @@ export default function Profile() {
         <Modal>
           <ModalOverlay onClick={toggleProfileInfo}> </ModalOverlay>
             <div className="modal-content"> 
-                 <ProfilePictureForm
+                 <EditProfileForm
                     handlePicChange={handlePicChange}
                     updatePicture={updatePicture}
+                    profileInfo={profileInfo}
+                    handleProfileInfoChange={handleProfileInfoChange}
                   /> 
             </div>
         </Modal>
@@ -1002,6 +1014,7 @@ export default function Profile() {
           createComment={createComment}
           deleteComment={deleteComment}
           setPrevSlidePosition={setPrevSlidePosition}
+         
         />
       </ProfileMain>
 

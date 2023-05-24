@@ -265,16 +265,23 @@ router.delete("/unsaveworkout/:workoutId", async (req, res) => {
 router.post("/updateuserpic", upload.single('image'), async (req, res) => {
     try {
       const user = await User.findById(req.user.id).populate("picture");
-      // console.log('in updatepic route', user.profilepic);
-      if (user) { 
-      user.picture.pop();
-      const newImage = {url: req.file.path, filename: req.file.filename};
-      console.log(newImage); 
-      user.picture.push(newImage);
-      await user.save();
-      res.status(200).json({
-        user: user
-      })
+    // console.log('in updatepic route', user.profilepic);
+    if (user) { 
+        if (req.file) {
+          user.picture.pop();
+          const newImage = {url: req.file.path, filename: req.file.filename};
+          user.picture.push(newImage);
+        }
+        if (req.body.bio) { 
+            user.bio = req.body.bio;
+        }
+        if (req.body.username) {
+            user.username = req.body.username;
+        }
+        await user.save();
+        res.status(200).json({
+          user: user
+        })
       }
       else {
         res.status(400).json({

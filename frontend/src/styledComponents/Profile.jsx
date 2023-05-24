@@ -371,7 +371,7 @@ export const ModalOverlay = styled.div`
 `;
 
 export const ProPicInfoForm = styled.div`
-height: 200px;
+height: 300px;
 width: 100%;
 display: flex;
 flex-direction: column;
@@ -379,13 +379,27 @@ justify-content: center;
 margin: 0;
 padding: 0;
 align-items: center;
-div {
+
+.profileinfo-title {
   width: 100%;
   text-align: center;
   border-bottom: 1px solid grey;
+  margin-bottom: 1em;
+}
+
+.profile-inputs {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile-inputs label {
+  width: 70%;
 }
 input {
-  margin-top: 2em;
+  width: 100%;
+}
+textarea {
   width: 100%;
 }
 input[type=file]::file-selector-button {
