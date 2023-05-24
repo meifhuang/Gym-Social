@@ -6,7 +6,6 @@ export const PostFormStyle = styled.div`
 `;
 
 export const PostModalStyle = styled.div`
-  width: 100%;
   height: 100%;
 
   .post {
@@ -252,7 +251,7 @@ export const PostStyle = styled.div`
     width: 100%;
     justify-content: space-between;
     position: absolute;
-    top: 40%;
+    top: 50%;
     transform: translateY(-50%);
   }
   .carousel .carousel-actions button {

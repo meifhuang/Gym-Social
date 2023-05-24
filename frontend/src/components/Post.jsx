@@ -193,6 +193,7 @@ export default function Post({
             {prevSlidePosition.map((slides) => {
               return slides.postId === post._id ? (
                 <img
+                  onClick={()=>toggleModal(post._id)}
                   className="carousel-item carousel-item-visible"
                   src={post.images[slides.index].url}
                 />

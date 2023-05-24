@@ -51,7 +51,7 @@ export const ProfileComp = styled.main`
 export const TagInfo = styled.div`
   display: flex;
   /* margin: 2rem; */
-  border: 2px solid rgb(163, 158, 158); 
+  border-bottom: 2px solid rgb(163, 158, 158); 
   border-radius: 0.25rem;
   padding: 3rem;
   gap: 3rem;
@@ -138,13 +138,13 @@ export const FollowButton = styled.button`
 
 
 export const PostContainer = styled.div`
-  min-width: 1200px;
-  min-height: 400px;
+  width: 1200px;
+  height: 400px;
   border-radius: 5px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-content: end;
-  align-items: end;
+  grid-template-columns: repeat(3,1fr);
+  justify-content: center;
+  align-items: center;
   gap: 2em;
   margin-top: 1em;
 
@@ -370,6 +370,41 @@ export const ModalOverlay = styled.div`
   /* background: red; */
 `;
 
+export const ProPicInfoForm = styled.div`
+height: 200px;
+width: 100%;
+display: flex;
+flex-direction: column;
+justify-content: center;
+margin: 0;
+padding: 0;
+align-items: center;
+div {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid grey;
+}
+input {
+  margin-top: 2em;
+  width: 100%;
+}
+input[type=file]::file-selector-button {
+  border: none;
+  border: 1px solid black;
+  border-radius: 5px; 
+  padding: 5px;
+  margin-left: 5em;
+}
+button {
+  margin-top: 1em;
+  border-radius: 5px; 
+  padding: 8px;
+  background-color: #d5e3f0;
+}
+button:hover {
+  background-color: #c8d9f0;
+}
+`
 export const EditForm = styled.form`
   display: flex;
   justify-content: center;

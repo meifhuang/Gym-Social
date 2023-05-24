@@ -40,7 +40,8 @@ import {
   ExerciseImage,
   WorkoutIcons,
   ProfileMain,
-  PostContainer
+  PostContainer,
+  Modal, ModalOverlay
 } from "../styledComponents/Profile";
 
 
@@ -106,7 +107,7 @@ export default function Profile() {
   const [files, setFiles] = useState(null);
   const [proPic, setProPic] = useState(null)
   const [prevSlidePosition, setPrevSlidePosition] = useState({});
-
+  const [profileInfoModal, setProfileInfoModal] = useState(false);
 
 
   const handleChange = (e) => {
@@ -815,8 +816,8 @@ export default function Profile() {
     console.log('prev',prevSlidePosition);
   }
 
-  const changeProPic = () => {
-    console.log("CHANGE PFP!!!");
+  const toggleProfileInfo = () => {
+      setProfileInfoModal(!profileInfoModal);
   }
 
   const updatePicture = async (e) => {
@@ -840,6 +841,7 @@ export default function Profile() {
       if (response) {
         console.log("update user pic");
         setUserPicUrl(response.data.user.picture[0].url);
+        toggleProfileInfo(!profileInfoModal);
       } else {
         throw Error("no response");
       }
@@ -867,12 +869,8 @@ export default function Profile() {
             <UserContact>
               <h3> @ { username }</h3>
               <div>
-                {loggedInId === id ? 
-                <ProfilePictureForm
-             handlePicChange={handlePicChange}
-             updatePicture={updatePicture}
-             changeProPic={changeProPic}
-            /> 
+                {loggedInId === id ?
+                <button onClick={toggleProfileInfo}> Edit Profile Picture </button>
             : following.some((user) => user._id === id) ? (
                   <FollowButton followed="false" onClick={() => unfollow(id)}>
                     {" "}
@@ -956,6 +954,17 @@ export default function Profile() {
             updateAddExerciseEdit={updateAddExerciseEdit}
           />
         )}
+        {profileInfoModal &&
+        <Modal>
+          <ModalOverlay onClick={toggleProfileInfo}> </ModalOverlay>
+            <div className="modal-content"> 
+                 <ProfilePictureForm
+                    handlePicChange={handlePicChange}
+                    updatePicture={updatePicture}
+                  /> 
+            </div>
+        </Modal>
+      }
 
         <TabBar
           //props for WORKOUTS

@@ -13,7 +13,6 @@ import AddPostForm from "./AddPostForm";
 
 //styling
 
-
 import { 
   PostContainer,
   WorkoutContainer,
@@ -133,47 +132,6 @@ const TabBar = ({
     <PostContainer>
              { posts && posts.map((post,index) => {
               return (
-        //         <PostStyle>
-        // <div className="post">
-        //   <div className="carousel">
-        //     {prevSlidePosition.map((slides) => {
-        //       return slides.postId === post._id ? (
-        //         <img
-        //           className="carousel-item carousel-item-visible"
-        //           src={post.images[slides.index].url}
-        //         />
-        //       ) : (
-        //         <> </>
-        //       );
-        //     })}
-        //     {post.images.length > 1 ? (
-        //       <div className="carousel-actions">
-        //         <button
-        //           onClick={() => prevSlide(post.images.length, post._id)}
-        //           id={`carousel-button-prev`}
-        //           aria-label="Previous"
-        //         >
-        //           {" "}
-        //           &lt;{" "}
-        //         </button>
-
-        //         <button
-        //           onClick={() => nextSlide(post.images.length, post._id)}
-        //           id={`carousel-button-next`}
-        //           aria-label="Next"
-        //         >
-        //           {" "}
-        //           &gt;{" "}
-        //         </button>
-        //       </div>
-        //     ) : (
-        //       <div> </div>
-        //     )}
-        //     </div>
-        //     </div>
-        //     </PostStyle>
-        //       )})}
-
             <Post 
             deletePost={deletePost}
             unlikeAPost={unlikeAPost}
