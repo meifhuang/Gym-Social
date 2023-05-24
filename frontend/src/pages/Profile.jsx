@@ -43,6 +43,7 @@ import {
   PostContainer
 } from "../styledComponents/Profile";
 
+
 export default function Profile() {
   // const exerciseDB = useLoaderData();
 
@@ -991,6 +992,7 @@ export default function Profile() {
           commentForm={commentForm}
           createComment={createComment}
           deleteComment={deleteComment}
+          setPrevSlidePosition={setPrevSlidePosition}
         />
       </ProfileMain>
 

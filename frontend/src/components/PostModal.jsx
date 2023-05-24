@@ -123,7 +123,6 @@ export default function PostModal({
                 createComment={createComment}
                 postId={posty._id}
               />
-              
             </PostDetails>
           </div>
         </PostModalStyle>

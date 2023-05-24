@@ -121,6 +121,10 @@ export const PostModalStyle = styled.div`
     height: 100%;
     border: none;
   }
+  #description:focus {
+    outline: #f1f1f1;
+  }
+
   .comment-button-container {
     height: 100%;
     border-left: 1px solid #f1f1f1;
@@ -198,6 +202,7 @@ export const PostStyle = styled.div`
     display: flex;
     justify-content: space-between;
     gap: 0.7em;
+   
   }
   .post h4 {
     font-weight: 800;
@@ -217,7 +222,8 @@ export const PostStyle = styled.div`
     /* width: 100%; */
   }
   .caption {
-    
+    display: flex;
+    align-items: center;
   }
   .user-post:hover {
     color: #d0e1e4;

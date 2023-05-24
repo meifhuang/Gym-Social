@@ -15,8 +15,6 @@ import AddPostForm from "./AddPostForm";
 
 
 import { 
-  PostModalStyle,
-  PostStyle,
   PostContainer,
   WorkoutContainer,
   WorkoutDiv,
@@ -38,6 +36,8 @@ import {
 
 } from "../styledComponents/TabBar";
 import WorkoutContainerComp from "./WorkoutContainerComp";
+import {PostModalStyle, PostStyle} 
+from "../styledComponents/PostModal"
 
 const TabBar = ({
   //props for WORKOUTS
@@ -133,68 +133,67 @@ const TabBar = ({
     <PostContainer>
              { posts && posts.map((post,index) => {
               return (
-                <PostStyle>
-        <div className="post">
-          <div className="carousel">
-            {prevSlidePosition.map((slides) => {
-              return slides.postId === post._id ? (
-                <img
-                  className="carousel-item carousel-item-visible"
-                  src={post.images[slides.index].url}
-                />
-              ) : (
-                <> </>
-              );
-            })}
-            {post.images.length > 1 ? (
-              <div className="carousel-actions">
-                <button
-                  onClick={() => prevSlide(post.images.length, post._id)}
-                  id={`carousel-button-prev`}
-                  aria-label="Previous"
-                >
-                  {" "}
-                  &lt;{" "}
-                </button>
+        //         <PostStyle>
+        // <div className="post">
+        //   <div className="carousel">
+        //     {prevSlidePosition.map((slides) => {
+        //       return slides.postId === post._id ? (
+        //         <img
+        //           className="carousel-item carousel-item-visible"
+        //           src={post.images[slides.index].url}
+        //         />
+        //       ) : (
+        //         <> </>
+        //       );
+        //     })}
+        //     {post.images.length > 1 ? (
+        //       <div className="carousel-actions">
+        //         <button
+        //           onClick={() => prevSlide(post.images.length, post._id)}
+        //           id={`carousel-button-prev`}
+        //           aria-label="Previous"
+        //         >
+        //           {" "}
+        //           &lt;{" "}
+        //         </button>
 
-                <button
-                  onClick={() => nextSlide(post.images.length, post._id)}
-                  id={`carousel-button-next`}
-                  aria-label="Next"
-                >
-                  {" "}
-                  &gt;{" "}
-                </button>
-              </div>
-            ) : (
-              <div> </div>
-            )}
-            </div>
-            </div>
-            </PostStyle>
-              )})}
+        //         <button
+        //           onClick={() => nextSlide(post.images.length, post._id)}
+        //           id={`carousel-button-next`}
+        //           aria-label="Next"
+        //         >
+        //           {" "}
+        //           &gt;{" "}
+        //         </button>
+        //       </div>
+        //     ) : (
+        //       <div> </div>
+        //     )}
+        //     </div>
+        //     </div>
+        //     </PostStyle>
+        //       )})}
 
-            {/* //     <Post 
-            //     deletePost={deletePost}
-            //     unlikeAPost={unlikeAPost}
-            //     likeAPost={likeAPost}
-            //     handleFileUpload={handleFileUpload}
-            //     key={post._id}
-            //     index={index}
-            //     post={post}
-            //     nextSlide={nextSlide}
-            //     prevSlide={prevSlide}
-            //     prevSlidePosition={prevSlidePosition}
-            //     id={id}
-            //     loggedInId={loggedInId}
-            //     commentForm={commentForm}
-            //     handleCommentChange={handleCommentChange}
-            //     createComment={createComment}
-            //     deleteComment={deleteComment}
-            //  /> 
-        //       )})
-            // } */}
-            
+            <Post 
+            deletePost={deletePost}
+            unlikeAPost={unlikeAPost}
+            likeAPost={likeAPost}
+                handleFileUpload={handleFileUpload}
+                key={post._id}
+                index={index}
+                post={post}
+                nextSlide={nextSlide}
+                prevSlide={prevSlide}
+                prevSlidePosition={prevSlidePosition}
+                id={id}
+                loggedInId={loggedInId}
+                commentForm={commentForm}
+                handleCommentChange={handleCommentChange}
+                createComment={createComment}
+                deleteComment={deleteComment}
+             /> )
+              })}
+
           </PostContainer>
         </div>
 

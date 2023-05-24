@@ -163,6 +163,7 @@ const exploreUsers = async () => {
                 prevSlidePosition={prevSlidePosition}
                 loggedInId={loggedInId}
                 viewProfile={viewProfile}
+                getPosts={getPosts}
              />
          
               )

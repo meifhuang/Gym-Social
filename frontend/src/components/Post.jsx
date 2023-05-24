@@ -8,12 +8,13 @@ import PostModal from "./PostModal";
 
 import { Modal} from "../styledComponents/PostModal"
 import { ModalOverlay } from "../styledComponents/Profile";
-import { PostStyle } from "../styledComponents/Profile";
+import { PostStyle } from "../styledComponents/PostModal";
 
 import { HeartIcon, UnHeartIcon, DeletePostIcon, CrossIcon } from "../assets/icons";
 
 export default function Post({
   post,
+  getPosts,
   userPicUrl,
   prevSlidePosition,
   prevSlide,
@@ -21,17 +22,25 @@ export default function Post({
   loggedInId,
   deletePost,
   viewProfile,
-}) {
+}) 
+{
   const [prevSlidePositionShow, setPrevSlidePositionShow] = useState({});
   const [showPost, setShowPost] = useState(false);
   const [postToShow, setPostToShow] = useState([]);
   const [commentForm, setCommentForm] = useState({ description: "" });
   const [modal, setModal] = useState(false);
-  const toggleModal = (post_id) => {
-    setModal(!modal);
-    getPost(post_id);
-  };
-  console.log(modal);
+  const [url, setUrl] = useState(""); 
+
+  useEffect(()=> {
+    setUrl(window.location.href);
+  },[])
+
+
+  const toggleModal = async (postId) => {
+      setModal(!modal)
+      getPost(postId);
+  }
+ 
   const getPost = async (postId) => {
     try {
       const response = await axios({
@@ -54,6 +63,7 @@ export default function Post({
       console.log(e.message);
     }
   };
+
   const likeAPost = async (postId) => {
     try {
       const response = await axios({
@@ -65,6 +75,7 @@ export default function Post({
       });
       if (response) {
         console.log(response.data);
+        getPosts();
         getPost(postId);
       }
     } catch (e) {
@@ -84,6 +95,7 @@ export default function Post({
       });
       if (response) {
         console.log(response.data);
+        getPosts();
         getPost(postId);
       }
     } catch (e) {
@@ -211,6 +223,8 @@ export default function Post({
             ) : (
               <div> </div>
             )}
+            { url.includes('newsfeed') && 
+            <> 
             <div className="post-options">
               <div className="likes">
                 {!post.likedBy.includes(loggedInId) ? (
@@ -237,29 +251,10 @@ export default function Post({
               <p> {post.caption} </p>
             </div>
             <h4 onClick={() => toggleModal(post._id)}> View Comments </h4>
-            {/* { 
-                            showComment ? 
-                            <> 
-                        { post.comments && post.comments.map((comment) => { 
-                      return (
-                        <div className="comments"> 
-                         <h5> {comment.username} : {comment.description} </h5>
-                         <button onClick={() => deleteComment(post._id, comment._id)}> delete </button>
-                        </div> 
-                      )
-                    })}
-                    <CommentForm 
-                      handleCommentChange={handleCommentChange}
-                      commentForm={commentForm}
-                      createComment={createComment}
-                      postId={post._id}
-                    /> 
-                    </> :
-                    } */}
-          </div>
+            </>
+              }
+        </div> 
         </div>
-
-        {/* {showPost && postToShow.map((post) => { return (<h5> {post.comments[0].username} </h5>)})} */}
       </PostStyle>
 
       {modal ? (
