@@ -23,7 +23,7 @@ import {
   WorkoutInfo,
   ExerciseInfo,
   ArrowSwitch,
-  ExerciseImage } from "../styledComponents/Profile";
+  ExerciseImage,  } from "../styledComponents/Profile";
 
 import {
   TabBarContainer,
