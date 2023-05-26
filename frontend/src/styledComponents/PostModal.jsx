@@ -186,7 +186,9 @@ export const PostModalStyle = styled.div`
 export const PostStyle = styled.div`
   .post {
     border: 1px solid black;
-    margin: 1em;
+    margin: 1.5em;
+    border-radius: 10px;
+    border-color: grey;
   }
   .post-options {
     display: flex;
@@ -211,6 +213,12 @@ export const PostStyle = styled.div`
     margin: 0.5em;
     justify-content: space-between;
   }
+  .userpic-icon {
+    width: 40px;
+    height: 40px; 
+    border-radius: 50%; 
+    margin-bottom: .5em;
+  }
   .deletePost {
     // margin-left: 14em;
     cursor: pointer;
@@ -227,6 +235,10 @@ export const PostStyle = styled.div`
   .user-post:hover {
     color: #d0e1e4;
     cursor: pointer;
+  }
+  .post-title {
+    display: flex;
+    margin: .5em;
   }
   .comment-button {
     padding: 5px;
@@ -342,7 +354,6 @@ export const Modal = styled.div`
     width: 80%;
 
     height: 90%;
-    border: 1px solid blue;
     display: flex;
     flex-direction: column;
     align-items: center;

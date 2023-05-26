@@ -189,6 +189,11 @@ export default function Post({
     <>
       <PostStyle>
         <div className="post">
+          <div className="post-title"> 
+        <img className="userpic-icon" src={post.createdBy[0].picture[0].url}></img>
+        <h4> {" "}
+                {post.createdBy[0].fname} {post.createdBy[0].lname}{" "} </h4>
+          </div>
           <div className="carousel">
             {prevSlidePosition.map((slides) => {
               return slides.postId === post._id ? (
