@@ -29,8 +29,8 @@ export default function Navbar(props) {
   const [isActive, setIsActive] = useState("");
 
   const { hasUserId, hasToken, setHasToken, userId } = useContext(AuthContext);
-  console.log(hasUserId, "SADSAD HAS USER ID");
-
+  console.log(hasToken, "SADSAD HAS USER IDasdasdasdasd");
+console.log(userId)
   const logout = async () => {
     try {
       const response = await axios({
@@ -52,7 +52,7 @@ export default function Navbar(props) {
   };
 
   const viewProfile = async (userId) => {
-    navigate(`/profile/${userId}`);
+    navigate(`/profile/${localStorage.getItem("id")}`);
   };
 
   const viewExplore = async (userId) => {

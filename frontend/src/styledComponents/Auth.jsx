@@ -52,6 +52,7 @@ export const FormContainer = styled.div`
       props.theme.breakpoint.mobile}) {
     & {
       width: 700px;
+      
     }
 
     /* & h2 {
@@ -68,7 +69,7 @@ export const StyledForm = styled.form`
 
   @media only screen and (max-width: ${(props) => props.theme.breakpoint.xxl}) {
     & {
-      width: 50%;
+      width:60%;
     }
   }
 
@@ -76,11 +77,32 @@ export const StyledForm = styled.form`
     & {
       width: 60%;
     }
+
   }
+
+
 
   @media only screen and (max-width: ${(props) => props.theme.breakpoint.lg}) {
     & {
       width: 70%;
+    }
+  }
+
+  @media only screen and (min-width:${(props) => props.theme.breakpoint.mobile} ) and (max-width: ${(props) => props.theme.breakpoint.lg}) {
+    & {
+      width: 80%;
+    }
+  }
+
+  @media only screen and (min-width: ${(props) => props.theme.breakpoint.xxl}) {
+    & {
+      width:55%;
+    }
+  }
+
+  @media only screen and (min-width: 1800px) {
+    & {
+      width:45%;
     }
   }
 
