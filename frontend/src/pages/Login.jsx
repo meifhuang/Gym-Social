@@ -49,7 +49,6 @@ export default function Login(props) {
     window.open("http://localhost:4000/auth/google", "_self");
   };
 
-  console.log(userId);
   const loginSubmit = async (e) => {
     e.preventDefault();
     try {
