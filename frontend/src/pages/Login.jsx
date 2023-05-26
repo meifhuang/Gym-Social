@@ -26,7 +26,7 @@ import { FacebookIcon, GoogleIcon } from "../assets/icons.jsx";
 
 export default function Login(props) {
   const { message } = props;
-  const { username, setUsername, token, setToken } = useContext(AuthContext);
+  const { setHasToken } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
@@ -47,11 +47,9 @@ export default function Login(props) {
 
   const handleGoogleLogin = () => {
     window.open("http://localhost:4000/auth/google", "_self");
-
-    // window.location.replace("http://localhost:4000/auth/google");
   };
 
-
+  console.log(userId);
   const loginSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -63,8 +61,9 @@ export default function Login(props) {
         const data = response.data;
         localStorage.setItem("token", data.token);
         localStorage.setItem("id", data.userId);
+        setHasToken(response.data.token);
         setErrorMessage("");
-        return navigate("/newsfeed");
+        return navigate(`/profile/${data.userId}`);
       } else {
         console.log("Login failed");
       }
@@ -138,7 +137,7 @@ export default function Login(props) {
             </AuthRedirect>
           </StyledForm>
         </FormContainer>
-          <Image src={LoginImage} alt="loading" />
+        <Image src={LoginImage} alt="loading" />
       </ContainerRowReverse>
     </ContainerColumn>
   );

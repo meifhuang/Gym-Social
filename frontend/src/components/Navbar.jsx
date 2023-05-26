@@ -29,7 +29,7 @@ export default function Navbar(props) {
   const [isActive, setIsActive] = useState("");
 
   const { hasUserId, hasToken, setHasToken, userId } = useContext(AuthContext);
-  console.log(hasUserId, "SADSAD HAS USER ID");
+  console.log(hasToken, "SADSAD HAS USER IDasdasdasdasd");
 
   const logout = async () => {
     try {
