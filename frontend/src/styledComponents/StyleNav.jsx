@@ -86,6 +86,7 @@ export const DropdownItem = styled.ul`
   z-index: 2;
   padding: 0.5rem;
   text-transform: none;
+  cursor: pointer;
 
   &:nth-child(even) {
     border-top: 2px solid ${(props) => props.theme.colors.lightgrey};

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { AuthContextProvider } from "./AuthContext";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
@@ -21,6 +21,8 @@ import ExploreUsers from "./pages/ExploreUsers";
 
 import "./App.css";
 
+import { AuthContext } from "./AuthContext";
+import Main from "./template/Main";
 //Styled Components
 import GlobalStyles from "./styledComponents/GlobalStyles";
 import { ThemeProvider } from "styled-components";
@@ -29,7 +31,8 @@ import { ThemeProvider } from "styled-components";
 import { getExerciseList } from "./loader/index";
 function App() {
   const [message, setMessage] = useState("");
-
+  const { hasToken } = useContext(AuthContext);
+  console.log(hasToken, "SADSAD HAS USER ID");
   const theme = {
     // font: {
 
@@ -50,42 +53,41 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Navbar />,
+      element: <Main />,
       children: [
-        // {
-        //   path: "/signup",
-        //   element: <Signup />,
-        // },
-        // {
-        //   path: "/login",
-        //   element: <Login />,
-        // },
         {
           path: "/",
           element: <Homepage />,
-          // loader: rootLoader,
-          // children: [
-          //   {
-          //     path: "team",
-          //     element: <Team />,
-          //     loader: teamLoader,
-          //   },
-          // ],
+        },
+        {
+          path: "/profile/:id",
+          element: <Profile />,
+          // loader: getExerciseList
+        },
+        {
+          path: "/newsfeed",
+          element: <NewsFeed />,
+        },
+        {
+          path: "/explore",
+          element: <ExploreUsers />,
         },
       ],
     },
-    {
-      path: "/",
-      element: <Homepage />,
-      // loader: rootLoader,
-      // children: [
-      //   {
-      //     path: "team",
-      //     element: <Team />,
-      //     loader: teamLoader,
-      //   },
-      // ],
-    },
+    // {
+    //   path: "/",
+    //   element: <Navbar />,
+    //   children: [
+    //     {
+    //       path: "/",
+    //       element: <Homepage />,
+    //     },
+    //   ],
+    // },
+    // {
+    //   path: "/",
+    //   element: <Homepage />,
+    // },
     {
       path: "/signup",
       element: <Signup />,
@@ -94,19 +96,19 @@ function App() {
       path: "/login",
       element: <Login />,
     },
-    {
-      path: "/profile/:id",
-      element: <Profile />,
-      // loader: getExerciseList
-    },
-    {
-      path: "/newsfeed",
-      element: <NewsFeed />,
-    },
-    {
-      path: "/explore",
-      element: <ExploreUsers />,
-    },
+    // {
+    //   path: "/profile/:id",
+    //   element: <Profile />,
+    //   // loader: getExerciseList
+    // },
+    // {
+    //   path: "/newsfeed",
+    //   element: <NewsFeed />,
+    // },
+    // {
+    //   path: "/explore",
+    //   element: <ExploreUsers />,
+    // },
   ]);
 
   return (

@@ -19,6 +19,7 @@ export const ProfileMain = styled.main`
   padding: 2rem;
   margin: 0rem calc(1rem + 5vw);
   gap: 2rem;
+
 `
 
 export const ProfileComp = styled.main`
@@ -91,6 +92,17 @@ export const ImageContainer = styled(CenteredFlexColumn)`
   gap: 1rem;
   .profilepic {
     cursor: pointer;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 200px;
+    height: 200px;
+  }
+  
+
+  .profilepic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 `;
 

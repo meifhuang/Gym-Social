@@ -18,7 +18,6 @@ import {
   NavTabDropdown,
 } from "../styledComponents/StyleNav";
 export default function Navbar(props) {
-
   const navigate = useNavigate();
 
   const [isOpen, setOpen] = useState(false);
@@ -29,7 +28,40 @@ export default function Navbar(props) {
 
   const [isActive, setIsActive] = useState("");
 
-  const { hasUserId } = useContext(AuthContext);
+  const { hasUserId, hasToken, setHasToken, userId } = useContext(AuthContext);
+  console.log(hasUserId, "SADSAD HAS USER ID");
+
+  const logout = async () => {
+    try {
+      const response = await axios({
+        method: "GET",
+        url: "http://localhost:4000/logout",
+      });
+      if (response) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        setHasToken("");
+        setIsActive(false);
+        navigate("/");
+      } else {
+        throw Error("no response");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const viewProfile = async (userId) => {
+    navigate(`/profile/${userId}`);
+  };
+
+  const viewExplore = async (userId) => {
+    navigate(`/explore`);
+  };
+
+  function gotoNewsFeed() {
+    navigate("/newsfeed");
+  }
 
   return (
     <div className="main-container">
@@ -42,15 +74,17 @@ export default function Navbar(props) {
           toggle={setOpen}
         ></Hamburger>
         <StyledProfileTabs>
-          {hasUserId ? (
+          {hasToken ? (
             <>
-              <NavTab className="nav-tab">Explore</NavTab>
+              <NavTab className="nav-tab" onClick={gotoNewsFeed}>
+                HOME
+              </NavTab>
+              <NavTab className="nav-tab" onClick={viewExplore}>Explore</NavTab>
               <MenuTrigger
                 className="menu-trigger"
                 onClick={() => setIsActive(!isActive)}
               >
                 <img src="../src/images/avatar.png" alt="" />
-                <div>Jacky</div>
               </MenuTrigger>
             </>
           ) : (
@@ -66,10 +100,11 @@ export default function Navbar(props) {
           )}
 
           <ProfileDropdown className={` ${isActive ? "active" : "inactive"}`}>
-            <DropdownItem>
-              View Profile</DropdownItem>
+            <DropdownItem onClick={() => viewProfile(userId)}>
+              View Profile
+            </DropdownItem>
             <DropdownItem>Settings</DropdownItem>
-            <DropdownItem>Logout</DropdownItem>
+            <DropdownItem onClick={logout}>Logout</DropdownItem>
           </ProfileDropdown>
         </StyledProfileTabs>
         {/* <NavTabDropdown isOpen={isOpen}>
