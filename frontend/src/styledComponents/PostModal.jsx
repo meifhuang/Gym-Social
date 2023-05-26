@@ -7,7 +7,7 @@ export const PostFormStyle = styled.div`
 
 export const PostModalStyle = styled.div`
   height: 100%;
-
+  width: 100%;
   .post {
     display: flex;
     flex-direction: column;
@@ -42,12 +42,13 @@ export const PostModalStyle = styled.div`
   }
   .delete-comment-icon {
     display: flex;
-    padding: .7em;
+    padding: 0.7em;
     color: black;
     cursor: pointer;
-    margin-right: .2em;
+    margin-right: 0.2em;
   }
-  .delete-comment-icon: hover {
+
+  .delete-comment-icon:hover {
     color: red;
   }
   .carousel {
@@ -66,9 +67,9 @@ export const PostModalStyle = styled.div`
   }
   .userpic-icon {
     width: 40px;
-    height: 40px; 
-    border-radius: 50%; 
-    margin-bottom: .5em;
+    height: 40px;
+    border-radius: 50%;
+    margin-bottom: 0.5em;
   }
   .user-post:hover {
     color: #d0e1e4;
@@ -78,11 +79,18 @@ export const PostModalStyle = styled.div`
   .carousel .carousel-item,
   .carousel .carousel-item-hidden {
     display: none;
+    /* position: relative; */
   }
 
   .carousel .carousel-item-visible {
     display: block;
     animation: fade 1.5s;
+    /* position: relative; */
+  }
+
+  .postimg-div {
+    position: relative;
+    width: 100%;
   }
 
   .carousel .carousel-actions {
@@ -90,31 +98,41 @@ export const PostModalStyle = styled.div`
     width: 100%;
     justify-content: space-between;
     position: absolute;
-    top: 40%;
-    transform: translateY(-50%);
+    bottom: 40%;
+    padding: 0rem 1rem;
+    /* transform: translateY(-50%); */
+
   }
   .carousel .carousel-actions button {
     border-radius: 50px;
     background-color: transparent;
     border: 0;
-    font-size: 20px;
-    color: white;
+    font-size: 25px;
+    color: #181818;
     cursor: pointer;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
+     background-color: rgba(218, 221, 225, 0.644);
+     display: flex;
+     justify-content: center;
+     align-items: center;
   }
   .comment-form {
-    height: 9%;
+    height: 50px;
     display: flex;
     flex-direction: row;
     margin-top: auto;
-    border: 1px solid black;
+
     margin-left: 1em;
     margin-right: 1em;
     margin-bottom: 1em;
     border-radius: 10px;
     border: 1px solid grey;
+    /* align-self: end; */
+
   }
+
+
   #description {
     width: 90%;
     height: 100%;
@@ -139,7 +157,7 @@ export const PostModalStyle = styled.div`
     height: 100%;
     background-color: transparent;
   }
-  .comment-button: hover {
+  .comment-button:hover {
     background-color: #f2f2f2;
   }
   .closepost {
@@ -166,14 +184,14 @@ export const PostModalStyle = styled.div`
     }
   }
 
-  @media only screen and (min-width: 800px) {
+  @media only screen and (min-width: 700px) {
     .post {
       flex-direction: row;
     }
 
     .carousel {
       /* margin: 0 auto; */
-      width: 60%;
+      width: 70%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -185,10 +203,9 @@ export const PostModalStyle = styled.div`
 
 export const PostStyle = styled.div`
   .post {
-    border: 1px solid black;
+    border: 1px solid #dadde1;
     margin: 1.5em;
     border-radius: 10px;
-    border-color: grey;
   }
   .post-options {
     display: flex;
@@ -203,7 +220,6 @@ export const PostStyle = styled.div`
     display: flex;
     justify-content: space-between;
     gap: 0.7em;
-   
   }
   .post h4 {
     font-weight: 800;
@@ -215,9 +231,9 @@ export const PostStyle = styled.div`
   }
   .userpic-icon {
     width: 40px;
-    height: 40px; 
-    border-radius: 50%; 
-    margin-bottom: .5em;
+    height: 40px;
+    border-radius: 50%;
+    margin-bottom: 0.5em;
   }
   .deletePost {
     // margin-left: 14em;
@@ -238,7 +254,13 @@ export const PostStyle = styled.div`
   }
   .post-title {
     display: flex;
-    margin: .5em;
+    margin: 0.5em;
+    padding: 0.25rem;
+    gap: 0.25rem;
+  }
+
+  .post-title img {
+    object-fit: cover;
   }
   .comment-button {
     padding: 5px;
@@ -251,6 +273,7 @@ export const PostStyle = styled.div`
   .carousel .carousel-item,
   .carousel .carousel-item-hidden {
     display: none;
+    position: relative;
   }
 
   .carousel .carousel-item-visible {
@@ -284,7 +307,7 @@ export const PostStyle = styled.div`
   img {
     width: 350px;
     height: 300px;
-    border: 1px solid black;
+    /* border: 1px solid black; */
   }
   @keyframes fade {
     0% {
@@ -301,21 +324,52 @@ export const PostStyle = styled.div`
   }
 `;
 export const PostDetails = styled.div`
+
   width: 100%;
   height: 100%;
+
   display: flex;
   flex-direction: column;
 
   & .comment-container {
     overflow: auto;
-    height: 400px;
+    height: 300px;
+    /* flex: 1;
+    overflow: auto; */
   }
 
-  @media only screen and (min-width: 800px) {
-    width: 60%;
+
+  @media only screen and (min-width: 400px) {
+    & .comment-container {
+      height: 230px;
+    }
+  }
+
+  @media only screen and (min-width: 480px) {
+    & .comment-container {
+      height: 190px;
+    }
+  }
+  @media only screen and (min-width: 576px) {
+    & .comment-container {
+      height: 170px;
+    }
+  }
+  @media only screen and (min-width: 650px) {
+    & .comment-container {
+      height: 150px;
+    }
+  }
+  @media only screen and (min-width: 670px) {
+    & .comment-container {
+      height: 130px;
+    }
+  }
+  @media only screen and (min-width: 700px) {
+    /* width: 60%; */
     & .comment-container {
       overflow: auto;
-      height: 400px;
+      flex: 1;
     }
   }
 `;
@@ -330,6 +384,7 @@ export const Modal = styled.div`
   position: fixed;
   z-index: 1000;
   background-color: #f1f1f1;
+
   /* border: 1px solid red; */
 
   .cross-icon {

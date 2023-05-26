@@ -696,10 +696,6 @@ export default function Profile() {
     }
   };
 
-  function gotoNewsFeed() {
-    navigate("/newsfeed");
-  }
-
   const clickEditExercise = async (exerciseId) => {
     console.log("CLICK EDIT EXERCISE");
     try {
@@ -771,24 +767,7 @@ export default function Profile() {
     }
   };
 
-  const logout = async () => {
-    try {
-      const response = await axios({
-        method: "GET",
-        url: "http://localhost:4000/logout",
-      });
-      if (response) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("id");
-        // setUsername(null);
-        navigate("/");
-      } else {
-        throw Error("no response");
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
+
 
   const nextSlide = (imglength, postId) => {
       setPrevSlidePosition(prevSlides => {
@@ -869,8 +848,6 @@ export default function Profile() {
     <div className="App">
       
       <ProfileMain>
-      <button onClick={gotoNewsFeed}> Return to feed </button>
-      <button onClick={logout}> Logout </button>
 
         <TagInfo className="tag">
           <ImageContainer>

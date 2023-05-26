@@ -7,8 +7,8 @@ export const AuthContextProvider = (props) => {
     useEffect(() => {
         setHasToken(localStorage.getItem("token"));
         setToken(localStorage.getItem("token"));
-        setUsername(localStorage.getItem("userId"));
-        setUserId(localStorage.getItem("userId"));
+        setUsername(localStorage.getItem("id"));
+        setUserId(localStorage.getItem("id"));
     }, [])
 
     const [username, setUsername] = useState();

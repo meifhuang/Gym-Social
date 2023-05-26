@@ -45,7 +45,7 @@ const viewProfile = async (userId) => {
 
     return (
         <div>
-             <button onClick={() => viewProfile(loggedInUser)}> Go to my profile </button>
+          
               <h3> Explore other users' profile </h3> 
             { notFollowing && notFollowing.map((not) => { 
               return (

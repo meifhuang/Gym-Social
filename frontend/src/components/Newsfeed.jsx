@@ -145,10 +145,8 @@ const exploreUsers = async () => {
     return (
            <NewsFeed> 
            
-              <h1> HOME </h1>
             {/* <button onClick={getPosts}> getPosts </button> */}
-            <button onClick={exploreUsers}> Explore users</button>
-            <button onClick={() => viewProfile(loggedInId)}> Go to my profile </button>
+ 
            
                 { posts && posts.map((post) => {
               return (
