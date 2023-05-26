@@ -7,10 +7,13 @@ function EditProfileForm(
     handlePicChange,
     updatePicture,
     handleProfileInfoChange,
-    profileInfo
-    }) 
+    profileInfo,
+    errorMessage, 
+    })
 
     {
+    
+
     return (
         <ProPicInfoForm>
         <div className="profileinfo-title">            
@@ -20,6 +23,7 @@ function EditProfileForm(
         <div className="profile-inputs"> 
                 <label htmlFor="username"> Update username</label>
                 <input onChange={handleProfileInfoChange} type="text" name="username" value={profileInfo.username}/>
+                <h5> {errorMessage} </h5>
             </div>
             <div className="profile-inputs"> 
                 <label htmlFor="bio"> Update bio </label>

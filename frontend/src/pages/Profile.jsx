@@ -94,7 +94,8 @@ export default function Profile() {
   const [addWorkoutModal, setAddWorkoutModal] = useState(false);
   const [currentWorkoutName, setCurrentWorkoutName] = useState("");
   const [savedWorkouts, setSavedWorkouts] = useState([]);
- 
+  const [errorMessage, setErrorMessage] = useState("");
+    
 
   // const [exerciseDB, setExerciseDB] = useState("");
   const [activeDropdown, setActiveDropdown] = useState("");
@@ -218,6 +219,7 @@ export default function Profile() {
         setSavedWorkouts(res.data.savedWorkouts);
         const postIdAndPosition = res.data.posts.map(post => {return ({postId:post._id, index: 0})});
         setPrevSlidePosition(postIdAndPosition);
+
 
       } else {
         console.log("no responses");
@@ -841,6 +843,10 @@ export default function Profile() {
       }
     } catch (e) {
       console.log(e);
+      setErrorMessage(e.response.data.message);
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 10000);
     }
   }
 
@@ -950,6 +956,7 @@ export default function Profile() {
                     updatePicture={updatePicture}
                     profileInfo={profileInfo}
                     handleProfileInfoChange={handleProfileInfoChange}
+                    errorMessage={errorMessage}
                   /> 
             </div>
         </Modal>

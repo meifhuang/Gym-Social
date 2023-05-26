@@ -79,7 +79,7 @@ export const PostModalStyle = styled.div`
   .carousel .carousel-item,
   .carousel .carousel-item-hidden {
     display: none;
-    /* position: relative; */
+    position: relative; 
   }
 
   .carousel .carousel-item-visible {
