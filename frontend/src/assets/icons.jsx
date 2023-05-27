@@ -37,7 +37,7 @@ function HeartIcon({ likeAPost, postId }) {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="feather feather-heart"
+      className="feather feather-heart heart"
     >
       <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
     </svg>
@@ -353,6 +353,23 @@ function CrossIcon() {
   );
 }
 
+function EditProfileIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      data-supported-dps="24x24"
+      fill="currentColor"
+      class="mercado-match"
+      width="24"
+      height="24"
+      focusable="false"
+    >
+      <path d="M21.13 2.86a3 3 0 00-4.17 0l-13 13L2 22l6.19-2L21.13 7a3 3 0 000-4.16zM6.77 18.57l-1.35-1.34L16.64 6 18 7.35z"></path>
+    </svg>
+  );
+}
+
 export {
   EditIcon,
   DeleteIcon,
@@ -371,4 +388,5 @@ export {
   DeletePostIcon,
   CrossIcon,
   DeleteCommentIcon,
+  EditProfileIcon
 };

@@ -1,4 +1,4 @@
-import { useNavigate, Outlet } from "react-router-dom";
+import { useNavigate, Outlet, Link, NavLink } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
@@ -22,15 +22,10 @@ export default function Navbar(props) {
 
   const [isOpen, setOpen] = useState(false);
 
-  // const [dropDown, setDropDown] = useState("");
-
-  // const [isDropped, setIsDropped] = useState("");
-
   const [isActive, setIsActive] = useState("");
 
   const { hasUserId, hasToken, setHasToken, userId } = useContext(AuthContext);
-  console.log(hasToken, "SADSAD HAS USER IDasdasdasdasd");
-console.log(userId)
+
   const logout = async () => {
     try {
       const response = await axios({
@@ -51,22 +46,14 @@ console.log(userId)
     }
   };
 
-  const viewProfile = async (userId) => {
-    navigate(`/profile/${localStorage.getItem("id")}`);
-  };
-
-  const viewExplore = async (userId) => {
-    navigate(`/explore`);
-  };
-
-  function gotoNewsFeed() {
-    navigate("/newsfeed");
-  }
-
   return (
     <div className="main-container">
       <StyledNav>
-        <LogoFontCapitalized>Gym Social</LogoFontCapitalized>
+        <LogoFontCapitalized>
+          <Link to="/" className="nav-link">
+            Gym Social
+          </Link>
+        </LogoFontCapitalized>
         <Hamburger
           className="hamburger"
           // onClick={() => setOpen(!isOpen)}
@@ -74,12 +61,15 @@ console.log(userId)
           toggle={setOpen}
         ></Hamburger>
         <StyledProfileTabs>
+          {/* <div className="nav-tabs"> */}
           {hasToken ? (
             <>
-              <NavTab className="nav-tab" onClick={gotoNewsFeed}>
-                HOME
+              <NavTab className="nav-tab">
+                <NavLink to="/newsfeed">HOME</NavLink>
               </NavTab>
-              <NavTab className="nav-tab" onClick={viewExplore}>Explore</NavTab>
+              <NavTab className="nav-tab">
+                <NavLink to="/explore">EXPLORE</NavLink>
+              </NavTab>
               <MenuTrigger
                 className="menu-trigger"
                 onClick={() => setIsActive(!isActive)}
@@ -98,12 +88,15 @@ console.log(userId)
               </NavTab>
             </NavTabContainer>
           )}
+          {/* </div> */}
 
           <ProfileDropdown className={` ${isActive ? "active" : "inactive"}`}>
-            <DropdownItem onClick={() => viewProfile(userId)}>
-              View Profile
+            <DropdownItem>
+              <Link to={`/profile/${localStorage.getItem("id")}`}>
+                View Profile
+              </Link>
             </DropdownItem>
-            <DropdownItem>Settings</DropdownItem>
+            <DropdownItem>Edit Profile</DropdownItem>
             <DropdownItem onClick={logout}>Logout</DropdownItem>
           </ProfileDropdown>
         </StyledProfileTabs>
@@ -117,23 +110,42 @@ console.log(userId)
           </NavTab>
         </NavTabDropdown> */}
         <NavTabDropdown>
-          <NavTab2 isOpen={isOpen} className={"nav-tab "}>
-            <span>Home</span>
-          </NavTab2>
-          <NavTab2
-            isOpen={isOpen}
-            className={"nav-tab "}
-            onClick={() => navigate("/about")}
-          >
-            <span>About</span>
-          </NavTab2>
-          <NavTab2
-            isOpen={isOpen}
-            className={"nav-tab "}
-            onClick={() => navigate("/signup")}
-          >
-            <span>Sign Up</span>
-          </NavTab2>
+          {hasToken ? (
+            <>
+              <NavTab2 isOpen={isOpen} className={"nav-tab "}>
+                <Link to={`/profile/${localStorage.getItem("id")}`}>
+                  {" "}
+                  View Profile
+                </Link>
+              </NavTab2>
+              <NavTab2 isOpen={isOpen} className={"nav-tab "}>
+                <Link to={`/newsfeed`}> Home</Link>
+              </NavTab2>
+              <NavTab2 isOpen={isOpen} className={"nav-tab "}>
+                <NavLink to="/explore"> Explore</NavLink>
+              </NavTab2>
+            </>
+          ) : (
+            <>
+              <NavTab2 isOpen={isOpen} className={"nav-tab "}>
+                <span>Home</span>
+              </NavTab2>
+              <NavTab2
+                isOpen={isOpen}
+                className={"nav-tab "}
+                onClick={() => navigate("/about")}
+              >
+                <span>About</span>
+              </NavTab2>
+              <NavTab2
+                isOpen={isOpen}
+                className={"nav-tab "}
+                onClick={() => navigate("/signup")}
+              >
+                <span>Sign Up</span>
+              </NavTab2>
+            </>
+          )}
         </NavTabDropdown>
       </StyledNav>
 

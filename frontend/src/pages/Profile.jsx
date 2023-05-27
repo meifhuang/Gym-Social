@@ -17,6 +17,7 @@ import {
   GridIcon,
   WorkoutIcon,
   FavoriteIcon,
+  EditProfileIcon,
 } from "../assets/icons.jsx";
 
 import styled from "styled-components";
@@ -41,9 +42,9 @@ import {
   WorkoutIcons,
   ProfileMain,
   PostContainer,
-  Modal, ModalOverlay
+  Modal,
+  ModalOverlay,
 } from "../styledComponents/Profile";
-
 
 export default function Profile() {
   // const exerciseDB = useLoaderData();
@@ -72,7 +73,7 @@ export default function Profile() {
   //forms
   const [showExerciseForm, setShowExerciseForm] = useState(true);
   const [postForm, setPostForm] = useState({ caption: "" });
-  const [commentForm, setCommentForm] = useState({ description: "" }); 
+  const [commentForm, setCommentForm] = useState({ description: "" });
   const [changeId, setChangeId] = useState("");
   const [exercise, setExercise] = useState(stats);
   const [workoutName, setWorkoutName] = useState({ name: "" });
@@ -94,23 +95,19 @@ export default function Profile() {
   const [addWorkoutModal, setAddWorkoutModal] = useState(false);
   const [currentWorkoutName, setCurrentWorkoutName] = useState("");
   const [savedWorkouts, setSavedWorkouts] = useState([]);
- 
 
   // const [exerciseDB, setExerciseDB] = useState("");
   const [activeDropdown, setActiveDropdown] = useState("");
 
-
   const [posts, setPosts] = useState([]);
-  const [postLikes, setPostLikes] = useState(0); 
-
+  const [postLikes, setPostLikes] = useState(0);
 
   const [files, setFiles] = useState(null);
-  const [proPic, setProPic] = useState(null)
+  const [proPic, setProPic] = useState(null);
   const [prevSlidePosition, setPrevSlidePosition] = useState({});
   const [profileInfoModal, setProfileInfoModal] = useState(false);
-  const prof = {username: "", bio: ""}
+  const prof = { username: "", bio: "" };
   const [profileInfo, setProfileInfo] = useState(prof);
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -148,7 +145,7 @@ export default function Profile() {
   };
 
   const handleCommentChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     setCommentForm({
       description: value,
     });
@@ -161,15 +158,15 @@ export default function Profile() {
 
   const handlePicChange = (e) => {
     setProPic([...e.target.files]);
-  }
+  };
 
   const handleProfileInfoChange = (e) => {
     const { name, value } = e.target;
     setProfileInfo({
-      ...profileInfo, 
+      ...profileInfo,
       [name]: value,
-    })
-  }
+    });
+  };
 
   const toggleEditWorkoutModal = () => {
     setEditWorkoutModal(!editWorkoutModal);
@@ -195,17 +192,20 @@ export default function Profile() {
         },
       });
       if (res) {
-        const userLength = res.data.user.username.length
-        if (res.data.user.username.includes('@')) {
+        const userLength = res.data.user.username.length;
+        if (res.data.user.username.includes("@")) {
           const username = res.data.user.username.substring(0, userLength - 10);
-          setUsername(username)
-          setProfileInfo({...profileInfo, username: username, bio: res.data.user.bio});
+          setUsername(username);
+          setProfileInfo({
+            ...profileInfo,
+            username: username,
+            bio: res.data.user.bio,
+          });
+        } else {
+          const username = res.data.user.username;
+          setUsername(username);
         }
-        else {
-          const username = res.data.user.username
-          setUsername(username)
-        }
-        setUser(res.data.user); 
+        setUser(res.data.user);
         setUserPicUrl(res.data.user.picture[0].url);
         setWorkouts(res.data.workouts);
         setFollowing(res.data.loggedInUserFollowing);
@@ -214,11 +214,12 @@ export default function Profile() {
         setnumWorkouts(res.data.numWorkouts);
         setnumPosts(res.data.numPosts);
         setPosts(res.data.posts);
-        setPostLikes(res.data.postLikes); 
+        setPostLikes(res.data.postLikes);
         setSavedWorkouts(res.data.savedWorkouts);
-        const postIdAndPosition = res.data.posts.map(post => {return ({postId:post._id, index: 0})});
+        const postIdAndPosition = res.data.posts.map((post) => {
+          return { postId: post._id, index: 0 };
+        });
         setPrevSlidePosition(postIdAndPosition);
-
       } else {
         console.log("no responses");
       }
@@ -256,7 +257,9 @@ export default function Profile() {
         console.log("add post");
         console.log(response.data.posts);
         setPosts(response.data.posts);
-        const postIdAndPosition = response.data.posts.map(post => {return ({postId:post._id, index: 0})});
+        const postIdAndPosition = response.data.posts.map((post) => {
+          return { postId: post._id, index: 0 };
+        });
         setPrevSlidePosition(postIdAndPosition);
         setnumPosts((prev) => prev + 1);
       } else {
@@ -267,32 +270,30 @@ export default function Profile() {
     }
   };
 
-  const createComment = async (e,postId) => {
+  const createComment = async (e, postId) => {
     e.preventDefault();
-    console.log("INSIDE COMMENT")
+    console.log("INSIDE COMMENT");
     try {
       const response = await axios({
         method: "post",
-        url: `http://localhost:4000/post/${postId}/createcomment`, 
+        url: `http://localhost:4000/post/${postId}/createcomment`,
         data: {
-          description: commentForm.description
-        }, 
+          description: commentForm.description,
+        },
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       if (response) {
-        //gotta figure out better way 
+        //gotta figure out better way
         getUser();
-      }
-      else {
+      } else {
         console.log("no response");
       }
-    }
-    catch (e) {
+    } catch (e) {
       console.log(e.message);
     }
-  }
+  };
 
   //still need the page to update when a comment is added
 
@@ -335,7 +336,7 @@ export default function Profile() {
     getUser();
   };
 
-  const likeAPost = async(postId) => {
+  const likeAPost = async (postId) => {
     try {
       const response = await axios({
         method: "post",
@@ -343,65 +344,63 @@ export default function Profile() {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      })
+      });
       if (response) {
         console.log(response.data);
         getUser();
       }
+    } catch (e) {
+      console.log(e.message);
     }
-    catch (e) {
-      console.log(e.message); 
-    }
-  }
+  };
 
   const saveAWorkout = async (workoutId) => {
-    "saving workout"
-    try { const response = await axios({
-      method: "post",
-      url: `http://localhost:4000/saveworkout/${workoutId}`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-    if (response) {
-      console.log("SAVING WORKOUT", response.data.workout);
-      setSavedWorkouts(response.data.saved);  
-      //figure out another way to update saved/unsaved without needing to call this function
-      getUser(); 
-      // setWorkouts(response.data.workout);
-    }
-    else {
-      throw Error("No response");
-    }
-  }
-  catch (e) {
-    console.log(e);
-  }
-  }
-
-  const deleteSavedWorkout = async (workoutId) => {
-    console.log("IN DELETE ROUTE SAVE WORKOUT")
+    "saving workout";
     try {
       const response = await axios({
-        method: "delete", 
+        method: "post",
+        url: `http://localhost:4000/saveworkout/${workoutId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response) {
+        console.log("SAVING WORKOUT", response.data.workout);
+        setSavedWorkouts(response.data.saved);
+        //figure out another way to update saved/unsaved without needing to call this function
+        getUser();
+        // setWorkouts(response.data.workout);
+      } else {
+        throw Error("No response");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const deleteSavedWorkout = async (workoutId) => {
+    console.log("IN DELETE ROUTE SAVE WORKOUT");
+    try {
+      const response = await axios({
+        method: "delete",
         url: `http://localhost:4000/unsaveworkout/${workoutId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      })
+      });
       if (response) {
-        setSavedWorkouts((prev) => prev.filter((workout) => workout._id !== response.data.workoutId));
+        setSavedWorkouts((prev) =>
+          prev.filter((workout) => workout._id !== response.data.workoutId)
+        );
         //figure out another way to update saved/unsaved without needing to call this function
-        getUser(); 
+        getUser();
+      } else {
+        throw Error("no response");
       }
-      else {
-        throw Error("no response")
-      }
-    }
-    catch (e) {
+    } catch (e) {
       console.log(e.message);
     }
-  }
+  };
 
   const unlikeAPost = async (postId) => {
     console.log("UNLIKEE");
@@ -412,16 +411,15 @@ export default function Profile() {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      })
+      });
       if (response) {
         console.log(response.data);
         getUser();
       }
-    }
-    catch (e) {
+    } catch (e) {
       console.log(e.message);
     }
-  }
+  };
 
   const clickEditWorkout = async (workoutId) => {
     // setWorkoutName()
@@ -485,14 +483,12 @@ export default function Profile() {
       if (response) {
         getUser();
       }
-      }
-    catch (e) {
+    } catch (e) {
       console.log(e.message);
     }
-  }
+  };
 
   const deletePost = async (postId) => {
-  
     try {
       const response = await axios({
         method: "delete",
@@ -767,47 +763,43 @@ export default function Profile() {
     }
   };
 
-
-
   const nextSlide = (imglength, postId) => {
-      setPrevSlidePosition(prevSlides => {
-        return prevSlides.map(slide => {
-          if (slide.postId === postId) {
-            if (slide.index === imglength-1) {
-              return { ...slide, index: 0 };
-            }
-            else {
-              return {...slide, index: slide.index+1}
-            }
+    setPrevSlidePosition((prevSlides) => {
+      return prevSlides.map((slide) => {
+        if (slide.postId === postId) {
+          if (slide.index === imglength - 1) {
+            return { ...slide, index: 0 };
           } else {
-            return slide;
+            return { ...slide, index: slide.index + 1 };
           }
-        });
+        } else {
+          return slide;
+        }
       });
-    console.log('next' , prevSlidePosition);
-  }
+    });
+    console.log("next", prevSlidePosition);
+  };
 
-  const prevSlide = (imglength,postId) => {
-      setPrevSlidePosition(prevSlides => {
-        return prevSlides.map(slide => {
-          if (slide.postId === postId) {
-            if (slide.index === 0) {
-            return { ...slide, index: imglength-1 };
-            }
-            else {
-              return {...slide, index: slide.index-1}
-            }
+  const prevSlide = (imglength, postId) => {
+    setPrevSlidePosition((prevSlides) => {
+      return prevSlides.map((slide) => {
+        if (slide.postId === postId) {
+          if (slide.index === 0) {
+            return { ...slide, index: imglength - 1 };
           } else {
-            return slide;
+            return { ...slide, index: slide.index - 1 };
           }
-        });
+        } else {
+          return slide;
+        }
       });
-    console.log('prev',prevSlidePosition);
-  }
+    });
+    console.log("prev", prevSlidePosition);
+  };
 
   const toggleProfileInfo = () => {
-      setProfileInfoModal(!profileInfoModal);
-  }
+    setProfileInfoModal(!profileInfoModal);
+  };
 
   const updatePicture = async (e) => {
     e.preventDefault();
@@ -835,35 +827,37 @@ export default function Profile() {
         setUserPicUrl(response.data.user.picture[0].url);
         getUser();
         toggleProfileInfo(!profileInfoModal);
-
       } else {
         throw Error("no response");
       }
     } catch (e) {
       console.log(e);
     }
-  }
+  };
 
   return (
     <div className="App">
-      
       <ProfileMain>
-
         <TagInfo className="tag">
           <ImageContainer>
-            <div className="profilepic"> 
-                <img src={userPicUrl}></img>
-                </div>
-            <h2> {user.fname} {user.lname} </h2> 
-           
+            <div className="profilepic">
+              <img src={userPicUrl}></img>
+            </div>
+            <h2>
+              {" "}
+              {user.fname} {user.lname}{" "}
+            </h2>
           </ImageContainer>
           <UserInformation>
             <UserContact>
-              <h3> @ { username }</h3>
-              <div>
-                {loggedInId === id ?
-                <button onClick={toggleProfileInfo}> Edit Profile </button>
-            : following.some((user) => user._id === id) ? (
+              <h3> @ {username}</h3>
+              <div className="edit-profile-icon">
+                {loggedInId === id ? (
+                  <div onClick={toggleProfileInfo}>
+                    {" "}
+                    <EditProfileIcon />
+                  </div>
+                ) : following.some((user) => user._id === id) ? (
                   <FollowButton followed="false" onClick={() => unfollow(id)}>
                     {" "}
                     Unfollow{" "}
@@ -884,9 +878,7 @@ export default function Profile() {
             </UserStats>
             <About>
               {/* <div className="about-header">About Me</div> */}
-              <div>
-                {user.bio}
-              </div>
+              <div>{user.bio}</div>
             </About>
           </UserInformation>
           {/* is user logged in the person your page is on ? if not, show follow/unfollow depending on if the person is in the user's follow list */}
@@ -941,19 +933,19 @@ export default function Profile() {
             updateAddExerciseEdit={updateAddExerciseEdit}
           />
         )}
-        {profileInfoModal &&
-        <Modal>
-          <ModalOverlay onClick={toggleProfileInfo}> </ModalOverlay>
-            <div className="modal-content"> 
-                 <EditProfileForm
-                    handlePicChange={handlePicChange}
-                    updatePicture={updatePicture}
-                    profileInfo={profileInfo}
-                    handleProfileInfoChange={handleProfileInfoChange}
-                  /> 
+        {profileInfoModal && (
+          <Modal>
+            <ModalOverlay onClick={toggleProfileInfo}> </ModalOverlay>
+            <div className="modal-content">
+              <EditProfileForm
+                handlePicChange={handlePicChange}
+                updatePicture={updatePicture}
+                profileInfo={profileInfo}
+                handleProfileInfoChange={handleProfileInfoChange}
+              />
             </div>
-        </Modal>
-      }
+          </Modal>
+        )}
 
         <TabBar
           //props for WORKOUTS
@@ -961,7 +953,7 @@ export default function Profile() {
           handleExerciseForm={handleExerciseForm}
           workoutName={workoutName}
           handleNameChange={handleNameChange}
-          toggleAddWorkoutModal ={toggleAddWorkoutModal }
+          toggleAddWorkoutModal={toggleAddWorkoutModal}
           workouts={workouts}
           loggedInId={loggedInId}
           id={id}
@@ -971,7 +963,7 @@ export default function Profile() {
           activeDropdown={activeDropdown}
           saveAWorkout={saveAWorkout}
           workoutId={workoutId}
-          savedWorkouts={savedWorkouts} 
+          savedWorkouts={savedWorkouts}
           deleteSavedWorkout={deleteSavedWorkout}
           //props for POSTS
           user={user}
@@ -985,16 +977,14 @@ export default function Profile() {
           handleFileUpload={handleFileUpload}
           nextSlide={nextSlide}
           prevSlide={prevSlide}
-          deletePost={deletePost} 
+          deletePost={deletePost}
           prevSlidePosition={prevSlidePosition}
           commentForm={commentForm}
           createComment={createComment}
           deleteComment={deleteComment}
           setPrevSlidePosition={setPrevSlidePosition}
-         
         />
       </ProfileMain>
-
     </div>
   );
 }
