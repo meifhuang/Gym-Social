@@ -15,6 +15,10 @@ export const StyledNav = styled.nav`
     margin-left: auto;
   }
 
+  & a {
+    text-decoration: none;
+    color: black;
+  }
 `;
 
 export const NavTabContainer = styled.div`
@@ -30,15 +34,17 @@ export const NavTabDropdown = styled.div`
   width: 100%;
   top: 100%;
   background-color: #f7f4f4;
-right: 0;
-
-
+  right: 0;
 `;
 export const NavTab = styled.div`
-  &:hover {
+  & a:hover {
     transition: 0.1s;
-    color: #95c295;
+    color: ${(props) => props.theme.colors.green};
     cursor: pointer;
+  }
+
+  & .active {
+    color: ${(props) => props.theme.colors.green};
   }
 `;
 export const NavTab2 = styled.div`
@@ -52,21 +58,27 @@ export const NavTab2 = styled.div`
   font-weight: 700;
   margin-right: 3rem;
 
-  &:last-child{
-   margin-bottom: ${(props) => (props.isOpen ? "1rem" : "0")};
+  & a::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 2px;
+  background: ${(props) => props.theme.colors.green};
+  transition: width .15s ease-in;
+}
+
+& a:hover::after {
+  width: 100%;
+}
+
+  &:last-child {
+    margin-bottom: ${(props) => (props.isOpen ? "1rem" : "0")};
   }
-  &>* {
-    border-bottom: 2px solid #95c295;
-  }
-  & >*:hover {
-    transition: 0.1s;
-    color: #95c295;
-    cursor: pointer;
-    /* border: 1px solid red; */
-  }
+  
+
 
   @media all and (min-width: ${(props) => props.theme.breakpoint.mobile}) {
-    height: 0
+    height: 0;
   }
 `;
 
@@ -78,6 +90,16 @@ export const StyledProfileTabs = styled.div`
   font-family: century-gothic, sans-serif;
   text-transform: uppercase;
   font-weight: 600;
+  display: none;
+
+  /* & .nav-tabs {
+    border: 1px solid red;
+    display: none;
+  } */
+
+  @media all and (min-width: ${(props) => props.theme.breakpoint.mobile}) {
+    display: flex;
+  }
 `;
 
 export const DropdownItem = styled.ul`
@@ -87,6 +109,13 @@ export const DropdownItem = styled.ul`
   padding: 0.5rem;
   text-transform: none;
   cursor: pointer;
+
+  &:hover,
+  & a:hover {
+    transition: 0.1s;
+    color: ${(props) => props.theme.colors.green};
+    cursor: pointer;
+  }
 
   &:nth-child(even) {
     border-top: 2px solid ${(props) => props.theme.colors.lightgrey};

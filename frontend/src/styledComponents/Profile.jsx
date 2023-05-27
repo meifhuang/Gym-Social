@@ -56,6 +56,8 @@ export const TagInfo = styled.div`
   border-radius: 0.25rem;
   padding: 3rem;
   gap: 3rem;
+
+
   img {
     width: 200px;
   }
@@ -71,6 +73,12 @@ export const TagInfo = styled.div`
     align-self: center;
   }
 
+  .edit-profile-icon {
+    /* border: 1px solid red; */
+    position: absolute;
+    right: 0;
+  }
+
   @media all and (max-width: ${(props) => props.theme.breakpoint.md}) {
     flex-direction: column;
     padding: 2rem;
@@ -79,9 +87,13 @@ export const TagInfo = styled.div`
 `;
 
 export const UserInformation = styled(CenteredFlexColumn)`
+
+ position: relative;
   align-items: start;
   gap: 1rem;
-  padding: 2rem;
+  padding: 1rem 2rem;
+  flex: 1;
+ 
 
   @media all and (max-width: ${(props) => props.theme.breakpoint.md}) {
     align-items: center;
@@ -90,6 +102,7 @@ export const UserInformation = styled(CenteredFlexColumn)`
 
 export const ImageContainer = styled(CenteredFlexColumn)`
   gap: 1rem;
+
   .profilepic {
     cursor: pointer;
     border-radius: 50%;
@@ -104,6 +117,7 @@ export const ImageContainer = styled(CenteredFlexColumn)`
     height: 100%;
     object-fit: cover;
   }
+
 `;
 
 export const UserContact = styled.div`
@@ -112,6 +126,7 @@ export const UserContact = styled.div`
   justify-content: center;
 
   gap: 1rem;
+
 `;
 
 export const UserStats = styled.div`
@@ -289,7 +304,7 @@ export const Modal = styled.div`
     border-radius: 5px;
     max-width: 600px;
     min-width: 500px;
-    border: 1px solid blue;
+
     display: flex;
     flex-direction: column;
     align-items: center;

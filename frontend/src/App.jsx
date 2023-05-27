@@ -39,6 +39,7 @@ function App() {
     // },
     colors: {
       lightgrey: "#e9e4e4;",
+      green: " #95c295"
     },
     breakpoint: {
       xxxs: "0px",
