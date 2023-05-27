@@ -34,7 +34,7 @@ export const HeroInfo = styled.div`
     display: flex;
     align-items: end;
   }
-
+/* 
   & button {
     padding: 1rem 2rem;
     border-radius: 4rem;
@@ -42,11 +42,12 @@ export const HeroInfo = styled.div`
     font-size: 1rem;
     width: 250px;
     font-weight: 600;
+    border: 1px solid red;
   }
 
   & button:hover {
     background-color: #D3D3D3;
-  }
+  } */
 
   @media screen and (max-width: ${(props) => props.theme.breakpoint.lg}) {
     flex-direction: column;
@@ -56,6 +57,20 @@ export const HeroInfo = styled.div`
     }
   }
 `;
+
+export const HeroButton = styled.button`
+ padding: 1rem 2rem;
+    border-radius: 4rem;
+    border: none;
+    font-size: 1rem;
+    width: 250px;
+    font-weight: 600;
+    /* border: 1px solid red; */
+
+    &:hover {
+    background-color: #D3D3D3;
+  }
+`
 
 export const ImageText = styled.div`
   position: absolute;
