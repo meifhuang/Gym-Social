@@ -258,11 +258,11 @@ export default function Post({
                     <PostLikesComments>
                       <div>
                         <HeartIcon />
-                        <span>100</span>
+                        <span>{post.likedBy.length}</span>
                       </div>
                       <div>
                         <CommentIcon />
-                        <span>100</span>
+                        <span>{post.comments.length}</span>
                       </div>
                     </PostLikesComments>
                   )}
