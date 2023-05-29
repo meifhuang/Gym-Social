@@ -238,12 +238,10 @@ export const PostFormStyle = styled.div`
 
 export const WorkoutContainer = styled.div`
   display: grid;
-  /* flex-direction: column; */
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  /* grid-template-columns: repeat(auto-fit, 400px); */
-  /* padding: 0rem 2rem; */
   gap: 1rem;
   grid-auto-rows: minmax(340px, 1fr);
+  
 
   @media all and (max-width: ${(props) => props.theme.breakpoint.xxs}) {
     grid-template-columns: repeat(auto-fill, 1fr);
@@ -269,6 +267,7 @@ export const WorkoutDivHeader = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  border: 1px solid red;
 `;
 
 export const WorkoutButtonContainer = styled.div`
@@ -289,6 +288,7 @@ export const WorkoutInfoContainer = styled.div`
   text-align: center;
   letter-spacing: 0.5px;
   /* background-color: white; */
+  border: 1px solid red;
 `;
 
 export const WorkoutInfo = styled.div`
