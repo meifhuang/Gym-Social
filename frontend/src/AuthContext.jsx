@@ -15,9 +15,10 @@ export const AuthContextProvider = (props) => {
     const [userId, setUserId] = useState(""); 
     const [hasToken, setHasToken] = useState(localStorage.getItem("token"));
     const [token, setToken] = useState("");
+    const [userPicUrl, setUserPicUrl] = useState("");
 
     return (
-        <AuthContext.Provider value={{ username, setUsername, userId, setUserId, hasToken, setHasToken, token, setToken}}>
+        <AuthContext.Provider value={{ username, setUsername, userId, setUserId, hasToken, setHasToken, token, setToken, userPicUrl, setUserPicUrl}}>
             {props.children}
         </AuthContext.Provider>
     )

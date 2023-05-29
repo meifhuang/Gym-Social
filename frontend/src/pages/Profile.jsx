@@ -50,8 +50,10 @@ export default function Profile() {
   const exerciseDB = useLoaderData();
 
   const { id } = useParams();
-  const { token, userId } = useContext(AuthContext);
+  const { token, userId, userPicUrl, setUserPicUrl } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  console.log(id, "AIDIDIDIDIDIDIDI")
 
   const stats = {
     name: "",
@@ -68,7 +70,9 @@ export default function Profile() {
 
   const [username, setUsername] = useState("");
   const [user, setUser] = useState([]);
-  const [userPicUrl, setUserPicUrl] = useState("");
+  // const [userPicUrl, setUserPicUrl] = useState("");
+
+  
 
   //forms
   const [showExerciseForm, setShowExerciseForm] = useState(true);
@@ -233,7 +237,7 @@ export default function Profile() {
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [id, userPicUrl]);
 
   const createPost = async (e) => {
     e.preventDefault();
