@@ -200,6 +200,16 @@ export const PostModalStyle = styled.div`
 `;
 
 export const PostStyle = styled.div`
+  /* .post {
+  width: 400px;
+  border: 1px solid red;
+} */
+
+  .post.newsfeed {
+    width: 400px;
+    border: 1px solid ${(props) => props.theme.colors.lightgrey};
+    border-radius: .5rem;
+  }
   .post-options {
     display: flex;
     justify-content: space-between;
@@ -304,7 +314,7 @@ export const PostStyle = styled.div`
   ;
   } */
 
-  .post-img-div {
+  .post.profile .post-img-div {
     position: relative;
     transition: 0.1s;
     cursor: pointer;
@@ -378,7 +388,7 @@ export const PostLikesComments = styled.div`
 `;
 
 export const PostImageContainer = styled.div`
-  .post-img-div {
+  .profile.post-img-div {
     opacity: 0.9;
     filter: ${(props) =>
       props.showLikesComments ? "brightness(60%)" : "brightness(1)"};

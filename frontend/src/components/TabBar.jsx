@@ -149,7 +149,8 @@ const TabBar = ({
                 commentForm={commentForm}
                 handleCommentChange={handleCommentChange}
                 createComment={createComment}
-                deleteComment={deleteComment}
+                  deleteComment={deleteComment}
+                  page="profile"
              /> )
               })}
 
