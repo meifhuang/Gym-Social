@@ -30,7 +30,6 @@ export const FormContainer = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  /* border: 1px solid red; */
   margin: 2rem;
 
   & h2 {
@@ -52,13 +51,20 @@ export const FormContainer = styled.div`
       props.theme.breakpoint.mobile}) {
     & {
       width: 700px;
-      
     }
+  }
 
-    /* & h2 {
+  @media only screen and (min-width: ${(props) =>
+      props.theme.breakpoint.mobile}) and (max-width: ${(props) =>
+      props.theme.breakpoint.lg}) {
+    & {
+      margin-left: 1rem;
+    }
+  }
+
+  /* & h2 {
       margin-left: auto
     } */
-  }
 `;
 export const StyledForm = styled.form`
   display: flex;
@@ -69,7 +75,7 @@ export const StyledForm = styled.form`
 
   @media only screen and (max-width: ${(props) => props.theme.breakpoint.xxl}) {
     & {
-      width:60%;
+      width: 60%;
     }
   }
 
@@ -77,10 +83,7 @@ export const StyledForm = styled.form`
     & {
       width: 60%;
     }
-
   }
-
-
 
   @media only screen and (max-width: ${(props) => props.theme.breakpoint.lg}) {
     & {
@@ -88,7 +91,9 @@ export const StyledForm = styled.form`
     }
   }
 
-  @media only screen and (min-width:${(props) => props.theme.breakpoint.mobile} ) and (max-width: ${(props) => props.theme.breakpoint.lg}) {
+  @media only screen and (min-width: ${(props) =>
+      props.theme.breakpoint.mobile}) and (max-width: ${(props) =>
+      props.theme.breakpoint.lg}) {
     & {
       width: 80%;
     }
@@ -96,13 +101,13 @@ export const StyledForm = styled.form`
 
   @media only screen and (min-width: ${(props) => props.theme.breakpoint.xxl}) {
     & {
-      width:55%;
+      width: 55%;
     }
   }
 
   @media only screen and (min-width: 1800px) {
     & {
-      width:45%;
+      width: 45%;
     }
   }
 
@@ -183,6 +188,14 @@ export const Image = styled.img`
   @media only screen and (max-width: ${(props) => props.theme.breakpoint.xl}) {
     & {
       width: 300px;
+    }
+  }
+
+  @media only screen and (min-width: ${(props) =>
+      props.theme.breakpoint.mobile}) and (max-width: ${(props) =>
+      props.theme.breakpoint.lg}) {
+    & {
+      /* margin-right: 0 */
     }
   }
 `;

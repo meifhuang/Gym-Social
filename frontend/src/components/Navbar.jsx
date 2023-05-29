@@ -105,12 +105,14 @@ export default function Navbar(props) {
             </>
           ) : (
             <NavTabContainer>
-              <NavTab className="nav-tab">Home</NavTab>
-              <NavTab className="nav-tab" onClick={() => navigate("/about")}>
-                About
+              <NavTab className="nav-tab">
+                <NavLink to="/">HOME</NavLink>
               </NavTab>
-              <NavTab className="nav-tab" onClick={() => navigate("/login")}>
-                Login
+              <NavTab className="nav-tab">
+                <NavLink to="/about">ABOUT</NavLink>
+              </NavTab>
+              <NavTab className="nav-tab">
+                <NavLink to="/login">LOGIN</NavLink>
               </NavTab>
             </NavTabContainer>
           )}

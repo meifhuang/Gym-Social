@@ -364,6 +364,7 @@ function EditProfileIcon() {
       width="24"
       height="24"
       focusable="false"
+      title="asdsad"
     >
       <path d="M21.13 2.86a3 3 0 00-4.17 0l-13 13L2 22l6.19-2L21.13 7a3 3 0 000-4.16zM6.77 18.57l-1.35-1.34L16.64 6 18 7.35z"></path>
     </svg>

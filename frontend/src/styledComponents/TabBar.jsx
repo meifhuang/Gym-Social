@@ -6,6 +6,8 @@ export const TabBarContainer = styled.div`
   position: relative;
   word-break: break-all;
   /* position: relative; */
+  border: 1px solid green;
+  width: 100%;
 `;
 
 export const TabContainer = styled.div`
@@ -14,23 +16,15 @@ export const TabContainer = styled.div`
   gap: 1rem;
   /* position: relative; */
   width: 100%;
+
 `;
 
 export const CreateWorkoutContainer = styled.div`
   position: absolute;
-  /* margin-left: auto; */
-  /* margin-right: auto; */
-  /* left: 0; */
-  /* top: 0; */
-  /* bottom: 0; */
   top: 0;
   margin-top: 1rem;
   right: 0;
   text-align: center;
-  /* border: 1px solid red; */
-  /* display: flex;
-justify-content: center;
-align-items: center; */
   & button {
     background: none;
     display: flex;

@@ -16,11 +16,18 @@ export const CenteredFlexRow = styled.div`
 export const ProfileMain = styled.main`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 2rem;
   margin: 0rem calc(1rem + 5vw);
   gap: 2rem;
+  border: 1px solid blue;
 
-`
+  @media all and (max-width: ${(props) => props.theme.breakpoint.xxs}) {
+    padding: 0;
+    /* margin: .5rem; */
+  }
+`;
 
 export const ProfileComp = styled.main`
   /* background-color: lightblue; */
@@ -52,11 +59,12 @@ export const ProfileComp = styled.main`
 export const TagInfo = styled.div`
   display: flex;
   /* margin: 2rem; */
-  border-bottom: 2px solid rgb(163, 158, 158); 
+  border-bottom: 2px solid rgb(163, 158, 158);
   border-radius: 0.25rem;
   padding: 3rem;
   gap: 3rem;
-
+  border: 1px solid green;
+  width: 100%;
 
   img {
     width: 200px;
@@ -74,29 +82,43 @@ export const TagInfo = styled.div`
   }
 
   .edit-profile-icon {
-    /* border: 1px solid red; */
-    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     right: 0;
+    transition: 0.1s;
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    align-self: end;
   }
 
-  @media all and (max-width: ${(props) => props.theme.breakpoint.md}) {
+  .edit-profile-icon:hover {
+    background-color: rgba(218, 221, 225, 0.377);
+  }
+
+  @media all and (max-width: ${(props) => props.theme.breakpoint.lg}) {
     flex-direction: column;
     padding: 2rem;
     gap: 1rem;
+    /* background-color: red; */
   }
 `;
 
 export const UserInformation = styled(CenteredFlexColumn)`
-
- position: relative;
+  position: relative;
   align-items: start;
   gap: 1rem;
   padding: 1rem 2rem;
   flex: 1;
- 
+  border: 1px solid red;
 
   @media all and (max-width: ${(props) => props.theme.breakpoint.md}) {
     align-items: center;
+  }
+
+  @media all and (max-width: ${(props) => props.theme.breakpoint.xxs}) {
+    padding: 0;
   }
 `;
 
@@ -110,29 +132,49 @@ export const ImageContainer = styled(CenteredFlexColumn)`
     width: 200px;
     height: 200px;
   }
-  
 
   .profilepic img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-
 `;
 
 export const UserContact = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-
+  justify-content: space-between;
+  width: 100%;
   gap: 1rem;
-
 `;
 
 export const UserStats = styled.div`
   display: flex;
   align-items: center;
+
   gap: 1rem;
+  border: 1px solid blue;
+
+  & > * {
+    border: 1px solid red;
+  }
+
+  @media all and (max-width: ${(props) => props.theme.breakpoint.mobile}) {
+    /* & > * {
+  border: 1px solid red;
+  flex: 1
+} */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr 1fr;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    width: 100%
+    /* & > * {
+      flex: 1;
+    } */
+  }
 `;
 
 export const About = styled(CenteredFlexColumn)`
@@ -163,33 +205,29 @@ export const FollowButton = styled.button`
 // export const UnfollowButton = styled(FollowButton)`
 // `
 
-
 export const PostContainer = styled.div`
   width: 1200px;
   height: 400px;
   border-radius: 5px;
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(3, 1fr);
   justify-content: center;
   align-items: center;
   gap: 2em;
   margin-top: 1em;
-
-`
+`;
 
 export const NewsFeed = styled.div`
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  
-`
+`;
 
 export const PostFormStyle = styled.div`
-    display: flex;
-    justify-content: center;
-`
-
+  display: flex;
+  justify-content: center;
+`;
 
 export const WorkoutContainer = styled.div`
   display: grid;
@@ -222,10 +260,8 @@ width: 250px; */
 export const WorkoutDivHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%
-
+  width: 100%;
 `;
-
 
 export const WorkoutButtonContainer = styled.div`
   display: flex;
@@ -274,9 +310,9 @@ export const ExerciseInfo2 = styled.div`
   flex-direction: column;
   width: 100%;
 
-  &>*:nth-child(1) {
+  & > *:nth-child(1) {
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     align-items: center;
   }
 `;
@@ -398,54 +434,54 @@ export const ModalOverlay = styled.div`
 `;
 
 export const ProPicInfoForm = styled.div`
-height: 300px;
-width: 100%;
-display: flex;
-flex-direction: column;
-justify-content: center;
-margin: 0;
-padding: 0;
-align-items: center;
-
-.profileinfo-title {
-  width: 100%;
-  text-align: center;
-  border-bottom: 1px solid grey;
-  margin-bottom: 1em;
-}
-
-.profile-inputs {
+  height: 300px;
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  margin: 0;
+  padding: 0;
   align-items: center;
-}
-.profile-inputs label {
-  width: 70%;
-}
-input {
-  width: 100%;
-}
-textarea {
-  width: 100%;
-}
-input[type=file]::file-selector-button {
-  border: none;
-  border: 1px solid black;
-  border-radius: 5px; 
-  padding: 5px;
-  margin-left: 5em;
-}
-button {
-  margin-top: 1em;
-  border-radius: 5px; 
-  padding: 8px;
-  background-color: #d5e3f0;
-}
-button:hover {
-  background-color: #c8d9f0;
-}
-`
+
+  .profileinfo-title {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid grey;
+    margin-bottom: 1em;
+  }
+
+  .profile-inputs {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .profile-inputs label {
+    width: 70%;
+  }
+  input {
+    width: 100%;
+  }
+  textarea {
+    width: 100%;
+  }
+  input[type="file"]::file-selector-button {
+    border: none;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    margin-left: 5em;
+  }
+  button {
+    margin-top: 1em;
+    border-radius: 5px;
+    padding: 8px;
+    background-color: #d5e3f0;
+  }
+  button:hover {
+    background-color: #c8d9f0;
+  }
+`;
 export const EditForm = styled.form`
   display: flex;
   justify-content: center;
@@ -478,13 +514,7 @@ export const ArrowSwitch = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
 
-  border-top: 10px solid #7a7777; */
-  /* transition: 0.25s ease-in; */
   .arrow-down {
     transform: rotate(0deg);
   }
@@ -530,11 +560,10 @@ export const WorkoutIcons = styled(CenteredFlexRow)`
   & svg {
     /* border: 1px solid blue; */
   }
-  & svg:hover{
+  & svg:hover {
     /* background-color: crimson; */
-    transition: all .2s;
-    transform : translateY(-1px);
+    transition: all 0.2s;
+    transform: translateY(-1px);
     color: #789b78;
-    
-}
+  }
 `;
