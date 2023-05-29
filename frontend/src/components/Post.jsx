@@ -32,7 +32,9 @@ export default function Post({
   loggedInId,
   deletePost,
   viewProfile,
+  page,
 }) {
+  // console.log(page)
   const [prevSlidePositionShow, setPrevSlidePositionShow] = useState({});
   const [showPost, setShowPost] = useState(false);
   const [postToShow, setPostToShow] = useState([]);
@@ -218,7 +220,7 @@ export default function Post({
   return (
     <>
       <PostStyle>
-        <div className="post">
+        <div className={"post " + page}>
           {url.includes("newsfeed") ? (
             <div className="post-title">
               <img
@@ -238,20 +240,16 @@ export default function Post({
               return slides.postId === post._id ? (
                 <PostImageContainer
                   showLikesComments={showLikesComments}
-                  onMouseEnter={() => setShowLikesComments(true)}
-                  onMouseLeave={() => setShowLikesComments(false)}
+                  onMouseEnter={
+                    page === "profile" ? () => setShowLikesComments(true) : ""
+                  }
+                  onMouseLeave={
+                    page === "profile" ? () => setShowLikesComments(false) : ""
+                  }
                 >
-                  <div
-                    // onMouseOver={() => setShowLikesComments(true)}
-                    className="post-img-div"
-                    // onMouseLeave={() => setShowLikesComments(false)}
-                    // onMouseEnter={() => setShowLikesComments(true)}
-                    // onMouseLeave={() => setShowLikesComments(false)}
-                  >
+                  <div className={"post-img-div " + page}>
                     <img
                       onClick={() => toggleModal(post._id)}
-                      // onMouseOver={() => setShowLikesComments(true)}
-                      // onMouseLeave={() => setShowLikesComments(false)}
                       className="carousel-item carousel-item-visible"
                       src={post.images[slides.index].url}
                     />
