@@ -30,9 +30,10 @@ export default function Post({
   const [commentForm, setCommentForm] = useState({ description: "" });
   const [modal, setModal] = useState(false);
   const [url, setUrl] = useState(""); 
-
+  const [currentdate, setCurrentDate] = useState([]);
   useEffect(()=> {
     setUrl(window.location.href);
+    setCurrentDate(new Date());
   },[])
 
 
@@ -53,6 +54,7 @@ export default function Post({
       if (response) {
         console.log("double checking", response.data.post);
         setPostToShow(response.data.post);
+       
         // setPostToShow(response.data.post);
         const postIdAndPosition = [
           { postId: response.data.post[0]._id, index: 0 },
@@ -185,15 +187,35 @@ export default function Post({
     }
   };
 
+  const dateDiff = (date) => {
+    const diffHours = Math.floor((new Date() - new Date(date)) / (1000 * 3600))
+  
+    if (diffHours <= 1) {
+      return ("less than 1 hour ago")
+    }
+    else if (diffHours >= 24) {
+      const diffDays = Math.floor((new Date() - new Date(date)) / (1000 * 3600 * 24))
+      if (diffDays == 1) {
+        return (diffDays + " day ago")
+      }
+      else {
+        return (diffDays + " days ago")
+      }
+    }
+    else {
+      return (diffHours + " hours ago")
+    }
+  }
+
   return (
     <>
       <PostStyle>
         <div className="post">
-          <div className="post-title"> 
+          { url.includes('newsfeed') ? <div className="post-title"> 
         <img className="userpic-icon" src={post.createdBy[0].picture[0].url}></img>
         <h4> {" "}
                 {post.createdBy[0].fname} {post.createdBy[0].lname}{" "} </h4>
-          </div>
+          </div> : <> </>}
           <div className="carousel">
             {prevSlidePosition.map((slides) => {
               return slides.postId === post._id ? (
@@ -257,6 +279,7 @@ export default function Post({
               <p> {post.caption} </p>
             </div>
             <h4 onClick={() => toggleModal(post._id)}> View Comments </h4>
+             { <h5> {dateDiff(post.createdAt)} </h5> }
             </>
               }
         </div> 

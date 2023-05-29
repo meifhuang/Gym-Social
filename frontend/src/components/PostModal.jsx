@@ -28,6 +28,43 @@ export default function PostModal({
   likeAPost,
   unlikeAPost,
 }) {
+  const dateDiff = (date, type) => {
+    const diffHours = Math.floor((new Date() - new Date(date)) / (1000 * 3600))
+    if (diffHours <= 1) {
+      if (type == 'post') {
+        return "less than 1 hour ago"
+      }
+      else {
+        const diffMinutes = Math.floor((new Date() - new Date(date)) / (1000 * 3600))
+        return diffMinutes + "m"
+      }
+    }
+    else if (diffHours >= 24) {
+      const diffDays = Math.floor((new Date() - new Date(date)) / (1000 * 3600 * 24))
+      if (type == 'post') {
+        if (diffDays == 1) {
+          return (diffDays + " day ago")
+        }
+        else {
+          return (diffDays + " days ago")
+        }
+      }
+      else {
+        return diffDays + "d"
+      }
+    }
+    else {
+      if (type == 'post') {
+      return (diffHours + " hours ago")
+      }
+      else {
+        return diffHours + "h"
+      }
+    }
+  }
+
+
+
   const [showPost, setShowPost] = useState(true);
 
   return (
@@ -39,13 +76,12 @@ export default function PostModal({
               {prevSlidePositionShow.map((slides) => {
                 return slides.postId === posty._id ? (
                   <div className="postimg-div">
-                   
                       <img
                         className="carousel-item carousel-item-visible"
                         src={posty.images[slides.index].url}
                       />
                     
-                    {posty.images ? (
+                    {posty.images.length > 1 ? (
                       <div className="carousel-actions">
                         <button
                           onClick={() =>
@@ -77,29 +113,7 @@ export default function PostModal({
                   <> </>
                 );
               })}
-              {/* {posty.images ? (
-                <div className="carousel-actions">
-                  <button
-                    onClick={() => prevSlideM(posty.images.length, posty._id)}
-                    id={`carousel-button-prev`}
-                    aria-label="Previous"
-                  >
-                    {" "}
-                    &lt;{" "}
-                  </button>
-
-                  <button
-                    onClick={() => nextSlideM(posty.images.length, posty._id)}
-                    id={`carousel-button-next`}
-                    aria-label="Next"
-                  >
-                    {" "}
-                    &gt;{" "}
-                  </button>
-                </div>
-              ) : (
-                <div> </div>
-              )} */}
+            
             </div>
             <PostDetails>
               <div className="caption">
@@ -114,12 +128,8 @@ export default function PostModal({
                   {" "}
                   {posty.createdBy[0].fname} {posty.createdBy[0].lname}{" "}
                 </h4>
-                <p> {posty.caption} </p>
-                {/* {posty.createdBy[0]._id === loggedInId ? (
-                  <DeletePostIcon deletePost={deletePost} postId={posty._id} />
-                ) : (
-                  <></>
-                )} */}
+                <h4> {posty.caption} </h4>
+                <h5> {dateDiff(posty.createdAt, "post")} </h5>
               </div>
               <div className="postlikes-container">
                 <div className="likes">
@@ -142,6 +152,7 @@ export default function PostModal({
                           {comment.createdBy[0].fname}{" "}
                           {comment.createdBy[0].lname} : {comment.description}{" "}
                         </h5>
+                        <p> {dateDiff(comment.createdAt, "comment")} </p>
                         {comment.createdBy[0]._id === loggedInId ? (
                           <div className="delete-comment-icon">
                             <DeleteCommentIcon

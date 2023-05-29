@@ -96,6 +96,9 @@ export default function Profile() {
   const [currentWorkoutName, setCurrentWorkoutName] = useState("");
   const [savedWorkouts, setSavedWorkouts] = useState([]);
 
+  const [errorMessage, setErrorMessage] = useState("");
+    
+
   // const [exerciseDB, setExerciseDB] = useState("");
   const [activeDropdown, setActiveDropdown] = useState("");
 
@@ -832,6 +835,10 @@ export default function Profile() {
       }
     } catch (e) {
       console.log(e);
+      setErrorMessage(e.response.data.message);
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 10000);
     }
   };
 

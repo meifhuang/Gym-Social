@@ -26,6 +26,32 @@ export default function Navbar(props) {
 
   const { hasUserId, hasToken, setHasToken, userId } = useContext(AuthContext);
 
+  const [userPicUrl, setUserPicUrl] = useState("")
+
+  const getUser = async () => {
+    try {
+      const response = await axios({
+        method: "GET",
+        url: "http://localhost:4000/loggedinuser",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      if (response) {
+        console.log(response.data.user)
+        setUserPicUrl(response.data.user.picture[0].url)
+      }
+    }
+    catch (e) {
+      console.log(e.message)
+    }
+  }
+  
+  useEffect(()=> {
+    getUser()
+  },[])
+
+
   const logout = async () => {
     try {
       const response = await axios({
@@ -74,7 +100,7 @@ export default function Navbar(props) {
                 className="menu-trigger"
                 onClick={() => setIsActive(!isActive)}
               >
-                <img src="../src/images/avatar.png" alt="" />
+                <img src={userPicUrl} alt="" />
               </MenuTrigger>
             </>
           ) : (
