@@ -19,7 +19,7 @@ import {
 } from "../styledComponents/Auth";
 
 //images
-import LoginImage from "../images/gym_social_login.png";
+// import LoginImage from "images/gym_social_login.png";
 
 //
 import { FacebookIcon, GoogleIcon } from "../assets/icons.jsx";
@@ -136,7 +136,9 @@ export default function Login(props) {
             </AuthRedirect>
           </StyledForm>
         </FormContainer>
-        <Image src={LoginImage} alt="loading" />
+        <Image
+          // src={LoginImage}
+          src="images/gym_social_login.PNG" alt="loading" />
       </ContainerRowReverse>
     </ContainerColumn>
   );

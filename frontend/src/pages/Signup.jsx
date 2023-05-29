@@ -230,7 +230,10 @@ export default function Signup() {
             </AuthRedirect>
           </StyledForm>
         </FormContainer>
-        <Image src={SignupImage} alt="loading" />
+        <Image
+          // src={SignupImage}
+          src="images/gym_social_on_phone.png"
+          alt="loading" />
       </ContainerRow>
     </ContainerColumn>
   );
