@@ -47,11 +47,13 @@ import {
 } from "../styledComponents/Profile";
 
 export default function Profile() {
-  // const exerciseDB = useLoaderData();
+  const exerciseDB = useLoaderData();
 
   const { id } = useParams();
-  const { token, userId } = useContext(AuthContext);
+  const { token, userId, userPicUrl, setUserPicUrl } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  console.log(id, "AIDIDIDIDIDIDIDI")
 
   const stats = {
     name: "",
@@ -68,7 +70,9 @@ export default function Profile() {
 
   const [username, setUsername] = useState("");
   const [user, setUser] = useState([]);
-  const [userPicUrl, setUserPicUrl] = useState("");
+  // const [userPicUrl, setUserPicUrl] = useState("");
+
+  
 
   //forms
   const [showExerciseForm, setShowExerciseForm] = useState(true);
@@ -233,7 +237,7 @@ export default function Profile() {
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [id, userPicUrl]);
 
   const createPost = async (e) => {
     e.preventDefault();
@@ -512,58 +516,58 @@ export default function Profile() {
     }
   };
 
-  // const addExercise = async (e) => {
-  //   e.preventDefault();
+  const addExercise = async (e) => {
+    e.preventDefault();
 
-  //   const exerciseGif = exerciseDB.find(
-  //     (exerciseDB_exercise) => exerciseDB_exercise.name === exercise.name
-  //   ).gifUrl;
-  //   console.log(exercise.name);
-  //   try {
-  //     console.log("addeddd exercise");
-  //     const res = await axios({
-  //       method: "put",
-  //       url: `http://localhost:4000/workout/${workoutId}/createexercise`,
-  //       data: {
-  //         name: exercise.name,
-  //         weight: exercise.weight,
-  //         sets: exercise.sets,
-  //         reps: exercise.reps,
-  //         gif: exerciseGif,
-  //       },
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       },
-  //     });
+    const exerciseGif = exerciseDB.find(
+      (exerciseDB_exercise) => exerciseDB_exercise.name === exercise.name
+    ).gifUrl;
+    console.log(exercise.name);
+    try {
+      console.log("addeddd exercise");
+      const res = await axios({
+        method: "put",
+        url: `http://localhost:4000/workout/${workoutId}/createexercise`,
+        data: {
+          name: exercise.name,
+          weight: exercise.weight,
+          sets: exercise.sets,
+          reps: exercise.reps,
+          gif: exerciseGif,
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
-  //     if (res) {
-  //       console.log("adding", res.data.exercise);
-  //       setCurrentWorkout([
-  //         ...currentWorkout,
-  //         {
-  //           _id: res.data.exercise._id,
-  //           name: exercise.name,
-  //           weight: exercise.weight,
-  //           sets: exercise.sets,
-  //           reps: exercise.reps,
-  //           gif: exerciseGif,
-  //         },
-  //       ]);
-  //       console.log(
-  //         currentWorkout,
-  //         "CURRENT WORKOUT",
-  //         workoutId,
-  //         "WORKOUTID",
-  //         workouts
-  //       );
-  //     } else {
-  //       console.log("NO RES");
-  //     }
-  //   } catch (e) {
-  //     console.log(e.message);
-  //     console.log(e);
-  //   }
-  // };
+      if (res) {
+        console.log("adding", res.data.exercise);
+        setCurrentWorkout([
+          ...currentWorkout,
+          {
+            _id: res.data.exercise._id,
+            name: exercise.name,
+            weight: exercise.weight,
+            sets: exercise.sets,
+            reps: exercise.reps,
+            gif: exerciseGif,
+          },
+        ]);
+        console.log(
+          currentWorkout,
+          "CURRENT WORKOUT",
+          workoutId,
+          "WORKOUTID",
+          workouts
+        );
+      } else {
+        console.log("NO RES");
+      }
+    } catch (e) {
+      console.log(e.message);
+      console.log(e);
+    }
+  };
 
   const handleExerciseForm = async (e) => {
     e.preventDefault();
@@ -858,11 +862,11 @@ export default function Profile() {
           <UserInformation>
             <UserContact>
               <h3> @ {username}</h3>
-              <div className="edit-profile-icon">
+              {/* <div className="edit-profile-icon"> */}
                 {loggedInId === id ? (
                   <div onClick={toggleProfileInfo}>
                     {" "}
-                    <EditProfileIcon />
+                    <div className="edit-profile-icon"> <EditProfileIcon/>  </div>
                   </div>
                 ) : following.some((user) => user._id === id) ? (
                   <FollowButton followed="false" onClick={() => unfollow(id)}>
@@ -875,7 +879,7 @@ export default function Profile() {
                     Follow{" "}
                   </FollowButton>
                 )}
-              </div>
+              {/* </div> */}
             </UserContact>
             <UserStats>
               <div> Posts {numPosts} </div>
@@ -968,6 +972,7 @@ export default function Profile() {
           clickEditWorkout={clickEditWorkout}
           deleteWorkout={deleteWorkout}
           activeDropdown={activeDropdown}
+          setActiveDropdown={setActiveDropdown}
           saveAWorkout={saveAWorkout}
           workoutId={workoutId}
           savedWorkouts={savedWorkouts}
@@ -990,6 +995,7 @@ export default function Profile() {
           createComment={createComment}
           deleteComment={deleteComment}
           setPrevSlidePosition={setPrevSlidePosition}
+          
         />
       </ProfileMain>
     </div>

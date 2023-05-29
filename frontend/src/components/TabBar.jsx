@@ -53,6 +53,7 @@ const TabBar = ({
   deleteWorkout,
   saveAWorkout, 
   activeDropdown,
+  setActiveDropdown,
   workoutId,
   savedWorkouts,
   deleteSavedWorkout,
@@ -74,7 +75,7 @@ const TabBar = ({
   deletePost,
   likeAPost,
   unlikeAPost,
-  prevSlidePosition
+  prevSlidePosition,
 }) => {
   const [toggleState, setToggleState] = useState(1);
 
@@ -194,6 +195,7 @@ const TabBar = ({
             saveAWorkout={saveAWorkout}
             deleteSavedWorkout={deleteSavedWorkout}
             workoutId={workoutId}
+            setActiveDropdown={setActiveDropdown}
           />
         </div>
 

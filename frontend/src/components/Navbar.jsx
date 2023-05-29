@@ -24,32 +24,8 @@ export default function Navbar(props) {
 
   const [isActive, setIsActive] = useState("");
 
-  const { hasUserId, hasToken, setHasToken, userId } = useContext(AuthContext);
+  const { hasUserId, hasToken, setHasToken, userId, userPicUrl, setUserPicUrl } = useContext(AuthContext);
 
-  const [userPicUrl, setUserPicUrl] = useState("")
-
-  const getUser = async () => {
-    try {
-      const response = await axios({
-        method: "GET",
-        url: "http://localhost:4000/loggedinuser",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      if (response) {
-        console.log(response.data.user)
-        setUserPicUrl(response.data.user.picture[0].url)
-      }
-    }
-    catch (e) {
-      console.log(e.message)
-    }
-  }
-  
-  useEffect(()=> {
-    getUser()
-  },[])
 
 
   const logout = async () => {
@@ -105,12 +81,14 @@ export default function Navbar(props) {
             </>
           ) : (
             <NavTabContainer>
-              <NavTab className="nav-tab">Home</NavTab>
-              <NavTab className="nav-tab" onClick={() => navigate("/about")}>
-                About
+              <NavTab className="nav-tab">
+                <NavLink to="/">HOME</NavLink>
               </NavTab>
-              <NavTab className="nav-tab" onClick={() => navigate("/login")}>
-                Login
+              <NavTab className="nav-tab">
+                <NavLink to="/about">ABOUT</NavLink>
+              </NavTab>
+              <NavTab className="nav-tab">
+                <NavLink to="/login">LOGIN</NavLink>
               </NavTab>
             </NavTabContainer>
           )}

@@ -13,6 +13,7 @@ export const PostModalStyle = styled.div`
     flex-direction: column;
     background-color: white;
     height: 100%;
+    width: 100%;
   }
   .postlikes-container {
     display: flex;
@@ -79,7 +80,7 @@ export const PostModalStyle = styled.div`
   .carousel .carousel-item,
   .carousel .carousel-item-hidden {
     display: none;
-    position: relative; 
+    position: relative;
   }
 
   .carousel .carousel-item-visible {
@@ -199,11 +200,6 @@ export const PostModalStyle = styled.div`
 `;
 
 export const PostStyle = styled.div`
-  .post {
-    border: 1px solid #dadde1;
-    margin: 1.5em;
-    border-radius: 10px;
-  }
   .post-options {
     display: flex;
     justify-content: space-between;
@@ -214,11 +210,11 @@ export const PostStyle = styled.div`
   .post-options .unheart {
     fill: #ff6969;
     color: #ff6969;
-    animation: fade .3s;
+    animation: fade 0.3s;
   }
 
   .post-options .heart {
-    animation: fade .3s;
+    animation: fade 0.3s;
   }
 
   @keyframes fade {
@@ -293,6 +289,27 @@ export const PostStyle = styled.div`
     position: relative;
   }
 
+  .carousel-item {
+    /* border: 1px solid pink; */
+    width: 100%;
+    object-fit: cover;
+    height: 300px;
+    transition: 0.1s;
+    /* z-index: 50; */
+  }
+
+  /* .carousel-item:hover {
+    opacity: 0.9;
+    filter: brightness(60%)
+  ;
+  } */
+
+  .post-img-div {
+    position: relative;
+    transition: 0.1s;
+    cursor: pointer;
+  }
+
   .carousel .carousel-item-visible {
     display: block;
     animation: fade 1.5s;
@@ -321,11 +338,7 @@ export const PostStyle = styled.div`
   h5 {
     margin: 0.5em;
   }
-  img {
-    width: 350px;
-    height: 300px;
-    /* border: 1px solid black; */
-  }
+
   @keyframes fade {
     0% {
       opacity: 0;
@@ -338,6 +351,37 @@ export const PostStyle = styled.div`
     .post {
       flex-direction: row;
     }
+  }
+`;
+
+export const PostLikesComments = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+
+  & > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  & svg {
+    fill: white;
+    margin-right: 0.25rem;
+  }
+`;
+
+export const PostImageContainer = styled.div`
+  .post-img-div {
+    opacity: 0.9;
+    filter: ${(props) =>
+      props.showLikesComments ? "brightness(60%)" : "brightness(1)"};
   }
 `;
 export const PostDetails = styled.div`

@@ -3,17 +3,16 @@ import styled from "styled-components";
 export const FooterContainer = styled.footer`
   background: black;
   color: white;
-  /* height: 10vh; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 4rem;
+  padding: 3rem;
   gap: 2rem;
 
   & svg {
-    width: 1.75rem;
-    height: 1.75rem;
+    width: calc(1.5rem + .5vw);
+    height: calc(1.5rem + .5vw);
     /* border: 1px solid red; */
     fill: white;
   }
@@ -25,7 +24,7 @@ export const FooterContainer = styled.footer`
 
 export const FooterIconContainer = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: calc(.5rem + .2vw);
   justify-content: center;
   align-items: center;
 
@@ -78,6 +77,6 @@ export const CollaboratorsContainer = styled.div`
   }
 
   .collaborator-name {
-    font-size: 1.25rem;
+    font-size: calc(1rem + .5vw);
   }
 `;

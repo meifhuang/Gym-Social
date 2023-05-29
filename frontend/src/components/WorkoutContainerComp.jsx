@@ -29,7 +29,8 @@ const WorkoutContainerComp = ({
   deleteWorkout,
   activeDropdown,
   saveAWorkout,
-  deleteSavedWorkout
+  deleteSavedWorkout,
+  setActiveDropdown
 }) => {
   return (
     <WorkoutContainer className="workouts">

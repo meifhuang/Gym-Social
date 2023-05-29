@@ -6,31 +6,28 @@ export const TabBarContainer = styled.div`
   position: relative;
   word-break: break-all;
   /* position: relative; */
+  width: 100%;
+
 `;
 
 export const TabContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 1rem;
-  /* position: relative; */
   width: 100%;
+
+
+  @media screen and (max-width: ${(props) => props.theme.breakpoint.lg}) {
+    /* justify-content: start; */
+  }
 `;
 
 export const CreateWorkoutContainer = styled.div`
   position: absolute;
-  /* margin-left: auto; */
-  /* margin-right: auto; */
-  /* left: 0; */
-  /* top: 0; */
-  /* bottom: 0; */
   top: 0;
   margin-top: 1rem;
   right: 0;
   text-align: center;
-  /* border: 1px solid red; */
-  /* display: flex;
-justify-content: center;
-align-items: center; */
   & button {
     background: none;
     display: flex;
@@ -45,6 +42,7 @@ align-items: center; */
   }
   & input {
     text-align: center;
+    width: 120px;
   }
 
   & svg {
@@ -53,19 +51,13 @@ align-items: center; */
     /* border: 1px solid red; */
     background: none;
   }
-`;
-// export const Tab = styled.div`
-//   padding: 0.75rem;
-//   text-align: center;
-//   background: white;
-//   cursor: pointer;
-//   box-sizing: content-box;
-//   position: relative;
-//   outline: none;
-//   font-size: 1rem;
-//   color: #a19f9f;
 
-// `;
+  @media screen and (max-width: ${(props) => props.theme.breakpoint.lg}) {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+`;
+
 
 export const TabButton = styled.button`
   /* border: none; */
@@ -73,6 +65,12 @@ export const TabButton = styled.button`
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
+  font-size: min(3vw, 1rem);
+  flex-direction: column;
+
+  @media screen and (max-width: ${(props) => props.theme.breakpoint.xxs}) {
+    flex-direction: column;
+  }
 `;
 
 export const TabIconContainer = styled.span`
@@ -81,6 +79,6 @@ export const TabIconContainer = styled.span`
   align-items: center;
 
   & svg {
-    width: 20px;
+    width: min(5vw, 1.25rem);
   }
 `;
