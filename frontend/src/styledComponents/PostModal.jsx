@@ -101,7 +101,6 @@ export const PostModalStyle = styled.div`
     bottom: 40%;
     padding: 0rem 1rem;
     /* transform: translateY(-50%); */
-
   }
   .carousel .carousel-actions button {
     border-radius: 50px;
@@ -112,10 +111,10 @@ export const PostModalStyle = styled.div`
     cursor: pointer;
     width: 40px;
     height: 40px;
-     background-color: rgba(218, 221, 225, 0.644);
-     display: flex;
-     justify-content: center;
-     align-items: center;
+    background-color: rgba(218, 221, 225, 0.644);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .comment-form {
     height: 50px;
@@ -129,9 +128,7 @@ export const PostModalStyle = styled.div`
     border-radius: 10px;
     border: 1px solid grey;
     /* align-self: end; */
-
   }
-
 
   #description {
     width: 90%;
@@ -213,6 +210,26 @@ export const PostStyle = styled.div`
     align-items: center;
     margin: 0.6em;
   }
+
+  .post-options .unheart {
+    fill: #ff6969;
+    color: #ff6969;
+    animation: fade .3s;
+  }
+
+  .post-options .heart {
+    animation: fade .3s;
+  }
+
+  @keyframes fade {
+    0% {
+      color: white;
+    }
+    100% {
+      color: #e23b3b;
+    }
+  }
+
   b {
     font-weight: 600;
   }
@@ -324,7 +341,6 @@ export const PostStyle = styled.div`
   }
 `;
 export const PostDetails = styled.div`
-
   width: 100%;
   height: 100%;
 
@@ -337,7 +353,6 @@ export const PostDetails = styled.div`
     /* flex: 1;
     overflow: auto; */
   }
-
 
   @media only screen and (min-width: 400px) {
     & .comment-container {

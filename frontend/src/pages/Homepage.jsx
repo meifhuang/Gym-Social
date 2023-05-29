@@ -14,7 +14,11 @@ import {
   TripleImagesHeader,
   TripleSelfieContainer,
   ImageText,
+  HeroButton
 } from "../styledComponents/Home";
+
+//components 
+import { Footer } from "../components/Footer";
 
 //images
 import HomeImage from "../images/gym_social_home2.jpg";
@@ -38,7 +42,7 @@ export default function Homepage(props) {
             </div>
           </div>
           <div>
-            <button className="sign-up" onClick={()=> navigate('/signup')}>Start Your Journey</button>
+            <HeroButton className="sign-up" onClick={()=> navigate('/signup')}>Start Your Journey</HeroButton>
           </div>
         </HeroInfo>
       </HeroContainer>
@@ -68,6 +72,7 @@ export default function Homepage(props) {
           </TripleSelfieContainer>
         </TripleImagesSubcontainer>
       </TripleImagesContainer>
+      <Footer />
     </HomeContainer>
   );
 }
