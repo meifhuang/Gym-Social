@@ -39,6 +39,7 @@ export const ProfileComp = styled.main`
   display: grid;
   grid-template-columns: repeat(8, 1fr);
 
+
   & .tag {
     grid-area: tag;
     grid-column: 1/9;
@@ -60,10 +61,9 @@ export const TagInfo = styled.div`
   display: flex;
   /* margin: 2rem; */
   border-bottom: 2px solid rgb(163, 158, 158);
-  border-radius: 0.25rem;
+  /* border-radius: 0.25rem; */
   padding: 3rem;
   gap: 3rem;
-  border: 1px solid green;
   width: 100%;
 
   img {
@@ -101,7 +101,6 @@ export const TagInfo = styled.div`
     flex-direction: column;
     padding: 2rem;
     gap: 1rem;
-    /* background-color: red; */
   }
 `;
 
@@ -111,7 +110,7 @@ export const UserInformation = styled(CenteredFlexColumn)`
   gap: 1rem;
   padding: 1rem 2rem;
   flex: 1;
-  border: 1px solid red;
+
 
   @media all and (max-width: ${(props) => props.theme.breakpoint.md}) {
     align-items: center;
@@ -151,26 +150,18 @@ export const UserContact = styled.div`
 export const UserStats = styled.div`
   display: flex;
   align-items: center;
-
   gap: 1rem;
-  border: 1px solid blue;
 
-  & > * {
-    border: 1px solid red;
-  }
 
   @media all and (max-width: ${(props) => props.theme.breakpoint.mobile}) {
-    /* & > * {
-  border: 1px solid red;
-  flex: 1
-} */
+
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 1fr 1fr;
     text-align: center;
     justify-content: center;
     align-items: center;
-    width: 100%
+    width: 100%;
     /* & > * {
       flex: 1;
     } */
@@ -232,7 +223,7 @@ export const PostFormStyle = styled.div`
 export const WorkoutContainer = styled.div`
   display: grid;
   /* flex-direction: column; */
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   /* grid-template-columns: repeat(auto-fit, 400px); */
   /* padding: 0rem 2rem; */
   gap: 1rem;
@@ -242,6 +233,7 @@ export const WorkoutContainer = styled.div`
     grid-template-columns: repeat(auto-fill, 1fr);
     grid-auto-rows: minmax(1fr);
   }
+
 `;
 
 export const WorkoutDiv = styled.div`
@@ -514,6 +506,7 @@ export const ArrowSwitch = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px solid red;
 
   .arrow-down {
     transform: rotate(0deg);

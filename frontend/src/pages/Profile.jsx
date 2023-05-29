@@ -968,6 +968,7 @@ export default function Profile() {
           clickEditWorkout={clickEditWorkout}
           deleteWorkout={deleteWorkout}
           activeDropdown={activeDropdown}
+          setActiveDropdown={setActiveDropdown}
           saveAWorkout={saveAWorkout}
           workoutId={workoutId}
           savedWorkouts={savedWorkouts}
@@ -990,6 +991,7 @@ export default function Profile() {
           createComment={createComment}
           deleteComment={deleteComment}
           setPrevSlidePosition={setPrevSlidePosition}
+          
         />
       </ProfileMain>
     </div>
