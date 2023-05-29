@@ -121,8 +121,8 @@ export const DropdownItem = styled.ul`
     cursor: pointer;
   }
 
-  &:nth-child(even) {
-    border-top: 2px solid ${(props) => props.theme.colors.lightgrey};
+  &:nth-child(1) {
+    /* border-top: 2px solid ${(props) => props.theme.colors.lightgrey}; */
     border-bottom: 2px solid ${(props) => props.theme.colors.lightgrey};
   }
 `;

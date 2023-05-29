@@ -72,43 +72,42 @@ const WorkoutContainerComp = ({
                       <ExerciseInfo>
                         <div className="exercise-info-stats">
                           <b> {exercise.name}: </b>
-                          <div>
+                          <div className="lbs-sets-reps">
                             <div>{exercise.weight} lbs - </div>
-                            <div>{exercise.sets} sets -{" "}
-                            </div>
-                            <div>{exercise.reps} reps</div>
+                            <div>{exercise.sets} sets - </div>
+                            <div>{exercise.reps} reps </div>
                             {/* {exercise.weight} lbs - {exercise.sets} sets -{" "}
                             {exercise.reps} - reps */}
                           </div>
-                        </div>
-                        <ArrowSwitch>
-                          <svg
-                            className={
-                              activeDropdown === exercise._id
-                                ? "arrow-up feather feather-chevron-down"
-                                : "arrow-down feather feather-chevron-down"
-                            }
-                            onClick={() => {
-                              if (activeDropdown === exercise._id) {
-                                setActiveDropdown("");
-                              } else {
-                                setActiveDropdown(exercise._id);
+                          <ArrowSwitch component="">
+                            <svg
+                              className={
+                                activeDropdown === exercise._id
+                                  ? "arrow-up feather feather-chevron-down"
+                                  : "arrow-down feather feather-chevron-down"
                               }
-                            }}
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            // class="feather feather-chevron-down"
-                          >
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                          </svg>
-                        </ArrowSwitch>
+                              onClick={() => {
+                                if (activeDropdown === exercise._id) {
+                                  setActiveDropdown("");
+                                } else {
+                                  setActiveDropdown(exercise._id);
+                                }
+                              }}
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              // class="feather feather-chevron-down"
+                            >
+                              <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                          </ArrowSwitch>
+                        </div>
                       </ExerciseInfo>
 
                       <ExerciseImage

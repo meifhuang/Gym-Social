@@ -100,7 +100,7 @@ export default function Navbar(props) {
                 View Profile
               </Link>
             </DropdownItem>
-            <DropdownItem>Edit Profile</DropdownItem>
+            {/* <DropdownItem>Edit Profile</DropdownItem> */}
             <DropdownItem onClick={logout}>Logout</DropdownItem>
           </ProfileDropdown>
         </StyledProfileTabs>

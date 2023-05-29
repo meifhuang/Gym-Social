@@ -37,7 +37,7 @@ export const ProfileComp = styled.main`
   gap: 2rem;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-
+  border: 1px solid red;
 
   & .tag {
     grid-area: tag;
@@ -110,7 +110,6 @@ export const UserInformation = styled(CenteredFlexColumn)`
   padding: 1rem 2rem;
   flex: 1;
 
-
   @media all and (max-width: ${(props) => props.theme.breakpoint.md}) {
     align-items: center;
   }
@@ -151,9 +150,7 @@ export const UserStats = styled.div`
   align-items: center;
   gap: 1rem;
 
-
   @media all and (max-width: ${(props) => props.theme.breakpoint.mobile}) {
-
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 1fr 1fr;
@@ -207,7 +204,6 @@ export const PostContainer = styled.div`
   margin-top: 1em;
   border: 1px solid red; */
 
-
   display: grid;
   /* flex-direction: column; */
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -241,13 +237,11 @@ export const WorkoutContainer = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1rem;
   grid-auto-rows: minmax(340px, 1fr);
-  
 
   @media all and (max-width: ${(props) => props.theme.breakpoint.xxs}) {
     grid-template-columns: repeat(auto-fill, 1fr);
     grid-auto-rows: minmax(1fr);
   }
-
 `;
 
 export const WorkoutDiv = styled.div`
@@ -257,7 +251,7 @@ export const WorkoutDiv = styled.div`
   border: 2px solid rgb(163, 158, 158);
   border-radius: 0.25rem;
   background: ${(props) => props.theme.colors.lightgrey};
-  padding: 2rem;
+  padding: calc(1rem + 0.2vw);
   /* height: 100px;
 width: 250px; */
 `;
@@ -267,7 +261,6 @@ export const WorkoutDivHeader = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  border: 1px solid red;
 `;
 
 export const WorkoutButtonContainer = styled.div`
@@ -281,18 +274,47 @@ export const WorkoutButtonContainer = styled.div`
 `;
 
 export const WorkoutInfoContainer = styled.div`
-  /* border: 1px solid red; */
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   text-align: center;
   letter-spacing: 0.5px;
   /* background-color: white; */
-  border: 1px solid red;
 
   & .exercise-info-stats {
+    /* border: 1px solid red; */
     display: flex;
     flex-direction: column;
+    position: relative;
+    width: 100%;
+    text-align: center;
+  }
+
+  .exercise-info-stats b,
+  .exercise-info-stats .lbs-sets-reps {
+    margin-right: 1.5rem;
+    /* border: 1px solid red; */
+  }
+
+  @media screen and (min-width: 800px) and (max-width: 850px) {
+    .exercise-info-stats b,
+    .exercise-info-stats .lbs-sets-reps {
+      margin-right: 1.5rem;
+    }
+  }
+
+  @media screen and (min-width: 1160px) and (max-width: 1260px) {
+    .exercise-info-stats b,
+    .exercise-info-stats .lbs-sets-reps {
+      margin-right: 1.5rem;
+    }
+  }
+  & .lbs-sets-reps {
+    display: flex;
+    justify-content: center;
+    gap: 0.4rem;
+
+    /* text-align: center; */
   }
 `;
 
@@ -303,7 +325,7 @@ export const WorkoutInfo = styled.div`
   align-items: center;
   border: 1px solid grey;
   border-radius: 0.25rem;
-  padding: 1rem;
+  padding: 1rem 0.75rem;
   /* gap: 1rem; */
   background-color: white;
 
@@ -316,6 +338,24 @@ export const ExerciseInfo = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  position: relative;
+  gap: 1rem;
+
+  & .lbs-sets-reps {
+    display: flex;
+    justify-content: center;
+    gap: 0.4rem;
+
+    /* text-align: center; */
+  }
+  & .exercise-info-icons {
+    display: flex;
+  }
+
+  & svg {
+    width: 20px;
+  }
 `;
 
 export const ExerciseInfo2 = styled.div`
@@ -388,23 +428,9 @@ export const Modal = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: column;
-    /* align-items: center; */
   }
 
-  /* .inputted-exercises:nth-child(1) {
-    flex: 1;
-  } */
-  /* 
-  & div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-  } */
-  /* & img {
- 
-    width: 200px;
-  } */
+
 `;
 export const SelectExerciseBar = styled.select`
   height: 2.3em;
@@ -418,14 +444,33 @@ export const EditDeleteButton = styled.button`
 `;
 
 export const AddExerciseButton = styled.button`
-  width: 8em;
-  height: 2em;
+  width: 7rem;
+  height: 2.5rem;
+  cursor: pointer;
+  background-color: ${(props) => props.theme.colors.lightgrey};
+  border-radius: 0.5rem;
+  margin-left: .5rem;
+  transition: 0.1s;
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.darkgrey};
+  }
 `;
 
 export const AddWorkoutButton = styled.button`
-  width: 8em;
-  height: 2.2em;
-  margin-top: 1em;
+  width: 8rem;
+  height: 2.5rem;
+  margin-top: 1rem;
+  /* border: 1px solid red; */
+  border-radius: 0.5rem;
+  /* padding: .5rem; */
+  background-color: ${(props) => props.theme.colors.lightgrey};
+  transition: 0.1s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.darkgrey};
+  }
 `;
 
 export const FinishEditButton = styled.button`
@@ -443,7 +488,6 @@ export const ModalOverlay = styled.div`
   bottom: 0;
   position: fixed;
   background: rgba(49, 49, 49, 0.8);
-  /* background: red; */
 `;
 
 export const ProPicInfoForm = styled.div`
@@ -527,6 +571,11 @@ export const ArrowSwitch = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: ${(props) =>
+    props.component === "addworkout" ? "relative" : "absolute"};
+  right: 0px;
+  top: 0;
+  /* border: 1px solid red; */
 
   .arrow-down {
     transform: rotate(0deg);
