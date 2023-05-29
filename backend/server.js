@@ -36,7 +36,7 @@ function createServer() {
   const db = mongoose.connection;
   db.on("error", console.error.bind(console, "connection err:"));
   db.once("open", () => {
-    console.log("database connected");
+    console.log("database connected", process.env.MONGO_DB);
   });
   
   // app.use(mongoSanitize());
