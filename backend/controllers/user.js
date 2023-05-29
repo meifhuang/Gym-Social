@@ -15,6 +15,34 @@ router = express.Router();
 
 //**When deleting a user - have to delete their posts and workouts as well */
 
+router.get("/loggedinuser", async (req, res) => {
+  const loggedInId = req.user.id;
+  try { 
+  const user = await User.findById(loggedInId);
+  console.log(user)
+  if (user) {
+    res.status(200).json({
+      success: true,
+      user: user
+    })
+  }
+  else {
+    res.status(400).json({
+      success: false,
+      message: 'cannot find user'
+    })
+  }
+  }
+  catch (e) {
+    res.status(400).json({
+      sucess: false,
+      message: 'error'
+    })
+    console.log(e.message) 
+  }
+})
+
+
 router.get("/profile/:id", async (req, res) => {
   console.log("accessing profile route");
   const loggedInId = req.user.id;
@@ -276,7 +304,16 @@ router.post("/updateuserpic", upload.single('image'), async (req, res) => {
             user.bio = req.body.bio;
         }
         if (req.body.username) {
-            user.username = req.body.username;
+            const usernameexist = await User.find({username: req.body.username});
+            console.log(usernameexist)
+            if (usernameexist.length > 0) {
+              res.status(400).json({
+                message: "Username already exists."
+              })
+            }
+            else {
+              user.username = req.body.username;
+            }
         }
         await user.save();
         res.status(200).json({
