@@ -14,11 +14,7 @@ import {
 } from "../styledComponents/Profile";
 
 //icons
-import {
-  DeleteIcon,
-  SaveIcon,
-  DeleteSaveIcon,
-} from "../assets/icons";
+import { DeleteIcon, SaveIcon, DeleteSaveIcon } from "../assets/icons";
 
 const WorkoutContainerComp = ({
   workouts,
@@ -30,7 +26,7 @@ const WorkoutContainerComp = ({
   activeDropdown,
   saveAWorkout,
   deleteSavedWorkout,
-  setActiveDropdown
+  setActiveDropdown,
 }) => {
   return (
     <WorkoutContainer className="workouts">
@@ -52,14 +48,21 @@ const WorkoutContainerComp = ({
                         workoutId={workout._id}
                       />
                     </>
-                  ) : 
-                  <>
-                  {  !workout.savedBy.includes(loggedInId) ? 
-                    <SaveIcon saveAWorkout={saveAWorkout} workoutId={workout._id} /> :
-                    <DeleteSaveIcon deleteSavedWorkout={deleteSavedWorkout} workoutId={workout._id}/>
-                  }
-                  </> 
-        }
+                  ) : (
+                    <>
+                      {!workout.savedBy.includes(loggedInId) ? (
+                        <SaveIcon
+                          saveAWorkout={saveAWorkout}
+                          workoutId={workout._id}
+                        />
+                      ) : (
+                        <DeleteSaveIcon
+                          deleteSavedWorkout={deleteSavedWorkout}
+                          workoutId={workout._id}
+                        />
+                      )}
+                    </>
+                  )}
                 </WorkoutButtonContainer>
               </WorkoutDivHeader>
               <WorkoutInfoContainer>
@@ -67,8 +70,17 @@ const WorkoutContainerComp = ({
                   return (
                     <WorkoutInfo>
                       <ExerciseInfo>
-                        <b> {exercise.name}: </b> {exercise.weight} lbs -{" "}
-                        {exercise.sets} sets - {exercise.reps} - reps
+                        <div className="exercise-info-stats">
+                          <b> {exercise.name}: </b>
+                          <div>
+                            <div>{exercise.weight} lbs - </div>
+                            <div>{exercise.sets} sets -{" "}
+                            </div>
+                            <div>{exercise.reps} reps</div>
+                            {/* {exercise.weight} lbs - {exercise.sets} sets -{" "}
+                            {exercise.reps} - reps */}
+                          </div>
+                        </div>
                         <ArrowSwitch>
                           <svg
                             className={
@@ -114,7 +126,6 @@ const WorkoutContainerComp = ({
             </WorkoutDiv>
           );
         })}
-        
     </WorkoutContainer>
   );
 };

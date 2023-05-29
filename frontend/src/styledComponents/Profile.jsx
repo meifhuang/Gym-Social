@@ -289,6 +289,11 @@ export const WorkoutInfoContainer = styled.div`
   letter-spacing: 0.5px;
   /* background-color: white; */
   border: 1px solid red;
+
+  & .exercise-info-stats {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 export const WorkoutInfo = styled.div`
