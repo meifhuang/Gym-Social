@@ -77,7 +77,7 @@ router.get(
       process.env.JSONKEY
     );
     res.redirect(
-      `https://gym-social-two.vercel.app/newsfeed?token=${token}&userId=${req.user._id}`
+      `http://localhost:5173/newsfeed?token=${token}&userId=${req.user._id}`
     );
   }
 );
