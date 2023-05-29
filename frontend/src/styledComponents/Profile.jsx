@@ -21,7 +21,6 @@ export const ProfileMain = styled.main`
   padding: 2rem;
   margin: 0rem calc(1rem + 5vw);
   gap: 2rem;
-  border: 1px solid blue;
 
   @media all and (max-width: ${(props) => props.theme.breakpoint.xxs}) {
     padding: 0;
@@ -197,7 +196,7 @@ export const FollowButton = styled.button`
 // `
 
 export const PostContainer = styled.div`
-  width: 1200px;
+  /* width: 1200px;
   height: 400px;
   border-radius: 5px;
   display: grid;
@@ -206,6 +205,21 @@ export const PostContainer = styled.div`
   align-items: center;
   gap: 2em;
   margin-top: 1em;
+  border: 1px solid red; */
+
+
+  display: grid;
+  /* flex-direction: column; */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  /* grid-template-columns: repeat(auto-fit, 400px); */
+  /* padding: 0rem 2rem; */
+  gap: 2rem;
+  grid-auto-rows: minmax(300px, 1fr);
+
+  @media all and (max-width: ${(props) => props.theme.breakpoint.xxs}) {
+    grid-template-columns: repeat(auto-fill, 1fr);
+    grid-auto-rows: minmax(1fr);
+  }
 `;
 
 export const NewsFeed = styled.div`
@@ -506,7 +520,6 @@ export const ArrowSwitch = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid red;
 
   .arrow-down {
     transform: rotate(0deg);

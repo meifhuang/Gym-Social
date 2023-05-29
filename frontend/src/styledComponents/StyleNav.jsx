@@ -100,6 +100,10 @@ export const StyledProfileTabs = styled.div`
   @media all and (min-width: ${(props) => props.theme.breakpoint.mobile}) {
     display: flex;
   }
+
+  & img {
+    object-fit: cover;
+  }
 `;
 
 export const DropdownItem = styled.ul`

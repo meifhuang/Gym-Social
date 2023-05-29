@@ -6,11 +6,21 @@ import axios from "axios";
 import CommentForm from "./CommentForm";
 import PostModal from "./PostModal";
 
-import { Modal} from "../styledComponents/PostModal"
 import { ModalOverlay } from "../styledComponents/Profile";
-import { PostStyle } from "../styledComponents/PostModal";
+import {
+  PostImageContainer,
+  PostLikesComments,
+  PostStyle,
+  Modal,
+} from "../styledComponents/PostModal";
 
-import { HeartIcon, UnHeartIcon, DeletePostIcon, CrossIcon } from "../assets/icons";
+import {
+  HeartIcon,
+  UnHeartIcon,
+  DeletePostIcon,
+  CrossIcon,
+  CommentIcon,
+} from "../assets/icons";
 
 export default function Post({
   post,
@@ -22,26 +32,25 @@ export default function Post({
   loggedInId,
   deletePost,
   viewProfile,
-}) 
-{
+}) {
   const [prevSlidePositionShow, setPrevSlidePositionShow] = useState({});
   const [showPost, setShowPost] = useState(false);
   const [postToShow, setPostToShow] = useState([]);
   const [commentForm, setCommentForm] = useState({ description: "" });
   const [modal, setModal] = useState(false);
-  const [url, setUrl] = useState(""); 
+  const [url, setUrl] = useState("");
   const [currentdate, setCurrentDate] = useState([]);
-  useEffect(()=> {
+  const [showLikesComments, setShowLikesComments] = useState(false);
+  useEffect(() => {
     setUrl(window.location.href);
     setCurrentDate(new Date());
-  },[])
-
+  }, []);
 
   const toggleModal = async (postId) => {
-      setModal(!modal)
-      getPost(postId);
-  }
- 
+    setModal(!modal);
+    getPost(postId);
+  };
+
   const getPost = async (postId) => {
     try {
       const response = await axios({
@@ -54,7 +63,7 @@ export default function Post({
       if (response) {
         console.log("double checking", response.data.post);
         setPostToShow(response.data.post);
-       
+
         // setPostToShow(response.data.post);
         const postIdAndPosition = [
           { postId: response.data.post[0]._id, index: 0 },
@@ -188,42 +197,78 @@ export default function Post({
   };
 
   const dateDiff = (date) => {
-    const diffHours = Math.floor((new Date() - new Date(date)) / (1000 * 3600))
-  
+    const diffHours = Math.floor((new Date() - new Date(date)) / (1000 * 3600));
+
     if (diffHours <= 1) {
-      return ("less than 1 hour ago")
-    }
-    else if (diffHours >= 24) {
-      const diffDays = Math.floor((new Date() - new Date(date)) / (1000 * 3600 * 24))
+      return "less than 1 hour ago";
+    } else if (diffHours >= 24) {
+      const diffDays = Math.floor(
+        (new Date() - new Date(date)) / (1000 * 3600 * 24)
+      );
       if (diffDays == 1) {
-        return (diffDays + " day ago")
+        return diffDays + " day ago";
+      } else {
+        return diffDays + " days ago";
       }
-      else {
-        return (diffDays + " days ago")
-      }
+    } else {
+      return diffHours + " hours ago";
     }
-    else {
-      return (diffHours + " hours ago")
-    }
-  }
+  };
 
   return (
     <>
       <PostStyle>
         <div className="post">
-          { url.includes('newsfeed') ? <div className="post-title"> 
-        <img className="userpic-icon" src={post.createdBy[0].picture[0].url}></img>
-        <h4> {" "}
-                {post.createdBy[0].fname} {post.createdBy[0].lname}{" "} </h4>
-          </div> : <> </>}
+          {url.includes("newsfeed") ? (
+            <div className="post-title">
+              <img
+                className="userpic-icon"
+                src={post.createdBy[0].picture[0].url}
+              ></img>
+              <h4>
+                {" "}
+                {post.createdBy[0].fname} {post.createdBy[0].lname}{" "}
+              </h4>
+            </div>
+          ) : (
+            <> </>
+          )}
           <div className="carousel">
             {prevSlidePosition.map((slides) => {
               return slides.postId === post._id ? (
-                <img
-                  onClick={()=>toggleModal(post._id)}
-                  className="carousel-item carousel-item-visible"
-                  src={post.images[slides.index].url}
-                />
+                <PostImageContainer
+                  showLikesComments={showLikesComments}
+                  onMouseEnter={() => setShowLikesComments(true)}
+                  onMouseLeave={() => setShowLikesComments(false)}
+                >
+                  <div
+                    // onMouseOver={() => setShowLikesComments(true)}
+                    className="post-img-div"
+                    // onMouseLeave={() => setShowLikesComments(false)}
+                    // onMouseEnter={() => setShowLikesComments(true)}
+                    // onMouseLeave={() => setShowLikesComments(false)}
+                  >
+                    <img
+                      onClick={() => toggleModal(post._id)}
+                      // onMouseOver={() => setShowLikesComments(true)}
+                      // onMouseLeave={() => setShowLikesComments(false)}
+                      className="carousel-item carousel-item-visible"
+                      src={post.images[slides.index].url}
+                    />
+                  </div>
+                  {showLikesComments && (
+                    <PostLikesComments>
+                      <div>
+                        <HeartIcon />
+                        <span>100</span>
+                      </div>
+                      <div>
+                        <CommentIcon />
+                        <span>100</span>
+                      </div>
+                    </PostLikesComments>
+                  )}
+                </PostImageContainer>
               ) : (
                 <> </>
               );
@@ -251,38 +296,41 @@ export default function Post({
             ) : (
               <div> </div>
             )}
-            { url.includes('newsfeed') && 
-            <> 
-            <div className="post-options">
-              <div className="likes">
-                {!post.likedBy.includes(loggedInId) ? (
-                  <HeartIcon likeAPost={likeAPost} postId={post._id} />
-                ) : (
-                  <UnHeartIcon unlikeAPost={unlikeAPost} postId={post._id} />
-                )}
-                <p> {post.likedBy.length} likes </p>
-              </div>
-              {post.createdBy[0]._id === loggedInId ? (
-                <DeletePostIcon deletePost={deletePost} postId={post._id} />
-              ) : (
-                <></>
-              )}
-            </div>
-            <div className="caption">
-              <h4
-                className="user-post"
-                onClick={() => viewProfile(post.createdBy[0]._id)}
-              >
-                {" "}
-                {post.createdBy[0].fname} {post.createdBy[0].lname}{" "}
-              </h4>
-              <p> {post.caption} </p>
-            </div>
-            <h4 onClick={() => toggleModal(post._id)}> View Comments </h4>
-             { <h5> {dateDiff(post.createdAt)} </h5> }
-            </>
-              }
-        </div> 
+            {url.includes("newsfeed") && (
+              <>
+                <div className="post-options">
+                  <div className="likes">
+                    {!post.likedBy.includes(loggedInId) ? (
+                      <HeartIcon likeAPost={likeAPost} postId={post._id} />
+                    ) : (
+                      <UnHeartIcon
+                        unlikeAPost={unlikeAPost}
+                        postId={post._id}
+                      />
+                    )}
+                    <p> {post.likedBy.length} likes </p>
+                  </div>
+                  {post.createdBy[0]._id === loggedInId ? (
+                    <DeletePostIcon deletePost={deletePost} postId={post._id} />
+                  ) : (
+                    <></>
+                  )}
+                </div>
+                <div className="caption">
+                  <h4
+                    className="user-post"
+                    onClick={() => viewProfile(post.createdBy[0]._id)}
+                  >
+                    {" "}
+                    {post.createdBy[0].fname} {post.createdBy[0].lname}{" "}
+                  </h4>
+                  <p> {post.caption} </p>
+                </div>
+                <h4 onClick={() => toggleModal(post._id)}> View Comments </h4>
+                {<h5> {dateDiff(post.createdAt)} </h5>}
+              </>
+            )}
+          </div>
         </div>
       </PostStyle>
 
@@ -295,7 +343,9 @@ export default function Post({
                 className=""
               ></ModalOverlay>
               <div className="modal-content">
-                <div onClick={()=> setModal(!modal)} className="cross-icon"><CrossIcon /></div>
+                <div onClick={() => setModal(!modal)} className="cross-icon">
+                  <CrossIcon />
+                </div>
                 <PostModal
                   loggedInId={loggedInId}
                   deletePost={deletePost}
