@@ -7,8 +7,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       external: (id) => {
-        // Exclude React and modules starting with 'react-' or 'react/jsx-runtime'
-        return /^react(-.*)?|^react\/jsx-runtime/.test(id);
+        return /^react(-.*)?|^react\/jsx-runtime|react-is/.test(id);
       },
     },
   },
