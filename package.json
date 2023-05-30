@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "google-auth-library": "^8.8.0",
-    "react-is": "^18.2.0",
     "react-jsx-runtime": "^1.0.0-alpha.1",
     "styled-components": "^5.3.11"
   }
