@@ -172,72 +172,76 @@ const EditWorkoutForm = ({
                 );
               } else {
                 return (
-                  <ExerciseInfo2>
-                    {/* <ExerciseInfo> */}{" "}
-                    <div>
-                      <div>
-                        {exercise.name}: {exercise.weight} lbs - {exercise.sets}{" "}
-                        sets - {exercise.reps} reps
+                  <div className="inputted-exercises">
+                    <ExerciseInfo2>
+                      {/* <ExerciseInfo> */} <b> {exercise.name}: </b>
+                      <div className="lbs-sets-reps">
+                        <div>{exercise.weight} lbs - </div>
+                        <div>{exercise.sets} sets - </div>
+                        <div>{exercise.reps} reps </div>
                       </div>
-                      {editExerciseMode && exercise._id === exerciseId ? (
-                        <button onClick={() => editExercise(exercise._id)}>
-                          confirm edit
-                        </button>
-                      ) : (
+                      <div className="exercise-info-icons">
+                        {editExerciseMode && exercise._id === exerciseId ? (
+                          <button onClick={() => editExercise(exercise._id)}>
+                            confirm edit
+                          </button>
+                        ) : (
+                          <EditDeleteButton
+                            onClick={() => clickEditExercise(exercise._id)}
+                          >
+                            <EditIcon />
+                          </EditDeleteButton>
+                        )}
                         <EditDeleteButton
-                          onClick={() => clickEditExercise(exercise._id)}
+                          onClick={() =>
+                            deleteExercise(workoutId, exercise._id)
+                          }
+                        >
+                          <DeleteIcon />
+                        </EditDeleteButton>
+                        <ArrowSwitch component="addworkout">
+                          <svg
+                            className={
+                              activeDropdown === exercise._id
+                                ? "arrow-up"
+                                : "arrow-down"
+                            }
+                            onClick={() => {
+                              if (activeDropdown === exercise._id) {
+                                setActiveDropdown("");
+                              } else {
+                                setActiveDropdown(exercise._id);
+                              }
+                            }}
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            class="feather feather-chevron-down"
+                          >
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                          </svg>
+                        </ArrowSwitch>
+                      </div>
+   
+                      {/* </ExerciseInfo> */}
+                    </ExerciseInfo2>
+                    <div>
+                        <ExerciseImage
+                          status={
+                            exercise._id === activeDropdown ? "show" : "hide"
+                          }
                         >
                           {" "}
-                          edit{" "}
-                        </EditDeleteButton>
-                      )}
-                      <EditDeleteButton
-                        onClick={() => deleteExercise(workoutId, exercise._id)}
-                      >
-                        {" "}
-                        delete{" "}
-                      </EditDeleteButton>
-                      <ArrowSwitch>
-                        <svg
-                          className={
-                            activeDropdown === exercise._id
-                              ? "arrow-up"
-                              : "arrow-down"
-                          }
-                          onClick={() => {
-                            if (activeDropdown === exercise._id) {
-                              setActiveDropdown("");
-                            } else {
-                              setActiveDropdown(exercise._id);
-                            }
-                          }}
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          class="feather feather-chevron-down"
-                        >
-                          <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                      </ArrowSwitch>
-                    </div>
-                    <div>
-                      <ExerciseImage
-                        status={
-                          exercise._id === activeDropdown ? "show" : "hide"
-                        }
-                      >
-                        {" "}
-                        <img src={exercise.gif} alt="loading..." />
-                      </ExerciseImage>
-                    </div>
-                    {/* </ExerciseInfo> */}
-                  </ExerciseInfo2>
+                          <img src={exercise.gif} alt="loading..." />
+                        </ExerciseImage>
+                      </div>
+                  </div>
                 );
               }
             })}
@@ -291,15 +295,15 @@ const EditWorkoutForm = ({
 
                 <AddExerciseButton disabled={!exercise}>
                   {" "}
-                  Add exercise +{" "}
+                  Add Exercise +{" "}
                 </AddExerciseButton>
               </div>
             </form>
           )}
-          <FinishEditButton onClick={toggleEditWorkoutModal}>
+          {!addExerciseMode && <FinishEditButton onClick={toggleEditWorkoutModal}>
             {" "}
-            Finish editing
-          </FinishEditButton>
+            Finish Editing
+          </FinishEditButton>}
 
           {/* {editMode ? (
                       <button onClick={editWorkout}> Finish editing</button>

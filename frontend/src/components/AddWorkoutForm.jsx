@@ -184,43 +184,22 @@ function AddWorkoutForm({
                   <div className="inputted-exercises">
                     <ExerciseInfo>
                       {" "}
-                      {/* <div>
-                        {exercise.name}: {exercise.weight} lbs - {exercise.sets}{" "}
-                        sets - {exercise.reps} reps
-                      </div> */}
                       <b> {exercise.name}: </b>
                       <div className="lbs-sets-reps">
                         <div>{exercise.weight} lbs - </div>
                         <div>{exercise.sets} sets - </div>
                         <div>{exercise.reps} reps </div>
-                        {/* {exercise.weight} lbs - {exercise.sets} sets -{" "}
-                            {exercise.reps} - reps */}
                       </div>
-                      {/* <EditDeleteButton
-                        onClick={() => clickEditExercise(exercise._id)}
-                      >
-                        {" "}
-                        edit{" "}
-                      </EditDeleteButton> */}
                       <div className="exercise-info-icons">
                         <EditIcon
                           clickEditWorkout={clickEditExercise}
                           workout={exercise}
                         />
-                        {/* )} */}
-                        {/* <EditDeleteButton
-                        onClick={() => deleteExercise(workoutId, exercise._id)}
-                      >
-                        {" "}
-                        delete{" "}
-                      </EditDeleteButton> */}
                         <DeleteIcon
                           deleteWorkout={deleteExercise}
                           workoutId={workoutId}
                           exerciseId={exercise._id}
                         />
-                        {/* <ArrowContainer> */}
-                        {/* <div> */}
                         <ArrowSwitch component="addworkout">
                           <svg
                             className={

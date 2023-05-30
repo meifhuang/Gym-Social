@@ -35,6 +35,7 @@ export default function Post({
   page,
 }) {
   // console.log(page)
+  const BASE_URL = import.meta.env.VITE_URL;
   const [prevSlidePositionShow, setPrevSlidePositionShow] = useState({});
   const [showPost, setShowPost] = useState(false);
   const [postToShow, setPostToShow] = useState([]);
@@ -57,7 +58,7 @@ export default function Post({
     try {
       const response = await axios({
         method: "get",
-        url: `http://localhost:4000/getpost/${postId}`,
+        url: `${BASE_URL}/getpost/${postId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -81,7 +82,7 @@ export default function Post({
     try {
       const response = await axios({
         method: "post",
-        url: `http://localhost:4000/likepost/${postId}`,
+        url: `${BASE_URL}/likepost/${postId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -101,7 +102,7 @@ export default function Post({
     try {
       const response = await axios({
         method: "delete",
-        url: `http://localhost:4000/unlikepost/${postId}`,
+        url: `${BASE_URL}/unlikepost/${postId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -162,7 +163,7 @@ export default function Post({
     try {
       const response = await axios({
         method: "post",
-        url: `http://localhost:4000/post/${postId}/createcomment`,
+        url: `${BASE_URL}/post/${postId}/createcomment`,
         data: {
           description: commentForm.description,
         },
@@ -185,7 +186,7 @@ export default function Post({
     try {
       const response = await axios({
         method: "delete",
-        url: `http://localhost:4000/post/${postId}/comment/${commentId}`,
+        url: `${BASE_URL}/post/${postId}/comment/${commentId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

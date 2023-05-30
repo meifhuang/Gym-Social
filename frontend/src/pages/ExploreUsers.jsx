@@ -4,20 +4,26 @@ import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
 
-import avatar from "../images/avatar.png"
+import avatar from "../images/avatar.png";
 //styled components
-import { ExploreContainer, UserCard, UserCardContainer } from "../styledComponents/Explore";
+import {
+  ExploreContainer,
+  UserCard,
+  UserCardContainer,
+} from "../styledComponents/Explore";
 export default function ExploreUsers() {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loggedInUser, setLoggedInUser] = useState(localStorage.getItem("id"));
   const [notFollowing, setnotFollowing] = useState([]);
+  const BASE_URL = import.meta.env.VITE_URL;
 
   const getOtherUsers = async () => {
+
     try {
       const res = await axios({
         method: "get",
-        url: "http://localhost:4000/explore",
+        url: `${BASE_URL}/explore`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -47,7 +53,6 @@ export default function ExploreUsers() {
     <ExploreContainer>
       <h1> Explore other community members!</h1>
       <UserCardContainer>
-        
         {notFollowing &&
           notFollowing.map((not) => {
             return (
@@ -57,9 +62,13 @@ export default function ExploreUsers() {
                   {" "}
                   {not.fname} {not.lname}{" "}
                 </h3>
-                <div className="usercard-bio">Lorem ipsum dolor sit amet, consectetur Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquam doloremque itaque sapiente cumque enim laboriosam dignissimos, eum vel, sit minima, placeat ducimus excepturi accusantium! Dicta iste neque culpa nobis corrupti!
+                <div className="usercard-bio">
+                  Lorem ipsum dolor sit amet, consectetur Lorem, ipsum dolor sit
+                  amet consectetur adipisicing elit. Aliquam doloremque itaque
+                  sapiente cumque enim laboriosam dignissimos, eum vel, sit
+                  minima, placeat ducimus excepturi accusantium! Dicta iste
+                  neque culpa nobis corrupti!
                 </div>
-
                 <button onClick={() => viewProfile(not._id)}>
                   {" "}
                   View Profile{" "}

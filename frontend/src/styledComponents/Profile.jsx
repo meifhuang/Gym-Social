@@ -359,14 +359,33 @@ export const ExerciseInfo = styled.div`
 `;
 
 export const ExerciseInfo2 = styled.div`
-  display: flex;
+  /* display: flex;
   flex-direction: column;
+  width: 100%; */
+
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center;
   width: 100%;
+  position: relative;
+  gap: 1rem;
+  /* border: 1px solid red; */
 
   & > *:nth-child(1) {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  & .lbs-sets-reps {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  & .exercise-info-icons {
+    display: flex;
+    gap: 0.1rem;
   }
 `;
 
@@ -428,55 +447,45 @@ export const Modal = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: column;
+    text-transform: capitalize;
   }
 
+`;
 
+export const GreyHoverButton = styled.button`
+  cursor: pointer;
+  background-color: ${(props) => props.theme.colors.lightgrey};
+  border-radius: 0.5rem;
+  transition: 0.1s;
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.darkgrey};
+  }
 `;
 export const SelectExerciseBar = styled.select`
   height: 2.3em;
   width: 28em;
 `;
 
-export const EditDeleteButton = styled.button`
-  width: 3.5em;
-  height: 1.8em;
-  margin: 1em 0.5em;
+export const EditDeleteButton = styled.button``;
+
+export const AddExerciseButton = styled(GreyHoverButton)`
+  width: 7.5rem;
+  height: 2.1rem;
+  margin-left: 0.5rem;
+
 `;
 
-export const AddExerciseButton = styled.button`
-  width: 7rem;
-  height: 2.5rem;
-  cursor: pointer;
-  background-color: ${(props) => props.theme.colors.lightgrey};
-  border-radius: 0.5rem;
-  margin-left: .5rem;
-  transition: 0.1s;
-
-  &:hover {
-    background-color: ${(props) => props.theme.colors.darkgrey};
-  }
-`;
-
-export const AddWorkoutButton = styled.button`
+export const AddWorkoutButton = styled(GreyHoverButton)`
   width: 8rem;
   height: 2.5rem;
   margin-top: 1rem;
-  /* border: 1px solid red; */
-  border-radius: 0.5rem;
-  /* padding: .5rem; */
-  background-color: ${(props) => props.theme.colors.lightgrey};
-  transition: 0.1s;
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${(props) => props.theme.colors.darkgrey};
-  }
 `;
 
-export const FinishEditButton = styled.button`
-  width: 8em;
-  height: 2.4em;
-  margin-top: 1em;
+export const FinishEditButton = styled(GreyHoverButton)`
+  width: 8rem;
+  height: 2.4rem;
+  margin-top: 1rem;
 `;
 
 export const ModalOverlay = styled.div`

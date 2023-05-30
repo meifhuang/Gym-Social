@@ -47,13 +47,13 @@ import {
 } from "../styledComponents/Profile";
 
 export default function Profile() {
+  const BASE_URL = import.meta.env.VITE_URL
   const exerciseDB = useLoaderData();
+  
 
   const { id } = useParams();
   const { token, userId, userPicUrl, setUserPicUrl } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  console.log(id, "AIDIDIDIDIDIDIDI")
 
   const stats = {
     name: "",
@@ -193,7 +193,7 @@ export default function Profile() {
     try {
       const res = await axios({
         method: "get",
-        url: `http://localhost:4000/profile/${id}`,
+        url: `${BASE_URL}/profile/${id}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -253,7 +253,7 @@ export default function Profile() {
 
       const response = await axios({
         method: "post",
-        url: "http://localhost:4000/createpost",
+        url: `${BASE_URL}/createpost`,
         data: formData,
         headers: {
           "Content-Type": "multipart/form-data",
@@ -283,7 +283,7 @@ export default function Profile() {
     try {
       const response = await axios({
         method: "post",
-        url: `http://localhost:4000/post/${postId}/createcomment`,
+        url: `${BASE_URL}/post/${postId}/createcomment`,
         data: {
           description: commentForm.description,
         },
@@ -310,7 +310,7 @@ export default function Profile() {
     try {
       const response = await axios({
         method: "post",
-        url: "http://localhost:4000/createuserworkout",
+        url: `${BASE_URL}/createuserworkout`,
         data: {
           name: workoutName,
           workoutList: currentWorkout,
@@ -347,7 +347,7 @@ export default function Profile() {
     try {
       const response = await axios({
         method: "post",
-        url: `http://localhost:4000/likepost/${postId}`,
+        url: `${BASE_URL}/likepost/${postId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -366,7 +366,7 @@ export default function Profile() {
     try {
       const response = await axios({
         method: "post",
-        url: `http://localhost:4000/saveworkout/${workoutId}`,
+        url: `${BASE_URL}/saveworkout/${workoutId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -390,7 +390,7 @@ export default function Profile() {
     try {
       const response = await axios({
         method: "delete",
-        url: `http://localhost:4000/unsaveworkout/${workoutId}`,
+        url: `${BASE_URL}/unsaveworkout/${workoutId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -414,7 +414,7 @@ export default function Profile() {
     try {
       const response = await axios({
         method: "delete",
-        url: `http://localhost:4000/unlikepost/${postId}`,
+        url: `${BASE_URL}/unlikepost/${postId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -434,7 +434,7 @@ export default function Profile() {
     try {
       const response = await axios({
         method: "get",
-        url: `http://localhost:4000/workout/${workoutId}`,
+        url: `${BASE_URL}/workout/${workoutId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -460,7 +460,7 @@ export default function Profile() {
     try {
       const response = await axios({
         method: "delete",
-        url: `http://localhost:4000/workout/${workoutId}`,
+        url: `${BASE_URL}/workout/${workoutId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -482,7 +482,7 @@ export default function Profile() {
     try {
       const response = await axios({
         method: "delete",
-        url: `http://localhost:4000/post/${postId}/comment/${commentId}`,
+        url: `${BASE_URL}/post/${postId}/comment/${commentId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -499,7 +499,7 @@ export default function Profile() {
     try {
       const response = await axios({
         method: "delete",
-        url: `http://localhost:4000/post/${postId}`,
+        url: `${BASE_URL}/post/${postId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -527,7 +527,7 @@ export default function Profile() {
       console.log("addeddd exercise");
       const res = await axios({
         method: "put",
-        url: `http://localhost:4000/workout/${workoutId}/createexercise`,
+        url: `${BASE_URL}/workout/${workoutId}/createexercise`,
         data: {
           name: exercise.name,
           weight: exercise.weight,
@@ -575,7 +575,7 @@ export default function Profile() {
     try {
       const response = await axios({
         method: "post",
-        url: "http://localhost:4000/createworkout",
+        url: `${BASE_URL}/createworkout`,
         data: {
           name: workoutName,
         },
@@ -611,7 +611,7 @@ export default function Profile() {
     try {
       const res = await axios({
         method: "put",
-        url: `http://localhost:4000/workout/${workoutId}/exercise/${exerciseId}`,
+        url: `${BASE_URL}/workout/${workoutId}/exercise/${exerciseId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -681,7 +681,7 @@ export default function Profile() {
     try {
       const res = await axios({
         method: "delete",
-        url: `http://localhost:4000/workout/${workoutId}/exercise/${exerciseId}`,
+        url: `${BASE_URL}/workout/${workoutId}/exercise/${exerciseId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -704,7 +704,7 @@ export default function Profile() {
     try {
       const response = await axios({
         method: "get",
-        url: `http://localhost:4000/exercise/${exerciseId}`,
+        url: `${BASE_URL}/exercise/${exerciseId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -727,7 +727,7 @@ export default function Profile() {
     try {
       const res = await axios({
         method: "POST",
-        url: `http://localhost:4000/profile/${id}/follow`,
+        url: `${BASE_URL}/profile/${id}/follow`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -753,7 +753,7 @@ export default function Profile() {
     try {
       const res = await axios({
         method: "delete",
-        url: `http://localhost:4000/profile/${id}/unfollow`,
+        url: `${BASE_URL}/profile/${id}/unfollow`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -822,7 +822,7 @@ export default function Profile() {
 
       const response = await axios({
         method: "post",
-        url: "http://localhost:4000/updateuserpic",
+        url: `${BASE_URL}/updateuserpic`,
         data: formData,
         headers: {
           "Content-Type": "multipart/form-data",

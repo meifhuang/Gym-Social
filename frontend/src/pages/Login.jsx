@@ -25,6 +25,7 @@ import {
 import { FacebookIcon, GoogleIcon } from "../assets/icons.jsx";
 
 export default function Login(props) {
+  const BASE_URL = import.meta.env.VITE_URL
   const { message } = props;
   const { setHasToken } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState("");
@@ -46,13 +47,13 @@ export default function Login(props) {
   };
 
   const handleGoogleLogin = () => {
-    window.open("http://localhost:4000/auth/google", "_self");
+    window.open(`${BASE_URL}/auth/google`, "_self");
   };
 
   const loginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:4000/login", {
+      const response = await axios.post(`${BASE_URL}/login`, {
         username: values.username,
         password: values.password,
       });

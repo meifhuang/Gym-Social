@@ -14,6 +14,7 @@ export default function Newsfeed({
   handleFileUpload,
   deletePost,
 }) {
+  const BASE_URL = import.meta.env.VITE_URL;
   const navigate = useNavigate();
   const [loggedInId, setLoggedInId] = useState(localStorage.getItem("id"));
   const [prevSlidePosition, setPrevSlidePosition] = useState({});
@@ -23,7 +24,7 @@ export default function Newsfeed({
     try {
       const response = await axios({
         method: "post",
-        url: `http://localhost:4000/likepost/${postId}`,
+        url: `${BASE_URL}/likepost/${postId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -42,7 +43,7 @@ export default function Newsfeed({
     try {
       const response = await axios({
         method: "delete",
-        url: `http://localhost:4000/unlikepost/${postId}`,
+        url: `${BASE_URL}/unlikepost/${postId}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -60,7 +61,7 @@ export default function Newsfeed({
     try {
       const response = await axios({
         method: "get",
-        url: "http://localhost:4000/newsfeed/posts",
+        url: `${BASE_URL}/newsfeed/posts`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

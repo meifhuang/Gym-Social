@@ -3,7 +3,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport = require("passport");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-
+const FRONTEND_URL = process.env.FRONTEND_URL
 router = express.Router();
 
 router.use(express.json());
@@ -15,7 +15,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "http://localhost:4000/auth/google/callback",
+      callbackURL: `${FRONTEND_URL}/auth/google/callback`,
       passReqToCallback: true,
     },
     async function (request, accessToken, refreshToken, profile, done) {

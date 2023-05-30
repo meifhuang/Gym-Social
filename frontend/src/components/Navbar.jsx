@@ -18,21 +18,27 @@ import {
   NavTabDropdown,
 } from "../styledComponents/StyleNav";
 export default function Navbar(props) {
+  const BASE_URL = import.meta.env.VITE_URL;
   const navigate = useNavigate();
 
   const [isOpen, setOpen] = useState(false);
 
   const [isActive, setIsActive] = useState("");
 
-  const { hasUserId, hasToken, setHasToken, userId, userPicUrl, setUserPicUrl } = useContext(AuthContext);
-
-
+  const {
+    hasUserId,
+    hasToken,
+    setHasToken,
+    userId,
+    userPicUrl,
+    setUserPicUrl,
+  } = useContext(AuthContext);
 
   const logout = async () => {
     try {
       const response = await axios({
         method: "GET",
-        url: "http://localhost:4000/logout",
+        url: `${BASE_URL}/logout`,
       });
       if (response) {
         localStorage.removeItem("token");

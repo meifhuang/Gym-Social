@@ -23,6 +23,7 @@ import SignupImage from "../images/gym_social_on_phone.png";
 import { GoogleIcon, FacebookIcon } from "../assets/icons";
 
 export default function Signup() {
+  const BASE_URL = import.meta.env.VITE_URL
   const navigate = useNavigate();
 
   const [signupPart, setSignupPart] = useState(0);
@@ -40,7 +41,7 @@ export default function Signup() {
   const [values, setValues] = useState(initialValues);
 
   const handleGoogleLogin = () => {
-    window.open("http://localhost:4000/auth/google", "_self");
+    window.open(`${BASE_URL}/auth/google`, "_self");
   }
 
   const handleInputChange = (e) => {
@@ -58,7 +59,7 @@ export default function Signup() {
     try {
       const response = await axios({
         method: "post",
-        url: "http://localhost:4000/emailcheck",
+        url: `${BASE_URL}/emailcheck`,
         data: {
           fname: values.fname,
           lname: values.lname,
@@ -82,7 +83,7 @@ export default function Signup() {
     try {
       const response = await axios({
         method: "post",
-        url: "http://localhost:4000/signup",
+        url: `${BASE_URL}/signup`,
         data: {
           fname: values.fname,
           lname: values.lname,
