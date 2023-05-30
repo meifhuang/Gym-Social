@@ -6,9 +6,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      external: (id) => {
-        return /^react(-.*)?|^react\/jsx-runtime|react-is/.test(id);
-      },
+      external: ["react-is", "jsx-runtime"],
     },
   },
 });
