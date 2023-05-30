@@ -27,6 +27,7 @@ import Main from "./template/Main";
 import GlobalStyles from "./styledComponents/GlobalStyles";
 import { ThemeProvider } from "styled-components";
 
+
 //loaders
 import { getExerciseList } from "./loader/index";
 function App() {
