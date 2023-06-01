@@ -16,6 +16,7 @@ export default function Newsfeed({
 }) {
   const BASE_URL = import.meta.env.VITE_URL;
   const FRONTEND_URL = import.meta.env.FRONTEND_URL;
+  console.log(FRONTEND_URL)
   const navigate = useNavigate();
   const [loggedInId, setLoggedInId] = useState(localStorage.getItem("id"));
   const [prevSlidePosition, setPrevSlidePosition] = useState({});
