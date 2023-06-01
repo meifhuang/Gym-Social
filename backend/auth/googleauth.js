@@ -4,6 +4,7 @@ const passport = require("passport");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const FRONTEND_URL = process.env.FRONTEND_URL
+const SERVER_URL = process.env.SERVER_URL
 router = express.Router();
 
 router.use(express.json());
@@ -15,7 +16,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: `${FRONTEND_URL}/auth/google/callback`,
+      callbackURL: `${SERVER_URL}/auth/google/callback`,
       passReqToCallback: true,
     },
     async function (request, accessToken, refreshToken, profile, done) {
@@ -77,7 +78,7 @@ router.get(
       process.env.JSONKEY
     );
     res.redirect(
-      `http://localhost:5173/newsfeed?token=${token}&userId=${req.user._id}`
+      `${FRONTEND_URL}/newsfeed?token=${token}&userId=${req.user._id}`
     );
   }
 );
