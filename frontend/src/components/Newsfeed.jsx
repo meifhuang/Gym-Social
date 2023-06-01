@@ -15,6 +15,7 @@ export default function Newsfeed({
   deletePost,
 }) {
   const BASE_URL = import.meta.env.VITE_URL;
+  const FRONTEND_URL = import.meta.env.FRONTEND_URL;
   const navigate = useNavigate();
   const [loggedInId, setLoggedInId] = useState(localStorage.getItem("id"));
   const [prevSlidePosition, setPrevSlidePosition] = useState({});
@@ -121,7 +122,7 @@ export default function Newsfeed({
     if (token && userId) {
       localStorage.setItem("token", token);
       localStorage.setItem("id", userId);
-      window.location.replace("http://localhost:5173/newsfeed");
+      window.location.replace(`${FRONTEND_URL}/newsfeed`);
     }
     getPosts();
   }, []);
