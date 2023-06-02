@@ -16,7 +16,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: `${FRONTEND_URL}/auth/google/callback`,
+      callbackURL: `${BASE_URL}/auth/google/callback`,
       passReqToCallback: true,
     },
     async function (request, accessToken, refreshToken, profile, done) {
@@ -41,6 +41,7 @@ passport.use(
           done(null, newUser);
         }
       } catch (err) {
+        console.log(err)
         done(err, null);
       }
     }
