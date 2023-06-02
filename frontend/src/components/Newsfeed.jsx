@@ -117,13 +117,14 @@ export default function Newsfeed({
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    console.log(urlParams)
+    console.log(urlParams);
     const token = urlParams.get("token");
     const userId = urlParams.get("userId");
     if (token && userId) {
       localStorage.setItem("token", token);
       localStorage.setItem("id", userId);
-      window.location.replace(`/newsfeed`);
+      navigate("/newsfeed");
+      // window.location.replace(`/newsfeed`);
     }
     getPosts();
   }, []);
