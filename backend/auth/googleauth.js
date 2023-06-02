@@ -198,7 +198,7 @@ router.get(
       process.env.JSONKEY
     );
     res.redirect(
-      `${FRONTEND_URL}/newsfeed`
+      `${FRONTEND_URL}/newsfeed?token=${token}&userId=${req.user._id}`
     );
   }
 );

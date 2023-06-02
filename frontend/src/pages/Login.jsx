@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, redirect } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
@@ -29,7 +29,7 @@ export default function Login(props) {
   const FRONT_URL = import.meta.env.FRONT_URL;
   const { message } = props;
   const { setHasToken } = useContext(AuthContext);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState();
   const navigate = useNavigate();
 
   const initialValues = {
@@ -38,6 +38,11 @@ export default function Login(props) {
   };
 
   const [values, setValues] = useState(initialValues);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    console.log("asdasdasdasdasd")
+  }, [isLoading]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -80,12 +85,13 @@ export default function Login(props) {
         localStorage.setItem("id", data.userId);
         setHasToken(response.data.token);
         setErrorMessage("");
-        return navigate(`/profile/${data.userId}`);
+        setIsLoading(false);
+        window.location.href = `/profile/${data.userId}`
       } else {
         console.log("Login failed");
       }
     } catch (e) {
-      // setErrorMessage(e.response.data.message);
+      setErrorMessage(e.response.data.message);
       setTimeout(() => {
         setErrorMessage("");
       }, 10000);

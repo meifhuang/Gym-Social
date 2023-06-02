@@ -10,6 +10,7 @@ import {
   Route,
   createBrowserRouter,
   RouterProvider,
+  createHashRouter
 } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Homepage from "./pages/Homepage";
@@ -57,7 +58,7 @@ function App() {
 
   const router = createBrowserRouter([
     {
-      path: `${import.meta.env.VITE_ORIGIN}`,
+      path: "/",
       element: <Main />,
       children: [
         {
