@@ -81,9 +81,11 @@ router.get(
         { user: { email: req.user.email }, id: req.user._id },
         process.env.JSONKEY
       );
-      console.log(token)
+      console.log(token);
       // res.redirect(`${FRONTEND_URL}/newsfeed?token=${token}&userId=${req.user._id}
-      res.redirect(`/newsfeed?token=${token}&userId=${req.user._id}`);
+      res.redirect(
+        `${FRONTEND_URL}/newsfeed?token=${token}&userId=${req.user._id}`
+      );
     } catch (e) {
       console.log(e);
     }

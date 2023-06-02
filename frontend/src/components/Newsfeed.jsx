@@ -117,9 +117,11 @@ export default function Newsfeed({
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    console.log(urlParams);
+    console.log("PARAMIES", urlParams);
     const token = urlParams.get("token");
     const userId = urlParams.get("userId");
+    console.log("TOKEN", token);
+    console.log("ID", userId);
     if (token && userId) {
       localStorage.setItem("token", token);
       localStorage.setItem("id", userId);
