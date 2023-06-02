@@ -3,8 +3,8 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport = require("passport");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-const FRONTEND_URL = process.env.FRONTEND_URL
-const SERVER_URL = process.env.SERVER_URL
+const FRONTEND_URL = process.env.FRONTEND_URL;
+const SERVER_URL = process.env.SERVER_URL;
 router = express.Router();
 
 router.use(express.json());
@@ -71,14 +71,21 @@ router.get(
 
 router.get(
   "/auth/google/callback",
-  passport.authenticate("google", {failureRedirect: "/login", session: false }),
+  passport.authenticate("google", {
+    failureRedirect: "/login",
+    session: false,
+  }),
   function (req, res) {
-    const token = jwt.sign(
-      { user: { email: req.user.email }, id: req.user._id },
-      process.env.JSONKEY
-    );
-    // res.redirect(`${FRONTEND_URL}/newsfeed?token=${token}&userId=${req.user._id}
-    res.redirect(`/newsfeed?token=${token}&userId=${req.user._id}`)
+    try {
+      const token = jwt.sign(
+        { user: { email: req.user.email }, id: req.user._id },
+        process.env.JSONKEY
+      );
+      // res.redirect(`${FRONTEND_URL}/newsfeed?token=${token}&userId=${req.user._id}
+      res.redirect(`/newsfeed?token=${token}&userId=${req.user._id}`);
+    } catch (e) {
+      console.log(e);
+    }
   }
 );
 
