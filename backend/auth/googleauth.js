@@ -71,9 +71,9 @@ router.get(
 //
 
 router.get(
-  "/auth/google/callback",
+  "/auth/google/callback", passport.authenticate("google"),
   (req, res) => {
-    res.send("You have reached the newsfeed");
+    res.redirect("/newsfeed")
   }
   // passport.authenticate("google", {
   //   failureRedirect: "/login",
