@@ -123,7 +123,7 @@ export default function Newsfeed({
     if (token && userId) {
       localStorage.setItem("token", token);
       localStorage.setItem("id", userId);
-      window.location.replace(`${FRONTEND_URL}/newsfeed`);
+      window.location.replace(`/newsfeed`);
     }
     getPosts();
   }, []);

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
-
+import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 //styling
 import {
   StyledForm,
@@ -25,7 +25,7 @@ import {
 import { FacebookIcon, GoogleIcon } from "../assets/icons.jsx";
 
 export default function Login(props) {
-  const BASE_URL = import.meta.env.VITE_URL
+  const BASE_URL = import.meta.env.VITE_URL;
   const { message } = props;
   const { setHasToken } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState("");
@@ -118,7 +118,6 @@ export default function Login(props) {
             >
               Login
             </AuthButton>
-
             <GoogleButton type="button" onClick={handleGoogleLogin}>
               <span>
                 <GoogleIcon />
@@ -139,7 +138,9 @@ export default function Login(props) {
         </FormContainer>
         <Image
           // src={LoginImage}
-          src="images/gym_social_login.PNG" alt="loading" />
+          src="images/gym_social_login.PNG"
+          alt="loading"
+        />
       </ContainerRowReverse>
     </ContainerColumn>
   );

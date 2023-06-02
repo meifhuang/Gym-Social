@@ -27,10 +27,12 @@ import Main from "./template/Main";
 import GlobalStyles from "./styledComponents/GlobalStyles";
 import { ThemeProvider } from "styled-components";
 
-
 //loaders
 import { getExerciseList } from "./loader/index";
 function App() {
+
+
+
   const [message, setMessage] = useState("");
   const { hasToken } = useContext(AuthContext);
   console.log(hasToken, "SADSAD HAS USER ID");
@@ -41,7 +43,7 @@ function App() {
     colors: {
       lightgrey: "#e9e4e4;",
       green: " #95c295",
-      darkgrey: "#d3cece;"
+      darkgrey: "#d3cece;",
     },
     breakpoint: {
       xxxs: "0px",
@@ -65,7 +67,7 @@ function App() {
         {
           path: "/profile/:id",
           element: <Profile />,
-          loader: getExerciseList
+          loader: getExerciseList,
         },
         {
           path: "/newsfeed",
@@ -113,12 +115,19 @@ function App() {
     //   element: <ExploreUsers />,
     // },
   ]);
+  const responseMessage = (response) => {
+    console.log(response);
+  };
+  const errorMessage = (error) => {
+    console.log(error);
+  };
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <RouterProvider router={router} />
-      {/* <BrowserRouter>
+    <>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <RouterProvider router={router} />
+        {/* <BrowserRouter>
         <Navbar />
         <Routes>
           <Route path="/" element={<Homepage />} />
@@ -129,7 +138,8 @@ function App() {
           <Route path="/explore" element={<ExploreUsers />} />
         </Routes>
       </BrowserRouter> */}
-    </ThemeProvider>
+      </ThemeProvider>
+    </>
   );
 }
 
