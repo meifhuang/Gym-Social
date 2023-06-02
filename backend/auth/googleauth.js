@@ -71,18 +71,14 @@ router.get(
 
 router.get(
   "/auth/google/callback",
-  passport.authenticate("google", {successRedirect: "/newsfeed", failureRedirect: "/login", session: false }),
+  passport.authenticate("google", {failureRedirect: "/login", session: false }),
   function (req, res) {
     const token = jwt.sign(
       { user: { email: req.user.email }, id: req.user._id },
       process.env.JSONKEY
     );
-    res.status(400).json({
-      token: token,
-      userId: req.user._id 
-    })
+    res.redirect(`${FRONTEND_URL}/newsfeed?token=${token}&userId=${req.user._id}`)
   }
-      // `${FRONTEND_URL}/newsfeed?token=${token}&userId=${req.user._id}`
 );
 
 router.use(function (err, req, res, next) {
