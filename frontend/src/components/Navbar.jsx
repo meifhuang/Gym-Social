@@ -129,7 +129,7 @@ export default function Navbar(props) {
                 </Link>
               </NavTab2>
               <NavTab2 isOpen={isOpen} className={"nav-tab "}>
-                <Link to={`/newsfeed`}> Home</Link>
+                <Link to={"/newsfeed"}> Home</Link>
               </NavTab2>
               <NavTab2 isOpen={isOpen} className={"nav-tab "}>
                 <NavLink to="/explore"> Explore</NavLink>

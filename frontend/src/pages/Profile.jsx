@@ -48,7 +48,7 @@ import {
 
 export default function Profile() {
   const BASE_URL = import.meta.env.VITE_URL
-  const exerciseDB = useLoaderData();
+  // const exerciseDB = useLoaderData();
   
 
   const { id } = useParams();
@@ -238,6 +238,26 @@ export default function Profile() {
   useEffect(() => {
     getUser();
   }, [id, userPicUrl]);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    console.log("PARAMIES", urlParams);
+    const token = urlParams.get("token");
+    const userId = urlParams.get("userId");
+    if (token && userId) {
+      console.log("HAS TOKEN AND ID")
+      localStorage.setItem("token", token);
+      localStorage.setItem("id", userId);
+      let userid = localStorage.getItem("id")
+      print(`THIS THE USERID, ${userid}`)
+      window.location.replace(`/profile/${userId}`);
+      // getUser();
+    } else {
+      console.log("No token");
+    }
+    // navigate("/newsfeed");
+    // window.location.replace(`/newsfeed`);
+  }, []);
 
   const createPost = async (e) => {
     e.preventDefault();
@@ -516,58 +536,58 @@ export default function Profile() {
     }
   };
 
-  const addExercise = async (e) => {
-    e.preventDefault();
+  // const addExercise = async (e) => {
+  //   e.preventDefault();
 
-    const exerciseGif = exerciseDB.find(
-      (exerciseDB_exercise) => exerciseDB_exercise.name === exercise.name
-    ).gifUrl;
-    console.log(exercise.name);
-    try {
-      console.log("addeddd exercise");
-      const res = await axios({
-        method: "put",
-        url: `${BASE_URL}/workout/${workoutId}/createexercise`,
-        data: {
-          name: exercise.name,
-          weight: exercise.weight,
-          sets: exercise.sets,
-          reps: exercise.reps,
-          gif: exerciseGif,
-        },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+  //   const exerciseGif = exerciseDB.find(
+  //     (exerciseDB_exercise) => exerciseDB_exercise.name === exercise.name
+  //   ).gifUrl;
+  //   console.log(exercise.name);
+  //   try {
+  //     console.log("addeddd exercise");
+  //     const res = await axios({
+  //       method: "put",
+  //       url: `${BASE_URL}/workout/${workoutId}/createexercise`,
+  //       data: {
+  //         name: exercise.name,
+  //         weight: exercise.weight,
+  //         sets: exercise.sets,
+  //         reps: exercise.reps,
+  //         gif: exerciseGif,
+  //       },
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
 
-      if (res) {
-        console.log("adding", res.data.exercise);
-        setCurrentWorkout([
-          ...currentWorkout,
-          {
-            _id: res.data.exercise._id,
-            name: exercise.name,
-            weight: exercise.weight,
-            sets: exercise.sets,
-            reps: exercise.reps,
-            gif: exerciseGif,
-          },
-        ]);
-        console.log(
-          currentWorkout,
-          "CURRENT WORKOUT",
-          workoutId,
-          "WORKOUTID",
-          workouts
-        );
-      } else {
-        console.log("NO RES");
-      }
-    } catch (e) {
-      console.log(e.message);
-      console.log(e);
-    }
-  };
+  //     if (res) {
+  //       console.log("adding", res.data.exercise);
+  //       setCurrentWorkout([
+  //         ...currentWorkout,
+  //         {
+  //           _id: res.data.exercise._id,
+  //           name: exercise.name,
+  //           weight: exercise.weight,
+  //           sets: exercise.sets,
+  //           reps: exercise.reps,
+  //           gif: exerciseGif,
+  //         },
+  //       ]);
+  //       console.log(
+  //         currentWorkout,
+  //         "CURRENT WORKOUT",
+  //         workoutId,
+  //         "WORKOUTID",
+  //         workouts
+  //       );
+  //     } else {
+  //       console.log("NO RES");
+  //     }
+  //   } catch (e) {
+  //     console.log(e.message);
+  //     console.log(e);
+  //   }
+  // };
 
   const handleExerciseForm = async (e) => {
     e.preventDefault();

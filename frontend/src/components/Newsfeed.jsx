@@ -21,6 +21,7 @@ export default function Newsfeed({
   const [prevSlidePosition, setPrevSlidePosition] = useState({});
   const [posts, setPosts] = useState([]);
 
+
   const likeAPost = async (postId) => {
     try {
       const response = await axios({
@@ -116,24 +117,24 @@ export default function Newsfeed({
   };
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    console.log("PARAMIES", urlParams);
-    const token = urlParams.get("token");
-    const userId = urlParams.get("userId");
-    console.log("TOKEN", token);
-    console.log("ID", userId);
-    if (token && userId) {
-      console.log("HAS TOKEN AND ID")
-      localStorage.setItem("token", token);
-      localStorage.setItem("id", userId);
-      // navigate("/newsfeed");
-      window.location.replace(`/newsfeed`);
+  //   const urlParams = new URLSearchParams(window.location.search);
+  //   console.log("PARAMIES", urlParams);
+  //   const token = urlParams.get("token");
+  //   const userId = urlParams.get("userId");
+  //   console.log("TOKEN", token);
+  //   console.log("ID", userId);
+  //   if (token && userId) {
+  //     console.log("HAS TOKEN AND ID")
+  //     localStorage.setItem("token", token);
+  //     localStorage.setItem("id", userId);
+  //     // navigate("/newsfeed");
+  //     window.location.replace(`/newsfeed`);
       getPosts();
-    } else {
-      console.log("No token");
-    }
-    // navigate("/newsfeed");
-    // window.location.replace(`/newsfeed`);
+  //   } else {
+  //     console.log("No token");
+  //   }
+  //   // navigate("/newsfeed");
+  //   // window.location.replace(`/newsfeed`);
   }, []);
 
   const viewProfile = async (userId) => {

@@ -68,7 +68,7 @@ function App() {
         {
           path: "/profile/:id",
           element: <Profile />,
-          loader: getExerciseList,
+          // loader: getExerciseList,
         },
         {
           path: "/newsfeed",

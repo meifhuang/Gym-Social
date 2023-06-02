@@ -47,6 +47,7 @@ router.get("/profile/:id", async (req, res) => {
   console.log("accessing profile route");
   const loggedInId = req.user.id;
   const paramId = req.params.id;
+  console.log(paramId, 'whats param')
   const user = await User.findById(paramId).populate([
     {path: "workouts", populate: { path: "exercises" }},
    {path: "saved", populate: { path: "exercises"}},
