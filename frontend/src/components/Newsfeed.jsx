@@ -123,9 +123,11 @@ export default function Newsfeed({
     console.log("TOKEN", token);
     console.log("ID", userId);
     if (token && userId) {
+      console.log("HAS TOKEN AND ID")
       localStorage.setItem("token", token);
       localStorage.setItem("id", userId);
       // navigate("/newsfeed");
+      window.location.replace(`/newsfeed`);
       getPosts();
     } else {
       console.log("No token");
