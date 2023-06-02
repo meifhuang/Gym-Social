@@ -15,8 +15,7 @@ export default function Newsfeed({
   deletePost,
 }) {
   const BASE_URL = import.meta.env.VITE_URL;
-  const FRONTEND_URL = import.meta.env.FRONTEND_URL;
-  console.log(FRONTEND_URL)
+  const FRONT_URL = import.meta.env.FRONTEND_URL;
   const navigate = useNavigate();
   const [loggedInId, setLoggedInId] = useState(localStorage.getItem("id"));
   const [prevSlidePosition, setPrevSlidePosition] = useState({});
@@ -118,6 +117,7 @@ export default function Newsfeed({
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
+    console.log(urlParams)
     const token = urlParams.get("token");
     const userId = urlParams.get("userId");
     if (token && userId) {
