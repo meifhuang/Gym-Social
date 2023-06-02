@@ -57,7 +57,7 @@ function App() {
 
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: `${import.meta.env.VITE_ORIGIN}`,
       element: <Main />,
       children: [
         {
