@@ -89,7 +89,7 @@ export default function Post({
       });
       if (response) {
         console.log(response.data);
-        getPosts();
+        // getPosts();
         getPost(postId);
       }
     } catch (e) {
@@ -109,7 +109,7 @@ export default function Post({
       });
       if (response) {
         console.log(response.data);
-        getPosts();
+        // getPosts();
         getPost(postId);
       }
     } catch (e) {
@@ -248,9 +248,8 @@ export default function Post({
                     page === "profile" ? () => setShowLikesComments(false) : ""
                   }
                 >
-                  <div className={"post-img-div " + page}>
+                  <div className={"post-img-div " + page} onClick={() => toggleModal(post._id)}>
                     <img
-                      onClick={() => toggleModal(post._id)}
                       className="carousel-item carousel-item-visible"
                       src={post.images[slides.index].url}
                     />
@@ -325,7 +324,7 @@ export default function Post({
                   </h4>
                   <p> {post.caption} </p>
                 </div>
-                <h4 onClick={() => toggleModal(post._id)}> View Comments </h4>
+                {/* <h4 onClick={() => toggleModal(post._id)}> View Comments </h4> */}
                 {<h5> {dateDiff(post.createdAt)} </h5>}
               </>
             )}

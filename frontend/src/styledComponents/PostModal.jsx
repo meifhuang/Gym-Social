@@ -131,6 +131,35 @@ export const PostModalStyle = styled.div`
     /* align-self: end; */
   }
 
+  .commenter {
+    display: flex;
+    // flex-direction: column;
+    // border: 1px solid black;
+    width:100%;
+    gap: 0px;
+    justify-content: space-between;
+  }
+
+  .commenter div {
+    display:flex
+  }
+  .commenter div> h5 {
+    // border: 1px solid red;
+    // padding: 0;
+    // margin: 0;
+    justify-items: start ;
+
+  }
+  .post-options .unheart {
+    fill: #ff6969;
+    color: #ff6969;
+    animation: fade 0.3s;
+  }
+
+  .post-options .heart {
+    animation: fade 0.3s;
+  }
+
   #description {
     width: 90%;
     height: 100%;

@@ -121,17 +121,20 @@ export default function PostModal({
                   className="userpic-icon"
                   src={posty.createdBy[0].picture[0].url}
                 ></img>
-                <h4
+                <h3
                   className="user-post"
                   onClick={() => viewProfile(posty.createdBy[0]._id)}
                 >
                   {" "}
                   {posty.createdBy[0].fname} {posty.createdBy[0].lname}{" "}
-                </h4>
+                </h3>
                 <h4> {posty.caption} </h4>
+                <div>
                 <h5> {dateDiff(posty.createdAt, "post")} </h5>
-              </div>
-              <div className="postlikes-container">
+                </div>
+                </div>
+             
+              <div className="postlikes-container post-options">
                 <div className="likes">
                   {posty && !posty.likedBy.includes(loggedInId) ? (
                     <HeartIcon likeAPost={likeAPost} postId={posty._id} />
@@ -147,12 +150,16 @@ export default function PostModal({
                   posty.comments.map((comment) => {
                     return (
                       <div className="comments">
-                        <h5>
+                        <div className="commenter">
+                        <h4>
                           {" "}
                           {comment.createdBy[0].fname}{" "}
                           {comment.createdBy[0].lname} : {comment.description}{" "}
-                        </h5>
-                        <p> {dateDiff(comment.createdAt, "comment")} </p>
+                        </h4>
+                        <div>
+                        <h5> {dateDiff(comment.createdAt, "comment")} </h5>
+                        
+                       
                         {comment.createdBy[0]._id === loggedInId ? (
                           <div className="delete-comment-icon">
                             <DeleteCommentIcon
@@ -161,9 +168,12 @@ export default function PostModal({
                               commentId={comment._id}
                             />
                           </div>
+                          
                         ) : (
                           <></>
                         )}
+                        </div>
+</div>
                       </div>
                     );
                   })}
