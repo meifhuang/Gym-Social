@@ -83,7 +83,7 @@ router.get(
       );
       // res.redirect(`${FRONTEND_URL}/newsfeed?token=${token}&userId=${req.user._id}
       res.redirect(
-        `${FRONTEND_URL}/newsfeed?token=${token}&userId=${req.user._id}`
+        `/newsfeed?token=${token}&userId=${req.user._id}`
       );
     } catch (e) {
       console.log(e);
