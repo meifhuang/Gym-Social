@@ -26,6 +26,7 @@ import { FacebookIcon, GoogleIcon } from "../assets/icons.jsx";
 
 export default function Login(props) {
   const BASE_URL = import.meta.env.VITE_URL;
+  const FRONT_URL = import.meta.env.FRONT_URL;
   const { message } = props;
   const { setHasToken } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState("");
@@ -46,8 +47,24 @@ export default function Login(props) {
     });
   };
 
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = async () => {
+    // console.log("huh");
     window.open(`${BASE_URL}/auth/google`, "_self");
+    // try {
+    //   const response = await axios({
+    //     method: "get",
+    //     url: "http://localhost:4000/auth/google/callback",
+    //   });
+    //   if (response) {
+    //     console.log(response);
+    //     localStorage.setItem("token", response.data.token);
+    //     localStorage.setItem("id", response.data.userId);
+    //   } else {
+    //     console.log("no response");
+    //   }
+    // } catch (e) {
+    //   console.log(e.message);
+    // }
   };
 
   const loginSubmit = async (e) => {
@@ -74,8 +91,6 @@ export default function Login(props) {
       }, 10000);
     }
   };
-
-  
 
   return (
     <ContainerColumn>

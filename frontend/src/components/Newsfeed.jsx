@@ -125,10 +125,13 @@ export default function Newsfeed({
     if (token && userId) {
       localStorage.setItem("token", token);
       localStorage.setItem("id", userId);
-      navigate("/newsfeed");
-      // window.location.replace(`/newsfeed`);
+      // navigate("/newsfeed");
+      getPosts();
+    } else {
+      console.log("No token");
     }
-    getPosts();
+    // navigate("/newsfeed");
+    // window.location.replace(`/newsfeed`);
   }, []);
 
   const viewProfile = async (userId) => {
