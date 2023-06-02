@@ -116,17 +116,35 @@ export default function Newsfeed({
     console.log("prev", prevSlidePosition);
   };
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get("token");
-    const userId = urlParams.get("userId");
-    if (token && userId) {
-      localStorage.setItem("token", token);
-      localStorage.setItem("id", userId);
-      window.location.replace(`${FRONTEND_URL}/newsfeed`);
+  const redirectNewsfeed = async () => {
+    try {
+      const response = await axios({
+        method: "get",
+        url: "/auth/google/callback", 
+      })
+      if (response) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("id", response.data.userId);
+      }
     }
-    getPosts();
-  }, []);
+    catch (e) {
+      console.log(e.message)
+    }
+  }
+  useEffect(() => {
+    redirectNewsfeed();
+  }, [])
+  // useEffect(() => {
+  //   // const urlParams = new URLSearchParams(window.location.search);
+  //   // const token = urlParams.get("token");
+  //   // const userId = urlParams.get("userId");
+  //   if (token && userId) {
+  //     localStorage.setItem("token", token);
+  //     localStorage.setItem("id", userId);
+  //     window.location.replace(`${FRONTEND_URL}/newsfeed`);
+  //   }
+  //   getPosts();
+  // }, []);
 
   const viewProfile = async (userId) => {
     navigate(`/profile/${userId}`);

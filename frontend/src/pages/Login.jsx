@@ -75,6 +75,22 @@ export default function Login(props) {
     }
   };
 
+  const check = async () => {
+    try {
+      const response = await axios({
+        method: "get",
+        url: "/auth/google/callback", 
+      })
+      if (response) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("id", response.data.userId);
+      }
+    }
+    catch (e) {
+      console.log(e.message)
+    }
+  }
+
   return (
     <ContainerColumn>
       <ContainerRowReverse>
