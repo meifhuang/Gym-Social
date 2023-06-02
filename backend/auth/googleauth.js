@@ -41,7 +41,7 @@ passport.use(
           done(null, newUser);
         }
       } catch (err) {
-        console.log(err)
+        console.log(err);
         done(err, null);
       }
     }
@@ -72,24 +72,27 @@ router.get(
 
 router.get(
   "/auth/google/callback",
-  passport.authenticate("google", {
-    failureRedirect: "/login",
-    session: false,
-  }),
-  function (req, res) {
-    try {
-      const token = jwt.sign(
-        { user: { email: req.user.email }, id: req.user._id },
-        process.env.JSONKEY
-      );
-      // res.redirect(`${FRONTEND_URL}/newsfeed?token=${token}&userId=${req.user._id}
-      res.redirect(
-        `/newsfeed?token=${token}&userId=${req.user._id}`
-      );
-    } catch (e) {
-      console.log(e);
-    }
+  (req, res) => {
+    res.send("You have reached the newsfeed");
   }
+  // passport.authenticate("google", {
+  //   failureRedirect: "/login",
+  //   session: false,
+  // }),
+  // function (req, res) {
+  //   try {
+  //     const token = jwt.sign(
+  //       { user: { email: req.user.email }, id: req.user._id },
+  //       process.env.JSONKEY
+  //     );
+  //     // res.redirect(`${FRONTEND_URL}/newsfeed?token=${token}&userId=${req.user._id}
+  //     res.redirect(
+  //       `/newsfeed?token=${token}&userId=${req.user._id}`
+  //     );
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
 );
 
 router.use(function (err, req, res, next) {
