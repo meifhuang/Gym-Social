@@ -1,5 +1,113 @@
 import styled from "styled-components";
 
+export const Modal = styled.div`
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+  z-index: 1000;
+  /* border: 1px solid red; */
+
+  & .modal-content,
+  &.workout-modal {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1.5;
+    background: #f1f1f1;
+    padding: 14px 28px;
+    border-radius: 5px;
+    max-width: 600px;
+    min-width: 500px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .stats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .select-exercise {
+    font-size: 1.2em;
+    font-weight: 800;
+    /* border: 1px solid red; */
+  }
+  input {
+    width: 3.1em;
+    height: 2.1em;
+    margin: 0.5em;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  form > * {
+    margin-bottom: 0.5em;
+  }
+
+  .inputted-exercises {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-transform: capitalize;
+  }
+`;
+
+export const SelectExerciseBar = styled.select`
+  height: 2.3em;
+  width: 28em;
+`;
+
+export const EditDeleteButton = styled.button``;
+
+export const GreyHoverButton = styled.button`
+  cursor: pointer;
+  background-color: ${(props) => props.theme.colors.lightgrey};
+  border-radius: 0.5rem;
+  transition: 0.1s;
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.darkgrey};
+  }
+`;
+export const AddExerciseButton = styled(GreyHoverButton)`
+  width: 7.5rem;
+  height: 2.1rem;
+  margin-left: 0.5rem;
+`;
+
+export const AddWorkoutButton = styled(GreyHoverButton)`
+  width: 8rem;
+  height: 2.5rem;
+  margin-top: 1rem;
+`;
+
+export const FinishEditButton = styled(GreyHoverButton)`
+  width: 8rem;
+  height: 2.4rem;
+  margin-top: 1rem;
+`;
+
+export const ModalOverlay = styled.div`
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+  background: rgba(49, 49, 49, 0.8);
+`;
+
 export const CenteredFlexColumn = styled.div`
   display: flex;
   flex-direction: column;
@@ -218,6 +326,16 @@ export const PostContainer = styled.div`
   }
 `;
 
+export const AddPostButton = styled(GreyHoverButton)`
+  position: absolute;
+  top: 0;
+  margin-top: 1rem;
+  right: 0;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+`;
+
 export const NewsFeed = styled.div`
   display: flex;
   flex-direction: column;
@@ -227,9 +345,106 @@ export const NewsFeed = styled.div`
   margin-top: 2rem;
 `;
 
+export const AddPostModal = styled(Modal)`
+  & .modal-content,
+  &.workout-modal {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1.5;
+    background: #f1f1f1;
+    padding: 14px 28px;
+    border-radius: 5px;
+    /* max-width: 600px;
+    min-width: 500px; */
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+export const AddPostModalOverlay = styled(ModalOverlay)`
+  height: 100%;
+`;
 export const PostFormStyle = styled.div`
   display: flex;
   justify-content: center;
+  border: 1px solid red;
+  width: 100%;
+  height: 100%;
+
+  & form {
+    width: 100%;
+  }
+
+  & form input,
+  & upload-overlay form label {
+    width: 100%;
+    /* position: absolute; */
+    top: 50%;
+    left: 50%;
+    /* transform: translate(-50%, -50%); */
+  }
+  /* & .upload-overlay label {
+    text-align: center;
+    border: 1px solid red;
+    width: 60%;
+    position: absolute;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(233, 228, 228);
+    border-radius: 0.25rem;
+    padding: 0.4rem 0rem 0.3rem 0rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    transition: 0.1s;
+  } */
+  & .upload-overlay label:hover {
+    background-color: ${(props) => props.theme.colors.darkgrey};
+  }
+  .upload-overlay .upload-arrow-icons {
+    position: absolute;
+    border: 1px solid red;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .upload-overlay .svg {
+
+  }
+  .upload-overlay img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  & form textarea {
+    border-radius: 0.25rem;
+    width: 75%;
+    height: 3rem;
+  }
+
+  & .upload-overlay {
+    background-color: #b6afaf;
+    width: 300px;
+    height: 300px;
+    /* border-radius: 50%; */
+    /* object-fit: cover; */
+    position: relative;
+  }
 `;
 
 export const WorkoutContainer = styled.div`
@@ -387,116 +602,6 @@ export const ExerciseInfo2 = styled.div`
     display: flex;
     gap: 0.1rem;
   }
-`;
-
-export const Modal = styled.div`
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  position: fixed;
-  z-index: 1000;
-  /* border: 1px solid red; */
-
-  & .modal-content,
-  &.workout-modal {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    line-height: 1.5;
-    background: #f1f1f1;
-    padding: 14px 28px;
-    border-radius: 5px;
-    max-width: 600px;
-    min-width: 500px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .stats {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .select-exercise {
-    font-size: 1.2em;
-    font-weight: 800;
-    /* border: 1px solid red; */
-  }
-  input {
-    width: 3.1em;
-    height: 2.1em;
-    margin: 0.5em;
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  form > * {
-    margin-bottom: 0.5em;
-  }
-
-  .inputted-exercises {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    text-transform: capitalize;
-  }
-
-`;
-
-export const GreyHoverButton = styled.button`
-  cursor: pointer;
-  background-color: ${(props) => props.theme.colors.lightgrey};
-  border-radius: 0.5rem;
-  transition: 0.1s;
-
-  &:hover {
-    background-color: ${(props) => props.theme.colors.darkgrey};
-  }
-`;
-export const SelectExerciseBar = styled.select`
-  height: 2.3em;
-  width: 28em;
-`;
-
-export const EditDeleteButton = styled.button``;
-
-export const AddExerciseButton = styled(GreyHoverButton)`
-  width: 7.5rem;
-  height: 2.1rem;
-  margin-left: 0.5rem;
-
-`;
-
-export const AddWorkoutButton = styled(GreyHoverButton)`
-  width: 8rem;
-  height: 2.5rem;
-  margin-top: 1rem;
-`;
-
-export const FinishEditButton = styled(GreyHoverButton)`
-  width: 8rem;
-  height: 2.4rem;
-  margin-top: 1rem;
-`;
-
-export const ModalOverlay = styled.div`
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  position: fixed;
-  background: rgba(49, 49, 49, 0.8);
 `;
 
 export const ProPicInfoForm = styled.div`

@@ -47,9 +47,8 @@ import {
 } from "../styledComponents/Profile";
 
 export default function Profile() {
-  const BASE_URL = import.meta.env.VITE_URL
+  const BASE_URL = import.meta.env.VITE_URL;
   // const exerciseDB = useLoaderData();
-  
 
   const { id } = useParams();
   const { token, userId, userPicUrl, setUserPicUrl } = useContext(AuthContext);
@@ -71,8 +70,6 @@ export default function Profile() {
   const [username, setUsername] = useState("");
   const [user, setUser] = useState([]);
   // const [userPicUrl, setUserPicUrl] = useState("");
-
-  
 
   //forms
   const [showExerciseForm, setShowExerciseForm] = useState(true);
@@ -101,7 +98,6 @@ export default function Profile() {
   const [savedWorkouts, setSavedWorkouts] = useState([]);
 
   const [errorMessage, setErrorMessage] = useState("");
-    
 
   // const [exerciseDB, setExerciseDB] = useState("");
   const [activeDropdown, setActiveDropdown] = useState("");
@@ -161,6 +157,7 @@ export default function Profile() {
 
   const handleFileUpload = (e) => {
     setFiles([...e.target.files]);
+    console.log(files);
   };
 
   const handlePicChange = (e) => {
@@ -245,11 +242,11 @@ export default function Profile() {
     const token = urlParams.get("token");
     const userId = urlParams.get("userId");
     if (token && userId) {
-      console.log("HAS TOKEN AND ID")
+      console.log("HAS TOKEN AND ID");
       localStorage.setItem("token", token);
       localStorage.setItem("id", userId);
-      let userid = localStorage.getItem("id")
-      print(`THIS THE USERID, ${userid}`)
+      let userid = localStorage.getItem("id");
+      print(`THIS THE USERID, ${userid}`);
       window.location.replace(`/profile/${userId}`);
       // getUser();
     } else {
@@ -883,22 +880,25 @@ export default function Profile() {
             <UserContact>
               <h3> @ {username}</h3>
               {/* <div className="edit-profile-icon"> */}
-                {loggedInId === id ? (
-                  <div onClick={toggleProfileInfo}>
+              {loggedInId === id ? (
+                <div onClick={toggleProfileInfo}>
+                  {" "}
+                  <div className="edit-profile-icon">
                     {" "}
-                    <div className="edit-profile-icon"> <EditProfileIcon/>  </div>
+                    <EditProfileIcon />{" "}
                   </div>
-                ) : following.some((user) => user._id === id) ? (
-                  <FollowButton followed="false" onClick={() => unfollow(id)}>
-                    {" "}
-                    Unfollow{" "}
-                  </FollowButton>
-                ) : (
-                  <FollowButton followed="true" onClick={() => follow(id)}>
-                    {" "}
-                    Follow{" "}
-                  </FollowButton>
-                )}
+                </div>
+              ) : following.some((user) => user._id === id) ? (
+                <FollowButton followed="false" onClick={() => unfollow(id)}>
+                  {" "}
+                  Unfollow{" "}
+                </FollowButton>
+              ) : (
+                <FollowButton followed="true" onClick={() => follow(id)}>
+                  {" "}
+                  Follow{" "}
+                </FollowButton>
+              )}
               {/* </div> */}
             </UserContact>
             <UserStats>
@@ -1015,7 +1015,7 @@ export default function Profile() {
           createComment={createComment}
           deleteComment={deleteComment}
           setPrevSlidePosition={setPrevSlidePosition}
-          
+          setFiles={setFiles}
         />
       </ProfileMain>
     </div>

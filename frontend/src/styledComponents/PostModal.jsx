@@ -116,6 +116,7 @@ export const PostModalStyle = styled.div`
     height: 40px;
     border-radius: 50%;
     margin-bottom: 0.5em;
+    object-fit: cover;
   }
   .user-post:hover {
     color: #d0e1e4;
