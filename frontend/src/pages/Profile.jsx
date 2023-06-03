@@ -985,6 +985,8 @@ export default function Profile() {
                 updatePicture={updatePicture}
                 profileInfo={profileInfo}
                 handleProfileInfoChange={handleProfileInfoChange}
+                setProPic={setProPic}
+                userPicUrl={userPicUrl}
               />
             </div>
           </Modal>

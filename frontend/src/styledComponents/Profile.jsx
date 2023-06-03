@@ -74,7 +74,7 @@ export const GreyHoverButton = styled.button`
   background-color: ${(props) => props.theme.colors.lightgrey};
   border-radius: 0.5rem;
   transition: 0.1s;
-  padding: .5rem;
+  padding: 0.5rem;
 
   &:hover {
     background-color: ${(props) => props.theme.colors.darkgrey};
@@ -261,7 +261,7 @@ export const UserStats = styled.div`
 
   & span {
     font-weight: 600;
-    margin-right: .25rem;
+    margin-right: 0.25rem;
   }
 
   @media all and (max-width: ${(props) => props.theme.breakpoint.mobile}) {
@@ -450,7 +450,7 @@ export const PostFormStyle = styled.div`
     border-radius: 0.25rem;
     width: 75%;
     height: 3rem;
-    padding: .5rem;
+    padding: 0.5rem;
   }
 
   & .upload-overlay {
@@ -621,7 +621,7 @@ export const ExerciseInfo2 = styled.div`
 `;
 
 export const ProPicInfoForm = styled.div`
-  height: 300px;
+  /* height: 300px; */
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -630,6 +630,13 @@ export const ProPicInfoForm = styled.div`
   padding: 0;
   align-items: center;
 
+  & img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+  }
   .profileinfo-title {
     width: 100%;
     text-align: center;
@@ -663,10 +670,6 @@ export const ProPicInfoForm = styled.div`
     margin-top: 1em;
     border-radius: 5px;
     padding: 8px;
-    background-color: #d5e3f0;
-  }
-  button:hover {
-    background-color: #c8d9f0;
   }
 `;
 export const EditForm = styled.form`
