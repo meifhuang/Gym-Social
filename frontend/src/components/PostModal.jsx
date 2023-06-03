@@ -29,41 +29,37 @@ export default function PostModal({
   unlikeAPost,
 }) {
   const dateDiff = (date, type) => {
-    const diffHours = Math.floor((new Date() - new Date(date)) / (1000 * 3600))
+    const diffHours = Math.floor((new Date() - new Date(date)) / (1000 * 3600));
     if (diffHours <= 1) {
-      if (type == 'post') {
-        return "less than 1 hour ago"
+      if (type == "post") {
+        return "less than 1 hour ago";
+      } else {
+        const diffMinutes = Math.floor(
+          (new Date() - new Date(date)) / (1000 * 3600)
+        );
+        return diffMinutes + "m";
       }
-      else {
-        const diffMinutes = Math.floor((new Date() - new Date(date)) / (1000 * 3600))
-        return diffMinutes + "m"
-      }
-    }
-    else if (diffHours >= 24) {
-      const diffDays = Math.floor((new Date() - new Date(date)) / (1000 * 3600 * 24))
-      if (type == 'post') {
+    } else if (diffHours >= 24) {
+      const diffDays = Math.floor(
+        (new Date() - new Date(date)) / (1000 * 3600 * 24)
+      );
+      if (type == "post") {
         if (diffDays == 1) {
-          return (diffDays + " day ago")
+          return diffDays + " day ago";
+        } else {
+          return diffDays + " days ago";
         }
-        else {
-          return (diffDays + " days ago")
-        }
+      } else {
+        return diffDays + "d";
       }
-      else {
-        return diffDays + "d"
+    } else {
+      if (type == "post") {
+        return diffHours + " hours ago";
+      } else {
+        return diffHours + "h";
       }
     }
-    else {
-      if (type == 'post') {
-      return (diffHours + " hours ago")
-      }
-      else {
-        return diffHours + "h"
-      }
-    }
-  }
-
-
+  };
 
   const [showPost, setShowPost] = useState(true);
 
@@ -76,11 +72,11 @@ export default function PostModal({
               {prevSlidePositionShow.map((slides) => {
                 return slides.postId === posty._id ? (
                   <div className="postimg-div">
-                      <img
-                        className="carousel-item carousel-item-visible"
-                        src={posty.images[slides.index].url}
-                      />
-                    
+                    <img
+                      className="carousel-item carousel-item-visible"
+                      src={posty.images[slides.index].url}
+                    />
+
                     {posty.images.length > 1 ? (
                       <div className="carousel-actions">
                         <button
@@ -90,7 +86,6 @@ export default function PostModal({
                           id={`carousel-button-prev`}
                           aria-label="Previous"
                         >
-                          
                           &lt;{" "}
                         </button>
 
@@ -113,27 +108,31 @@ export default function PostModal({
                   <> </>
                 );
               })}
-            
             </div>
             <PostDetails>
               <div className="caption">
-                <img
-                  className="userpic-icon"
-                  src={posty.createdBy[0].picture[0].url}
-                ></img>
-                <h3
-                  className="user-post"
-                  onClick={() => viewProfile(posty.createdBy[0]._id)}
-                >
-                  {" "}
-                  {posty.createdBy[0].fname} {posty.createdBy[0].lname}{" "}
-                </h3>
-                <h4> {posty.caption} </h4>
-                <div>
-                <h5> {dateDiff(posty.createdAt, "post")} </h5>
+                <div className="user-caption-header">
+                  <img
+                    className="userpic-icon"
+                    src={posty.createdBy[0].picture[0].url}
+                  ></img>
+                  <h3
+                    className="user-post"
+                    onClick={() => viewProfile(posty.createdBy[0]._id)}
+                  >
+                    {" "}
+                    {posty.createdBy[0].fname} {posty.createdBy[0].lname}{" "}
+                  </h3>
                 </div>
-                </div>
-             
+                {/* <div className="user-caption-subhead"> */}
+                  <div className="user-caption-description">
+                    {" "}
+                    {posty.caption}{" "}
+                  </div>
+                  <h5> {dateDiff(posty.createdAt, "post")} </h5>
+                {/* </div> */}
+              </div>
+
               <div className="postlikes-container post-options">
                 <div className="likes">
                   {posty && !posty.likedBy.includes(loggedInId) ? (
@@ -151,29 +150,28 @@ export default function PostModal({
                     return (
                       <div className="comments">
                         <div className="commenter">
-                        <h4>
-                          {" "}
-                          {comment.createdBy[0].fname}{" "}
-                          {comment.createdBy[0].lname} : {comment.description}{" "}
-                        </h4>
-                        <div>
-                        <h5> {dateDiff(comment.createdAt, "comment")} </h5>
-                        
-                       
-                        {comment.createdBy[0]._id === loggedInId ? (
-                          <div className="delete-comment-icon">
-                            <DeleteCommentIcon
-                              deleteComment={deleteComment}
-                              postId={posty._id}
-                              commentId={comment._id}
-                            />
+                          <p className="comment-description">
+                            {" "}
+                            {comment.createdBy[0].fname}{" "}
+                            {comment.createdBy[0].lname}{" "}
+                            <span>{comment.description}</span>
+                          </p>
+                          <div>
+                            <h5> {dateDiff(comment.createdAt, "comment")} </h5>
+
+                            {comment.createdBy[0]._id === loggedInId ? (
+                              <div className="delete-comment-icon">
+                                <DeleteCommentIcon
+                                  deleteComment={deleteComment}
+                                  postId={posty._id}
+                                  commentId={comment._id}
+                                />
+                              </div>
+                            ) : (
+                              <></>
+                            )}
                           </div>
-                          
-                        ) : (
-                          <></>
-                        )}
                         </div>
-</div>
                       </div>
                     );
                   })}

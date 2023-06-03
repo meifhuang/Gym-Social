@@ -240,6 +240,7 @@ export default function Post({
             {prevSlidePosition.map((slides) => {
               return slides.postId === post._id ? (
                 <PostImageContainer
+                  onClick={() => toggleModal(post._id)}
                   showLikesComments={showLikesComments}
                   onMouseEnter={
                     page === "profile" ? () => setShowLikesComments(true) : ""
@@ -248,7 +249,10 @@ export default function Post({
                     page === "profile" ? () => setShowLikesComments(false) : ""
                   }
                 >
-                  <div className={"post-img-div " + page} onClick={() => toggleModal(post._id)}>
+                  <div
+                    className={"post-img-div " + page}
+                    // onClick={() => toggleModal(post._id)}
+                  >
                     <img
                       className="carousel-item carousel-item-visible"
                       src={post.images[slides.index].url}

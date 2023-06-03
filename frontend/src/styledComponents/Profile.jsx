@@ -406,7 +406,7 @@ export const Modal = styled.div`
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    line-height: 2.4;
+    line-height: 1.5;
     background: #f1f1f1;
     padding: 14px 28px;
     border-radius: 5px;
