@@ -902,10 +902,22 @@ export default function Profile() {
               {/* </div> */}
             </UserContact>
             <UserStats>
-              <div> Posts {numPosts} </div>
-              <div> Workouts {numWorkouts} </div>
-              <div> Followers {numFollowers}</div>
-              <div> Following {numFollowing}</div>
+              <div>
+                {" "}
+                <span>{numPosts}</span> Posts{" "}
+              </div>
+              <div>
+                {" "}
+                <span>{numWorkouts}</span> Workouts{" "}
+              </div>
+              <div>
+                {" "}
+                <span>{numFollowers}</span> Followers{" "}
+              </div>
+              <div>
+                {" "}
+                <span>{numFollowing}</span> Following{" "}
+              </div>
             </UserStats>
             <About>
               {/* <div className="about-header">About Me</div> */}

@@ -74,6 +74,7 @@ export const GreyHoverButton = styled.button`
   background-color: ${(props) => props.theme.colors.lightgrey};
   border-radius: 0.5rem;
   transition: 0.1s;
+  padding: .5rem;
 
   &:hover {
     background-color: ${(props) => props.theme.colors.darkgrey};
@@ -258,6 +259,11 @@ export const UserStats = styled.div`
   align-items: center;
   gap: 1rem;
 
+  & span {
+    font-weight: 600;
+    margin-right: .25rem;
+  }
+
   @media all and (max-width: ${(props) => props.theme.breakpoint.mobile}) {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -371,7 +377,6 @@ export const AddPostModalOverlay = styled(ModalOverlay)`
 export const PostFormStyle = styled.div`
   display: flex;
   justify-content: center;
-  border: 1px solid red;
   width: 100%;
   height: 100%;
 
@@ -379,43 +384,29 @@ export const PostFormStyle = styled.div`
     width: 100%;
   }
 
-  & form input,
-  & upload-overlay form label {
-    width: 100%;
-    /* position: absolute; */
-    top: 50%;
-    left: 50%;
-    /* transform: translate(-50%, -50%); */
-  }
-  /* & .upload-overlay label {
-    text-align: center;
-    border: 1px solid red;
-    width: 60%;
-    position: absolute;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgb(233, 228, 228);
-    border-radius: 0.25rem;
-    padding: 0.4rem 0rem 0.3rem 0rem;
-    font-size: 0.8rem;
-    font-weight: 500;
+  & form input {
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
+    /* width: auto; */
+    width: 200px;
+  }
 
-    cursor: pointer;
+  & .upload-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
 
-    transition: 0.1s;
-  } */
   & .upload-overlay label:hover {
     background-color: ${(props) => props.theme.colors.darkgrey};
   }
   .upload-overlay .upload-arrow-icons {
     position: absolute;
-    border: 1px solid red;
-    width: 100%;
+    /* border: 1px solid red; */
+    width: 140%;
     display: flex;
     justify-content: space-between;
     top: 50%;
@@ -423,9 +414,33 @@ export const PostFormStyle = styled.div`
     transform: translate(-50%, -50%);
   }
 
-  .upload-overlay .svg {
-
+  .upload-overlay button {
+    background-color: rgba(130, 132, 134, 0.212);
+    border-radius: 50px;
+    padding: 0.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+  .upload-overlay svg {
+    border-radius: 50px;
+    background-color: transparent;
+    border: 0;
+    font-size: 1rem;
+    color: #181818;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    /* background-color: rgba(218, 221, 225, 0.212); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .upload-overlay button:hover {
+    background-color: rgba(57, 57, 58, 0.349);
+  }
+
   .upload-overlay img {
     width: 100%;
     height: 100%;
@@ -435,10 +450,11 @@ export const PostFormStyle = styled.div`
     border-radius: 0.25rem;
     width: 75%;
     height: 3rem;
+    padding: .5rem;
   }
 
   & .upload-overlay {
-    background-color: #b6afaf;
+    background-color: #dbd5d5;
     width: 300px;
     height: 300px;
     /* border-radius: 50%; */

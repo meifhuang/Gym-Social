@@ -258,24 +258,7 @@ export default function Post({
                       src={post.images[slides.index].url}
                     />
                   </div>
-                  {showLikesComments && (
-                    <PostLikesComments>
-                      <div>
-                        <HeartIcon />
-                        <span>{post.likedBy.length}</span>
-                      </div>
-                      <div>
-                        <CommentIcon />
-                        <span>{post.comments.length}</span>
-                      </div>
-                    </PostLikesComments>
-                  )}
-                </PostImageContainer>
-              ) : (
-                <> </>
-              );
-            })}
-            {post.images.length > 1 ? (
+                  {post.images.length > 1 ? (
               <div className="carousel-actions">
                 <button
                   onClick={() => prevSlide(post.images.length, post._id)}
@@ -298,6 +281,46 @@ export default function Post({
             ) : (
               <div> </div>
             )}
+                  {showLikesComments && (
+                    <PostLikesComments>
+                      <div>
+                        <HeartIcon />
+                        <span>{post.likedBy.length}</span>
+                      </div>
+                      <div>
+                        <CommentIcon />
+                        <span>{post.comments.length}</span>
+                      </div>
+                    </PostLikesComments>
+                  )}
+                </PostImageContainer>
+              ) : (
+                <> </>
+              );
+            })}
+            {/* {post.images.length > 1 ? (
+              <div className="carousel-actions">
+                <button
+                  onClick={() => prevSlide(post.images.length, post._id)}
+                  id={`carousel-button-prev`}
+                  aria-label="Previous"
+                >
+                  {" "}
+                  &lt;{" "}
+                </button>
+
+                <button
+                  onClick={() => nextSlide(post.images.length, post._id)}
+                  id={`carousel-button-next`}
+                  aria-label="Next"
+                >
+                  {" "}
+                  &gt;{" "}
+                </button>
+              </div>
+            ) : (
+              <div> </div>
+            )} */}
             {url.includes("newsfeed") && (
               <>
                 <div className="post-options">

@@ -158,32 +158,28 @@ export const PostModalStyle = styled.div`
     cursor: pointer;
     width: 40px;
     height: 40px;
-    background-color: rgba(218, 221, 225, 0.644);
+    background-color: rgba(218, 221, 225, 0.349);
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: .1s;
+  }
+
+  .carousel .carousel-actions button:hover {
+    background-color: rgba(164, 166, 168, 0.349);
   }
   .comment-form {
     height: 50px;
     display: flex;
     flex-direction: row;
-    /* margin-top: auto; */
-    /* 
-    margin-left: 1em;
-    margin-right: 1em;
-    margin-bottom: 1em; */
     border-radius: 10px;
     border: 1px solid grey;
-    /* align-self: end; */
   }
 
   .commenter {
     display: flex;
-    // flex-direction: column;
-    /* border: 1px solid black; */
     margin: 0.25rem 0.75rem;
     width: 100%;
-    /* gap: 0px; */
     justify-content: space-between;
     align-items: start;
     line-height: 1.5;
