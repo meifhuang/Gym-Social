@@ -43,7 +43,7 @@ export const PostModalStyle = styled.div`
   }
   .delete-comment-icon {
     display: flex;
-    padding: 0.7em;
+    /* padding: 0.7em; */
     color: black;
     cursor: pointer;
     margin-right: 0.2em;
@@ -60,17 +60,63 @@ export const PostModalStyle = styled.div`
     background-color: rgb(0, 0, 0);
     min-width: 300px;
   }
+  .user-caption-header {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
+
+  .user-caption-description {
+    /* border: 1px solid red; */
+    line-height: 1.5;
+  }
+
+  .user-caption-subhead {
+    display: flex;
+    width: 100%;
+  }
   .caption {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    /* align-items: center; */
     border-bottom: 1.5px solid #f1f1f1;
     margin: 1em;
+  }
+
+  .caption img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .caption h5 {
+    align-self: end;
+    justify-content: end;
+  }
+
+  @media screen and (max-width: ${(props) => props.theme.breakpoint.lg}) {
+    .caption {
+      flex-direction: column;
+      align-items: start;
+    }
+
+    .caption > * {
+      padding: 0;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .caption h5 {
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      align-self: end;
+    }
   }
   .userpic-icon {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     margin-bottom: 0.5em;
+    object-fit: cover;
   }
   .user-post:hover {
     color: #d0e1e4;
@@ -112,43 +158,67 @@ export const PostModalStyle = styled.div`
     cursor: pointer;
     width: 40px;
     height: 40px;
-    background-color: rgba(218, 221, 225, 0.644);
+    background-color: rgba(218, 221, 225, 0.349);
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: .1s;
+  }
+
+  .carousel .carousel-actions button:hover {
+    background-color: rgba(164, 166, 168, 0.349);
   }
   .comment-form {
     height: 50px;
     display: flex;
     flex-direction: row;
-    margin-top: auto;
-
-    margin-left: 1em;
-    margin-right: 1em;
-    margin-bottom: 1em;
     border-radius: 10px;
     border: 1px solid grey;
-    /* align-self: end; */
   }
 
   .commenter {
     display: flex;
-    // flex-direction: column;
-    // border: 1px solid black;
-    width:100%;
-    gap: 0px;
+    margin: 0.25rem 0.75rem;
+    width: 100%;
     justify-content: space-between;
+    align-items: start;
+    line-height: 1.5;
   }
 
-  .commenter div {
-    display:flex
+  .commenter h4 {
+    line-height: 1px;
   }
-  .commenter div> h5 {
-    // border: 1px solid red;
-    // padding: 0;
-    // margin: 0;
-    justify-items: start ;
 
+  .commenter > div {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    /* min-width: 100px; */
+    /* margin: 0.5rem; */
+    /* border: 1px solid red; */
+    min-width: 4.5rem;
+    /* margin-top: 0.5rem; */
+    gap: 0.5rem;
+  }
+
+  .comment-description {
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  .comment-description span {
+    font-weight: 400;
+  }
+  .commenter .delete-comment-icon {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+  }
+  .commenter div > h5 {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    margin: 0;
   }
   .post-options .unheart {
     fill: #ff6969;
@@ -194,7 +264,7 @@ export const PostModalStyle = styled.div`
   h3,
   h4,
   h5 {
-    margin: 0.5em;
+    margin: 0.5rem;
   }
   img {
     position: relative;
@@ -218,7 +288,7 @@ export const PostModalStyle = styled.div`
 
     .carousel {
       /* margin: 0 auto; */
-      width: 70%;
+      width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -237,7 +307,7 @@ export const PostStyle = styled.div`
   .post.newsfeed {
     width: 400px;
     border: 1px solid ${(props) => props.theme.colors.lightgrey};
-    border-radius: .5rem;
+    border-radius: 0.5rem;
   }
   .post-options {
     display: flex;
@@ -432,9 +502,13 @@ export const PostDetails = styled.div`
 
   & .comment-container {
     overflow: auto;
-    height: 300px;
+    height: auto;
     /* flex: 1;
     overflow: auto; */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    /* flex:1 */
   }
 
   @media only screen and (min-width: 400px) {
@@ -505,8 +579,8 @@ export const Modal = styled.div`
     line-height: 2.4;
     background: #f1f1f1;
     width: 80%;
-
-    height: 90%;
+    /* height: 90%; */
+    /* height: 90%; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -561,7 +635,15 @@ export const Modal = styled.div`
   @media only screen and (min-width: 1200px) {
     & .modal-content,
     &.workout-modal {
-      min-width: 1200px;
+      min-width: 900px;
+
+    }
+  }
+
+  @media only screen and (min-width: 700px) {
+    & .modal-content,
+    &.workout-modal {
+      height: 90%;
     }
   }
 `;

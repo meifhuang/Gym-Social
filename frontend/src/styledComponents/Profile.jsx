@@ -1,5 +1,114 @@
 import styled from "styled-components";
 
+export const Modal = styled.div`
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+  z-index: 1000;
+  /* border: 1px solid red; */
+
+  & .modal-content,
+  &.workout-modal {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1.5;
+    background: #f1f1f1;
+    padding: 14px 28px;
+    border-radius: 5px;
+    max-width: 600px;
+    min-width: 500px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .stats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .select-exercise {
+    font-size: 1.2em;
+    font-weight: 800;
+    /* border: 1px solid red; */
+  }
+  input {
+    width: 3.1em;
+    height: 2.1em;
+    margin: 0.5em;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  form > * {
+    margin-bottom: 0.5em;
+  }
+
+  .inputted-exercises {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-transform: capitalize;
+  }
+`;
+
+export const SelectExerciseBar = styled.select`
+  height: 2.3em;
+  width: 28em;
+`;
+
+export const EditDeleteButton = styled.button``;
+
+export const GreyHoverButton = styled.button`
+  cursor: pointer;
+  background-color: ${(props) => props.theme.colors.lightgrey};
+  border-radius: 0.5rem;
+  transition: 0.1s;
+  padding: 0.5rem;
+
+  &:hover {
+    background-color: ${(props) => props.theme.colors.darkgrey};
+  }
+`;
+export const AddExerciseButton = styled(GreyHoverButton)`
+  width: 7.5rem;
+  height: 2.1rem;
+  margin-left: 0.5rem;
+`;
+
+export const AddWorkoutButton = styled(GreyHoverButton)`
+  width: 8rem;
+  height: 2.5rem;
+  margin-top: 1rem;
+`;
+
+export const FinishEditButton = styled(GreyHoverButton)`
+  width: 8rem;
+  height: 2.4rem;
+  margin-top: 1rem;
+`;
+
+export const ModalOverlay = styled.div`
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+  background: rgba(49, 49, 49, 0.8);
+`;
+
 export const CenteredFlexColumn = styled.div`
   display: flex;
   flex-direction: column;
@@ -150,6 +259,11 @@ export const UserStats = styled.div`
   align-items: center;
   gap: 1rem;
 
+  & span {
+    font-weight: 600;
+    margin-right: 0.25rem;
+  }
+
   @media all and (max-width: ${(props) => props.theme.breakpoint.mobile}) {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -218,6 +332,16 @@ export const PostContainer = styled.div`
   }
 `;
 
+export const AddPostButton = styled(GreyHoverButton)`
+  position: absolute;
+  top: 0;
+  margin-top: 1rem;
+  right: 0;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+`;
+
 export const NewsFeed = styled.div`
   display: flex;
   flex-direction: column;
@@ -227,9 +351,116 @@ export const NewsFeed = styled.div`
   margin-top: 2rem;
 `;
 
+export const AddPostModal = styled(Modal)`
+  & .modal-content,
+  &.workout-modal {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1.5;
+    background: #f1f1f1;
+    padding: 14px 28px;
+    border-radius: 5px;
+    /* max-width: 600px;
+    min-width: 500px; */
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+export const AddPostModalOverlay = styled(ModalOverlay)`
+  height: 100%;
+`;
 export const PostFormStyle = styled.div`
   display: flex;
   justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  & form {
+    width: 100%;
+  }
+
+  & form input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* width: auto; */
+    width: 200px;
+  }
+
+  & .upload-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  & .upload-overlay label:hover {
+    background-color: ${(props) => props.theme.colors.darkgrey};
+  }
+  .upload-overlay .upload-arrow-icons {
+    position: absolute;
+    /* border: 1px solid red; */
+    width: 140%;
+    display: flex;
+    justify-content: space-between;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .upload-overlay button {
+    background-color: rgba(130, 132, 134, 0.212);
+    border-radius: 50px;
+    padding: 0.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .upload-overlay svg {
+    border-radius: 50px;
+    background-color: transparent;
+    border: 0;
+    font-size: 1rem;
+    color: #181818;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    /* background-color: rgba(218, 221, 225, 0.212); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .upload-overlay button:hover {
+    background-color: rgba(57, 57, 58, 0.349);
+  }
+
+  .upload-overlay img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  & form textarea {
+    border-radius: 0.25rem;
+    width: 75%;
+    height: 3rem;
+    padding: 0.5rem;
+  }
+
+  & .upload-overlay {
+    background-color: #dbd5d5;
+    width: 300px;
+    height: 300px;
+    /* border-radius: 50%; */
+    /* object-fit: cover; */
+    position: relative;
+  }
 `;
 
 export const WorkoutContainer = styled.div`
@@ -389,118 +620,8 @@ export const ExerciseInfo2 = styled.div`
   }
 `;
 
-export const Modal = styled.div`
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  position: fixed;
-  z-index: 1000;
-  /* border: 1px solid red; */
-
-  & .modal-content,
-  &.workout-modal {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    line-height: 2.4;
-    background: #f1f1f1;
-    padding: 14px 28px;
-    border-radius: 5px;
-    max-width: 600px;
-    min-width: 500px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .stats {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .select-exercise {
-    font-size: 1.2em;
-    font-weight: 800;
-    /* border: 1px solid red; */
-  }
-  input {
-    width: 3.1em;
-    height: 2.1em;
-    margin: 0.5em;
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  form > * {
-    margin-bottom: 0.5em;
-  }
-
-  .inputted-exercises {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    text-transform: capitalize;
-  }
-
-`;
-
-export const GreyHoverButton = styled.button`
-  cursor: pointer;
-  background-color: ${(props) => props.theme.colors.lightgrey};
-  border-radius: 0.5rem;
-  transition: 0.1s;
-
-  &:hover {
-    background-color: ${(props) => props.theme.colors.darkgrey};
-  }
-`;
-export const SelectExerciseBar = styled.select`
-  height: 2.3em;
-  width: 28em;
-`;
-
-export const EditDeleteButton = styled.button``;
-
-export const AddExerciseButton = styled(GreyHoverButton)`
-  width: 7.5rem;
-  height: 2.1rem;
-  margin-left: 0.5rem;
-
-`;
-
-export const AddWorkoutButton = styled(GreyHoverButton)`
-  width: 8rem;
-  height: 2.5rem;
-  margin-top: 1rem;
-`;
-
-export const FinishEditButton = styled(GreyHoverButton)`
-  width: 8rem;
-  height: 2.4rem;
-  margin-top: 1rem;
-`;
-
-export const ModalOverlay = styled.div`
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  position: fixed;
-  background: rgba(49, 49, 49, 0.8);
-`;
-
 export const ProPicInfoForm = styled.div`
-  height: 300px;
+  /* height: 300px; */
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -509,6 +630,13 @@ export const ProPicInfoForm = styled.div`
   padding: 0;
   align-items: center;
 
+  & img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+  }
   .profileinfo-title {
     width: 100%;
     text-align: center;
@@ -542,10 +670,6 @@ export const ProPicInfoForm = styled.div`
     margin-top: 1em;
     border-radius: 5px;
     padding: 8px;
-    background-color: #d5e3f0;
-  }
-  button:hover {
-    background-color: #c8d9f0;
   }
 `;
 export const EditForm = styled.form`

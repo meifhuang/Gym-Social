@@ -240,6 +240,7 @@ export default function Post({
             {prevSlidePosition.map((slides) => {
               return slides.postId === post._id ? (
                 <PostImageContainer
+                  onClick={() => toggleModal(post._id)}
                   showLikesComments={showLikesComments}
                   onMouseEnter={
                     page === "profile" ? () => setShowLikesComments(true) : ""
@@ -248,12 +249,38 @@ export default function Post({
                     page === "profile" ? () => setShowLikesComments(false) : ""
                   }
                 >
-                  <div className={"post-img-div " + page} onClick={() => toggleModal(post._id)}>
+                  <div
+                    className={"post-img-div " + page}
+                    // onClick={() => toggleModal(post._id)}
+                  >
                     <img
                       className="carousel-item carousel-item-visible"
                       src={post.images[slides.index].url}
                     />
                   </div>
+                  {/* {post.images.length > 1 ? (
+              <div className="carousel-actions">
+                <button
+                  onClick={() => prevSlide(post.images.length, post._id)}
+                  id={`carousel-button-prev`}
+                  aria-label="Previous"
+                >
+                  {" "}
+                  &lt;{" "}
+                </button>
+
+                <button
+                  onClick={() => nextSlide(post.images.length, post._id)}
+                  id={`carousel-button-next`}
+                  aria-label="Next"
+                >
+                  {" "}
+                  &gt;{" "}
+                </button>
+              </div>
+            ) : (
+              <div> </div>
+            )} */}
                   {showLikesComments && (
                     <PostLikesComments>
                       <div>
@@ -272,7 +299,12 @@ export default function Post({
               );
             })}
             {post.images.length > 1 ? (
-              <div className="carousel-actions">
+              <div
+                className="carousel-actions"
+                onMouseEnter={
+                  page === "profile" ? () => setShowLikesComments(true) : ""
+                }
+              >
                 <button
                   onClick={() => prevSlide(post.images.length, post._id)}
                   id={`carousel-button-prev`}
