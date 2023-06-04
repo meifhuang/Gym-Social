@@ -41,7 +41,7 @@ export default function Login(props) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("asdasdasdasdasd")
+    console.log("asdasdasdasdasd");
   }, [isLoading]);
 
   const handleInputChange = (e) => {
@@ -55,6 +55,26 @@ export default function Login(props) {
   const handleGoogleLogin = async () => {
     // console.log("huh");
     window.open(`${BASE_URL}/auth/google`, "_self");
+    // try {
+    //   const response = await axios({
+    //     method: "get",
+    //     url: "http://localhost:4000/auth/google/callback",
+    //   });
+    //   if (response) {
+    //     console.log(response);
+    //     localStorage.setItem("token", response.data.token);
+    //     localStorage.setItem("id", response.data.userId);
+    //   } else {
+    //     console.log("no response");
+    //   }
+    // } catch (e) {
+    //   console.log(e.message);
+    // }
+  };
+
+  const handleFacebookLogin = async () => {
+    // console.log("huh");
+    window.open(`${BASE_URL}/auth/facebook`, "_self");
     // try {
     //   const response = await axios({
     //     method: "get",
@@ -86,7 +106,7 @@ export default function Login(props) {
         setHasToken(response.data.token);
         setErrorMessage("");
         setIsLoading(false);
-        window.location.href = `/profile/${data.userId}`
+        window.location.href = `/profile/${data.userId}`;
       } else {
         console.log("Login failed");
       }
@@ -98,6 +118,8 @@ export default function Login(props) {
     }
   };
 
+  const indexOf = "JackyPeng@gmail.com".indexOf("@");
+  console.log("JackyPeng@gmail.com".slice(0, indexOf));
   return (
     <ContainerColumn>
       <ContainerRowReverse>
@@ -147,7 +169,7 @@ export default function Login(props) {
               </span>
               Login with Google
             </GoogleButton>
-            <FacebookButton>
+            <FacebookButton type="button" onClick={handleFacebookLogin}>
               <span>
                 <FacebookIcon />
               </span>
