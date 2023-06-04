@@ -15,6 +15,7 @@ const cors = require("cors");
 const authRouter = require("./controllers/auth");
 const userRouter = require("./controllers/user");
 const googleRouter = require("./auth/googleauth");
+const facebookRouter = require("./auth/facebookauth")
 
 const jwtStrategy = require("./auth/index");
 
@@ -48,7 +49,8 @@ function createServer() {
 
  
   app.use(authRouter);
-  app.use(googleRouter); 
+  app.use(googleRouter);
+  app.use(facebookRouter)
   app.use(passport.authenticate("jwt", { session: false }), workoutRouter);
   app.use(passport.authenticate("jwt", { session: false }), userRouter); 
   app.use(passport.authenticate("jwt", { session: false }), exerciseRouter); 
