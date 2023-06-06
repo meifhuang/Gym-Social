@@ -219,12 +219,12 @@ export default function Signup() {
               </span>
               Sign Up with Google
             </GoogleButton>
-            <FacebookButton>
+            {/* <FacebookButton>
               <span>
                 <FacebookIcon />
               </span>
               Sign Up with Facebook
-            </FacebookButton>
+            </FacebookButton> */}
             <AuthRedirect>
               Already have an account?{" "}
               <span onClick={() => navigate("/login")}>Login</span>

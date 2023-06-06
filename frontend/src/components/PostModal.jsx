@@ -26,6 +26,7 @@ export default function PostModal({
   prevSlideM,
   deletePost,
   likeAPost,
+  viewProfile,
   unlikeAPost,
 }) {
   const dateDiff = (date, type) => {

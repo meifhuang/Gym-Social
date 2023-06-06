@@ -117,9 +117,6 @@ export default function Login(props) {
       }, 10000);
     }
   };
-
-  const indexOf = "JackyPeng@gmail.com".indexOf("@");
-  console.log("JackyPeng@gmail.com".slice(0, indexOf));
   return (
     <ContainerColumn>
       <ContainerRowReverse>
@@ -169,12 +166,12 @@ export default function Login(props) {
               </span>
               Login with Google
             </GoogleButton>
-            <FacebookButton type="button" onClick={handleFacebookLogin}>
+            {/* <FacebookButton type="button" onClick={handleFacebookLogin}>
               <span>
                 <FacebookIcon />
               </span>
               Login with Facebook
-            </FacebookButton>
+            </FacebookButton> */}
             <AuthRedirect>
               Don't have an account?{" "}
               <span onClick={() => navigate("/signup")}>Sign Up</span>

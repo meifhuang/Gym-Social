@@ -22,7 +22,8 @@ export default function Newsfeed({
   const [posts, setPosts] = useState([]);
 
 
-  const likeAPost = async (postId) => {
+  const likeAPostN = async (postId) => {
+    console.log("LIKEE")
     try {
       const response = await axios({
         method: "post",
@@ -32,7 +33,6 @@ export default function Newsfeed({
         },
       });
       if (response) {
-        console.log(response.data);
         getPosts();
       }
     } catch (e) {
@@ -40,7 +40,7 @@ export default function Newsfeed({
     }
   };
 
-  const unlikeAPost = async (postId) => {
+  const unlikeAPostN = async (postId) => {
     console.log("UNLIKEE");
     try {
       const response = await axios({
@@ -51,8 +51,7 @@ export default function Newsfeed({
         },
       });
       if (response) {
-        console.log(response.data);
-        getPosts();
+       getPosts()
       }
     } catch (e) {
       console.log(e.message);
@@ -137,8 +136,12 @@ export default function Newsfeed({
   //   // window.location.replace(`/newsfeed`);
   }, []);
 
+
+  // ???? <link to={`/profile/localstorage` ??? }
+
   const viewProfile = async (userId) => {
     navigate(`/profile/${userId}`);
+
   };
 
   const exploreUsers = async () => {
@@ -164,6 +167,8 @@ export default function Newsfeed({
               viewProfile={viewProfile}
               getPosts={getPosts}
               page="newsfeed"
+              likeAPostN={likeAPostN}
+              unlikeAPostN={unlikeAPostN}
             />
           );
         })}

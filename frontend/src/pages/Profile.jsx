@@ -70,6 +70,7 @@ export default function Profile() {
   const [username, setUsername] = useState("");
   const [user, setUser] = useState([]);
   // const [userPicUrl, setUserPicUrl] = useState("");
+  const [profileUserUrl, setprofileUserUrl] = useState("")
 
   //forms
   const [showExerciseForm, setShowExerciseForm] = useState(true);
@@ -186,6 +187,25 @@ export default function Profile() {
     navigate("/signup");
   }
 
+  const getNav = async (userid) => {
+    try { 
+      const res = await axios({
+        method: "get",
+        url: `${BASE_URL}/profile/${userid}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    })
+    if (res) {
+      console.log(res.data)
+      setUserPicUrl(res.data.user.picture[0].url);
+    }
+  }
+  catch (e) {
+    console.log(e.message)
+  }
+}
+
   const getUser = async () => {
     try {
       const res = await axios({
@@ -210,7 +230,7 @@ export default function Profile() {
           setUsername(username);
         }
         setUser(res.data.user);
-        setUserPicUrl(res.data.user.picture[0].url);
+        setprofileUserUrl(res.data.user.picture[0].url)
         setWorkouts(res.data.workouts);
         setFollowing(res.data.loggedInUserFollowing);
         setnumFollowing(res.data.numFollowing);
@@ -232,9 +252,13 @@ export default function Profile() {
     }
   };
 
+
   useEffect(() => {
     getUser();
-  }, [id, userPicUrl]);
+    let userid = localStorage.getItem("id")
+    getNav(id);
+
+  }, []);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -861,7 +885,9 @@ export default function Profile() {
         setErrorMessage("");
       }, 10000);
     }
-  };
+  }
+
+
 
   return (
     <div className="App">
@@ -869,7 +895,7 @@ export default function Profile() {
         <TagInfo className="tag">
           <ImageContainer>
             <div className="profilepic">
-              <img src={userPicUrl}></img>
+              <img src={profileUserUrl}></img>
             </div>
             <h2>
               {" "}

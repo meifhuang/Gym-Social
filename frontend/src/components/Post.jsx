@@ -15,7 +15,9 @@ import {
 } from "../styledComponents/PostModal";
 
 import {
-  HeartIcon,
+  HeartIconN,
+  UnHeartIconN,
+  HeartIcon, 
   UnHeartIcon,
   DeletePostIcon,
   CrossIcon,
@@ -33,6 +35,8 @@ export default function Post({
   deletePost,
   viewProfile,
   page,
+  likeAPostN, 
+  unlikeAPostN
 }) {
   // console.log(page)
   const BASE_URL = import.meta.env.VITE_URL;
@@ -87,11 +91,8 @@ export default function Post({
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      if (response) {
-        console.log(response.data);
-        // getPosts();
-        getPost(postId);
-      }
+      getPost(postId);
+      
     } catch (e) {
       console.log(e.message);
     }
@@ -109,10 +110,9 @@ export default function Post({
       });
       if (response) {
         console.log(response.data);
-        // getPosts();
-        getPost(postId);
-      }
-    } catch (e) {
+        getPost(postId)
+    }}
+     catch (e) {
       console.log(e.message);
     }
   };
@@ -228,7 +228,7 @@ export default function Post({
                 className="userpic-icon"
                 src={post.createdBy[0].picture[0].url}
               ></img>
-              <h4>
+              <h4 onClick={() => viewProfile(post.createdBy[0]._id)}>
                 {" "}
                 {post.createdBy[0].fname} {post.createdBy[0].lname}{" "}
               </h4>
@@ -258,29 +258,7 @@ export default function Post({
                       src={post.images[slides.index].url}
                     />
                   </div>
-                  {/* {post.images.length > 1 ? (
-              <div className="carousel-actions">
-                <button
-                  onClick={() => prevSlide(post.images.length, post._id)}
-                  id={`carousel-button-prev`}
-                  aria-label="Previous"
-                >
-                  {" "}
-                  &lt;{" "}
-                </button>
-
-                <button
-                  onClick={() => nextSlide(post.images.length, post._id)}
-                  id={`carousel-button-next`}
-                  aria-label="Next"
-                >
-                  {" "}
-                  &gt;{" "}
-                </button>
-              </div>
-            ) : (
-              <div> </div>
-            )} */}
+                 
                   {showLikesComments && (
                     <PostLikesComments>
                       <div>
@@ -331,10 +309,10 @@ export default function Post({
                 <div className="post-options">
                   <div className="likes">
                     {!post.likedBy.includes(loggedInId) ? (
-                      <HeartIcon likeAPost={likeAPost} postId={post._id} />
+                      <HeartIconN likeAPostN={likeAPostN} postId={post._id} />
                     ) : (
-                      <UnHeartIcon
-                        unlikeAPost={unlikeAPost}
+                      <UnHeartIconN
+                        unlikeAPostN={unlikeAPostN}
                         postId={post._id}
                       />
                     )}

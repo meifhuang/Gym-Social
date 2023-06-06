@@ -50,47 +50,12 @@ function createServer() {
  
   app.use(authRouter);
   app.use(googleRouter);
-  app.use(facebookRouter)
+  // app.use(facebookRouter)
   app.use(passport.authenticate("jwt", { session: false }), workoutRouter);
   app.use(passport.authenticate("jwt", { session: false }), userRouter); 
   app.use(passport.authenticate("jwt", { session: false }), exerciseRouter); 
   app.use(passport.authenticate("jwt", { session: false }), postRouter); 
   app.use(passport.authenticate("jwt", { session: false }), commentRouter); 
-  
-  
-
-  // function checkLoggedIn(request, response, next) {
-  //   // console.log(request.cookies);
-  //   // console.log(passport)
-  //   console.log(request.user);
-  //   console.log(request.session);
-
-  //   if (!request.user) {
-  //     response.status(401).json({
-  //       success: false,
-  //       message: "You are not authorized",
-  //     });
-  //   } else {
-  //     next();
-  //   }
-  //   //   setTimeout(()=> {
-  //   //     next()
-  //   //   }, 2000)
-  // }
-
- 
-
-  // app.get("/protected", checkLoggedIn, function (request, response) {
-  //   try {
-  //     response.status(200).json({
-  //       success: true,
-  //       message: "You should be good",
-  //     });
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // });
-
 
   return app;
 }

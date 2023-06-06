@@ -34,6 +34,7 @@ export default function Navbar(props) {
     setUserPicUrl,
   } = useContext(AuthContext);
 
+
   const logout = async () => {
     try {
       const response = await axios({

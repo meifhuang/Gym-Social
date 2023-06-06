@@ -48,9 +48,9 @@ passport.use(
             password: "defaultpassword",
           });
           const file = {
-            url: "https://res.cloudinary.com/dxq4m23dd/image/upload/v1683580896/Gym-Social/byytsi7td2m3hy6gbtww.png",
-            filename: "Gym-Social/byytsi7td2m3hy6gbtww",
-          };
+            url: "https://res.cloudinary.com/dxq4m23dd/image/upload/v1686014952/Gym-Social/wtzatq56akpcuroyezrr.png" , 
+            filename: 'Gym-Social/wtzatq56akpcuroyezrr'
+          }
           newUser.picture.push(file);
           await newUser.save();
           done(null, newUser);
@@ -68,21 +68,6 @@ router.get(
     scope: ["profile", "email"],
   })
 );
-
-//   router.get('/auth/google/callback',
-//   passport.authenticate('google', { failureRedirect: '/', session: false }),
-//   function(req, res) {
-//     const token = jwt.sign({user:{"email":req.user.email}, id:req.user._id}, process.env.JSONKEY);
-//     res.redirect(`http://localhost:5173/newsfeed?token=${token}&userId=${req.user._id}`);
-//   }
-// );
-
-// res.status(200).send({
-//     success: true,
-//     message: "YAY",
-//     token: token,
-//     userId: req.user._id,
-//
 
 router.get(
   "/auth/google/callback",

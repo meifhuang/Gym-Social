@@ -45,7 +45,6 @@ router.get("/newsfeed/posts", async (req, res) => {
         const following = user.following; 
         const posts = [];
         for (let each of following) {
-           
             for (let post of each.posts) {
                 posts.push(post)
             }

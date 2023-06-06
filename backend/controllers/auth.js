@@ -88,7 +88,7 @@ router.post(
               username,
               password: hashPassword,
             });
-            const file = {url: "https://res.cloudinary.com/dxq4m23dd/image/upload/v1683580896/Gym-Social/byytsi7td2m3hy6gbtww.png" , filename: 'Gym-Social/byytsi7td2m3hy6gbtww'}
+            const file = {url: "https://res.cloudinary.com/dxq4m23dd/image/upload/v1686014952/Gym-Social/wtzatq56akpcuroyezrr.png" , filename: 'Gym-Social/wtzatq56akpcuroyezrr'}
             user.picture.push(file);
             await user.save()
 
