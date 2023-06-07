@@ -86,8 +86,6 @@ router.delete("/workout/:workoutId", async (req, res) => {
 //this happens after clicking create workout and setting a name
 
 router.post("/createworkout", async (req, res) => {
-  console.log("create wrkout");
-
   const user = await User.findById(req.user.id).populate("workouts");
   const { name } = req.body;
   const workout = new Workout(name);
@@ -95,7 +93,6 @@ router.post("/createworkout", async (req, res) => {
   const workoutId = workout._id;
   await user.save();
   await workout.save();
-  console.log("Added workout!");
   res.status(200).json({
     success: "true",
     workouts: user.workouts,

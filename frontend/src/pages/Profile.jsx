@@ -3,6 +3,7 @@ import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
 // import workout from "../../backend/models/workout";
+import exerciseDB from "../loader/exerciseDB";
 
 //component
 // import ModalComp from "../components/Modal";
@@ -48,7 +49,8 @@ import {
 
 export default function Profile() {
   const BASE_URL = import.meta.env.VITE_URL;
-  const exerciseDB = useLoaderData();
+  // const exerciseDB = useLoaderData();
+  // const exerciseDB = exerciseDB; 
 
   const { id } = useParams();
   const { token, userId, userPicUrl, setUserPicUrl } = useContext(AuthContext);
@@ -100,7 +102,7 @@ export default function Profile() {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  // const [exerciseDB, setExerciseDB] = useState("");
+
   const [activeDropdown, setActiveDropdown] = useState("");
 
   const [posts, setPosts] = useState([]);
@@ -112,6 +114,7 @@ export default function Profile() {
   const [profileInfoModal, setProfileInfoModal] = useState(false);
   const prof = { username: "", bio: "" };
   const [profileInfo, setProfileInfo] = useState(prof);
+  // const [exerciseDB, setExerciseDB] = useState([])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -120,6 +123,20 @@ export default function Profile() {
       [name]: value,
     });
   };
+
+  const handleSelection = (e) => {
+    setExercise({
+      ...exercise,
+      name: e.value
+    })
+  }
+
+  const handleEditSelection = (e) => {
+    setEditedExercise({
+      ...editedExercise,
+      name: e.value
+    })
+  }
 
   const [editedExercise, setEditedExercise] = useState({
     exercise,
@@ -138,7 +155,7 @@ export default function Profile() {
     setWorkoutName({
       name: value,
     });
-    console.log(workoutName);
+   
   };
 
   const handlePostChange = (e) => {
@@ -153,7 +170,7 @@ export default function Profile() {
     setCommentForm({
       description: value,
     });
-    console.log(commentForm);
+    
   };
 
   const handleFileUpload = (e) => {
@@ -197,7 +214,6 @@ export default function Profile() {
         },
     })
     if (res) {
-      console.log(res.data)
       setUserPicUrl(res.data.user.picture[0].url);
     }
   }
@@ -261,11 +277,11 @@ export default function Profile() {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    console.log("PARAMIES", urlParams);
+   
     const token = urlParams.get("token");
     const userId = urlParams.get("userId");
     if (token && userId) {
-      console.log("HAS TOKEN AND ID");
+     
       localStorage.setItem("token", token);
       localStorage.setItem("id", userId);
       let userid = localStorage.getItem("id");
@@ -289,7 +305,6 @@ export default function Profile() {
         }
       }
       formData.append("caption", postForm.caption);
-      console.log(formData);
 
       const response = await axios({
         method: "post",
@@ -301,8 +316,7 @@ export default function Profile() {
         },
       });
       if (response) {
-        console.log("add post");
-        console.log(response.data.posts);
+      
         setPosts(response.data.posts);
         const postIdAndPosition = response.data.posts.map((post) => {
           return { postId: post._id, index: 0 };
@@ -319,7 +333,7 @@ export default function Profile() {
 
   const createComment = async (e, postId) => {
     e.preventDefault();
-    console.log("INSIDE COMMENT");
+  
     try {
       const response = await axios({
         method: "post",
@@ -346,7 +360,7 @@ export default function Profile() {
 
   const createWorkout = async () => {
     setAddWorkoutModal(false);
-    console.log(currentWorkout);
+  
     try {
       const response = await axios({
         method: "post",
@@ -393,7 +407,7 @@ export default function Profile() {
         },
       });
       if (response) {
-        console.log(response.data);
+       
         getUser();
       }
     } catch (e) {
@@ -412,7 +426,7 @@ export default function Profile() {
         },
       });
       if (response) {
-        console.log("SAVING WORKOUT", response.data.workout);
+      
         setSavedWorkouts(response.data.saved);
         //figure out another way to update saved/unsaved without needing to call this function
         getUser();
@@ -426,7 +440,7 @@ export default function Profile() {
   };
 
   const deleteSavedWorkout = async (workoutId) => {
-    console.log("IN DELETE ROUTE SAVE WORKOUT");
+   
     try {
       const response = await axios({
         method: "delete",
@@ -450,7 +464,7 @@ export default function Profile() {
   };
 
   const unlikeAPost = async (postId) => {
-    console.log("UNLIKEE");
+  
     try {
       const response = await axios({
         method: "delete",
@@ -460,7 +474,7 @@ export default function Profile() {
         },
       });
       if (response) {
-        console.log(response.data);
+       
         getUser();
       }
     } catch (e) {
@@ -480,7 +494,7 @@ export default function Profile() {
         },
       });
       if (response) {
-        console.log("edit", response.data);
+        
         const workoutData = response.data.workout;
         setworkoutId(workoutData._id);
         setCurrentWorkout(workoutData.exercises);
@@ -559,12 +573,11 @@ export default function Profile() {
   const addExercise = async (e) => {
     e.preventDefault();
 
-    const exerciseGif = exerciseDB.find(
-      (exerciseDB_exercise) => exerciseDB_exercise.name === exercise.name
-    ).gifUrl;
-    console.log(exercise.name);
+    // const exerciseGif = exerciseDB.find(
+    //   (exerciseDB_exercise) => exerciseDB_exercise.name === exercise.name
+    // ).gifUrl;
+  
     try {
-      console.log("addeddd exercise");
       const res = await axios({
         method: "put",
         url: `${BASE_URL}/workout/${workoutId}/createexercise`,
@@ -573,7 +586,7 @@ export default function Profile() {
           weight: exercise.weight,
           sets: exercise.sets,
           reps: exercise.reps,
-          gif: exerciseGif,
+          // gif: exerciseGif,
         },
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -581,7 +594,7 @@ export default function Profile() {
       });
 
       if (res) {
-        console.log("adding", res.data.exercise);
+      
         setCurrentWorkout([
           ...currentWorkout,
           {
@@ -590,7 +603,7 @@ export default function Profile() {
             weight: exercise.weight,
             sets: exercise.sets,
             reps: exercise.reps,
-            gif: exerciseGif,
+            // gif: exerciseGif,
           },
         ]);
         console.log(
@@ -624,7 +637,7 @@ export default function Profile() {
         },
       });
       if (response) {
-        console.log(response.data);
+       
         setworkoutId(response.data.workoutId);
         setCurrentWorkout(currentWorkout);
       } else {
@@ -643,11 +656,11 @@ export default function Profile() {
 
     // console.log(editedExercise.name);
 
-    const exerciseGif = await exerciseDB.find(
-      (exerciseDB_exercise) => editedExercise.name === exerciseDB_exercise.name
-    ).gifUrl;
-    console.log(editedExercise.name, exerciseGif);
-    console.log("in exercise route");
+    // const exerciseGif = await exerciseDB.find(
+    //   (exerciseDB_exercise) => editedExercise.name === exerciseDB_exercise.name
+    // ).gifUrl;
+    // console.log(editedExercise.name, exerciseGif);
+    // console.log("in exercise route");
     try {
       const res = await axios({
         method: "put",
@@ -660,7 +673,7 @@ export default function Profile() {
           weight: editedExercise.weight,
           sets: editedExercise.sets,
           reps: editedExercise.reps,
-          gif: exerciseGif,
+          // gif: exerciseGif,
         },
       });
 
@@ -669,14 +682,14 @@ export default function Profile() {
 
         const updateList = [...currentWorkout].map((exercise) => {
           if (exercise._id === exerciseId) {
-            console.log("SAME ID");
+           
             return {
               _id: exerciseId,
               name: exercise_data.name,
               weight: exercise_data.weight,
               sets: exercise_data.sets,
               reps: exercise_data.reps,
-              gif: exerciseGif,
+              // gif: exerciseGif,
             };
           } else {
             console.log("same exercise");
@@ -717,7 +730,7 @@ export default function Profile() {
   };
 
   const deleteExercise = async (workoutId, exerciseId) => {
-    console.log("in delete route");
+
     try {
       const res = await axios({
         method: "delete",
@@ -732,7 +745,7 @@ export default function Profile() {
             (exercise) => exercise._id !== res.data.exerciseId
           );
         });
-        console.log(currentWorkout);
+      
       }
     } catch (e) {
       console.log(e.message);
@@ -740,7 +753,7 @@ export default function Profile() {
   };
 
   const clickEditExercise = async (exerciseId) => {
-    console.log("CLICK EDIT EXERCISE");
+    
     try {
       const response = await axios({
         method: "get",
@@ -750,7 +763,7 @@ export default function Profile() {
         },
       });
       if (response) {
-        console.log("in clickEdit Exercise", response.data.exercise);
+     
         setExercise(response.data.exercise);
         setEditedExercise(response.data.exercise);
       } else {
@@ -776,8 +789,7 @@ export default function Profile() {
         },
       });
       if (res) {
-        console.log("FOLLOWED");
-        console.log(res.data.following);
+      
         setFollowing(res.data.following);
         setnumFollowers((prev) => prev + 1);
       } else {
@@ -789,7 +801,7 @@ export default function Profile() {
   };
 
   const unfollow = async (id) => {
-    console.log("in unfollow route");
+
     try {
       const res = await axios({
         method: "delete",
@@ -799,7 +811,7 @@ export default function Profile() {
         },
       });
       if (res) {
-        console.log("unfollow", res.data.userfollowing);
+        
         setFollowing(res.data.userfollowing);
         setnumFollowers((prev) => prev - 1);
       } else {
@@ -824,7 +836,7 @@ export default function Profile() {
         }
       });
     });
-    console.log("next", prevSlidePosition);
+
   };
 
   const prevSlide = (imglength, postId) => {
@@ -841,7 +853,7 @@ export default function Profile() {
         }
       });
     });
-    console.log("prev", prevSlidePosition);
+   
   };
 
   const toggleProfileInfo = () => {
@@ -870,7 +882,7 @@ export default function Profile() {
         },
       });
       if (response) {
-        console.log("update user pic");
+      
         setUserPicUrl(response.data.user.picture[0].url);
         getUser();
         toggleProfileInfo(!profileInfoModal);
@@ -960,6 +972,8 @@ export default function Profile() {
             exercise={exercise}
             handleChange={handleChange}
             // exercises={exercises}
+            handleSelection={handleSelection}
+            handleEditSelection={handleEditSelection}
             editExerciseMode={editExerciseMode}
             currentWorkout={currentWorkout}
             editWorkout={editWorkout}
@@ -981,6 +995,8 @@ export default function Profile() {
         {editWorkoutModal && (
           <EditWorkoutForm
             exerciseDB={exerciseDB}
+            handleSelection={handleSelection}
+            handleEditSelection={handleEditSelection}
             toggleEditWorkoutModal={toggleEditWorkoutModal}
             workoutName={workoutName}
             currentWorkout={currentWorkout}

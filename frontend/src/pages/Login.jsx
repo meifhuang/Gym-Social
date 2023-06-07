@@ -41,7 +41,6 @@ export default function Login(props) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("asdasdasdasdasd");
   }, [isLoading]);
 
   const handleInputChange = (e) => {
@@ -53,44 +52,28 @@ export default function Login(props) {
   };
 
   const handleGoogleLogin = async () => {
-    // console.log("huh");
     window.open(`${BASE_URL}/auth/google`, "_self");
-    // try {
-    //   const response = await axios({
-    //     method: "get",
-    //     url: "http://localhost:4000/auth/google/callback",
-    //   });
-    //   if (response) {
-    //     console.log(response);
-    //     localStorage.setItem("token", response.data.token);
-    //     localStorage.setItem("id", response.data.userId);
-    //   } else {
-    //     console.log("no response");
-    //   }
-    // } catch (e) {
-    //   console.log(e.message);
-    // }
   };
 
-  const handleFacebookLogin = async () => {
-    // console.log("huh");
-    window.open(`${BASE_URL}/auth/facebook`, "_self");
-    // try {
-    //   const response = await axios({
-    //     method: "get",
-    //     url: "http://localhost:4000/auth/google/callback",
-    //   });
-    //   if (response) {
-    //     console.log(response);
-    //     localStorage.setItem("token", response.data.token);
-    //     localStorage.setItem("id", response.data.userId);
-    //   } else {
-    //     console.log("no response");
-    //   }
-    // } catch (e) {
-    //   console.log(e.message);
-    // }
-  };
+  // const handleFacebookLogin = async () => {
+  //   // console.log("huh");
+  //   window.open(`${BASE_URL}/auth/facebook`, "_self");
+  //   // try {
+  //   //   const response = await axios({
+  //   //     method: "get",
+  //   //     url: "http://localhost:4000/auth/google/callback",
+  //   //   });
+  //   //   if (response) {
+  //   //     console.log(response);
+  //   //     localStorage.setItem("token", response.data.token);
+  //   //     localStorage.setItem("id", response.data.userId);
+  //   //   } else {
+  //   //     console.log("no response");
+  //   //   }
+  //   // } catch (e) {
+  //   //   console.log(e.message);
+  //   // }
+  // };
 
   const loginSubmit = async (e) => {
     e.preventDefault();

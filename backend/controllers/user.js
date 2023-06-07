@@ -44,10 +44,9 @@ router.get("/loggedinuser", async (req, res) => {
 
 
 router.get("/profile/:id", async (req, res) => {
-  console.log("accessing profile route");
+
   const loggedInId = req.user.id;
   const paramId = req.params.id;
-  console.log(paramId, 'whats param')
   const user = await User.findById(paramId).populate([
     {path: "workouts", populate: { path: "exercises" }},
    {path: "saved", populate: { path: "exercises"}},
@@ -77,7 +76,7 @@ router.get("/profile/:id", async (req, res) => {
 });
 
 router.get("/newsfeed", async (req, res) => {
-  console.log("accessing users ");
+  
   const id = req.user.id;
   try {
     //find all users that are not yourself ...
@@ -121,7 +120,10 @@ router.post("/profile/:id/follow", async (req, res) => {
       await userToFollow.save();
     
     } else {
-      console.log("coudlnt follow probably cause already following");
+      res.status(400).json({
+        success: "false",
+        message: 'already following'
+      })
     }
     res.status(200).json({
       success: "true",
@@ -129,6 +131,9 @@ router.post("/profile/:id/follow", async (req, res) => {
     });
   } catch (e) {
     console.log(e.message);
+    res.status(400).json({
+      success: "false",
+    })
   }
 });
 
@@ -188,13 +193,11 @@ router.post("/likepost/:postId", async (req, res) => {
     const user = await User.findById(req.user.id);
     const post = await Post.findById(req.params.postId).populate("likedBy");
     const isalreadyLiked = await Post.find({_id: req.params.postId, likedBy: {_id: req.user.id}});
-    
-    console.log(isalreadyLiked);
     if (post) {
       if (isalreadyLiked.length === 0) {
         post.likedBy.push(user); 
         await post.save(); 
-        console.log("LIKING POST");
+  
         res.status(200).json({
           success: true,
           message: 'like post'
@@ -242,7 +245,7 @@ router.post("/saveworkout/:workoutId", async (req, res ) => {
       const isalreadySaved = await User.find({_id: req.user.id, saved: {_id: req.params.workoutId}});
 
       if (user && workout) {
-        // console.log(workout);
+
         //if workout already saved ... 
         if (isalreadySaved.length === 0) {
             user.saved.push(workout);
@@ -294,7 +297,6 @@ router.delete("/unsaveworkout/:workoutId", async (req, res) => {
 router.post("/updateuserpic", upload.single('image'), async (req, res) => {
     try {
       const user = await User.findById(req.user.id).populate("picture");
-    // console.log('in updatepic route', user.profilepic);
     if (user) { 
         if (req.file) {
           user.picture.pop();

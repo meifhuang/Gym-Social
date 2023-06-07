@@ -65,7 +65,6 @@ router.get("/newsfeed/posts", async (req, res) => {
 
 router.post("/createpost", upload.array('image'), async (req, res) => {
     try {
-    console.log("create post");
     const user = await User.findById(req.user.id).populate([
         {path: "posts", populate: {path: "comments"}},
         {path: "posts", populate: {path: "createdBy"}}]);
@@ -78,7 +77,6 @@ router.post("/createpost", upload.array('image'), async (req, res) => {
     user.posts.push(post); 
     await user.save();
     await post.save();
-    console.log("success");
     res.status(200).json({
         success: true,
         posts: user.posts
@@ -96,7 +94,6 @@ catch (e) {
 })
 
 router.delete("/post/:postId", async (req, res) => {
-    console.log("entering delete post");
     const {postId} = req.params
 
     try {

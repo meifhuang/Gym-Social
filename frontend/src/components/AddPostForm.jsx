@@ -19,7 +19,7 @@ function AddPostForm({
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       setPreviewSource((previewSource) => [...previewSource, reader.result]);
-      console.log(previewSource);
+     
     };
   }
 
@@ -63,7 +63,7 @@ function AddPostForm({
           <input
             onChange={(e) => {
               setFiles([...e.target.files]);
-              console.log(Object.keys(e.target.files));
+  
               Object.keys(e.target.files).map((file) =>
                 preview(e.target.files[parseInt(file)])
               );

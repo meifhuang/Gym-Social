@@ -282,7 +282,7 @@ const TabBar = ({
                               }
                             >
                               {" "}
-                              <img src={exercise.gif} alt="loading..." />
+                              {/* <img src={exercise.gif} alt="loading..." /> */}
                             </ExerciseImage>
                           </WorkoutInfo>
                         );

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
+import Select from 'react-select'
 
 import ArrowSwitchChev from "../assets/chevron-down.svg";
 import {
@@ -39,9 +40,12 @@ function AddWorkoutForm({
   handleEditExercise,
   activeDropdown,
   setActiveDropdown,
+  handleSelection,
+  handleEditSelection
 }) {
   const [toggleArrow, setToggleArrow] = useState(false);
   // const [activeDropdown, setActiveDropdown] = useState("");
+
 
   return (
     <>
@@ -53,23 +57,33 @@ function AddWorkoutForm({
             <></>
           ) : (
             <form onSubmit={(e) => addExercise(e)}>
-              <label htmlFor="name" className="select-exercise">
+               {/* <label htmlFor="search"> Search for exercises</label> */}
+                {/* <input type="text"
+                       list="exercises"
+                       placeholder="Search exercise"
+                       onChange={handleSearchChange}
+                       value={searchInput}
+                       className="search"
+                  /> */}
+              {/* <label htmlFor="name" className="select-exercise">
                 {" "}
                 Select exercise{" "}
-              </label>
-              <SelectExerciseBar
+              </label> */}
+              {/* <SelectExerciseBar
                 value={exercise.name}
                 name="name"
                 onChange={handleChange}
                 required
-              >
-                <option value="not chosen"> -- Choose an exercise -- </option>
-                {exerciseDB.map((exercise) => (
+              > */}
+              <Select options={exerciseDB} className="select-exercises" onChange={handleSelection}/>
+                {/* <option value="not chosen"> -- Choose an exercise -- </option> */}
+                {/* {exerciseDBFilter.map((exercise) => (
                   <option key={exercise.id} value={exercise.name}>
-                    {exercise.name}
-                  </option>
-                ))}
-              </SelectExerciseBar>
+                    {/* {exercise.name} */}
+                  {/* </option> */}
+              {/* ))}  */}
+                
+              {/* </SelectExerciseBar> */}
               <div className="stats">
                 <label htmlFor="weight"> Weight </label>
                 <input
@@ -113,9 +127,10 @@ function AddWorkoutForm({
                 // console.log(exercise);
                 return (
                   <EditForm onSubmit={(e) => editExercise(e, exercise._id)}>
+                  <Select options={exerciseDB} className="select-exercises" onChange={handleEditSelection}/>
+                    
                     {/* <label htmlFor="name"> Change exercise </label> */}
-
-                    <div className="edit-exercise-inputs">
+                    {/* <div className="edit-exercise-inputs">
                       <select
                         value={editedExercise.name}
                         name="name"
@@ -133,13 +148,13 @@ function AddWorkoutForm({
                           <option key={exercise.id} value={exercise.name}>
                             {exercise.name}
                           </option>
-                        ))}
+                        ))} */}
                         {/* {exercises.map((exercise) => (
                           <option key={exercise} value={exercise}>
                             {exercise}
                           </option>
-                        ))} */}
-                      </select>
+                        ))}
+                      </select> */}
                       <label htmlFor="weight"> Lbs </label>
                       <input
                         type="number"
@@ -176,7 +191,7 @@ function AddWorkoutForm({
                         {" "}
                         confirm edit{" "}
                       </FinishEditButton>
-                    </div>
+                    {/* </div> */}
                   </EditForm>
                 );
               } else {

@@ -36,7 +36,6 @@ function App() {
 
   const [message, setMessage] = useState("");
   const { hasToken } = useContext(AuthContext);
-  console.log(hasToken, "SADSAD HAS USER ID");
   const theme = {
     // font: {
 
@@ -68,7 +67,7 @@ function App() {
         {
           path: "/profile/:id",
           element: <Profile />,
-          loader: getExerciseList,
+          // loader: getExerciseList,
         },
         {
           path: "/newsfeed",

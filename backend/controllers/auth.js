@@ -55,7 +55,7 @@ router.post("/emailcheck", async (req, res) => {
 router.post(
   "/signup",
   catchAsync(async (req, res) => {
-    console.log(req.body);
+
     const { fname, lname, email, username, password, cpassword } = req.body;
 
     for (const [key, value] of Object.entries(req.body)) {
@@ -88,7 +88,10 @@ router.post(
               username,
               password: hashPassword,
             });
-            const file = {url: "https://res.cloudinary.com/dxq4m23dd/image/upload/v1686014952/Gym-Social/wtzatq56akpcuroyezrr.png" , filename: 'Gym-Social/wtzatq56akpcuroyezrr'}
+            const file = {
+              url: "https://res.cloudinary.com/dxq4m23dd/image/upload/v1686014952/Gym-Social/wtzatq56akpcuroyezrr.png" , 
+              filename: 'Gym-Social/wtzatq56akpcuroyezrr'
+            }
             user.picture.push(file);
             await user.save()
 
@@ -145,7 +148,7 @@ router.post("/login", async (req, res) => {
               process.env.JSONKEY
               // { expiresIn: "1h" }
             );
-            console.log("verified");
+  
 
             res.status(200).json({
               success: true,

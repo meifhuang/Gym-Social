@@ -91,9 +91,9 @@ export default function Navbar(props) {
               <NavTab className="nav-tab">
                 <NavLink to="/">HOME</NavLink>
               </NavTab>
-              <NavTab className="nav-tab">
+              {/* <NavTab className="nav-tab">
                 <NavLink to="/about">ABOUT</NavLink>
-              </NavTab>
+              </NavTab> */}
               <NavTab className="nav-tab">
                 <NavLink to="/login">LOGIN</NavLink>
               </NavTab>

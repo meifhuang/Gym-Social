@@ -11,11 +11,11 @@ const mongoose = require("mongoose");
 //create an exercise (automatically also adds its to the workout schema
 
 router.put("/workout/:id/createexercise", async (req, res) => {
-    console.log("UPDATE - add exercise to particular workout");
+ 
     const { name, weight, sets, reps, gif } = req.body;
     try {
       const workout = await Workout.findById(req.params.id).populate("exercises");
-      console.log(workout.exercises);
+  
       if (workout) {
         const exercise = new Exercise({ name, weight, sets, reps, gif });
         await exercise.save();
@@ -67,7 +67,7 @@ router.get("/exercise/:exerciseId", async (req, res) => {
   
 
   router.put("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
-    console.log("etnering edit exercise");
+   
     const { exerciseId, workoutId } = req.params;
   
     try {
@@ -112,7 +112,6 @@ router.get("/exercise/:exerciseId", async (req, res) => {
   });
 
   router.delete("/workout/:workoutId/exercise/:exerciseId", async (req, res) => {
-    console.log("entering delete exercise");
     const { workoutId, exerciseId } = req.params;
     try {
       await Workout.findByIdAndUpdate(workoutId, {

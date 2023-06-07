@@ -23,7 +23,7 @@ export default function Newsfeed({
 
 
   const likeAPostN = async (postId) => {
-    console.log("LIKEE")
+   
     try {
       const response = await axios({
         method: "post",
@@ -41,7 +41,7 @@ export default function Newsfeed({
   };
 
   const unlikeAPostN = async (postId) => {
-    console.log("UNLIKEE");
+    
     try {
       const response = await axios({
         method: "delete",
@@ -68,12 +68,12 @@ export default function Newsfeed({
         },
       });
       if (response) {
-        console.log("checking", response.data.posts);
+      
         setPosts(response.data.posts);
         const postIdAndPosition = response.data.posts.map((post) => {
           return { postId: post._id, index: 0 };
         });
-        console.log("postId", postIdAndPosition);
+    
         setPrevSlidePosition(postIdAndPosition);
       }
     } catch (e) {
@@ -95,7 +95,7 @@ export default function Newsfeed({
         }
       });
     });
-    console.log("next", prevSlidePosition);
+    
   };
 
   const prevSlide = (imglength, postId) => {
@@ -112,28 +112,11 @@ export default function Newsfeed({
         }
       });
     });
-    console.log("prev", prevSlidePosition);
+   
   };
 
   useEffect(() => {
-  //   const urlParams = new URLSearchParams(window.location.search);
-  //   console.log("PARAMIES", urlParams);
-  //   const token = urlParams.get("token");
-  //   const userId = urlParams.get("userId");
-  //   console.log("TOKEN", token);
-  //   console.log("ID", userId);
-  //   if (token && userId) {
-  //     console.log("HAS TOKEN AND ID")
-  //     localStorage.setItem("token", token);
-  //     localStorage.setItem("id", userId);
-  //     // navigate("/newsfeed");
-  //     window.location.replace(`/newsfeed`);
       getPosts();
-  //   } else {
-  //     console.log("No token");
-  //   }
-  //   // navigate("/newsfeed");
-  //   // window.location.replace(`/newsfeed`);
   }, []);
 
 

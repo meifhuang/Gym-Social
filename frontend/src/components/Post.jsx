@@ -68,7 +68,7 @@ export default function Post({
         },
       });
       if (response) {
-        console.log("double checking", response.data.post);
+     
         setPostToShow(response.data.post);
 
         // setPostToShow(response.data.post);
@@ -99,7 +99,7 @@ export default function Post({
   };
 
   const unlikeAPost = async (postId) => {
-    console.log("UNLIKEE");
+  
     try {
       const response = await axios({
         method: "delete",
@@ -109,7 +109,6 @@ export default function Post({
         },
       });
       if (response) {
-        console.log(response.data);
         getPost(postId)
     }}
      catch (e) {
@@ -154,12 +153,12 @@ export default function Post({
     setCommentForm({
       description: value,
     });
-    console.log(commentForm);
+  
   };
 
   const createComment = async (e, postId) => {
     e.preventDefault();
-    console.log("INSIDE COMMENT");
+   
     try {
       const response = await axios({
         method: "post",

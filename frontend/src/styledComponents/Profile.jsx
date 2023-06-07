@@ -43,6 +43,9 @@ export const Modal = styled.div`
     height: 2.1em;
     margin: 0.5em;
   }
+  .select-exercises {
+    width: 25em;
+  }
   form {
     display: flex;
     flex-direction: column;
@@ -485,9 +488,7 @@ export const WorkoutDiv = styled.div`
   padding: calc(1rem + 0.2vw);
   /* height: 100px;
 width: 250px; */
-`;
-// console.log(workout)
-
+`
 export const WorkoutDivHeader = styled.div`
   display: flex;
   justify-content: space-between;

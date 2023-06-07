@@ -54,8 +54,7 @@ export default function Signup() {
 
   const checkEmail = async (e) => {
     e.preventDefault();
-    console.log("CLICKED");
-    console.log(values.email);
+  
     try {
       const response = await axios({
         method: "post",
@@ -95,7 +94,7 @@ export default function Signup() {
       });
 
       if (response) {
-        console.log(response);
+        
         navigate("/login");
       } else {
         throw Error("No response");

@@ -6,7 +6,7 @@ const ExerciseSchema = new Schema({
     reps: {type: Number, required: true},
     sets: {type: Number, required: true},
     weight: { type: Number, required: true },
-    gif: {type: String, required: true}
+    // gif: {type: String, required: true}
 })
 
 module.exports = mongoose.model('Exercise', ExerciseSchema);

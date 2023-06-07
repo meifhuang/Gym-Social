@@ -11,7 +11,7 @@ function EditProfileForm({
   setProPic,
   userPicUrl,
 }) {
-  console.log(userPicUrl);
+
   const [previewSource, setPreviewSource] = useState(userPicUrl);
 
   function preview(file) {

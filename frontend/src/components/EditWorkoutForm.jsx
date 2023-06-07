@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Select from 'react-select'
+
 import {
   Modal,
   ModalOverlay,
@@ -34,9 +36,10 @@ const EditWorkoutForm = ({
   handleChange,
   exercise,
   updateAddExerciseEdit,
+  handleEditSelection,
 }) => {
   const [addExerciseMode, setAddExerciseMode] = useState(false);
-  console.log(currentWorkout);
+
   return (
     <Modal className="">
       <ModalOverlay
@@ -59,47 +62,7 @@ const EditWorkoutForm = ({
                 Done
               </FinishEditButton>
             ) : (
-              // <svg
-              //   onClick={() => {
-              //     setAddExerciseMode(false);
-              //     updateAddExerciseEdit();
-              //   }}
-              //   viewBox="0 0 24 24"
-              //   width="24"
-              //   height="24"
-              //   stroke="currentColor"
-              //   strokeWidth="2"
-              //   fill="none"
-              //   strokeLinecap="round"
-              //   strokeLinejoin="round"
-              //   class="css-i6dzq1"
-              // >
-              //   <polyline points="20 6 9 17 4 12"></polyline>
-              // </svg>
-              // <svg
-              //   onClick={() => {
-              //     setAddExerciseMode(false);
-              //     updateAddExerciseEdit();
-              //   }}
-              //   viewBox="0 0 24 24"
-              //   width="24"
-              //   height="24"
-              //   stroke="currentColor"
-              //   strokeWidth="2"
-              //   fill="none"
-              //   strokeLinecap="round"
-              //   strokeLinejoin="round"
-              //   class="css-i6dzq1"
-              // >
-              //   <polyline points="9 11 12 14 22 4"></polyline>
-              //   <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-              // </svg>
-              <>
-                {/* <FinishEditButton onClick={() => setAddExerciseMode(true)}>
-                    Add Exercise
-                  </FinishEditButton> */}
                 <AddIcon setAddExerciseMode={setAddExerciseMode} />
-              </>
             )}
             {/* </div> */}
           </WorkoutDivHeader>
@@ -111,7 +74,7 @@ const EditWorkoutForm = ({
                 return (
                   <form onSubmit={(e) => editExercise(e, exercise._id)}>
                     <label htmlFor="name"> Change exercise </label>
-                    <SelectExerciseBar
+                    {/* <SelectExerciseBar
                       value={editedExercise.name}
                       name="name"
                       onChange={handleEditExercise}
@@ -129,8 +92,10 @@ const EditWorkoutForm = ({
                           {exercise.name}
                         </option>
                       ))}
-                    </SelectExerciseBar>
+                    </SelectExerciseBar> */}
+          
                     <div>
+                    <Select options={exerciseDB} className="select-exercises" onChange={handleEditSelection}/>
                       <label htmlFor="weight"> Weight </label>
                       <input
                         type="number"
@@ -247,7 +212,8 @@ const EditWorkoutForm = ({
             })}
           {addExerciseMode && (
             <form onSubmit={(e) => addExercise(e)}>
-              <label htmlFor="name" className="select-exercise">
+              <Select options={exerciseDB} className="select-exercises" onChange={handleSelection}/>
+              {/* <label htmlFor="name" className="select-exercise">
                 {" "}
                 Select exercise{" "}
               </label>
@@ -263,7 +229,7 @@ const EditWorkoutForm = ({
                     {exercise.name}
                   </option>
                 ))}
-              </SelectExerciseBar>
+              </SelectExerciseBar> */}
               <div className="stats">
                 <label htmlFor="weight"> Weight </label>
                 <input
