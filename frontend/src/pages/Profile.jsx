@@ -115,6 +115,8 @@ export default function Profile() {
   const prof = { username: "", bio: "" };
   const [profileInfo, setProfileInfo] = useState(prof);
   // const [exerciseDB, setExerciseDB] = useState([])
+  const [showAddPostModal, setShowAddPostModal] = useState(false);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -137,6 +139,12 @@ export default function Profile() {
       name: e.value
     })
   }
+
+  const toggleShowAddPostModal = () => {
+    setShowAddPostModal(!showAddPostModal);
+    setPostForm({...postForm, caption: ""})
+
+  };
 
   const [editedExercise, setEditedExercise] = useState({
     exercise,
@@ -175,7 +183,6 @@ export default function Profile() {
 
   const handleFileUpload = (e) => {
     setFiles([...e.target.files]);
-    console.log(files);
   };
 
   const handlePicChange = (e) => {
@@ -316,13 +323,13 @@ export default function Profile() {
         },
       });
       if (response) {
-      
         setPosts(response.data.posts);
         const postIdAndPosition = response.data.posts.map((post) => {
           return { postId: post._id, index: 0 };
         });
         setPrevSlidePosition(postIdAndPosition);
         setnumPosts((prev) => prev + 1);
+        toggleShowAddPostModal()
       } else {
         throw Error("no response");
       }
@@ -380,6 +387,8 @@ export default function Profile() {
         setworkoutId(response.data.workouts._id);
         setCurrentWorkout([]);
         setnumWorkouts((prev) => prev + 1);
+        toggleAddWorkoutModal()
+        setWorkoutName({...workoutName, name: ''})
       } else {
         throw Error("No response");
       }
@@ -594,7 +603,7 @@ export default function Profile() {
       });
 
       if (res) {
-      
+  
         setCurrentWorkout([
           ...currentWorkout,
           {
@@ -606,13 +615,7 @@ export default function Profile() {
             // gif: exerciseGif,
           },
         ]);
-        console.log(
-          currentWorkout,
-          "CURRENT WORKOUT",
-          workoutId,
-          "WORKOUTID",
-          workouts
-        );
+        setExercise({...exercise, weight: 0, sets: 0, reps: 0})
       } else {
         console.log("NO RES");
       }
@@ -650,7 +653,7 @@ export default function Profile() {
     setEditMode(false);
     setEditExerciseMode(false);
   };
-  // console.log(editedExercise, "EDITEXERCISEPROFILE");
+
   const editExercise = async (e, exerciseId) => {
     e.preventDefault();
 
@@ -692,7 +695,7 @@ export default function Profile() {
               // gif: exerciseGif,
             };
           } else {
-            console.log("same exercise");
+          
             return exercise;
           }
         });
@@ -701,7 +704,6 @@ export default function Profile() {
         setExercise(updateList);
         setEditExerciseMode(false);
         setExerciseId(0);
-
         //Updates the entire workout container list with the edited exercise
         const updateWorkoutList = await workouts.map((workout) => {
           if (workout._id === workoutId) {
@@ -712,6 +714,8 @@ export default function Profile() {
         });
         setWorkouts(updateWorkoutList);
       }
+      setEditExerciseMode({...editedExercise, weight: 0, reps: 0, sets: 0})
+
     } catch (e) {
       console.log(e);
       console.log(e.message);
@@ -1071,6 +1075,8 @@ export default function Profile() {
           deleteComment={deleteComment}
           setPrevSlidePosition={setPrevSlidePosition}
           setFiles={setFiles}
+          showAddPostModal={showAddPostModal}
+          toggleShowAddPostModal={toggleShowAddPostModal}
         />
       </ProfileMain>
     </div>

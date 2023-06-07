@@ -317,11 +317,7 @@ export default function Post({
                     )}
                     <p> {post.likedBy.length} likes </p>
                   </div>
-                  {post.createdBy[0]._id === loggedInId ? (
-                    <DeletePostIcon deletePost={deletePost} postId={post._id} />
-                  ) : (
-                    <></>
-                  )}
+                  
                 </div>
                 <div className="caption">
                   <h4

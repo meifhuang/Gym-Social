@@ -28,6 +28,10 @@ const WorkoutContainerComp = ({
   deleteSavedWorkout,
   setActiveDropdown,
 }) => {
+  const getDate = (date) => {
+    const created = new Date(date) 
+    return created.toDateString()
+  }
   return (
     <WorkoutContainer className="workouts">
       {workouts &&
@@ -118,10 +122,14 @@ const WorkoutContainerComp = ({
                         {" "}
                         <img src={exercise.gif} alt="loading..." />
                       </ExerciseImage>
+                    
+
                     </WorkoutInfo>
                   );
                 })}
+                  <p> Created on {getDate(workout.createdAt)} </p>
               </WorkoutInfoContainer>
+            
             </WorkoutDiv>
           );
         })}

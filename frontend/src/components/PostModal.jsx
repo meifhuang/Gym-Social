@@ -117,6 +117,7 @@ export default function PostModal({
                     className="userpic-icon"
                     src={posty.createdBy[0].picture[0].url}
                   ></img>
+                  
                   <h3
                     className="user-post"
                     onClick={() => viewProfile(posty.createdBy[0]._id)}
@@ -124,12 +125,18 @@ export default function PostModal({
                     {" "}
                     {posty.createdBy[0].fname} {posty.createdBy[0].lname}{" "}
                   </h3>
+                  {posty.createdBy[0]._id === loggedInId ? (
+                    <DeletePostIcon deletePost={deletePost} postId={posty._id} />
+                  ) : (
+                    <></>
+                  )}
                 </div>
                 {/* <div className="user-caption-subhead"> */}
                   <div className="user-caption-description">
                     {" "}
                     {posty.caption}{" "}
                   </div>
+                   
                   <h5> {dateDiff(posty.createdAt, "post")} </h5>
                 {/* </div> */}
               </div>
@@ -142,6 +149,7 @@ export default function PostModal({
                     <UnHeartIcon unlikeAPost={unlikeAPost} postId={posty._id} />
                   )}
                   <p> {posty.likedBy.length} likes </p>
+                 
                 </div>
               </div>
 

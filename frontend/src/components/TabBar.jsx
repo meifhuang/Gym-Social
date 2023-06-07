@@ -77,17 +77,16 @@ const TabBar = ({
   likeAPost,
   unlikeAPost,
   prevSlidePosition,
+  showAddPostModal, 
+  toggleShowAddPostModal
 }) => {
   const [toggleState, setToggleState] = useState(1);
-  const [showAddPostModal, setShowAddPostModal] = useState(false);
 
   const toggleTab = (index) => {
     setToggleState(index);
   };
 
-  const toggleShowAddPostModal = () => {
-    setShowAddPostModal(!showAddPostModal);
-  };
+
   return (
     <TabBarContainer className="container">
       <TabContainer className="bloc-tabs">
