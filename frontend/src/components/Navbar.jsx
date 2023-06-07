@@ -141,13 +141,13 @@ export default function Navbar(props) {
               <NavTab2 isOpen={isOpen} className={"nav-tab "}>
                 <span>Home</span>
               </NavTab2>
-              <NavTab2
+              {/* <NavTab2
                 isOpen={isOpen}
                 className={"nav-tab "}
                 onClick={() => navigate("/about")}
               >
                 <span>About</span>
-              </NavTab2>
+              </NavTab2> */}
               <NavTab2
                 isOpen={isOpen}
                 className={"nav-tab "}
