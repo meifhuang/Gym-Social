@@ -4,7 +4,6 @@ import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
 
-import avatar from "../images/avatar.png";
 //styled components
 import {
   ExploreContainer,
@@ -17,6 +16,8 @@ export default function ExploreUsers() {
   const [loggedInUser, setLoggedInUser] = useState(localStorage.getItem("id"));
   const [notFollowing, setnotFollowing] = useState([]);
   const BASE_URL = import.meta.env.VITE_URL;
+
+  const {userPicUrl} = useContext(AuthContext)
 
   const getOtherUsers = async () => {
 
@@ -57,7 +58,7 @@ export default function ExploreUsers() {
           notFollowing.map((not) => {
             return (
               <UserCard className="users">
-                <img src={avatar} alt="" />
+                <img src={not.picture[0].url} alt="" />
                 <h3>
                   {" "}
                   {not.fname} {not.lname}{" "}

@@ -34,6 +34,7 @@ export default function Navbar(props) {
     setUserPicUrl,
   } = useContext(AuthContext);
 
+ 
 
   const logout = async () => {
     try {
@@ -54,6 +55,26 @@ export default function Navbar(props) {
       console.log(e);
     }
   };
+
+  const getNav = async (userid) => {
+    try { 
+      const res = await axios({
+        method: "get",
+        url: `${BASE_URL}/profile/${userid}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    })
+    if (res) {
+      setUserPicUrl(res.data.user.picture[0].url);
+    }
+  }
+  catch (e) {
+    console.log(e.message)
+  }
+}
+
+getNav(userId)
 
   return (
     <div className="main-container">

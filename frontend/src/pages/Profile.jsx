@@ -211,24 +211,6 @@ export default function Profile() {
     navigate("/signup");
   }
 
-  const getNav = async (userid) => {
-    try { 
-      const res = await axios({
-        method: "get",
-        url: `${BASE_URL}/profile/${userid}`,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-    })
-    if (res) {
-      setUserPicUrl(res.data.user.picture[0].url);
-    }
-  }
-  catch (e) {
-    console.log(e.message)
-  }
-}
-
   const getUser = async () => {
     try {
       const res = await axios({
@@ -275,12 +257,11 @@ export default function Profile() {
     }
   };
 
-
   useEffect(() => {
     getUser();
     let userid = localStorage.getItem("id")
-    getNav(id);
-  }, []);
+    // getNav(id);
+  }, [id]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
