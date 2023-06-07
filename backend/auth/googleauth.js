@@ -89,13 +89,13 @@ router.use(function (err, req, res, next) {
 });
 
 passport.serializeUser((user, done) => {
-  console.log("Serialize");
+  // console.log("Serialize");
   console.log(user);
   done(null, user);
 });
 
 passport.deserializeUser((user, done) => {
-  console.log("Deserialize");
+  // console.log("Deserialize");
   console.log(user);
   done(null, user);
 });
