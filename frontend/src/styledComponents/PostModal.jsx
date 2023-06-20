@@ -75,12 +75,15 @@ export const PostModalStyle = styled.div`
     display: flex;
     width: 100%;
   }
+
   .caption {
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
     border-bottom: 1.5px solid #f1f1f1;
     margin: 1em;
+  }
+  .caption > * {
+    align-self: start;
   }
 
   .caption img {
@@ -92,11 +95,13 @@ export const PostModalStyle = styled.div`
     align-self: end;
     justify-content: end;
   }
+ 
 
   @media screen and (max-width: ${(props) => props.theme.breakpoint.lg}) {
     .caption {
       flex-direction: column;
       align-items: start;
+
     }
 
     .caption > * {
@@ -309,6 +314,7 @@ export const PostStyle = styled.div`
     border: 1px solid ${(props) => props.theme.colors.lightgrey};
     border-radius: 0.5rem;
   }
+
   .post-options {
     display: flex;
     justify-content: space-between;
@@ -369,6 +375,9 @@ export const PostStyle = styled.div`
   .caption {
     display: flex;
     align-items: center;
+  }
+  h5 {
+    text-align: start;
   }
   .user-post:hover {
     color: #d0e1e4;
@@ -456,6 +465,8 @@ export const PostStyle = styled.div`
       opacity: 1;
     }
   }
+
+
   @media only screen and (min-width: 800px) {
     .post {
       flex-direction: row;

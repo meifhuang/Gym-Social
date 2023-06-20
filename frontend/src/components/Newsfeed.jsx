@@ -6,6 +6,11 @@ import { AuthContext } from "../AuthContext";
 import Post from "./Post";
 
 import { NewsFeed } from "../styledComponents/Profile";
+import {
+  ExploreContainer,
+  UserCard,
+  UserCardContainer,
+} from "../styledComponents/Explore";
 
 export default function Newsfeed({
   //props for POSTS
@@ -20,6 +25,34 @@ export default function Newsfeed({
   const [loggedInId, setLoggedInId] = useState(localStorage.getItem("id"));
   const [prevSlidePosition, setPrevSlidePosition] = useState({});
   const [posts, setPosts] = useState([]);
+  const [following, setFollowing] = useState([])
+
+
+  const getFollowing = async () => {
+    try {
+      const res = await axios({
+        method: "get",
+        url: `${BASE_URL}/explore`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (res) {
+        const following = res.data.users.filter(
+          (x) => res.data.following.find((y) => y._id === x._id)
+        );
+        setFollowing(following);
+      } else {
+        console.log("no responses");
+      }
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  useEffect(() => {
+    getFollowing();
+  }, []);
 
 
   const likeAPostN = async (postId) => {
@@ -134,8 +167,8 @@ export default function Newsfeed({
   return (
     <NewsFeed>
       {/* <button onClick={getPosts}> getPosts </button> */}
-
-      {posts &&
+     
+      {posts ?
         posts.map((post) => {
           return (
             <Post
@@ -154,7 +187,37 @@ export default function Newsfeed({
               unlikeAPostN={unlikeAPostN}
             />
           );
-        })}
+        })
+      :
+     following.length > 0 ?
+      <ExploreContainer>
+      <h1> Following </h1>
+      <UserCardContainer>
+        {following &&
+          following.map((fol) => {
+            return (
+              <UserCard className="users">
+                <img src={fol.picture[0].url} alt="" />
+                <h3>
+                  {" "}
+                  {fol.fname} {fol.lname}{" "}
+                </h3>
+                <div className="usercard-bio">
+                  {fol.bio}
+                </div>
+                <button onClick={() => viewProfile(fol._id)}>
+                  {" "}
+                  View Profile{" "}
+                </button>{" "}
+              </UserCard>
+            );
+          })}
+      </UserCardContainer>
+    </ExploreContainer>
+        :
+        <h3> You are currently not following anyone. Head over to the explore page to discover more people!</h3>
+      } 
+  
     </NewsFeed>
   );
 }

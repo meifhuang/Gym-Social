@@ -64,11 +64,7 @@ export default function ExploreUsers() {
                   {not.fname} {not.lname}{" "}
                 </h3>
                 <div className="usercard-bio">
-                  Lorem ipsum dolor sit amet, consectetur Lorem, ipsum dolor sit
-                  amet consectetur adipisicing elit. Aliquam doloremque itaque
-                  sapiente cumque enim laboriosam dignissimos, eum vel, sit
-                  minima, placeat ducimus excepturi accusantium! Dicta iste
-                  neque culpa nobis corrupti!
+                  {not.bio}
                 </div>
                 <button onClick={() => viewProfile(not._id)}>
                   {" "}

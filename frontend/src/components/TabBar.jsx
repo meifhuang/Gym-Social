@@ -146,9 +146,12 @@ const TabBar = ({
             </AddPostModal>
           )}
           <PostContainer>
+          {loggedInId === id ? 
             <AddPostButton onClick={toggleShowAddPostModal}>
               Add Post
             </AddPostButton>
+            : <> </>
+          }
             {posts &&
               posts.map((post, index) => {
                 return (

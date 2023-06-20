@@ -1,12 +1,11 @@
 import styled from "styled-components";
 
 export const ExploreContainer = styled.main`
-  /* border: 1px solid red; */
+  // border: 1px solid red;
   display: flex;
   flex-direction: column;
   gap: 2rem;
   padding: 5% 10%;
-
   @media screen and (max-width: ${(props) => props.theme.breakpoint.lg}) {
     margin-top: 2rem;
   }

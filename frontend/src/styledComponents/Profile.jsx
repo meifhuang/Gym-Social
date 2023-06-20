@@ -346,12 +346,17 @@ export const AddPostButton = styled(GreyHoverButton)`
 `;
 
 export const NewsFeed = styled.div`
+  // border: 1px solid red;
+  text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 1rem;
   margin-top: 2rem;
+  span:hover {
+    color: ${(props) => props.theme.colors.green}
+  }
 `;
 
 export const AddPostModal = styled(Modal)`
