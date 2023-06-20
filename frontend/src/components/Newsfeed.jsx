@@ -168,7 +168,7 @@ export default function Newsfeed({
     <NewsFeed>
       {/* <button onClick={getPosts}> getPosts </button> */}
      
-      {posts ?
+      {posts.length ?
         posts.map((post) => {
           return (
             <Post
@@ -215,7 +215,10 @@ export default function Newsfeed({
       </UserCardContainer>
     </ExploreContainer>
         :
-        <h3> You are currently not following anyone. Head over to the explore page to discover more people!</h3>
+        <div className="no-following">
+            <h3> You are currently not following anyone. </h3>
+            <h3> Head over to the explore page to discover more people! </h3>
+        </div>
       } 
   
     </NewsFeed>

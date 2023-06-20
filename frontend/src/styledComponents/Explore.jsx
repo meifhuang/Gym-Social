@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const ExploreContainer = styled.main`
   // border: 1px solid red;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 2rem;

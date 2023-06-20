@@ -357,6 +357,13 @@ export const NewsFeed = styled.div`
   span:hover {
     color: ${(props) => props.theme.colors.green}
   }
+  .no-following {
+    height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
 `;
 
 export const AddPostModal = styled(Modal)`
