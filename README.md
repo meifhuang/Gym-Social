@@ -48,7 +48,7 @@ To delete the exercise, click on the garbage. Click Add Workout when all the exe
 <img width="629" alt="editworkouts" src="https://github.com/meifhuang/Gym-Social/assets/100555326/ec8915bc-008c-4eb7-b948-a2016cb9db3b">
 
 
-Once a workout has been added, it can also be editted or deleted. Note the entire workout will be deleted. 
+Once a workout has been added, it can also be edited or deleted. Note the entire workout will be deleted. 
 <img width="847" alt="show workouts" src="https://github.com/meifhuang/Gym-Social/assets/100555326/c63fa2ba-7cae-40a8-8f3f-a9c8e73d271e">
 
 Note: If a user is viewing the profile of another user, the edit and delete buttons would be replaced with with a bookmark icon. This allows users to save a workout. It will be visible in the Save section of their profile. 
@@ -57,7 +57,7 @@ Note: If a user is viewing the profile of another user, the edit and delete butt
 
 ### Explore 
 
-In order to see other user's post on the home / newsfeed page, go to the explore page as shown in the nav bar. 
+In order to see other user's post on the home / newsfeed page, go to the explore page as shown in the navigation bar. 
 <img width="1446" alt="Screen Shot 2023-06-28 at 12 45 02 PM" src="https://github.com/meifhuang/Gym-Social/assets/100555326/9e566a35-62f7-4bad-a683-89411a4e8fbb">
 Click view profile to see the user's posts and workouts. Click follow on their profile page so their posts will now show up on your home page.
 
