@@ -34,8 +34,6 @@ export default function Navbar(props) {
     setUserPicUrl,
   } = useContext(AuthContext);
 
- 
-
   const logout = async () => {
     try {
       const response = await axios({
@@ -57,24 +55,23 @@ export default function Navbar(props) {
   };
 
   const getNav = async (userid) => {
-    try { 
+    try {
       const res = await axios({
         method: "get",
         url: `${BASE_URL}/profile/${userid}`,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-    })
-    if (res) {
-      setUserPicUrl(res.data.user.picture[0].url);
+      });
+      if (res) {
+        setUserPicUrl(res.data.user.picture[0].url);
+      }
+    } catch (e) {
+      console.log(e.message);
     }
-  }
-  catch (e) {
-    console.log(e.message)
-  }
-}
+  };
 
-getNav(userId)
+  getNav(userId);
 
   return (
     <div className="main-container">
@@ -99,6 +96,9 @@ getNav(userId)
               </NavTab>
               <NavTab className="nav-tab">
                 <NavLink to="/explore">EXPLORE</NavLink>
+              </NavTab>
+              <NavTab className="nav-tab">
+                <NavLink to="/chat">CHAT</NavLink>
               </NavTab>
               <MenuTrigger
                 className="menu-trigger"
@@ -155,6 +155,9 @@ getNav(userId)
               </NavTab2>
               <NavTab2 isOpen={isOpen} className={"nav-tab "}>
                 <NavLink to="/explore"> Explore</NavLink>
+              </NavTab2>
+              <NavTab2 isOpen={isOpen} className={"nav-tab "}>
+                <NavLink to="/chat"> Chat</NavLink>
               </NavTab2>
             </>
           ) : (

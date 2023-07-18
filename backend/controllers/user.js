@@ -13,7 +13,36 @@ const {cloudinary} = require('../cloudinary');
 
 router = express.Router();
 
+
+
 //**When deleting a user - have to delete their posts and workouts as well */
+
+router.get("/user/:id", async (req, res) => {
+  const userId = req.params.id
+  try { 
+  const user = await User.findById(userId);
+  console.log(user)
+  if (user) {
+    res.status(200).json({
+      success: true,
+      user: user
+    })
+  }
+  else {
+    res.status(400).json({
+      success: false,
+      message: 'cannot find user'
+    })
+  }
+  }
+  catch (e) {
+    res.status(400).json({
+      sucess: false,
+      message: 'error'
+    })
+    console.log(e.message) 
+  }
+})
 
 router.get("/loggedinuser", async (req, res) => {
   const loggedInId = req.user.id;
