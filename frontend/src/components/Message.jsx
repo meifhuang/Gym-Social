@@ -1,9 +1,13 @@
 import React from "react";
-import TimeAgo from "react-timeago";
+// import TimeAgo from "react-timeago";
+import ReactTimeAgo from 'react-time-ago'
+import TimeAgo from 'javascript-time-ago'
 
+import en from 'javascript-time-ago/locale/en.json'
+TimeAgo.addDefaultLocale(en)
 const Message = ({ userMessage, message }) => {
   return (
-    <div className={userMessage ? "message own" : "message"}>
+    <div className={userMessage ? "message user" : "message"}>
       <div className="messageTop">
         {/* <img
           className="messageImg"
@@ -13,7 +17,8 @@ const Message = ({ userMessage, message }) => {
         <p className="messageText">{message.text}</p>
       </div>
       {/* <div className="messageBottom">{format(message.createdAt)}</div> */}
-      <TimeAgo date={message.createdAt} />
+          {/* <TimeAgo timeStyle="round-minute" className="timestamp" date={message.createdAt} /> */}
+          <ReactTimeAgo date={message.createdAt} locale="en-US" timeStyle="twitter-first-minute"/>
     </div>
   );
 };
