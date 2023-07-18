@@ -9,6 +9,7 @@ export const StyledNav = styled.nav`
   position: relative;
   z-index: 1000;
   width: 100%;
+  height: 10vh;
 
   & .hamburger-react {
     position: relative;

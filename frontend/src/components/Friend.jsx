@@ -32,19 +32,18 @@ const Friend = ({ userId, conversation }) => {
     getFriendInfo();
   }, [userId, conversation]);
   return (
- 
-      <FriendDiv>
-        {friend && (
-          <>
-            <img src={friend.picture[0].url ? friend.picture[0].url : ""} />
+    <FriendDiv>
+      {friend && (
+        <>
+          <img src="../images/avatar.png" alt="" />
+          {/* <img src={friend.picture[0].url ? friend.picture[0].url : ""} /> */}
 
-            <div>
-              Name: {friend.fname} {friend.lname}
-            </div>
-          </>
-        )}
-      </FriendDiv>
- 
+          <div>
+            {friend.fname} {friend.lname}
+          </div>
+        </>
+      )}
+    </FriendDiv>
   );
 };
 

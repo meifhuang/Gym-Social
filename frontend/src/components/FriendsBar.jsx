@@ -5,16 +5,17 @@ import Friend from "./Friend";
 import Message from "./Message";
 import axios from "axios";
 import { io } from "socket.io-client";
-
+import OnlineFriend from "./OnlineFriend";
 import {
   ChatContainer,
   MessageContainer,
   TextBox,
   MessageList,
+  FriendsList,
+  ConversationList,
 } from "../styledComponents/Chat";
 const FriendsBar = () => {
   const { userId } = useContext(AuthContext);
-  console.log(userId);
   const BASE_URL = import.meta.env.VITE_URL;
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
@@ -24,7 +25,7 @@ const FriendsBar = () => {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const socket = useRef();
   const scrollRef = useRef();
-  const [followers, setFollowers] = useState([]);
+  const [friends, setFriends] = useState([]);
 
   useEffect(() => {
     const getFollowers = async () => {
@@ -38,9 +39,21 @@ const FriendsBar = () => {
         });
 
         if (response) {
-          console.log(response, "dsadsadsadad");
           const followers = response.data.user.followers;
-          setFollowers(followers);
+          const following = response.data.user.following;
+          const followersAndFollowing = [...followers, ...following];
+          const hash = {};
+          const friends = [];
+          for (const id of followersAndFollowing) {
+            console.log(id);
+            if (!hash[id]) {
+              hash[id] = 1;
+            } else {
+              friends.push(id);
+            }
+          }
+
+          setFriends(friends);
         }
       } catch (e) {
         console.log(e);
@@ -70,9 +83,7 @@ const FriendsBar = () => {
   useEffect(() => {
     socket.current.emit("addUser", userId);
     socket.current.on("getUsers", (users) => {
-      setOnlineUsers(
-        followers.filter((f) => users.some((u) => u.userId === f))
-      );
+      setOnlineUsers(friends.filter((f) => users.some((u) => u.userId === f)));
     });
   }, [userId]);
 
@@ -112,7 +123,6 @@ const FriendsBar = () => {
         });
 
         if (response) {
-          console.log(response);
           setMessages(response.data);
         }
       } catch (e) {
@@ -128,9 +138,7 @@ const FriendsBar = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(currentChat);
     const receiverId = currentChat.members.find((member) => member !== userId);
-    console.log(receiverId);
     socket.current.emit("sendMessage", {
       senderId: userId,
       receiverId,
@@ -160,59 +168,62 @@ const FriendsBar = () => {
     }
   };
 
-  console.log(onlineUsers);
-
   return (
     <ChatContainer className="chat-container">
-      <div>
-        {conversations.map((conversation, index) => {
-          return (
-            <div
-              key={index}
-              className={currentChat === conversation ? "active-chat" : ""}
-              onClick={() => setCurrentChat(conversation)}
-            >
-              <Friend conversation={conversation} userId={userId} />
-            </div>
-          );
+      <FriendsList>
+        {friends.map((userId) => {
+          if (onlineUsers.includes(userId)) {
+            return <OnlineFriend userId={userId} isOnline="isOnline" />;
+          } else {
+            return <OnlineFriend userId={userId} />;
+          }
         })}
-      </div>
-      <MessageContainer>
-        <MessageList className="message-list">
-          {currentChat ? (
-            <>
-              {messages.map((message) => {
-                return (
-                  <div className="message-comp-container" ref={scrollRef}>
-                    <Message
-                      message={message}
-                      userMessage={message.sender === userId}
-                    />
-                  </div>
-                );
-              })}
-            </>
-          ) : (
-            "Start a conversation with one of your friends!"
-          )}
-        </MessageList>
-        <TextBox>
-          <textarea
-            value={newMessage}
-            name=""
-            id=""
-            cols="30"
-            rows="3"
-            onChange={(e) => setNewMessage(e.target.value)}
-          ></textarea>
-          <button onClick={handleSubmit}>Send</button>
-        </TextBox>
-      </MessageContainer>
-
+      </FriendsList>
       <div>
-        {onlineUsers.map((user) => {
-          return <div>{user}</div>;
-        })}
+        <ConversationList>
+          {conversations.map((conversation, index) => {
+            return (
+              <div
+                key={index}
+                className={currentChat === conversation ? "active-chat" : ""}
+                onClick={() => setCurrentChat(conversation)}
+              >
+                <Friend conversation={conversation} userId={userId} />
+              </div>
+            );
+          })}
+        </ConversationList>
+        <MessageContainer>
+          <MessageList className="message-list">
+            {currentChat ? (
+              <>
+                {messages.map((message) => {
+                  return (
+                    <div className="message-comp-container" ref={scrollRef}>
+                      <Message
+                        message={message}
+                        userMessage={message.sender === userId}
+                      />
+                    </div>
+                  );
+                })}
+              </>
+            ) : (
+              "Start a conversation with one of your friends!"
+            )}
+          </MessageList>
+          <TextBox>
+            <textarea
+              value={newMessage}
+              name=""
+              id=""
+              cols="30"
+              rows="3"
+              onChange={(e) => setNewMessage(e.target.value)}
+            ></textarea>
+            <button onClick={handleSubmit}>Send</button>
+          </TextBox>
+        </MessageContainer>
       </div>
     </ChatContainer>
   );
