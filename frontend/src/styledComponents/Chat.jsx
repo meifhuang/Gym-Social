@@ -4,11 +4,14 @@ export const ChatContainer = styled.div`
   display: flex;
   /* flex-direction: column; */
   height: 100%;
-  border: 1px solid red;
+
 
   & > *:first-child {
-    border: 1px solid red;
     width: 20%;
+  }
+
+  & .active-chat {
+    background-color: rgb(173, 194, 223);
   }
 `;
 
@@ -44,13 +47,15 @@ export const MessageList = styled.div`
   & .messageTop {
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
-    font-weight: bold;
+    font-weight: 500;
+    letter-spacing: .5px;
     font-size: 1.25rem;
-    background-color: #478ce6;
+    background-color: rgb(204, 202, 202);
   }
-
+ 
   & .user .messageTop {
-    background-color: rgb(245, 241, 241);
+    background-color: ${(props) => props.theme.colors.green};
+ 
   }
   & .timestamp {
     font-size: 0.75rem;
@@ -65,7 +70,6 @@ export const MessageList = styled.div`
   }
 `;
 export const TextBox = styled.div`
-  border: 1px solid red;
   width: 100%;
   /* position: absolute; */
   /* bottom: 0; */

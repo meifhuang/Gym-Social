@@ -4,6 +4,8 @@ import { AuthContext } from "../AuthContext";
 import Friend from "./Friend";
 import Message from "./Message";
 import axios from "axios";
+import { io } from "socket.io-client";
+
 import {
   ChatContainer,
   MessageContainer,
@@ -18,8 +20,62 @@ const FriendsBar = () => {
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-
+  const [arrivalMessage, setArrivalMessage] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const socket = useRef();
   const scrollRef = useRef();
+  const [followers, setFollowers] = useState([]);
+
+  useEffect(() => {
+    const getFollowers = async () => {
+      try {
+        const response = await axios({
+          method: "get",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          url: `${BASE_URL}/profile/${userId}`,
+        });
+
+        if (response) {
+          console.log(response, "dsadsadsadad");
+          const followers = response.data.user.followers;
+          setFollowers(followers);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    getFollowers();
+  }, [userId]);
+
+  useEffect(() => {
+    socket.current = io("ws://localhost:3000");
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.senderId,
+        text: data.text,
+        createdAt: Date.now(),
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    arrivalMessage &&
+      currentChat?.members.includes(arrivalMessage.sender) &&
+      setMessages((prev) => [...prev, arrivalMessage]);
+  }, [arrivalMessage, currentChat]);
+
+  useEffect(() => {
+    socket.current.emit("addUser", userId);
+    socket.current.on("getUsers", (users) => {
+      setOnlineUsers(
+        followers.filter((f) => users.some((u) => u.userId === f))
+      );
+    });
+  }, [userId]);
+
   useEffect(() => {
     const getConversation = async () => {
       try {
@@ -33,6 +89,7 @@ const FriendsBar = () => {
 
         if (response) {
           //   console.log(response);
+          setCurrentChat(response.data[0]);
           setConversations(response.data);
         }
       } catch (e) {
@@ -71,14 +128,14 @@ const FriendsBar = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // const receiverId = currentChat.members.find((member) => member !== userId);
-
-    // socket.current.emit("sendMessage", {
-    //   senderId: userId,
-    //   receiverId,
-    //   text: newMessage,
-    // });
+    console.log(currentChat);
+    const receiverId = currentChat.members.find((member) => member !== userId);
+    console.log(receiverId);
+    socket.current.emit("sendMessage", {
+      senderId: userId,
+      receiverId,
+      text: newMessage,
+    });
 
     try {
       const response = await axios({
@@ -94,7 +151,6 @@ const FriendsBar = () => {
         },
       });
 
-      console.log(response);
       if (response) {
         setMessages([...messages, response.data]);
         setNewMessage("");
@@ -104,13 +160,18 @@ const FriendsBar = () => {
     }
   };
 
-  console.log(currentChat);
+  console.log(onlineUsers);
+
   return (
     <ChatContainer className="chat-container">
       <div>
         {conversations.map((conversation, index) => {
           return (
-            <div key={index} onClick={() => setCurrentChat(conversation)}>
+            <div
+              key={index}
+              className={currentChat === conversation ? "active-chat" : ""}
+              onClick={() => setCurrentChat(conversation)}
+            >
               <Friend conversation={conversation} userId={userId} />
             </div>
           );
@@ -147,6 +208,12 @@ const FriendsBar = () => {
           <button onClick={handleSubmit}>Send</button>
         </TextBox>
       </MessageContainer>
+
+      <div>
+        {onlineUsers.map((user) => {
+          return <div>{user}</div>;
+        })}
+      </div>
     </ChatContainer>
   );
 };
