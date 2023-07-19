@@ -11,6 +11,7 @@ const Message = ({ userMessage, message }) => {
       <img src="../images/avatar.png" alt="" />
       <MessageAndTimestamp>
         <MessageTop isUser={userMessage && "true"}>
+          {/* {message.text} */}
           <p className="messageText">{message.text}</p>
         </MessageTop>
 

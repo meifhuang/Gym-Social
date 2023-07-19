@@ -10,8 +10,9 @@ export const ChatContainer = styled.div`
     height: 75vh;
   }
   & .active-chat {
-    background-color: rgb(173, 194, 223);
-    border-radius: 0.5rem;
+    background-color: ${(props) => props.theme.colors.darkgrey};
+    border-bottom:  rgb(147, 180, 224)
+    /* border-radius: 0.5rem; */
   }
 `;
 
@@ -37,8 +38,6 @@ export const FriendsList = styled.div`
     height: 3.5rem;
     border-radius: 50%;
   }
-
-
 `;
 
 export const FriendsListFriend = styled.div`
@@ -50,7 +49,7 @@ export const FriendsListFriend = styled.div`
   text-align: center;
   width: 100px;
   border-radius: 0.5rem;
-  
+
   /* box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.452); */
 
   &:hover {
@@ -84,6 +83,15 @@ export const ConversationList = styled.div`
   /* border: 1px solid red; */
   border-width: 1px;
   border-right: 1px solid rgba(186, 187, 189, 0.377);
+
+  & > * {
+    /* border: 1px solid red; */
+    border-bottom: 1px solid rgba(186, 187, 189, 0.377);
+  }
+
+  & > * .active-chat {
+    border-bottom: ;
+  }
 `;
 
 export const FriendDiv = styled.div`
@@ -92,7 +100,7 @@ export const FriendDiv = styled.div`
   align-items: center;
   padding: 1rem;
   gap: 0.5rem;
-  border-radius: 0.5rem;
+  /* border-radius: 0.5rem; */
   /* border: 1px solid red; */
   background-color: rgba(218, 221, 225, 0.377);
 
@@ -113,7 +121,8 @@ export const MessageContainer = styled.div`
 `;
 
 export const MessageList = styled.div`
-  padding: 2rem;
+  /* border: 2px solid red; */
+  padding: 2rem calc(1rem + 2vw);
   /* border: 1px solid blue; */
   overflow: scroll;
   height: 90%;
@@ -121,17 +130,19 @@ export const MessageList = styled.div`
   flex-direction: column;
   overflow-x: hidden;
   gap: 1rem;
-
+  overflow-y: auto;
   & .message-comp-container {
     /* border: 1px solid purple; */
     display: flex;
     justify-content: start;
+    /* width: 60%; */
   }
 
   & .message {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    width: 60%;
   }
 
   & .message.user {
@@ -151,7 +162,6 @@ export const MessageList = styled.div`
 
   & .user .messageTop {
     background-color: ${(props) => props.theme.colors.green};
-    border: 1px solid red;
   }
 
   & .user {
@@ -167,6 +177,14 @@ export const MessageAndTimestamp = styled.div`
   flex-direction: column;
   gap: 0rem;
   /* border: 1px solid red; */
+  /* max-width: 200px; */
+  /* height: 300px; */
+  word-wrap: break-word;
+
+  & p {
+    word-break: break-all;
+    white-space: normal;
+  }
 `;
 
 export const MessageTop = styled.div`
@@ -177,8 +195,19 @@ export const MessageTop = styled.div`
   border-radius: 0.5rem;
   font-weight: 500;
   letter-spacing: 0.5px;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
+  /* border: 1px solid red; */
+  /* max-width: 200px; */
+  /* overflow: wrap; */
+  white-space: normal;
+  word-wrap: break-word;
   /* background-color: rgb(204, 202, 202); */
+
+  & .messageText {
+    display: flex;
+    /* border: 1px solid red; */
+    /* height: 300px; */
+  }
 `;
 export const TextBox = styled.div`
   width: 100%;
@@ -188,13 +217,34 @@ export const TextBox = styled.div`
   flex: 1;
   /* height: 100px; */
   /* align-self: end; */
+  height: 12vh;
   & textarea {
     flex: 1;
     overflow: hidden;
     resize: none;
+    font-size: 1rem;
+    border: none;
+    border-top: 1px solid rgba(186, 187, 189, 0.377);
+    padding: 1rem;
+
+    outline: none;
+
+    /* -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none; */
   }
   & button {
     height: 100%;
     width: 200px;
+    font-size: 1.25rem;
+    transition: 0.1s;
   }
+
+  /* & button:hover {
+    background-color: rgb(204, 202, 202);
+  } */
+
+  & button:not([disabled]):hover {
+    background-color: rgb(204, 202, 202);
+  }   
 `;

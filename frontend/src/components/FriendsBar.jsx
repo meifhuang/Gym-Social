@@ -6,6 +6,7 @@ import Message from "./Message";
 import axios from "axios";
 import { io } from "socket.io-client";
 import OnlineFriend from "./OnlineFriend";
+import { v4 as uuidv4 } from "uuid";
 import {
   ChatContainer,
   MessageContainer,
@@ -27,6 +28,14 @@ const FriendsBar = () => {
   const scrollRef = useRef();
   const [friends, setFriends] = useState([]);
 
+
+  function isSpacesOnly(str) {
+    if(!str.trim()){
+     
+      return true
+    } 
+  }
+
   useEffect(() => {
     const getFollowers = async () => {
       try {
@@ -45,7 +54,7 @@ const FriendsBar = () => {
           const hash = {};
           const friends = [];
           for (const id of followersAndFollowing) {
-            console.log(id);
+            // console.log(id);
             if (!hash[id]) {
               hash[id] = 1;
             } else {
@@ -83,7 +92,14 @@ const FriendsBar = () => {
   useEffect(() => {
     socket.current.emit("addUser", userId);
     socket.current.on("getUsers", (users) => {
-      setOnlineUsers(friends.filter((f) => users.some((u) => u.userId === f)));
+      setOnlineUsers(
+        friends.filter((friendId) =>
+          users.some((onlineUser) => {
+            // console.log(u, focus)
+            return onlineUser.userId === friendId;
+          })
+        )
+      );
     });
   }, [userId]);
 
@@ -138,6 +154,7 @@ const FriendsBar = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(currentChat)
     const receiverId = currentChat.members.find((member) => member !== userId);
     socket.current.emit("sendMessage", {
       senderId: userId,
@@ -170,12 +187,53 @@ const FriendsBar = () => {
 
   return (
     <ChatContainer className="chat-container">
-      <FriendsList>
-        {friends.map((userId) => {
-          if (onlineUsers.includes(userId)) {
-            return <OnlineFriend userId={userId} isOnline="isOnline" />;
+      {/* <FriendsList>
+        {friends.map((friendId) => {
+          if (onlineUsers.includes(friendId)) {
+            return (
+              <OnlineFriend
+                userId={userId}
+                friendId={friendId}
+                isOnline="isOnline"
+                setCurrentChat={setCurrentChat}
+              />
+            );
           } else {
-            return <OnlineFriend userId={userId} />;
+            return (
+              <OnlineFriend
+                userId={userId}
+                friendId={friendId}
+                setCurrentChat={setCurrentChat}
+              />
+            );
+          }
+        })}
+      </FriendsList> */}
+      <FriendsList>
+        {friends.map((friendId, index) => {
+          if (onlineUsers.includes(friendId)) {
+            return (
+              <OnlineFriend
+                key={index}
+                friendId={friendId}
+                isOnline="isOnline"
+                userId={userId}
+                setCurrentChat={setCurrentChat}
+                setConversations={setConversations}
+                conversations={conversations}
+              />
+            );
+          } else {
+            return (
+              <OnlineFriend
+                key={index}
+                userId={userId}
+                friendId={friendId}
+                setCurrentChat={setCurrentChat}
+                setConversations={setConversations}
+                conversations={conversations}
+              />
+            );
           }
         })}
       </FriendsList>
@@ -185,8 +243,13 @@ const FriendsBar = () => {
             return (
               <div
                 key={index}
-                className={currentChat === conversation ? "active-chat" : ""}
-                onClick={() => setCurrentChat(conversation)}
+                className={
+                  currentChat._id === conversation._id ? "active-chat" : ""
+                }
+                onClick={() => {
+                  console.log(conversation);
+                  setCurrentChat(conversation);
+                }}
               >
                 <Friend conversation={conversation} userId={userId} />
               </div>
@@ -199,7 +262,11 @@ const FriendsBar = () => {
               <>
                 {messages.map((message) => {
                   return (
-                    <div className="message-comp-container" ref={scrollRef}>
+                    <div
+                      // key={uuidv4()}
+                      className="message-comp-container"
+                      ref={scrollRef}
+                    >
                       <Message
                         message={message}
                         userMessage={message.sender === userId}
@@ -221,7 +288,7 @@ const FriendsBar = () => {
               rows="3"
               onChange={(e) => setNewMessage(e.target.value)}
             ></textarea>
-            <button onClick={handleSubmit}>Send</button>
+            <button onClick={handleSubmit} disabled={isSpacesOnly(newMessage) ? true : false}>Send</button>
           </TextBox>
         </MessageContainer>
       </div>
