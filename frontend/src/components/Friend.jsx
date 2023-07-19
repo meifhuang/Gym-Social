@@ -9,7 +9,7 @@ const Friend = ({ userId, conversation }) => {
     const friendId = conversation.members.find(
       (memberId) => memberId !== userId
     );
-    console.log(friendId);
+    // console.log(friendId);
     const getFriendInfo = async () => {
       try {
         const response = await axios({
@@ -30,7 +30,10 @@ const Friend = ({ userId, conversation }) => {
     };
 
     getFriendInfo();
-  }, [userId, conversation]);
+  },
+    [userId, conversation]
+    // []
+  );
   return (
     <FriendDiv>
       {friend && (

@@ -6,6 +6,7 @@ import Message from "./Message";
 import axios from "axios";
 import { io } from "socket.io-client";
 import OnlineFriend from "./OnlineFriend";
+import { v4 as uuidv4 } from "uuid";
 import {
   ChatContainer,
   MessageContainer,
@@ -27,41 +28,42 @@ const FriendsBar = () => {
   const scrollRef = useRef();
   const [friends, setFriends] = useState([]);
 
-  useEffect(() => {
-    const getFollowers = async () => {
-      try {
-        const response = await axios({
-          method: "get",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          url: `${BASE_URL}/profile/${userId}`,
-        });
+  // useEffect(() => {
+  //   const getFollowers = async () => {
+  //     if (userId) {
+  //       try {
+  //         const response = await axios({
+  //           method: "get",
+  //           headers: {
+  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //           },
+  //           url: `${BASE_URL}/profile/${userId}`,
+  //         });
 
-        if (response) {
-          const followers = response.data.user.followers;
-          const following = response.data.user.following;
-          const followersAndFollowing = [...followers, ...following];
-          const hash = {};
-          const friends = [];
-          for (const id of followersAndFollowing) {
-            console.log(id);
-            if (!hash[id]) {
-              hash[id] = 1;
-            } else {
-              friends.push(id);
-            }
-          }
+  //         if (response) {
+  //           const followers = response.data.user.followers;
+  //           const following = response.data.user.following;
+  //           const followersAndFollowing = [...followers, ...following];
+  //           const hash = {};
+  //           const friends = [];
+  //           for (const id of followersAndFollowing) {
+  //             if (!hash[id]) {
+  //               hash[id] = 1;
+  //             } else {
+  //               friends.push(id);
+  //             }
+  //           }
 
-          setFriends(friends);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
+  //           setFriends(friends);
+  //         }
+  //       } catch (e) {
+  //         console.log(e);
+  //       }
+  //     }
+  //   };
 
-    getFollowers();
-  }, [userId]);
+  //   getFollowers();
+  // }, [userId]);
 
   useEffect(() => {
     socket.current = io("ws://localhost:3000");
@@ -83,28 +85,37 @@ const FriendsBar = () => {
   useEffect(() => {
     socket.current.emit("addUser", userId);
     socket.current.on("getUsers", (users) => {
-      setOnlineUsers(friends.filter((f) => users.some((u) => u.userId === f)));
+      setOnlineUsers(
+        friends.filter((friendId) =>
+          users.some((onlineUser) => {
+            // console.log(u, focus)
+            return onlineUser.userId === friendId;
+          })
+        )
+      );
     });
   }, [userId]);
 
   useEffect(() => {
     const getConversation = async () => {
-      try {
-        const response = await axios({
-          method: "get",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          url: `${BASE_URL}/conversation/${userId}`,
-        });
+      if (userId) {
+        try {
+          const response = await axios({
+            method: "get",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            url: `${BASE_URL}/conversation/${userId}`,
+          });
 
-        if (response) {
-          //   console.log(response);
-          setCurrentChat(response.data[0]);
-          setConversations(response.data);
+          if (response) {
+            //   console.log(response);
+            setCurrentChat(response.data[0]);
+            setConversations(response.data);
+          }
+        } catch (e) {
+          console.log(e);
         }
-      } catch (e) {
-        console.log(e);
       }
     };
 
@@ -132,53 +143,69 @@ const FriendsBar = () => {
     getMessages();
   }, [currentChat]);
 
-  useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  // useEffect(() => {
+  //   scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  // }, [messages]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const receiverId = currentChat.members.find((member) => member !== userId);
-    socket.current.emit("sendMessage", {
-      senderId: userId,
-      receiverId,
-      text: newMessage,
-    });
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const receiverId = currentChat.members.find((member) => member !== userId);
+  //   socket.current.emit("sendMessage", {
+  //     senderId: userId,
+  //     receiverId,
+  //     text: newMessage,
+  //   });
 
-    try {
-      const response = await axios({
-        method: "post",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        url: `${BASE_URL}/message`,
-        data: {
-          sender: userId,
-          text: newMessage,
-          conversationId: currentChat._id,
-        },
-      });
+  //   try {
+  //     const response = await axios({
+  //       method: "post",
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //       url: `${BASE_URL}/message`,
+  //       data: {
+  //         sender: userId,
+  //         text: newMessage,
+  //         conversationId: currentChat._id,
+  //       },
+  //     });
 
-      if (response) {
-        setMessages([...messages, response.data]);
-        setNewMessage("");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //     if (response) {
+  //       setMessages([...messages, response.data]);
+  //       setNewMessage("");
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
+  console.log(friends)
   return (
     <ChatContainer className="chat-container">
-      <FriendsList>
-        {friends.map((userId) => {
-          if (onlineUsers.includes(userId)) {
-            return <OnlineFriend userId={userId} isOnline="isOnline" />;
+      {/* <FriendsList>
+        {friends.map((friendId) => {
+          if (onlineUsers.includes(friendId)) {
+            return (
+              <OnlineFriend
+                key={uuidv4()}
+                friendId={friendId}
+                isOnline="isOnline"
+                userId={userId}
+                setCurrentChat={setCurrentChat}
+              />
+            );
           } else {
-            return <OnlineFriend userId={userId} />;
+            return (
+              <OnlineFriend
+                key={uuidv4()}
+                userId={userId}
+                friendId={friendId}
+                setCurrentChat={setCurrentChat}
+              />
+            );
           }
         })}
-      </FriendsList>
+      </FriendsList> */}
       <div>
         <ConversationList>
           {conversations.map((conversation, index) => {
@@ -199,7 +226,11 @@ const FriendsBar = () => {
               <>
                 {messages.map((message) => {
                   return (
-                    <div className="message-comp-container" ref={scrollRef}>
+                    <div
+                      key={uuidv4()}
+                      className="message-comp-container"
+                      ref={scrollRef}
+                    >
                       <Message
                         message={message}
                         userMessage={message.sender === userId}
@@ -221,7 +252,7 @@ const FriendsBar = () => {
               rows="3"
               onChange={(e) => setNewMessage(e.target.value)}
             ></textarea>
-            <button onClick={handleSubmit}>Send</button>
+            {/* <button onClick={handleSubmit}>Send</button> */}
           </TextBox>
         </MessageContainer>
       </div>

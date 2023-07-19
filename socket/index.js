@@ -7,8 +7,10 @@ const io = require("socket.io")(3000, {
 let users = [];
 
 const addUser = (userId, socketId) => {
+  console.log(userId, socketId)
   !users.some((user) => user.userId === userId) &&
-    users.push({ userId, socketId });
+    users.push({ userId, socketId })
+    console.log(users, "ONLINE USERS");
 };
 
 const removeUser = (socketId) => {
@@ -16,13 +18,12 @@ const removeUser = (socketId) => {
 };
 
 const getUser = (userId) => {
-  console.log(userId, users);
   return users.find((user) => user.userId === userId);
 };
 
 io.on("connection", (socket) => {
   console.log("user has logged on");
-
+  console.log(users, "USERS")
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
     io.emit("getUsers", users);
@@ -30,7 +31,6 @@ io.on("connection", (socket) => {
 
   socket.on("sendMessage", ({ senderId, receiverId, text }) => {
     const user = getUser(receiverId);
-    console.log(user);
     if (user) {
       io.to(user.socketId).emit("getMessage", {
         senderId,
