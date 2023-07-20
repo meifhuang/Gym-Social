@@ -53,7 +53,7 @@ const FriendsBar = () => {
   }, [arrivalMessage, currentChat]);
 
   useEffect(() => {
-    const getFollowers = async () => {
+    const getOnlineUsers = async () => {
       if (userId) {
         try {
           const response = await axios({
@@ -97,23 +97,6 @@ const FriendsBar = () => {
         }
       }
     };
-
-    async function getOnlineUsers() {
-      // console.log("asdasdasdasd")
-      getFollowers();
-      // await socket.current.emit("addUser", userId);
-      // await socket.current.on("getUsers", (users) => {
-      //   console.log(users, friends);
-      //   setOnlineUsers(
-      //     friendss.filter((friendId) =>
-      //       users.some((onlineUser) => {
-
-      //         return onlineUser.userId === friendId;
-      //       })
-      //     )
-      //   );
-      // });
-    }
 
     getOnlineUsers();
   }, [userId]);
@@ -209,6 +192,25 @@ const FriendsBar = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(
+      conversations.every((conversation) => {
+        // console.log(conversation.archived, "dasdsad")
+        return conversation.archived === true;
+      })
+    );
+    if (
+      conversations.every((conversation) => {
+        return conversation.archived === true;
+      })
+    ) {
+      console.log(localStorage.getItem("chatId"), messages, currentChat);
+      localStorage.setItem("chatId", "");
+      setMessages([]);
+      setCurrentChat([]);
+    }
+  }, [conversations]);
+
   return (
     <ChatContainer className="chat-container">
       <FriendsList>
@@ -234,23 +236,33 @@ const FriendsBar = () => {
       <div>
         <ConversationList>
           {conversations.map((conversation, index) => {
-            const currentChatId = localStorage.getItem("chatId")
-              ? localStorage.getItem("chatId")
-              : "";
-            return (
-              <div
-                key={index}
-                className={
-                  currentChatId === conversation._id ? "active-chat" : ""
-                }
-                onClick={() => {
-                  setCurrentChat(conversation);
-                  localStorage.setItem("chatId", conversation._id);
-                }}
-              >
-                <Friend conversation={conversation} userId={userId} />
-              </div>
-            );
+            // { console.log(conversation, conversation._id) }
+            if (!conversation.archived) {
+              const currentChatId = localStorage.getItem("chatId")
+                ? localStorage.getItem("chatId")
+                : "";
+              return (
+                <div
+                  key={index}
+                  className={
+                    currentChatId === conversation._id ? "active-chat" : ""
+                  }
+                  onClick={() => {
+                    setCurrentChat(conversation);
+                    localStorage.setItem("chatId", conversation._id);
+                  }}
+                >
+                  <Friend
+                    conversation={conversation}
+                    conversations={conversations}
+                    setConversations={setConversations}
+                    userId={userId}
+                    setCurrentChat={setCurrentChat}
+                    setMessages={setMessages}
+                  />
+                </div>
+              );
+            }
           })}
         </ConversationList>
         <MessageContainer>

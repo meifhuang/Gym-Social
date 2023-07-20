@@ -7,11 +7,16 @@ export const ChatContainer = styled.div`
 
   & > *:nth-child(2) {
     display: flex;
+    flex-direction: column;
     height: 75vh;
+
+    @media screen and (min-width: ${(props) => props.theme.breakpoint.mobile}) {
+      flex-direction: row;
+    }
   }
   & .active-chat {
     background-color: ${(props) => props.theme.colors.darkgrey};
-    border-bottom:  rgb(147, 180, 224)
+    border-bottom: rgb(147, 180, 224);
     /* border-radius: 0.5rem; */
   }
 `;
@@ -83,14 +88,22 @@ export const ConversationList = styled.div`
   /* border: 1px solid red; */
   border-width: 1px;
   border-right: 1px solid rgba(186, 187, 189, 0.377);
+  /* display: none; */
 
-  & > * {
-    /* border: 1px solid red; */
-    border-bottom: 1px solid rgba(186, 187, 189, 0.377);
+  display: flex;
+  /* flex-direction: column; */
+
+  @media screen and (min-width: ${(props) => props.theme.breakpoint.mobile}) {
+    flex-direction: column;
   }
 
-  & > * .active-chat {
-    border-bottom: ;
+  & > * {
+    border: 1px solid rgba(186, 187, 189, 0.377);
+    flex-shrink: 1;
+
+    @media screen and (min-width: ${(props) => props.theme.breakpoint.mobile}) {
+      border-bottom: 1px solid rgba(186, 187, 189, 0.377);
+    }
   }
 `;
 
@@ -98,19 +111,86 @@ export const FriendDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
   gap: 0.5rem;
-  /* border-radius: 0.5rem; */
-  /* border: 1px solid red; */
+  position: relative;
   background-color: rgba(218, 221, 225, 0.377);
+  padding: 0.5rem;
+
+
 
   &:hover {
     background-color: rgba(218, 221, 225, 0.377);
   }
 
   & img {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  & .name {
+    margin-right: 1.5rem;
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  & button {
+    background-color: transparent;
+    align-self: start;
+    cursor: pointer;
+    display: flex;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+  }
+
+  & button:hover {
+    background-color: ${(props) => props.theme.colors.lightgrey};
+    background-color: #8d8b8b81;
+  }
+  & button svg {
+    width: 1rem;
+    color: ${(props) => props.theme.colors.green};
+    transition: 0.05s;
+  }
+  & button svg:hover {
+    color: #464444;
+  }
+
+  @media screen and (min-width: ${(props) => props.theme.breakpoint.mobile}) {
+    /* border-bottom: 1px solid rgba(186, 187, 189, 0.377); */
+    flex-direction: row;
+    padding: 1rem;
+
+    & img {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    & .name {
+      margin-top: 0.75rem;
+      font-size: 1rem;
+    }
+
+    & button svg {
+      width: 1.25rem;
+    }
+
+    & button {
+      background-color: transparent;
+      /* border: 1px solid red; */
+      align-self: start;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      top: 8px;
+      right: 10px;
+    }
   }
 `;
 
@@ -246,5 +326,5 @@ export const TextBox = styled.div`
 
   & button:not([disabled]):hover {
     background-color: rgb(204, 202, 202);
-  }   
+  }
 `;

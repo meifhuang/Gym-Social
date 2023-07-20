@@ -46,13 +46,44 @@ const OnlineFriend = ({
         }/conversation/find/${userId}/${friendId}`,
       });
       if (response.data) {
-        localStorage.setItem("chatId", response.data._id)
+        localStorage.setItem("chatId", response.data._id);
+        unarchiveConversation(response.data._id);
         setCurrentChat(response.data);
       } else {
         createConversation();
       }
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const unarchiveConversation = async (id) => {
+    try {
+      const response = await axios({
+        method: "put",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        url: `${import.meta.env.VITE_URL}/conversation/${id}`,
+        data: {
+          archivedStatus: false,
+        },
+      });
+      if (response) {
+        const unarchivedConvo = response.data.archiveConvo;
+        setConversations(
+          conversations.map((conversation) => {
+            if (conversation._id === unarchivedConvo._id) {
+              return { ...conversation, archived: false };
+            } else {
+              return conversation;
+            }
+          })
+        );
+
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -69,7 +100,7 @@ const OnlineFriend = ({
           receiverId: friendId,
         },
       });
-
+      console.log(response);
       if (response) {
         const createdChat = response.data._id;
         setCurrentChat(response.data);
