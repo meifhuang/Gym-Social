@@ -1,10 +1,11 @@
 const router = require("express").Router();
+const conversation = require("../models/conversation");
 const Conversation = require("../models/conversation");
 
 //new conv
 
 router.post("/", async (req, res) => {
-    console.log(req)
+  console.log(req);
   const newConversation = new Conversation({
     members: [req.body.senderId, req.body.receiverId],
   });
@@ -37,9 +38,34 @@ router.get("/find/:firstUserId/:secondUserId", async (req, res) => {
     const conversation = await Conversation.findOne({
       members: { $all: [req.params.firstUserId, req.params.secondUserId] },
     });
-    res.status(200).json(conversation)
+    res.status(200).json(conversation);
   } catch (err) {
     res.status(500).json(err);
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  const { archivedStatus } = req.body;
+  const { id } = req.params;
+  try {
+    const archiveConvo = await Conversation.findByIdAndUpdate(
+      id,
+      {
+        archived: archivedStatus
+      },
+      { new: true }
+    );
+
+    if (archiveConvo) {
+      res.status(200).json({
+        success: true,
+        archiveConvo 
+      });
+    } else {
+      res.status(400).json({ success: false, message: "Conversation was not archived" });
+    }
+  } catch (err) {
+    console.log(err)
   }
 });
 
