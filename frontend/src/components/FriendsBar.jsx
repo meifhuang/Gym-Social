@@ -24,51 +24,16 @@ const FriendsBar = () => {
   const [newMessage, setNewMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [friends, setFriends] = useState([]);
   const socket = useRef();
   const scrollRef = useRef();
-  const [friends, setFriends] = useState([]);
+  // const [friends, setFriends] = useState([]);
 
   function isSpacesOnly(str) {
     if (!str.trim()) {
       return true;
     }
   }
-
-  useEffect(() => {
-    const getFollowers = async () => {
-      try {
-        const response = await axios({
-          method: "get",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          url: `${BASE_URL}/profile/${userId}`,
-        });
-
-        if (response) {
-          const followers = response.data.user.followers;
-          const following = response.data.user.following;
-          const followersAndFollowing = [...followers, ...following];
-          const hash = {};
-          const friends = [];
-          for (const id of followersAndFollowing) {
-            // console.log(id);
-            if (!hash[id]) {
-              hash[id] = 1;
-            } else {
-              friends.push(id);
-            }
-          }
-
-          setFriends(friends);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    getFollowers();
-  }, [userId]);
 
   useEffect(() => {
     socket.current = io("ws://localhost:3000");
@@ -88,44 +53,99 @@ const FriendsBar = () => {
   }, [arrivalMessage, currentChat]);
 
   useEffect(() => {
-    socket.current.emit("addUser", userId);
-    socket.current.on("getUsers", (users) => {
-      setOnlineUsers(
-        friends.filter((friendId) =>
-          users.some((onlineUser) => {
-            // console.log(u, focus)
-            return onlineUser.userId === friendId;
-          })
-        )
-      );
-    });
+    const getFollowers = async () => {
+      if (userId) {
+        try {
+          const response = await axios({
+            method: "get",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            url: `${BASE_URL}/profile/${userId}`,
+          });
+
+          if (response) {
+            const followers = response.data.user.followers;
+            const following = response.data.user.following;
+            const followersAndFollowing = [...followers, ...following];
+            const hash = {};
+            const friendsArray = [];
+            for (const id of followersAndFollowing) {
+              // console.log(id);
+              if (!hash[id]) {
+                hash[id] = 1;
+              } else {
+                friendsArray.push(id);
+              }
+            }
+            await socket.current.emit("addUser", userId);
+            await socket.current.on("getUsers", (users) => {
+              setOnlineUsers(
+                friendsArray.filter((friendId) =>
+                  users.some((onlineUser) => {
+                    // console.log(u, focus)
+                    return onlineUser.userId === friendId;
+                  })
+                )
+              );
+            });
+            setFriends(friendsArray);
+            return friends;
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    };
+
+    async function getOnlineUsers() {
+      // console.log("asdasdasdasd")
+      getFollowers();
+      // await socket.current.emit("addUser", userId);
+      // await socket.current.on("getUsers", (users) => {
+      //   console.log(users, friends);
+      //   setOnlineUsers(
+      //     friendss.filter((friendId) =>
+      //       users.some((onlineUser) => {
+
+      //         return onlineUser.userId === friendId;
+      //       })
+      //     )
+      //   );
+      // });
+    }
+
+    getOnlineUsers();
   }, [userId]);
 
+  // console.log(onlineUsers, friends);
   useEffect(() => {
     const getConversation = async () => {
-      try {
-        const response = await axios({
-          method: "get",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          url: `${BASE_URL}/conversation/${userId}`,
-        });
+      if (userId) {
+        try {
+          const response = await axios({
+            method: "get",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            url: `${BASE_URL}/conversation/${userId}`,
+          });
 
-        if (response) {
-          if (localStorage.getItem("chatId")) {
-            setCurrentChat(
-              response.data.find(
-                (chat) => chat._id === localStorage.getItem("chatId")
-              )
-            );
-          } else {
-            setCurrentChat(response.data[0]);
+          if (response) {
+            if (localStorage.getItem("chatId")) {
+              setCurrentChat(
+                response.data.find(
+                  (chat) => chat._id === localStorage.getItem("chatId")
+                )
+              );
+            } else {
+              setCurrentChat(response.data[0]);
+            }
+            setConversations(response.data);
           }
-          setConversations(response.data);
+        } catch (e) {
+          console.log(e);
         }
-      } catch (e) {
-        console.log(e);
       }
     };
 
@@ -159,7 +179,6 @@ const FriendsBar = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(currentChat);
     const receiverId = currentChat.members.find((member) => member !== userId);
     socket.current.emit("sendMessage", {
       senderId: userId,
@@ -192,46 +211,25 @@ const FriendsBar = () => {
 
   return (
     <ChatContainer className="chat-container">
-      {/* <FriendsList>
-        {friends.map((friendId) => {
-          if (onlineUsers.includes(friendId)) {
-            return (
-              <OnlineFriend
-                userId={userId}
-                friendId={friendId}
-                isOnline="isOnline"
-                setCurrentChat={setCurrentChat}
-              />
-            );
-          } else {
-            return (
-              <OnlineFriend
-                userId={userId}
-                friendId={friendId}
-                setCurrentChat={setCurrentChat}
-              />
-            );
-          }
-        })}
-      </FriendsList> */}
       <FriendsList>
-        {friends.map((friendId, index) => {
-          let isOnline
-          if (onlineUsers.includes(friendId)) {
-            isOnline = "isOnline";
-          }
-          return (
-            <OnlineFriend
-              key={index}
-              friendId={friendId}
-              isOnline={isOnline}
-              userId={userId}
-              setCurrentChat={setCurrentChat}
-              setConversations={setConversations}
-              conversations={conversations}
-            />
-          );
-        })}
+        {friends.length > 0 &&
+          friends.map((friendId, index) => {
+            let isOnline;
+            if (onlineUsers.includes(friendId)) {
+              isOnline = "isOnline";
+            }
+            return (
+              <OnlineFriend
+                key={index}
+                friendId={friendId}
+                isOnline={isOnline}
+                userId={userId}
+                setCurrentChat={setCurrentChat}
+                setConversations={setConversations}
+                conversations={conversations}
+              />
+            );
+          })}
       </FriendsList>
       <div>
         <ConversationList>
@@ -262,7 +260,7 @@ const FriendsBar = () => {
                 {messages.map((message) => {
                   return (
                     <div
-                      // key={uuidv4()}
+                      key={message._id}
                       className="message-comp-container"
                       ref={scrollRef}
                     >

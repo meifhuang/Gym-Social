@@ -45,10 +45,7 @@ const OnlineFriend = ({
           import.meta.env.VITE_URL
         }/conversation/find/${userId}/${friendId}`,
       });
-      console.log(response.data);
       if (response.data) {
-        console.log("ALREADY HAS CONVO");
-        console.log(response.data);
         localStorage.setItem("chatId", response.data._id)
         setCurrentChat(response.data);
       } else {

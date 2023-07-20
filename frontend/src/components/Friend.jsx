@@ -9,7 +9,6 @@ const Friend = ({ userId, conversation }) => {
     const friendId = conversation.members.find(
       (memberId) => memberId !== userId
     );
-    console.log(friendId);
     const getFriendInfo = async () => {
       try {
         const response = await axios({
