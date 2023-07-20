@@ -28,12 +28,10 @@ const FriendsBar = () => {
   const scrollRef = useRef();
   const [friends, setFriends] = useState([]);
 
-
   function isSpacesOnly(str) {
-    if(!str.trim()){
-     
-      return true
-    } 
+    if (!str.trim()) {
+      return true;
+    }
   }
 
   useEffect(() => {
@@ -115,8 +113,15 @@ const FriendsBar = () => {
         });
 
         if (response) {
-          //   console.log(response);
-          setCurrentChat(response.data[0]);
+          if (localStorage.getItem("chatId")) {
+            setCurrentChat(
+              response.data.find(
+                (chat) => chat._id === localStorage.getItem("chatId")
+              )
+            );
+          } else {
+            setCurrentChat(response.data[0]);
+          }
           setConversations(response.data);
         }
       } catch (e) {
@@ -154,7 +159,7 @@ const FriendsBar = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(currentChat)
+    console.log(currentChat);
     const receiverId = currentChat.members.find((member) => member !== userId);
     socket.current.emit("sendMessage", {
       senderId: userId,
@@ -211,44 +216,38 @@ const FriendsBar = () => {
       </FriendsList> */}
       <FriendsList>
         {friends.map((friendId, index) => {
+          let isOnline
           if (onlineUsers.includes(friendId)) {
-            return (
-              <OnlineFriend
-                key={index}
-                friendId={friendId}
-                isOnline="isOnline"
-                userId={userId}
-                setCurrentChat={setCurrentChat}
-                setConversations={setConversations}
-                conversations={conversations}
-              />
-            );
-          } else {
-            return (
-              <OnlineFriend
-                key={index}
-                userId={userId}
-                friendId={friendId}
-                setCurrentChat={setCurrentChat}
-                setConversations={setConversations}
-                conversations={conversations}
-              />
-            );
+            isOnline = "isOnline";
           }
+          return (
+            <OnlineFriend
+              key={index}
+              friendId={friendId}
+              isOnline={isOnline}
+              userId={userId}
+              setCurrentChat={setCurrentChat}
+              setConversations={setConversations}
+              conversations={conversations}
+            />
+          );
         })}
       </FriendsList>
       <div>
         <ConversationList>
           {conversations.map((conversation, index) => {
+            const currentChatId = localStorage.getItem("chatId")
+              ? localStorage.getItem("chatId")
+              : "";
             return (
               <div
                 key={index}
                 className={
-                  currentChat._id === conversation._id ? "active-chat" : ""
+                  currentChatId === conversation._id ? "active-chat" : ""
                 }
                 onClick={() => {
-                  console.log(conversation);
                   setCurrentChat(conversation);
+                  localStorage.setItem("chatId", conversation._id);
                 }}
               >
                 <Friend conversation={conversation} userId={userId} />
@@ -288,7 +287,12 @@ const FriendsBar = () => {
               rows="3"
               onChange={(e) => setNewMessage(e.target.value)}
             ></textarea>
-            <button onClick={handleSubmit} disabled={isSpacesOnly(newMessage) ? true : false}>Send</button>
+            <button
+              onClick={handleSubmit}
+              disabled={isSpacesOnly(newMessage) ? true : false}
+            >
+              Send
+            </button>
           </TextBox>
         </MessageContainer>
       </div>

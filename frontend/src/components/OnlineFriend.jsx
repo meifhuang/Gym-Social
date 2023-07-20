@@ -49,6 +49,7 @@ const OnlineFriend = ({
       if (response.data) {
         console.log("ALREADY HAS CONVO");
         console.log(response.data);
+        localStorage.setItem("chatId", response.data._id)
         setCurrentChat(response.data);
       } else {
         createConversation();
@@ -59,7 +60,6 @@ const OnlineFriend = ({
   };
 
   const createConversation = async () => {
-    console.log("convo created");
     try {
       const response = await axios({
         method: "post",
@@ -74,7 +74,6 @@ const OnlineFriend = ({
       });
 
       if (response) {
-        console.log(response, conversations);
         const createdChat = response.data._id;
         setCurrentChat(response.data);
         setConversations([response.data, ...conversations]);
