@@ -10,16 +10,15 @@ import {
   Route,
   createBrowserRouter,
   RouterProvider,
-  createHashRouter
+  createHashRouter,
 } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
-import Navbar from "./components/Navbar";
 import NewsFeed from "./components/Newsfeed";
 import ExploreUsers from "./pages/ExploreUsers";
-
+import Chat from "./pages/Chat";
 import "./App.css";
 
 import { AuthContext } from "./AuthContext";
@@ -31,9 +30,6 @@ import { ThemeProvider } from "styled-components";
 //loaders
 import { getExerciseList } from "./loader/index";
 function App() {
-
-
-
   const [message, setMessage] = useState("");
   const { hasToken } = useContext(AuthContext);
   const theme = {
@@ -76,6 +72,10 @@ function App() {
         {
           path: "/explore",
           element: <ExploreUsers />,
+        },
+        {
+          path: "/chat",
+          element: <Chat />,
         },
       ],
     },
