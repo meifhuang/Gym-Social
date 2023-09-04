@@ -18,12 +18,13 @@ const removeUser = (socketId) => {
 };
 
 const getUser = (userId) => {
+  console.log(userId, users, "THESE ARE THE USERS");
   return users.find((user) => user.userId === userId);
 };
 
 io.on("connection", (socket) => {
   console.log("user has logged on");
-  console.log(users, "USERS")
+
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
     io.emit("getUsers", users);
@@ -39,9 +40,13 @@ io.on("connection", (socket) => {
     }
   });
 
+  
+
   socket.on("disconnect", () => {
     console.log("a user disconnected!");
     removeUser(socket.id);
     io.emit("getUsers", users);
   });
 });
+
+
