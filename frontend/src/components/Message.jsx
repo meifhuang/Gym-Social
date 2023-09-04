@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 // import ReactTimeAgo from "react-time-ago";
 // import TimeAgo from "javascript-time-ago";
 import { MessageTop, MessageAndTimestamp } from "../styledComponents/Chat";
-import en from "javascript-time-ago/locale/en.json";
+// import en from "javascript-time-ago/locale/en.json";
 
 // TimeAgo.addDefaultLocale(en);
 import moment from "moment";
