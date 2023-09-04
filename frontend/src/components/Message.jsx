@@ -15,7 +15,7 @@ const Message = ({ userMessage, message }) => {
           <p className="messageText">{message.text}</p>
         </MessageTop>
         <ReactTimeAgo
-          date={Date.parse(message.createdAt)}
+          date={Date.parse(new Date(message.createdAt))}
           locale="en-US"
           timeStyle="round-minute"
           className="timestamp"

@@ -78,17 +78,28 @@ const FriendsBar = () => {
                 friendsArray.push(id);
               }
             }
+            console.log("BLAGBLAHGASDSAD")
             await socket.current.emit("addUser", userId);
             await socket.current.on("getUsers", (users) => {
-              setOnlineUsers(
-                friendsArray.filter((friendId) =>
-                  users.some((onlineUser) => {
-                    // console.log(u, focus)
-                    return onlineUser.userId === friendId;
-                  })
-                )
+              console.log(users, friendsArray);
+              const onlineFriends = friendsArray.filter((friendId) =>
+                users.some((onlineUser) => {
+                  // console.log(u, focus)
+                  return onlineUser.userId === friendId;
+                })
               );
+              setOnlineUsers(onlineFriends);
+              console.log(onlineFriends);
+              // setOnlineUsers(
+              //   friendsArray.filter((friendId) =>
+              //     users.some((onlineUser) => {
+              //       // console.log(u, focus)
+              //       return onlineUser.userId === friendId;
+              //     })
+              //   )
+              // );
             });
+            console.log(onlineUsers);
             setFriends(friendsArray);
             return friends;
           }
