@@ -1,37 +1,38 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FriendsListFriend } from "../styledComponents/Chat";
-const OnlineFriend = ({ userId, friendId, isOnline, setCurrentChat }) => {
-  //   const [friend, setFriend] = useState();
-  // console.log(friendId)
+const OnlineFriend = ({
+  userId,
+  setCurrentChat,
+  friendId,
+  isOnline,
+  setConversations,
+  conversations,
+}) => {
+  const [friend, setFriend] = useState();
+  useEffect(() => {
+    const getConversation = async () => {
+      try {
+        const response = await axios({
+          method: "get",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          url: `${import.meta.env.VITE_URL}/user/${friendId}`,
+        });
 
-  const friend = useRef();
-//   useEffect(() => {
-//     const getFriend = async () => {
-//     //   console.log("dsadasdasd");
-//       try {
-//         const response = await axios({
-//           method: "get",
-//           headers: {
-//             Authorization: `Bearer ${localStorage.getItem("token")}`,
-//           },
-//           url: `${import.meta.env.VITE_URL}/user/${friendId}`,
-//         });
+        if (response) {
+          //   console.log(response);
+          const userInfo = response.data.user;
+          setFriend(userInfo);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
 
-//         if (response) {
-//           //   console.log(response);
-//           const userInfo = response.data.user;
-//           friend.current = userInfo;
-//           //   setFriend(userInfo);
-//         }
-//       } catch (e) {
-//         console.log(e);
-//       }
-//     };
-
-//     getFriend();
-//   }, [isOnline]);
-
+    getConversation();
+  }, [friendId]);
   const checkConversationExist = async (e) => {
     e.preventDefault();
     try {
@@ -44,9 +45,9 @@ const OnlineFriend = ({ userId, friendId, isOnline, setCurrentChat }) => {
           import.meta.env.VITE_URL
         }/conversation/find/${userId}/${friendId}`,
       });
-      console.log(response.data);
       if (response.data) {
-        console.log("ALREADY HAS CONVO");
+        localStorage.setItem("chatId", response.data._id);
+        unarchiveConversation(response.data._id);
         setCurrentChat(response.data);
       } else {
         createConversation();
@@ -56,8 +57,37 @@ const OnlineFriend = ({ userId, friendId, isOnline, setCurrentChat }) => {
     }
   };
 
+  const unarchiveConversation = async (id) => {
+    try {
+      const response = await axios({
+        method: "put",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        url: `${import.meta.env.VITE_URL}/conversation/${id}`,
+        data: {
+          archivedStatus: false,
+        },
+      });
+      if (response) {
+        const unarchivedConvo = response.data.archiveConvo;
+        setConversations(
+          conversations.map((conversation) => {
+            if (conversation._id === unarchivedConvo._id) {
+              return { ...conversation, archived: false };
+            } else {
+              return conversation;
+            }
+          })
+        );
+
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const createConversation = async () => {
-    console.log("convo created");
     try {
       const response = await axios({
         method: "post",
@@ -70,20 +100,19 @@ const OnlineFriend = ({ userId, friendId, isOnline, setCurrentChat }) => {
           receiverId: friendId,
         },
       });
-
+      console.log(response);
       if (response) {
-        console.log(response);
         const createdChat = response.data._id;
-        setCurrentChat(createdChat);
+        setCurrentChat(response.data);
+        setConversations([response.data, ...conversations]);
       }
     } catch (err) {
       console.log(err);
     }
   };
+
   return (
-    <FriendsListFriend
-    //   onClick={(e) => checkConversationExist(e)}
-    >
+    <FriendsListFriend onClick={(e) => checkConversationExist(e)}>
       {friend && (
         <>
           <div className="image-status">

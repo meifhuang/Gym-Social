@@ -24,46 +24,16 @@ const FriendsBar = () => {
   const [newMessage, setNewMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [friends, setFriends] = useState([]);
   const socket = useRef();
   const scrollRef = useRef();
-  const [friends, setFriends] = useState([]);
+  // const [friends, setFriends] = useState([]);
 
-  // useEffect(() => {
-  //   const getFollowers = async () => {
-  //     if (userId) {
-  //       try {
-  //         const response = await axios({
-  //           method: "get",
-  //           headers: {
-  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //           },
-  //           url: `${BASE_URL}/profile/${userId}`,
-  //         });
-
-  //         if (response) {
-  //           const followers = response.data.user.followers;
-  //           const following = response.data.user.following;
-  //           const followersAndFollowing = [...followers, ...following];
-  //           const hash = {};
-  //           const friends = [];
-  //           for (const id of followersAndFollowing) {
-  //             if (!hash[id]) {
-  //               hash[id] = 1;
-  //             } else {
-  //               friends.push(id);
-  //             }
-  //           }
-
-  //           setFriends(friends);
-  //         }
-  //       } catch (e) {
-  //         console.log(e);
-  //       }
-  //     }
-  //   };
-
-  //   getFollowers();
-  // }, [userId]);
+  function isSpacesOnly(str) {
+    if (!str.trim()) {
+      return true;
+    }
+  }
 
   useEffect(() => {
     socket.current = io("ws://localhost:3000");
@@ -83,19 +53,55 @@ const FriendsBar = () => {
   }, [arrivalMessage, currentChat]);
 
   useEffect(() => {
-    socket.current.emit("addUser", userId);
-    socket.current.on("getUsers", (users) => {
-      setOnlineUsers(
-        friends.filter((friendId) =>
-          users.some((onlineUser) => {
-            // console.log(u, focus)
-            return onlineUser.userId === friendId;
-          })
-        )
-      );
-    });
+    const getOnlineUsers = async () => {
+      if (userId) {
+        try {
+          const response = await axios({
+            method: "get",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            url: `${BASE_URL}/profile/${userId}`,
+          });
+
+          if (response) {
+            const followers = response.data.user.followers;
+            const following = response.data.user.following;
+            const followersAndFollowing = [...followers, ...following];
+            const hash = {};
+            const friendsArray = [];
+            for (const id of followersAndFollowing) {
+              // console.log(id);
+              if (!hash[id]) {
+                hash[id] = 1;
+              } else {
+                friendsArray.push(id);
+              }
+            }
+            await socket.current.emit("addUser", userId);
+            await socket.current.on("getUsers", (users) => {
+              setOnlineUsers(
+                friendsArray.filter((friendId) =>
+                  users.some((onlineUser) => {
+                    // console.log(u, focus)
+                    return onlineUser.userId === friendId;
+                  })
+                )
+              );
+            });
+            setFriends(friendsArray);
+            return friends;
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    };
+
+    getOnlineUsers();
   }, [userId]);
 
+  // console.log(onlineUsers, friends);
   useEffect(() => {
     const getConversation = async () => {
       if (userId) {
@@ -109,8 +115,15 @@ const FriendsBar = () => {
           });
 
           if (response) {
-            //   console.log(response);
-            setCurrentChat(response.data[0]);
+            if (localStorage.getItem("chatId")) {
+              setCurrentChat(
+                response.data.find(
+                  (chat) => chat._id === localStorage.getItem("chatId")
+                )
+              );
+            } else {
+              setCurrentChat(response.data[0]);
+            }
             setConversations(response.data);
           }
         } catch (e) {
@@ -143,81 +156,113 @@ const FriendsBar = () => {
     getMessages();
   }, [currentChat]);
 
-  // useEffect(() => {
-  //   scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  // }, [messages]);
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const receiverId = currentChat.members.find((member) => member !== userId);
-  //   socket.current.emit("sendMessage", {
-  //     senderId: userId,
-  //     receiverId,
-  //     text: newMessage,
-  //   });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const receiverId = currentChat.members.find((member) => member !== userId);
+    socket.current.emit("sendMessage", {
+      senderId: userId,
+      receiverId,
+      text: newMessage,
+    });
 
-  //   try {
-  //     const response = await axios({
-  //       method: "post",
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       },
-  //       url: `${BASE_URL}/message`,
-  //       data: {
-  //         sender: userId,
-  //         text: newMessage,
-  //         conversationId: currentChat._id,
-  //       },
-  //     });
+    try {
+      const response = await axios({
+        method: "post",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        url: `${BASE_URL}/message`,
+        data: {
+          sender: userId,
+          text: newMessage,
+          conversationId: currentChat._id,
+        },
+      });
 
-  //     if (response) {
-  //       setMessages([...messages, response.data]);
-  //       setNewMessage("");
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+      if (response) {
+        setMessages([...messages, response.data]);
+        setNewMessage("");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  console.log(friends)
+  useEffect(() => {
+    console.log(
+      conversations.every((conversation) => {
+        // console.log(conversation.archived, "dasdsad")
+        return conversation.archived === true;
+      })
+    );
+    if (
+      conversations.every((conversation) => {
+        return conversation.archived === true;
+      })
+    ) {
+      console.log(localStorage.getItem("chatId"), messages, currentChat);
+      localStorage.setItem("chatId", "");
+      setMessages([]);
+      setCurrentChat([]);
+    }
+  }, [conversations]);
+
   return (
     <ChatContainer className="chat-container">
-      {/* <FriendsList>
-        {friends.map((friendId) => {
-          if (onlineUsers.includes(friendId)) {
+      <FriendsList>
+        {friends.length > 0 &&
+          friends.map((friendId, index) => {
+            let isOnline;
+            if (onlineUsers.includes(friendId)) {
+              isOnline = "isOnline";
+            }
             return (
               <OnlineFriend
-                key={uuidv4()}
+                key={index}
                 friendId={friendId}
-                isOnline="isOnline"
+                isOnline={isOnline}
                 userId={userId}
                 setCurrentChat={setCurrentChat}
+                setConversations={setConversations}
+                conversations={conversations}
               />
             );
-          } else {
-            return (
-              <OnlineFriend
-                key={uuidv4()}
-                userId={userId}
-                friendId={friendId}
-                setCurrentChat={setCurrentChat}
-              />
-            );
-          }
-        })}
-      </FriendsList> */}
+          })}
+      </FriendsList>
       <div>
         <ConversationList>
           {conversations.map((conversation, index) => {
-            return (
-              <div
-                key={index}
-                className={currentChat === conversation ? "active-chat" : ""}
-                onClick={() => setCurrentChat(conversation)}
-              >
-                <Friend conversation={conversation} userId={userId} />
-              </div>
-            );
+            // { console.log(conversation, conversation._id) }
+            if (!conversation.archived) {
+              const currentChatId = localStorage.getItem("chatId")
+                ? localStorage.getItem("chatId")
+                : "";
+              return (
+                <div
+                  key={index}
+                  className={
+                    currentChatId === conversation._id ? "active-chat" : ""
+                  }
+                  onClick={() => {
+                    setCurrentChat(conversation);
+                    localStorage.setItem("chatId", conversation._id);
+                  }}
+                >
+                  <Friend
+                    conversation={conversation}
+                    conversations={conversations}
+                    setConversations={setConversations}
+                    userId={userId}
+                    setCurrentChat={setCurrentChat}
+                    setMessages={setMessages}
+                  />
+                </div>
+              );
+            }
           })}
         </ConversationList>
         <MessageContainer>
@@ -227,7 +272,7 @@ const FriendsBar = () => {
                 {messages.map((message) => {
                   return (
                     <div
-                      key={uuidv4()}
+                      key={message._id}
                       className="message-comp-container"
                       ref={scrollRef}
                     >
@@ -252,7 +297,12 @@ const FriendsBar = () => {
               rows="3"
               onChange={(e) => setNewMessage(e.target.value)}
             ></textarea>
-            {/* <button onClick={handleSubmit}>Send</button> */}
+            <button
+              onClick={handleSubmit}
+              disabled={isSpacesOnly(newMessage) ? true : false}
+            >
+              Send
+            </button>
           </TextBox>
         </MessageContainer>
       </div>

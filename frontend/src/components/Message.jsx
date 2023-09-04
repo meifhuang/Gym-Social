@@ -11,11 +11,11 @@ const Message = ({ userMessage, message }) => {
       <img src="../images/avatar.png" alt="" />
       <MessageAndTimestamp>
         <MessageTop isUser={userMessage && "true"}>
+          {/* {message.text} */}
           <p className="messageText">{message.text}</p>
         </MessageTop>
-
         <ReactTimeAgo
-          date={message.createdAt}
+          date={Date.parse(message.createdAt)}
           locale="en-US"
           timeStyle="round-minute"
           className="timestamp"
