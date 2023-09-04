@@ -55,19 +55,21 @@ export default function Navbar(props) {
   };
 
   const getNav = async (userid) => {
-    try {
-      const res = await axios({
-        method: "get",
-        url: `${BASE_URL}/profile/${userid}`,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      if (res) {
-        setUserPicUrl(res.data.user.picture[0].url);
+    if (userid) {
+      try {
+        const res = await axios({
+          method: "get",
+          url: `${BASE_URL}/profile/${userid}`,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        if (res) {
+          setUserPicUrl(res.data.user.picture[0].url);
+        }
+      } catch (e) {
+        console.log(e.message);
       }
-    } catch (e) {
-      console.log(e.message);
     }
   };
 
