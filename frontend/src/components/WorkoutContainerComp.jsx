@@ -80,50 +80,11 @@ const WorkoutContainerComp = ({
                             <div>{exercise.weight} lbs - </div>
                             <div>{exercise.sets} sets - </div>
                             <div>{exercise.reps} reps </div>
-                            {/* {exercise.weight} lbs - {exercise.sets} sets -{" "}
-                            {exercise.reps} - reps */}
+            
                           </div>
-                          <ArrowSwitch component="">
-                            <svg
-                              className={
-                                activeDropdown === exercise._id
-                                  ? "arrow-up feather feather-chevron-down"
-                                  : "arrow-down feather feather-chevron-down"
-                              }
-                              onClick={() => {
-                                if (activeDropdown === exercise._id) {
-                                  setActiveDropdown("");
-                                } else {
-                                  setActiveDropdown(exercise._id);
-                                }
-                              }}
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              // class="feather feather-chevron-down"
-                            >
-                              <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                          </ArrowSwitch>
+                         
                         </div>
                       </ExerciseInfo>
-
-                      <ExerciseImage
-                        status={
-                          exercise._id === activeDropdown ? "show" : "hide"
-                        }
-                      >
-                        {" "}
-                        <img src={exercise.gif} alt="loading..." />
-                      </ExerciseImage>
-                    
-
                     </WorkoutInfo>
                   );
                 })}

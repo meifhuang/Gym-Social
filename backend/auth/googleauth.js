@@ -1,18 +1,3 @@
-// const express = require("express");
-// const GoogleStrategy = require("passport-google-oauth20").Strategy;
-// const passport = require("passport");
-// const User = require("../models/user");
-// const jwt = require("jsonwebtoken");
-// const FRONTEND_URL = process.env.FRONTEND_URL;
-// const SERVER_URL = process.env.SERVER_URL;
-// router = express.Router();
-
-// router.use(express.json());
-
-// router.use(passport.initialize());
-
-
-
 
 const express = require("express");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
@@ -90,13 +75,11 @@ router.use(function (err, req, res, next) {
 
 passport.serializeUser((user, done) => {
   // console.log("Serialize");
-  console.log(user);
   done(null, user);
 });
 
 passport.deserializeUser((user, done) => {
   // console.log("Deserialize");
-  console.log(user);
   done(null, user);
 });
 

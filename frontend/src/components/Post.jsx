@@ -38,7 +38,7 @@ export default function Post({
   likeAPostN, 
   unlikeAPostN
 }) {
-  // console.log(page)
+
   const BASE_URL = import.meta.env.VITE_URL;
   const [prevSlidePositionShow, setPrevSlidePositionShow] = useState({});
   const [showPost, setShowPost] = useState(false);

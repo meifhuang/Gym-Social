@@ -27,7 +27,6 @@ router.put("/workout/:id/createexercise", async (req, res) => {
           exercise: exercise,
         });
       } else {
-        console.log("unable to add to workout");
         res.status(400).json({
           success: "false",
           message: "Something went wrong",

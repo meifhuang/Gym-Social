@@ -28,7 +28,6 @@ import GlobalStyles from "./styledComponents/GlobalStyles";
 import { ThemeProvider } from "styled-components";
 
 //loaders
-import { getExerciseList } from "./loader/index";
 function App() {
   const [message, setMessage] = useState("");
   const { hasToken } = useContext(AuthContext);
@@ -63,7 +62,6 @@ function App() {
         {
           path: "/profile/:id",
           element: <Profile />,
-          // loader: getExerciseList,
         },
         {
           path: "/newsfeed",

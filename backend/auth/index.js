@@ -15,7 +15,6 @@ function jwtStrategy(passport) {
       function (payload, done) {
         try {
           //payload holds request object? puts the stuff from object into the user object
-          console.log(payload);
           return done(null, { username: payload.username, id: payload.id });
         } catch (e) {
           //first parameter is error callback, second is what returns in user object

@@ -47,7 +47,6 @@ router.get("/loggedinuser", async (req, res) => {
   const loggedInId = req.user.id;
   try { 
   const user = await User.findById(loggedInId);
-  console.log(user)
   if (user) {
     res.status(200).json({
       success: true,
@@ -190,7 +189,6 @@ router.delete("/profile/:id/unfollow", async (req, res) => {
 });
 
 router.get("/explore", async (req, res) => {
-  console.log("explore");
   const id = req.user.id;
   try {
     //find all users that are not yourself ...
@@ -336,7 +334,6 @@ router.post("/updateuserpic", upload.single('image'), async (req, res) => {
         }
         if (req.body.username) {
             const usernameexist = await User.find({username: req.body.username});
-            console.log(usernameexist)
             if (usernameexist.length > 0) {
               res.status(400).json({
                 message: "Username already exists."
@@ -358,7 +355,6 @@ router.post("/updateuserpic", upload.single('image'), async (req, res) => {
        
         });
       }
-      // console.log(user); 
     }
     catch (e) {
       console.log(e.message);

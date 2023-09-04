@@ -44,8 +44,6 @@ function AddWorkoutForm({
   handleEditSelection
 }) {
   const [toggleArrow, setToggleArrow] = useState(false);
-  // const [activeDropdown, setActiveDropdown] = useState("");
-
 
   return (
     <>
@@ -57,33 +55,8 @@ function AddWorkoutForm({
             <></>
           ) : (
             <form onSubmit={(e) => addExercise(e)}>
-               {/* <label htmlFor="search"> Search for exercises</label> */}
-                {/* <input type="text"
-                       list="exercises"
-                       placeholder="Search exercise"
-                       onChange={handleSearchChange}
-                       value={searchInput}
-                       className="search"
-                  /> */}
-              {/* <label htmlFor="name" className="select-exercise">
-                {" "}
-                Select exercise{" "}
-              </label> */}
-              {/* <SelectExerciseBar
-                value={exercise.name}
-                name="name"
-                onChange={handleChange}
-                required
-              > */}
+              
               <Select options={exerciseDB} className="select-exercises" onChange={handleSelection}/>
-                {/* <option value="not chosen"> -- Choose an exercise -- </option> */}
-                {/* {exerciseDBFilter.map((exercise) => (
-                  <option key={exercise.id} value={exercise.name}>
-                    {/* {exercise.name} */}
-                  {/* </option> */}
-              {/* ))}  */}
-                
-              {/* </SelectExerciseBar> */}
               <div className="stats">
                 <label htmlFor="weight"> Weight </label>
                 <input
@@ -124,37 +97,10 @@ function AddWorkoutForm({
           {currentWorkout &&
             currentWorkout.map((exercise) => {
               if (exerciseId === exercise._id) {
-                // console.log(exercise);
                 return (
                   <EditForm onSubmit={(e) => editExercise(e, exercise._id)}>
                   <Select options={exerciseDB} className="select-exercises" onChange={handleEditSelection}/>
-                    
-                    {/* <label htmlFor="name"> Change exercise </label> */}
-                    {/* <div className="edit-exercise-inputs">
-                      <select
-                        value={editedExercise.name}
-                        name="name"
-                        onChange={handleEditExercise}
-                        required
-                      >
-                        <option value="not chosen">
-                          {" "}
-                          -- Choose an exercise --{" "}
-                        </option>
-                        <option value="" disabled selected hidden>
-                          {exercise.name}
-                        </option>
-                        {exerciseDB.map((exercise) => (
-                          <option key={exercise.id} value={exercise.name}>
-                            {exercise.name}
-                          </option>
-                        ))} */}
-                        {/* {exercises.map((exercise) => (
-                          <option key={exercise} value={exercise}>
-                            {exercise}
-                          </option>
-                        ))}
-                      </select> */}
+            
                       <label htmlFor="weight"> Lbs </label>
                       <input
                         type="number"
@@ -162,7 +108,6 @@ function AddWorkoutForm({
                         value={editedExercise.weight}
                         name="weight"
                         onChange={handleEditExercise}
-                        // placeholder={exercise.weight}
                         required
                       />
                       <label htmlFor="sets"> Sets </label>
@@ -215,44 +160,8 @@ function AddWorkoutForm({
                           workoutId={workoutId}
                           exerciseId={exercise._id}
                         />
-                        <ArrowSwitch component="addworkout">
-                          <svg
-                            className={
-                              activeDropdown === exercise._id
-                                ? "arrow-up feather feather-chevron-down"
-                                : "arrow-down feather feather-chevron-down"
-                            }
-                            onClick={() => {
-                              if (activeDropdown === exercise._id) {
-                                setActiveDropdown("");
-                              } else {
-                                setActiveDropdown(exercise._id);
-                              }
-                            }}
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            // class="feather feather-chevron-down"
-                          >
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                          </svg>
-                        </ArrowSwitch>
                       </div>
-                      {/* </div> */}
-                      {/* </ArrowContainer> */}
                     </ExerciseInfo>
-                    <ExerciseImage
-                      status={exercise._id === activeDropdown ? "show" : "hide"}
-                    >
-                      {" "}
-                      <img src={exercise.gif} alt="loading..." />
-                    </ExerciseImage>
                   </div>
                 );
               }

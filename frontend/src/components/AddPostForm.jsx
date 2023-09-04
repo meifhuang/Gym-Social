@@ -39,7 +39,7 @@ function AddPostForm({
     }
   }
 
-  console.log(previewSource, currentPreviewSource);
+
   return (
     <PostFormStyle>
       <form onSubmit={(e) => createPost(e)} encType="multipart/form-data">
