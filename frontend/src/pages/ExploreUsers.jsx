@@ -15,7 +15,7 @@ export default function ExploreUsers() {
   const [users, setUsers] = useState([]);
   const [loggedInUser, setLoggedInUser] = useState(localStorage.getItem("id"));
   const [notFollowing, setnotFollowing] = useState([]);
-  const BASE_URL = import.meta.env.VITE_URL;
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   const {userPicUrl} = useContext(AuthContext)
 

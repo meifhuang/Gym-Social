@@ -18,7 +18,7 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import NewsFeed from "./components/Newsfeed";
 import ExploreUsers from "./pages/ExploreUsers";
-import Chat from "./pages/Chat";
+// import Chat from "./pages/Chat";
 import "./App.css";
 
 import { AuthContext } from "./AuthContext";
@@ -71,10 +71,10 @@ function App() {
           path: "/explore",
           element: <ExploreUsers />,
         },
-        {
-          path: "/chat",
-          element: <Chat />,
-        },
+        // {
+        //   path: "/chat",
+        //   element: <Chat />,
+        // },
       ],
     },
     // {

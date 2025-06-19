@@ -19,7 +19,7 @@ export default function Newsfeed({
   handleFileUpload,
   deletePost,
 }) {
-  const BASE_URL = import.meta.env.VITE_URL;
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
   const FRONT_URL = import.meta.env.FRONTEND_URL;
   const navigate = useNavigate();
   const [loggedInId, setLoggedInId] = useState(localStorage.getItem("id"));

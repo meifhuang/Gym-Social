@@ -48,7 +48,7 @@ import {
 } from "../styledComponents/Profile";
 
 export default function Profile() {
-  const BASE_URL = import.meta.env.VITE_URL;
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
   // const exerciseDB = useLoaderData();
   // const exerciseDB = exerciseDB; 
 
