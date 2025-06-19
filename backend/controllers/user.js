@@ -14,7 +14,6 @@ const {cloudinary} = require('../cloudinary');
 router = express.Router();
 
 
-
 //**When deleting a user - have to delete their posts and workouts as well */
 
 router.get("/user/:id", async (req, res) => {
@@ -71,9 +70,21 @@ router.get("/loggedinuser", async (req, res) => {
 
 
 router.get("/profile/:id", async (req, res) => {
+  // console.log("HIT")
+  // const token = req.cookies.token;
+  // console.log("Cookies:", req.cookies);
+  // if (!token) return res.status(401).json({ error: "Unauthorized" });
 
-  const loggedInId = req.user.id;
+  // let loggedInId;
+  // try {
+  //   const decoded = jwt.verify(token, process.env.JSONKEY);
+  //   loggedInId = decoded.id || decoded.user?.id;
+  // } catch (err) {
+  //   return res.status(403).json({ error: "Invalid token" });
+  // }
   const paramId = req.params.id;
+  const loggedInId = req.user.id
+
   const user = await User.findById(paramId).populate([
     {path: "workouts", populate: { path: "exercises" }},
    {path: "saved", populate: { path: "exercises"}},

@@ -25,7 +25,7 @@ import {
 import { FacebookIcon, GoogleIcon } from "../assets/icons.jsx";
 
 export default function Login(props) {
-  const BASE_URL = import.meta.env.VITE_URL;
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
   const FRONT_URL = import.meta.env.FRONT_URL;
   const { message } = props;
   const { setHasToken } = useContext(AuthContext);
@@ -112,7 +112,7 @@ export default function Login(props) {
           >
             <h1>Welcome Back!</h1>
 
-            <>
+            {/* <>
               <FormDiv>
                 <input
                   type="text"
@@ -133,15 +133,14 @@ export default function Login(props) {
                   placeholder="Password"
                 />
               </FormDiv>
-            </>
+            </> */}
 
-            <ErrorMessage>{errorMessage}</ErrorMessage>
+            {/* <ErrorMessage>{errorMessage}</ErrorMessage> */}
             <AuthButton
-              onClick={(e) => {
-                loginSubmit(e);
-              }}
+              type="button"
+              onClick={handleGoogleLogin}
             >
-              Login
+              Sign Up
             </AuthButton>
             <GoogleButton type="button" onClick={handleGoogleLogin}>
               <span>
@@ -155,10 +154,10 @@ export default function Login(props) {
               </span>
               Login with Facebook
             </FacebookButton> */}
-            <AuthRedirect>
+            {/* <AuthRedirect>
               Don't have an account?{" "}
               <span onClick={() => navigate("/signup")}>Sign Up</span>
-            </AuthRedirect>
+            </AuthRedirect> */}
           </StyledForm>
         </FormContainer>
         <Image

@@ -18,7 +18,7 @@ import {
   NavTabDropdown,
 } from "../styledComponents/StyleNav";
 export default function Navbar(props) {
-  const BASE_URL = import.meta.env.VITE_URL;
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate();
 
   const [isOpen, setOpen] = useState(false);
@@ -99,9 +99,9 @@ export default function Navbar(props) {
               <NavTab className="nav-tab">
                 <NavLink to="/explore">EXPLORE</NavLink>
               </NavTab>
-              <NavTab className="nav-tab">
+              {/* <NavTab className="nav-tab">
                 <NavLink to="/chat">CHAT</NavLink>
-              </NavTab>
+              </NavTab> */}
               <MenuTrigger
                 className="menu-trigger"
                 onClick={() => setIsActive(!isActive)}
@@ -158,9 +158,9 @@ export default function Navbar(props) {
               <NavTab2 isOpen={isOpen} className={"nav-tab "}>
                 <NavLink to="/explore"> Explore</NavLink>
               </NavTab2>
-              <NavTab2 isOpen={isOpen} className={"nav-tab "}>
+              {/* <NavTab2 isOpen={isOpen} className={"nav-tab "}>
                 <NavLink to="/chat"> Chat</NavLink>
-              </NavTab2>
+              </NavTab2> */}
             </>
           ) : (
             <>
