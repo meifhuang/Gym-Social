@@ -35,6 +35,11 @@ function createServer() {
     // useUnifiedTopology: true,
   });
 
+  let config;
+config ||= { default: true };
+console.log(config);
+
+
   // mongoose.set("strictQuery", false);
   const db = mongoose.connection;
   db.on("error", console.error.bind(console, "connection err:"));
